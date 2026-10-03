@@ -7,9 +7,6 @@ on:
       - 'src/domain/**'
       - 'src/app/trainer-session-model.ts'
       - 'src/features/damage/model.ts'
-      - 'electron/lib/real-damage.cjs'
-      - 'electron/lib/nbt.cjs'
-      - 'electron/player-import.cjs'
       - 'test/**'
       - 'stryker.config.json'
   schedule:

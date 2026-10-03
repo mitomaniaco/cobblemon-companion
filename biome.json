@@ -13,7 +13,10 @@
       "!**/dist",
       "!**/.runtime",
       "!src/data",
-      "!package-lock.json"
+      "!package-lock.json",
+      "!**/.stryker-tmp",
+      "!**/coverage",
+      "!**/reports"
     ]
   },
   "formatter": {

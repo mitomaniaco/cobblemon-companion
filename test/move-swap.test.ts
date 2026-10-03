@@ -118,4 +118,59 @@ describe('planejamento de troca de golpe', () => {
       reason: 'no-candidates',
     });
   });
+
+  it('deduplica candidatos ignorando caixa e espaços, remove equipados equivalentes e preserva o primeiro ID observado', () => {
+    const view = getMoveSwapView(
+      individual({
+        equippedMoves: [{id: 'thunder-shock', pp: 20, ppUps: 0}],
+        learnedMoves: [
+          {id: ' Iron-Tail ', ppUps: 0},
+          {id: 'iron-tail', ppUps: 0},
+          {id: 'THUNDER-SHOCK', ppUps: 0},
+          {id: '   ', ppUps: 0},
+        ],
+      }),
+      createMoveSwapPlan('pikachu-uuid'),
+    );
+
+    expect(view.status).toBe('ready');
+    if (view.status !== 'ready') return;
+    expect(view.candidates).toEqual([{id: ' Iron-Tail ', evidence: 'observed-learned-on-individual'}]);
+  });
+
+  it.each([
+    ['sem slot escolhido', {individualUuid: 'pikachu-uuid', slotIndex: null, candidateMoveId: 'iron-tail'}],
+    ['com slot fora dos golpes equipados', {individualUuid: 'pikachu-uuid', slotIndex: 2, candidateMoveId: 'iron-tail'}],
+    ['com golpe que não é candidato (já equipado)', {individualUuid: 'pikachu-uuid', slotIndex: 0, candidateMoveId: 'quick-attack'}],
+    ['sem golpe candidato', {individualUuid: 'pikachu-uuid', slotIndex: 0, candidateMoveId: null}],
+    ['de outro indivíduo, mesmo com slot e golpe válidos', {individualUuid: 'floatzel-uuid', slotIndex: 0, candidateMoveId: 'iron-tail'}],
+  ])('não gera prévia %s', (_description, plan) => {
+    const view = getMoveSwapView(individual(), plan);
+
+    expect(view.status).toBe('ready');
+    if (view.status !== 'ready') return;
+    expect(view.preview).toBeNull();
+  });
+
+  it.each([
+    [0, 'thunder-shock'],
+    [1, 'quick-attack'],
+  ])('gera a prévia no slot %i trocando somente aquele golpe', (slotIndex, beforeMoveId) => {
+    const view = getMoveSwapView(individual(), {individualUuid: 'pikachu-uuid', slotIndex, candidateMoveId: 'volt-tackle'});
+
+    expect(view.status).toBe('ready');
+    if (view.status !== 'ready') return;
+    expect(view.preview).toEqual({slotIndex, beforeMoveId, afterMoveId: 'volt-tackle', evidence: 'observed-learned-on-individual'});
+  });
+
+  it('informa a razão do estado inconclusivo conforme a lista desconhecida', () => {
+    const reason = (overrides: Partial<PlayerIndividual>) => {
+      const view = getMoveSwapView(individual(overrides), createMoveSwapPlan());
+      return view.status === 'inconclusive' ? view.reason : null;
+    };
+
+    expect(reason({learnedMovesKnown: false})).toBe('learned-unknown');
+    expect(reason({equippedMovesKnown: false})).toBe('equipped-unknown');
+    expect(reason({equippedMovesKnown: false, learnedMovesKnown: false})).toBe('both-unknown');
+  });
 });
