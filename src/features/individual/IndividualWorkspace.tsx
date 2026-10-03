@@ -161,7 +161,8 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
               <li key={source.kind}>
                 <span className={styles.sourceTitle}>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
                 <span>Modificado em {timestampLabel(source.modifiedAt)}</span>
-                <code aria-label={`SHA-256 do arquivo ${source.kind === 'party' ? 'da equipe' : 'do PC'}`}>{source.sha256}</code>
+                <span className={styles.visuallyHidden}>SHA-256 do arquivo {source.kind === 'party' ? 'da equipe' : 'do PC'}</span>
+                <code>{source.sha256}</code>
               </li>
             ))}
           </ul>
@@ -356,7 +357,8 @@ export function IndividualWorkspace({
               <h3 id={`${panelIds}-attributes-title`} className={styles.panelHeading}>
                 Atributos
               </h3>
-              <div className={styles.attributeTableScroll} role="region" aria-label="Atributos registrados" tabIndex={0}>
+              {/* biome-ignore lint/a11y/noNoninteractiveTabindex: região rolável precisa de foco por teclado para ser rolada sem mouse (WCAG 2.1.1) */}
+              <section className={styles.attributeTableScroll} aria-label="Atributos registrados" tabIndex={0}>
                 <table className={styles.attributeTable}>
                   <caption className={styles.visuallyHidden}>Valores capturados de IV base, Hyper Training e EV por atributo.</caption>
                   <thead>
@@ -378,7 +380,7 @@ export function IndividualWorkspace({
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </section>
             </section>
           </TabPanel>
         </TabPanels>

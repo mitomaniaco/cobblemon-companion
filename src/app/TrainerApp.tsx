@@ -95,7 +95,8 @@ function CaptureDetails({snapshot}: {snapshot: PlayerSnapshot}) {
                 <li key={source.kind}>
                   <span>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
                   <span>Modificado em {formatCaptureTime(source.modifiedAt)}</span>
-                  <code aria-label={`SHA-256 do arquivo ${source.kind === 'party' ? 'da equipe' : 'do PC'}`}>{source.sha256}</code>
+                  <span className={styles.visuallyHidden}>SHA-256 do arquivo {source.kind === 'party' ? 'da equipe' : 'do PC'}</span>
+                  <code>{source.sha256}</code>
                 </li>
               ))}
             </ul>

@@ -197,7 +197,7 @@ export function CollectionWorkspace({
           Nenhum Pokémon capturado no PC nesta captura.
         </p>
       ) : emptyTeam ? (
-        <div className={styles.teamGrid} role="group" aria-label="Posições da equipe">
+        <fieldset className={styles.teamGrid} aria-label="Posições da equipe">
           {Array.from({length: 6}, (_, slot) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static empty team positions with fixed count of 6, never reorders
             <div className={styles.emptyPosition} data-slot={slot} key={slot}>
@@ -205,9 +205,9 @@ export function CollectionWorkspace({
               <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>
             </div>
           ))}
-        </div>
+        </fieldset>
       ) : hasVisibleIndividuals && view === 'team' ? (
-        <div className={styles.teamGrid} role="group" aria-label="Posições da equipe">
+        <fieldset className={styles.teamGrid} aria-label="Posições da equipe">
           <ListBox
             aria-label="Pokémon da equipe"
             className={styles.teamOptions}
@@ -258,7 +258,7 @@ export function CollectionWorkspace({
               <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>
             </div>
           ))}
-        </div>
+        </fieldset>
       ) : hasVisibleIndividuals ? (
         <ListBox
           aria-label="Pokémon no PC"

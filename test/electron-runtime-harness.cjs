@@ -177,7 +177,7 @@ async function run() {
     const title = document.querySelector('#demo-result-title');
     const result = title?.closest('section');
     const phase = document.querySelector('strong[data-phase]');
-    const damage = result?.querySelector('[role="group"][aria-label="Dano mínimo e HP restante, golpe atual e proposto"]');
+    const damage = result?.querySelector('[aria-label="Dano mínimo e HP restante, golpe atual e proposto"]');
     const details = [...document.querySelectorAll('details')]
       .find(item => item.querySelector('summary')?.innerText.trim() === 'Rastreabilidade e limites');
     const summary = details?.querySelector('summary');
@@ -204,13 +204,13 @@ async function run() {
   assert.match(resultText, /Limites/);
   const damageValues = await evaluate(
     webContents,
-    "(() => { const damage = document.querySelector('[role=\"group\"][aria-label=\"Dano mínimo e HP restante, golpe atual e proposto\"]'); return [...(damage?.querySelectorAll('p') || [])].map(node => node.querySelector('strong')?.textContent.trim()).filter(Boolean); })()",
+    "(() => { const damage = document.querySelector('[aria-label=\"Dano mínimo e HP restante, golpe atual e proposto\"]'); return [...(damage?.querySelectorAll('p') || [])].map(node => node.querySelector('strong')?.textContent.trim()).filter(Boolean); })()",
   );
   assert.deepEqual(damageValues, ['36', '50'], 'A demonstração fixa não exibiu os danos mínimos 36/50.');
   console.log('PASS formulário → IPC → worker real → resultado exibido (36/50)');
 
   const screenshotPath = process.env.COMPANION_RUNTIME_SCREENSHOT || path.join(os.tmpdir(), 'cobblemon-companion-runtime-result.png');
-  const damageSelector = '[role="group"][aria-label="Dano mínimo e HP restante, golpe atual e proposto"]';
+  const damageSelector = '[aria-label="Dano mínimo e HP restante, golpe atual e proposto"]';
   await scrollIntoViewport(webContents, damageSelector, ['#demo-result-title', damageSelector], 'resultado e dano visíveis no viewport');
   const screenshot = await window.capturePage();
   fs.writeFileSync(screenshotPath, screenshot.toPNG());

@@ -99,10 +99,10 @@ function ResultPanel({result}: {result: ProductResult}) {
         {moveLabel(result.current.moveId)} para <strong>{result.candidate.remainingHP}</strong> com {moveLabel(result.candidate.moveId)}.
       </p>
 
-      <div className={styles.damageCompare} role="group" aria-label="Dano mínimo e HP restante, golpe atual e proposto">
+      <fieldset className={styles.damageCompare} aria-label="Dano mínimo e HP restante, golpe atual e proposto">
         <DamageSide label="Atual" move={result.current} />
         <DamageSide label="Proposta" move={result.candidate} />
-      </div>
+      </fieldset>
       <div className={styles.evidence}>
         <section className={styles.detailSection} aria-labelledby="demo-gains-title">
           <h4 id="demo-gains-title">Ganhos</h4>
@@ -306,7 +306,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
           </p>
 
           <form className={styles.form} onSubmit={(event) => void submit(event)} noValidate>
-            <div className={styles.fixedFacts} role="group" aria-label="Dados fixos da demonstração">
+            <fieldset className={styles.fixedFacts} aria-label="Dados fixos da demonstração">
               <div>
                 <span>Pokémon observado</span>
                 <strong>Pikachu</strong>
@@ -322,7 +322,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
                 <strong>Spark</strong>
                 <small>Preservado como observado</small>
               </div>
-            </div>
+            </fieldset>
 
             <div className={styles.formFields}>
               <div ref={candidateFieldRef}>
@@ -338,7 +338,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
               </div>
             </div>
 
-            <div className={styles.contextStrip} role="group" aria-label="Condições fixas do cálculo">
+            <fieldset className={styles.contextStrip} aria-label="Condições fixas do cálculo">
               <div>
                 <span>Horizonte</span>
                 <strong>1 ação</strong>
@@ -355,7 +355,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
                 <span>Formato</span>
                 <strong>singles</strong>
               </div>
-            </div>
+            </fieldset>
 
             {flow.error && (
               <div className={styles.errorMessage} role="alert">

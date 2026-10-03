@@ -458,7 +458,7 @@ async function exerciseDemo(contents) {
   const initialResult = await evaluate(
     contents,
     `(() => ({
-    text: document.querySelector('[role="group"][aria-label="Dano mínimo e HP restante, golpe atual e proposto"]')?.innerText || '',
+    text: document.querySelector('[aria-label="Dano mínimo e HP restante, golpe atual e proposto"]')?.innerText || '',
     panel: document.querySelector('#demo-result-title')?.closest('section')?.innerText || '',
   }))()`,
   );
