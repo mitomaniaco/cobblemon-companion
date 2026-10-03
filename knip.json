@@ -1,0 +1,10 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/main.tsx", "electron/main.cjs", "electron/preload.cjs", "electron/worker.cjs", "scripts/*.mjs", "test/electron-*.cjs"],
+  "project": ["src/**/*.{ts,tsx}", "electron/**/*.cjs", "scripts/**/*.mjs", "test/**/*.{ts,js,cjs}"],
+  "ignoreDependencies": ["@fontsource-variable/manrope"],
+  "rules": {
+    "exports": "warn",
+    "types": "warn"
+  }
+}

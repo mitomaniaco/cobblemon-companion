@@ -1,0 +1,67 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": [
+      "src/**",
+      "electron/**/*.cjs",
+      "test/**/*.ts",
+      "test/**/*.js",
+      "test/**/*.cjs",
+      "scripts/**",
+      "*.json",
+      "*.ts",
+      "!**/dist",
+      "!**/.runtime",
+      "!src/data",
+      "!package-lock.json"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 140
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "bracketSpacing": false,
+      "semicolons": "always"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "useOptionalChain": "warn",
+        "noImportantStyles": "warn"
+      },
+      "suspicious": {
+        "noPrototypeBuiltins": "warn",
+        "useIterableCallbackReturn": "warn",
+        "noArrayIndexKey": "warn",
+        "noAssignInExpressions": "warn"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn"
+      },
+      "style": {
+        "noNonNullAssertion": "warn",
+        "noDescendingSpecificity": "warn"
+      },
+      "a11y": {
+        "useSemanticElements": "warn",
+        "useAriaPropsSupportedByRole": "warn",
+        "noNoninteractiveTabindex": "warn"
+      }
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
+  }
+}
