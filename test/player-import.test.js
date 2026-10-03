@@ -46,7 +46,9 @@ function doubleTag(name, value) {
 function intArrayTag(name, values) {
   const payload = Buffer.alloc(4 + values.length * 4);
   payload.writeInt32BE(values.length, 0);
-  values.forEach((value, index) => payload.writeInt32BE(value, 4 + index * 4));
+  values.forEach((value, index) => {
+    payload.writeInt32BE(value, 4 + index * 4);
+  });
   return named(11, name, payload);
 }
 

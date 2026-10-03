@@ -91,8 +91,8 @@ function CaptureDetails({snapshot}: {snapshot: PlayerSnapshot}) {
             <p className={styles.detailsEmpty}>Nenhum arquivo de origem registrado.</p>
           ) : (
             <ul className={styles.sourceList}>
-              {snapshot.sources.map((source, index) => (
-                <li key={`${source.kind}-${index}`}>
+              {snapshot.sources.map((source) => (
+                <li key={source.kind}>
                   <span>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
                   <span>Modificado em {formatCaptureTime(source.modifiedAt)}</span>
                   <code aria-label={`SHA-256 do arquivo ${source.kind === 'party' ? 'da equipe' : 'do PC'}`}>{source.sha256}</code>
@@ -112,8 +112,8 @@ function CaptureDetails({snapshot}: {snapshot: PlayerSnapshot}) {
             <p className={styles.detailsEmpty}>Nenhum aviso registrado.</p>
           ) : (
             <ul className={styles.warningList}>
-              {snapshot.warnings.map((warning, index) => (
-                <li key={`${index}-${warning}`}>{warning}</li>
+              {snapshot.warnings.map((warning) => (
+                <li key={warning}>{warning}</li>
               ))}
             </ul>
           )}
@@ -140,6 +140,7 @@ function NoSnapshotState({
         </StatusMessage>
         <div className={styles.loadingSlots} aria-hidden="true">
           {Array.from({length: 6}, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: static loading skeleton with fixed count of 6, never reorders
             <div className={styles.loadingSlot} key={index} />
           ))}
         </div>
@@ -276,7 +277,7 @@ export function TrainerApp() {
     previousSelectionRef.current = session.selectedUuid;
     setDetailTab('summary');
   }, [session.selectedUuid]);
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: dependencies are intentional triggers for focus management on layout/workspace changes
   useEffect(() => {
     if (!focusRequest) return;
     const panel =

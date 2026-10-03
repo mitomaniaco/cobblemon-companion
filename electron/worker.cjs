@@ -84,7 +84,7 @@ function runCalculation(message) {
       const output = adaptOfflineComparison(input);
       post({type: 'result', jobId: message.jobId, result: productResult(output)});
     } catch (error) {
-      post({type: 'failure', jobId: message.jobId, error: String((error && error.message) || error)});
+      post({type: 'failure', jobId: message.jobId, error: String(error?.message || error)});
     }
   }, delay);
   timers.set(message.jobId, timer);

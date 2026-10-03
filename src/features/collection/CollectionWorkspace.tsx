@@ -199,6 +199,7 @@ export function CollectionWorkspace({
       ) : emptyTeam ? (
         <div className={styles.teamGrid} role="group" aria-label="Posições da equipe">
           {Array.from({length: 6}, (_, slot) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: static empty team positions with fixed count of 6, never reorders
             <div className={styles.emptyPosition} data-slot={slot} key={slot}>
               <span className={styles.emptyPositionTitle}>Posição vazia</span>
               <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>

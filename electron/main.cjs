@@ -133,7 +133,7 @@ function stopWorker(child = worker) {
   return child.stopping;
 }
 function ensureWorker() {
-  if (worker && worker.pid) return worker;
+  if (worker?.pid) return worker;
   const child = utilityProcess.fork(WORKER_PATH, [], {cwd: ROOT, stdio: 'ignore', serviceName: 'Cobblemon Companion local calculator'});
   worker = child;
   child.on('message', (event) => {

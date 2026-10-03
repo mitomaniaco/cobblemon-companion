@@ -11,7 +11,9 @@ function text(value, path) {
 }
 function strings(value, path) {
   requireValue(Array.isArray(value), path);
-  value.forEach((s, i) => text(s, `${path}[${i}]`));
+  value.forEach((s, i) => {
+    text(s, `${path}[${i}]`);
+  });
   requireValue(new Set(value).size === value.length, `${path}: duplicates`);
 }
 function record(value, path) {
@@ -38,7 +40,9 @@ function compareEvidence(input) {
   requireValue(input.current.id !== input.candidate.id, 'distinct build ids');
   strings(input.learnedMoves, 'learnedMoves');
   strings(input.lockedMoves, 'lockedMoves');
-  input.lockedMoves.forEach((m) => requireValue(input.current.moves.includes(m), 'locked move not current'));
+  input.lockedMoves.forEach((m) => {
+    requireValue(input.current.moves.includes(m), 'locked move not current');
+  });
   record(input.scope, 'scope');
   for (const k of ['id', 'snapshotId', 'individualId', 'objective', 'provenance']) text(input.scope[k], `scope.${k}`);
   strings(input.scope.assumptions, 'scope.assumptions');
@@ -84,7 +88,9 @@ function compareEvidence(input) {
         `${side}.context mismatch`,
       );
       requireValue(Array.isArray(outcome.actions), `${side}.actions`);
-      outcome.actions.forEach((action) => text(action, `${side}.action`));
+      outcome.actions.forEach((action) => {
+        text(action, `${side}.action`);
+      });
       if (input.scope.actionTraceUnit === 'turns') {
         requireValue(
           outcome.actions.length === input.scope.evaluatedHorizon,

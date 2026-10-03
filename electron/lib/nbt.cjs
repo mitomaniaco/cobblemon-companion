@@ -55,10 +55,12 @@ function parseNbt(input) {
       }
       case 10: {
         const object = Object.create(null);
-        for (let type; (type = u8()) !== 0; ) {
+        let type = u8();
+        while (type !== 0) {
           const name = str();
           if (Object.hasOwn(object, name)) throw new Error('Chave NBT duplicada');
           object[name] = value(type, depth + 1);
+          type = u8();
         }
         return object;
       }
