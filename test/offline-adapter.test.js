@@ -10,7 +10,7 @@ describe('offline adapter bundled with the app', () => {
     expect(fixture.player.playerUuid).toBe('00000000-0000-4000-8000-000000000001');
     expect(fixture.player.individuals[0].uuid).toBe('00000000-0000-4000-8000-000000000002');
     expect(fixture.calculation.individualId).toBe('00000000-0000-4000-8000-000000000002');
-    expect(fixture.sources.map(source => source.path)).toEqual([
+    expect(fixture.sources.map((source) => source.path)).toEqual([
       'test/fixtures/offline-companion-snapshot.json',
       'node_modules/@smogon/calc/package.json',
     ]);

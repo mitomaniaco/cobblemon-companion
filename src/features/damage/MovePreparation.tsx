@@ -25,21 +25,19 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
     setConfirmedPreviewKey(null);
   }, [individual.uuid, previewKey]);
 
-  const slotOptions: SelectOption[] = view.status === 'ready'
-    ? view.equippedMoves.map((move, index) => ({key: String(index), label: `Slot ${index + 1} · ${importedLabel(move.id)}`}))
-    : [];
-  const candidateOptions: SelectOption[] = view.status === 'ready'
-    ? view.candidates.map(move => ({key: move.id, label: importedLabel(move.id)}))
-    : [];
+  const slotOptions: SelectOption[] =
+    view.status === 'ready'
+      ? view.equippedMoves.map((move, index) => ({key: String(index), label: `Slot ${index + 1} · ${importedLabel(move.id)}`}))
+      : [];
+  const candidateOptions: SelectOption[] =
+    view.status === 'ready' ? view.candidates.map((move) => ({key: move.id, label: importedLabel(move.id)})) : [];
   const isPreviewConfirmed = previewKey !== null && confirmedPreviewKey === previewKey;
 
   return (
     <section className={styles.preparation} aria-labelledby={titleId}>
       <div className={styles.heading}>
         <h4 id={titleId}>Preparar uma troca de golpe</h4>
-        <p>
-          A prévia usa somente os golpes observados neste UUID. Preparar uma proposta não equipa nem ensina golpes.
-        </p>
+        <p>A prévia usa somente os golpes observados neste UUID. Preparar uma proposta não equipa nem ensina golpes.</p>
       </div>
 
       {view.status === 'inconclusive' ? (
@@ -66,7 +64,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
               label="Slot equipado para a prévia"
               options={slotOptions}
               value={selectedPlan && plan.slotIndex !== null ? String(plan.slotIndex) : null}
-              onChange={value => onPlanChange({slotIndex: value === null ? null : Number(value)})}
+              onChange={(value) => onPlanChange({slotIndex: value === null ? null : Number(value)})}
               placeholder="Escolha um slot"
               description="A prévia pode usar qualquer slot registrado no MoveSet deste UUID."
             />
@@ -74,7 +72,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
               label="Golpe aprendido para a proposta"
               options={candidateOptions}
               value={selectedPlan ? plan.candidateMoveId : null}
-              onChange={value => onPlanChange({candidateMoveId: value})}
+              onChange={(value) => onPlanChange({candidateMoveId: value})}
               placeholder="Escolha um golpe aprendido"
               description="Candidatos observados em BenchedMoves para este indivíduo."
             />
@@ -82,9 +80,15 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
 
           {preview ? (
             <div className={styles.preview} aria-live="polite" aria-label="Prévia da troca planejada">
-              <div><span>Antes · slot {preview.slotIndex + 1}</span><strong>{importedLabel(preview.beforeMoveId)}</strong></div>
+              <div>
+                <span>Antes · slot {preview.slotIndex + 1}</span>
+                <strong>{importedLabel(preview.beforeMoveId)}</strong>
+              </div>
               <ArrowRight className={styles.arrow} aria-hidden="true" weight="bold" />
-              <div><span>Depois · proposta</span><strong>{importedLabel(preview.afterMoveId)}</strong></div>
+              <div>
+                <span>Depois · proposta</span>
+                <strong>{importedLabel(preview.afterMoveId)}</strong>
+              </div>
               <p>Observado como aprendido neste indivíduo; nenhum dado do save é alterado.</p>
               <p className={preview.slotIndex === 0 ? styles.calculationNote : styles.calculationNoteWarning}>
                 {preview.slotIndex === 0
@@ -93,9 +97,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
               </p>
             </div>
           ) : (
-            <p className={styles.emptyPreview}>
-              Escolha um slot e um candidato para conferir o antes e depois.
-            </p>
+            <p className={styles.emptyPreview}>Escolha um slot e um candidato para conferir o antes e depois.</p>
           )}
 
           {preview && (
@@ -103,7 +105,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
               <Checkbox
                 className={styles.confirmation}
                 isSelected={isPreviewConfirmed}
-                onChange={checked => setConfirmedPreviewKey(checked ? previewKey : null)}
+                onChange={(checked) => setConfirmedPreviewKey(checked ? previewKey : null)}
               >
                 Confirmo que esta é apenas uma proposta local; nada será equipado nem ensinado.
               </Checkbox>

@@ -23,6 +23,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Biome (lint e formatação)
+        run: npm run lint
+      - name: Knip (arquivos e dependências não usados)
+        run: npm run knip
       - name: Typecheck
         run: npm run typecheck
       - name: Testes

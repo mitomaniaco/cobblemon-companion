@@ -47,7 +47,7 @@
   left: var(--space-2);
   height: 2px;
   background: var(--color-accent);
-  content: '';
+  content: "";
 }
 
 .tab[data-disabled] {

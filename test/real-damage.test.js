@@ -3,12 +3,12 @@ import {describe, expect, it} from 'vitest';
 
 const require = createRequire(import.meta.url);
 const {COMPATIBILITY, assertFreshSources, calculateRealDamage} = require('../electron/lib/real-damage.cjs');
-const fact = value => ({state: 'known', value, provenance: {sourceKind: 'party', nbtPath: 'test'}});
+const fact = (value) => ({state: 'known', value, provenance: {sourceKind: 'party', nbtPath: 'test'}});
 const sourceHashes = [
   {kind: 'party', sha256: 'a'.repeat(64)},
   {kind: 'pc', sha256: 'b'.repeat(64)},
 ];
-const stats = values => Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map(stat => [stat, values[stat]]));
+const stats = (values) => Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map((stat) => [stat, values[stat]]));
 
 function makeIndividual() {
   return {
@@ -23,9 +23,9 @@ function makeIndividual() {
     learnedMovesKnown: true,
     observed: {nature: 'cobblemon:adamant', ability: 'cobblemon:overgrow', heldItem: null},
     battleStats: {
-      ivs: stats(Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map(stat => [stat, fact(31)]))),
-      hyperTrainedIvs: stats(Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map(stat => [stat, fact(null)]))),
-      evs: stats(Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map(stat => [stat, fact(0)]))),
+      ivs: stats(Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map((stat) => [stat, fact(31)]))),
+      hyperTrainedIvs: stats(Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map((stat) => [stat, fact(null)]))),
+      evs: stats(Object.fromEntries(['hp', 'atk', 'def', 'spa', 'spd', 'spe'].map((stat) => [stat, fact(0)]))),
     },
   };
 }
@@ -36,7 +36,7 @@ function makeSnapshot(individual = makeIndividual()) {
     capturedAt: '2026-09-28T00:00:00.000Z',
     worldName: 'test-world',
     consistency: 'best-effort',
-    sources: sourceHashes.map(source => ({...source, modifiedAt: '2026-09-28T00:00:00.000Z'})),
+    sources: sourceHashes.map((source) => ({...source, modifiedAt: '2026-09-28T00:00:00.000Z'})),
     individuals: [individual],
   };
 }
@@ -83,7 +83,7 @@ describe('versioned real damage adapter', () => {
 
   it('calcula Gardevoir normal com habilidades compatíveis usando a tabela de Gen 9', () => {
     const baseline = calculateRealDamage(makeSnapshot(), makeRequest());
-    const results = ['cobblemon:synchronize', 'cobblemon:telepathy'].map(ability => {
+    const results = ['cobblemon:synchronize', 'cobblemon:telepathy'].map((ability) => {
       const gardevoir = makeIndividual();
       gardevoir.speciesId = 'cobblemon:gardevoir';
       gardevoir.observed.ability = ability;
@@ -109,8 +109,7 @@ describe('versioned real damage adapter', () => {
     const traceGardevoir = makeIndividual();
     traceGardevoir.speciesId = 'cobblemon:gardevoir';
     traceGardevoir.observed.ability = 'cobblemon:trace';
-    expect(() => calculateRealDamage(makeSnapshot(traceGardevoir), makeRequest()))
-      .toThrow(/não está mapeada para esta espécie/);
+    expect(() => calculateRealDamage(makeSnapshot(traceGardevoir), makeRequest())).toThrow(/não está mapeada para esta espécie/);
   });
 
   it('responds to effective attacker and target stats instead of a fixed fixture', () => {
@@ -118,10 +117,12 @@ describe('versioned real damage adapter', () => {
     const stronger = makeIndividual();
     stronger.battleStats.evs.atk = fact(252);
     const attackerChanged = calculateRealDamage(makeSnapshot(stronger), makeRequest());
-    const tougherTarget = makeRequest({target: {
-      ...makeRequest().target,
-      evs: {hp: 0, atk: 0, def: 252, spa: 0, spd: 0, spe: 0},
-    }});
+    const tougherTarget = makeRequest({
+      target: {
+        ...makeRequest().target,
+        evs: {hp: 0, atk: 0, def: 252, spa: 0, spd: 0, spe: 0},
+      },
+    });
     const targetChanged = calculateRealDamage(makeSnapshot(), tougherTarget);
 
     expect(attackerChanged.candidate.min).toBeGreaterThan(baseline.candidate.min);
@@ -139,15 +140,19 @@ describe('versioned real damage adapter', () => {
   });
 
   it('accepts the 510-EV boundary and rejects a total above it', () => {
-    const boundary = makeRequest({target: {
-      ...makeRequest().target,
-      level: 100,
-      evs: {hp: 252, atk: 252, def: 0, spa: 0, spd: 0, spe: 6},
-    }});
-    const overBudget = makeRequest({target: {
-      ...boundary.target,
-      evs: {hp: 252, atk: 252, def: 0, spa: 0, spd: 0, spe: 7},
-    }});
+    const boundary = makeRequest({
+      target: {
+        ...makeRequest().target,
+        level: 100,
+        evs: {hp: 252, atk: 252, def: 0, spa: 0, spd: 0, spe: 6},
+      },
+    });
+    const overBudget = makeRequest({
+      target: {
+        ...boundary.target,
+        evs: {hp: 252, atk: 252, def: 0, spa: 0, spd: 0, spe: 7},
+      },
+    });
 
     expect(calculateRealDamage(makeSnapshot(), boundary).target.level).toBe(100);
     expect(() => calculateRealDamage(makeSnapshot(), overBudget)).toThrow(/soma excede 510/);
@@ -163,7 +168,11 @@ describe('versioned real damage adapter', () => {
 
   it('blocks unknown effective IVs, unknown EVs, and observed held items', () => {
     const unknownIv = makeIndividual();
-    unknownIv.battleStats.hyperTrainedIvs.hp = {state: 'unknown', reason: 'not-captured', provenance: {sourceKind: 'party', nbtPath: 'test'}};
+    unknownIv.battleStats.hyperTrainedIvs.hp = {
+      state: 'unknown',
+      reason: 'not-captured',
+      provenance: {sourceKind: 'party', nbtPath: 'test'},
+    };
     expect(() => calculateRealDamage(makeSnapshot(unknownIv), makeRequest())).toThrow(/hyperTrainedIvs\.hp.*desconhecido/);
 
     const unknownEv = makeIndividual();
@@ -176,16 +185,20 @@ describe('versioned real damage adapter', () => {
   });
 
   it('blocks unsupported species, forms, abilities, moves, and incomplete scenario attestations', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, speciesId: 'cobblemon:missingno'}})))
-      .toThrow(/subconjunto compatível versionado/);
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, formId: 'alternate'}})))
-      .toThrow(/somente forma normal/);
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, ability: 'cobblemon:static'}})))
-      .toThrow(/não está mapeada para esta espécie/);
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, speciesId: 'cobblemon:missingno'}})),
+    ).toThrow(/subconjunto compatível versionado/);
+    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, formId: 'alternate'}}))).toThrow(
+      /somente forma normal/,
+    );
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, ability: 'cobblemon:static'}})),
+    ).toThrow(/não está mapeada para esta espécie/);
     const unsupportedMove = makeIndividual();
     unsupportedMove.learnedMoves[0].id = 'cobblemon:vine_whip';
-    expect(() => calculateRealDamage(makeSnapshot(unsupportedMove), makeRequest({candidateMoveId: 'cobblemon:vine_whip'})))
-      .toThrow(/subconjunto compatível versionado/);
+    expect(() => calculateRealDamage(makeSnapshot(unsupportedMove), makeRequest({candidateMoveId: 'cobblemon:vine_whip'}))).toThrow(
+      /subconjunto compatível versionado/,
+    );
     const incompleteAssumptions = makeRequest();
     for (const key of Object.keys(incompleteAssumptions.assumptions)) {
       incompleteAssumptions.assumptions[key] = false;
@@ -193,31 +206,88 @@ describe('versioned real damage adapter', () => {
       incompleteAssumptions.assumptions[key] = true;
     }
     for (const abilityId of [
-      'cobblemon:rivalry', 'cobblemon:analytic', 'cobblemon:download', 'cobblemon:parentalbond',
-      'cobblemon:supremeoverlord', 'cobblemon:protean', 'cobblemon:libero', 'cobblemon:colorchange',
-      'cobblemon:intrepidsword', 'cobblemon:dauntlessshield', 'cobblemon:disguise', 'cobblemon:iceface',
-      'cobblemon:hungerswitch', 'cobblemon:comatose', 'cobblemon:terashift', 'cobblemon:imposter',
-      'cobblemon:trace', 'cobblemon:schooling',
+      'cobblemon:rivalry',
+      'cobblemon:analytic',
+      'cobblemon:download',
+      'cobblemon:parentalbond',
+      'cobblemon:supremeoverlord',
+      'cobblemon:protean',
+      'cobblemon:libero',
+      'cobblemon:colorchange',
+      'cobblemon:intrepidsword',
+      'cobblemon:dauntlessshield',
+      'cobblemon:disguise',
+      'cobblemon:iceface',
+      'cobblemon:hungerswitch',
+      'cobblemon:comatose',
+      'cobblemon:terashift',
+      'cobblemon:imposter',
+      'cobblemon:trace',
+      'cobblemon:schooling',
     ]) {
       expect(COMPATIBILITY.abilities).not.toHaveProperty(abilityId);
       expect(COMPATIBILITY.abilities).not.toHaveProperty(abilityId.replace('cobblemon:', ''));
     }
     for (const moveId of [
-      'dig', 'dive', 'electroshot', 'freezeshock', 'iceburn', 'meteorbeam', 'phantomforce', 'shadowforce', 'skullbash',
-      'belch', 'burnup', 'doubleshock', 'fakeout', 'firstimpression', 'lastresort',
-      'focuspunch', 'suckerpunch', 'thunderclap', 'upperhand',
-      'poltergeist', 'dreameater', 'snore', 'ragingbull', 'terastarstorm',
-      'aciddownpour', 'alloutpummeling', 'blackholeeclipse', 'bloomdoom', 'breakneckblitz', 'catastropika',
-      'continentalcrush', 'corkscrewcrash', 'devastatingdrake', 'genesissupernova', 'gigavolthavoc', 'hydrovortex',
-      'infernooverdrive', 'letssnuggleforever', 'lightthatburnsthesky', 'maliciousmoonsault', 'menacingmoonrazemaelstrom',
-      'neverendingnightmare', 'oceanicoperetta', 'pulverizingpancake', 'savagespinout', 'searingsunrazesmash',
-      'shatteredpsyche', 'sinisterarrowraid', 'soulstealing7starstrike', 'splinteredstormshards', 'stokedsparksurfer',
-      'subzeroslammer', 'supersonicskystrike', 'tectonicrage', 'twinkletackle',
+      'dig',
+      'dive',
+      'electroshot',
+      'freezeshock',
+      'iceburn',
+      'meteorbeam',
+      'phantomforce',
+      'shadowforce',
+      'skullbash',
+      'belch',
+      'burnup',
+      'doubleshock',
+      'fakeout',
+      'firstimpression',
+      'lastresort',
+      'focuspunch',
+      'suckerpunch',
+      'thunderclap',
+      'upperhand',
+      'poltergeist',
+      'dreameater',
+      'snore',
+      'ragingbull',
+      'terastarstorm',
+      'aciddownpour',
+      'alloutpummeling',
+      'blackholeeclipse',
+      'bloomdoom',
+      'breakneckblitz',
+      'catastropika',
+      'continentalcrush',
+      'corkscrewcrash',
+      'devastatingdrake',
+      'genesissupernova',
+      'gigavolthavoc',
+      'hydrovortex',
+      'infernooverdrive',
+      'letssnuggleforever',
+      'lightthatburnsthesky',
+      'maliciousmoonsault',
+      'menacingmoonrazemaelstrom',
+      'neverendingnightmare',
+      'oceanicoperetta',
+      'pulverizingpancake',
+      'savagespinout',
+      'searingsunrazesmash',
+      'shatteredpsyche',
+      'sinisterarrowraid',
+      'soulstealing7starstrike',
+      'splinteredstormshards',
+      'stokedsparksurfer',
+      'subzeroslammer',
+      'supersonicskystrike',
+      'tectonicrage',
+      'twinkletackle',
     ]) {
       expect(COMPATIBILITY.moves).not.toHaveProperty(`cobblemon:${moveId}`);
       expect(COMPATIBILITY.moves).not.toHaveProperty(moveId);
     }
-
   });
 
   it('requires the replacement move to be learned by this UUID and not already equipped', () => {

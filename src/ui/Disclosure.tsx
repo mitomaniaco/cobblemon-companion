@@ -1,10 +1,5 @@
 import type {ReactNode} from 'react';
-import {
-  Button as AriaButton,
-  Disclosure as AriaDisclosure,
-  DisclosurePanel,
-  Heading,
-} from 'react-aria-components';
+import {Button as AriaButton, Disclosure as AriaDisclosure, DisclosurePanel, Heading} from 'react-aria-components';
 import {CaretRight} from '@phosphor-icons/react';
 import styles from './Disclosure.module.css';
 

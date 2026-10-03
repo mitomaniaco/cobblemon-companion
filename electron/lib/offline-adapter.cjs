@@ -7,11 +7,7 @@
 const crypto = require('node:crypto');
 const calc = require('@smogon/calc');
 const calcPackage = require('@smogon/calc/package.json');
-const {
-  validatePreflight,
-  makeAnalysisRef,
-  assessFreshness,
-} = require('./preflight-contracts.cjs');
+const {validatePreflight, makeAnalysisRef, assessFreshness} = require('./preflight-contracts.cjs');
 const {compareEvidence} = require('./compare-evidence.cjs');
 
 const CALC_VERSION = calcPackage.version;
@@ -65,24 +61,29 @@ function clone(value) {
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
   if (value !== null && typeof value === 'object') {
-    return Object.fromEntries(Object.keys(value).sort().map(key => [key, stable(value[key])]));
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, stable(value[key])]),
+    );
   }
   return value;
 }
 
 function digest(value) {
-  return crypto.createHash('sha256').update(JSON.stringify(stable(value))).digest('hex');
+  return crypto
+    .createHash('sha256')
+    .update(JSON.stringify(stable(value)))
+    .digest('hex');
 }
 
 function fact(raw, sourceId, pathName) {
   if (recordLike(raw) && own(raw, 'unknown')) {
     keys(raw, ['unknown'], pathName);
     text(raw.unknown, `${pathName}.unknown`);
-    return {state: 'unknown', reason: raw.unknown,
-      provenance: {kind: 'offline-reconstruction', sourceId}};
+    return {state: 'unknown', reason: raw.unknown, provenance: {kind: 'offline-reconstruction', sourceId}};
   }
-  return {state: 'known', value: raw,
-    provenance: {kind: 'offline-reconstruction', sourceId}};
+  return {state: 'known', value: raw, provenance: {kind: 'offline-reconstruction', sourceId}};
 }
 
 function recordLike(value) {
@@ -92,7 +93,7 @@ function recordLike(value) {
 function statFacts(raw, sourceId, pathName) {
   record(raw, pathName);
   keys(raw, STATS, pathName);
-  return Object.fromEntries(STATS.map(stat => [stat, fact(raw[stat], sourceId, `${pathName}.${stat}`)]));
+  return Object.fromEntries(STATS.map((stat) => [stat, fact(raw[stat], sourceId, `${pathName}.${stat}`)]));
 }
 
 function moveEntry(raw, sourceId, pathName, equipped) {
@@ -119,10 +120,24 @@ function adaptIndividual(raw, snapshotSourceId) {
   if (raw.sourceId !== snapshotSourceId) fail('individual.sourceId', 'must match the fixture snapshot source');
 
   record(raw.observed, 'individual.observed');
-  keys(raw.observed, [
-    'level', 'nature', 'originalNature', 'ability', 'heldItem', 'friendship',
-    'savedHealth', 'savedStatus', 'teraType', 'ivs', 'evs', 'moves',
-  ], 'individual.observed');
+  keys(
+    raw.observed,
+    [
+      'level',
+      'nature',
+      'originalNature',
+      'ability',
+      'heldItem',
+      'friendship',
+      'savedHealth',
+      'savedStatus',
+      'teraType',
+      'ivs',
+      'evs',
+      'moves',
+    ],
+    'individual.observed',
+  );
   record(raw.observed.moves, 'individual.observed.moves');
   keys(raw.observed.moves, ['equipped', 'learned'], 'individual.observed.moves');
   if (!Array.isArray(raw.observed.moves.equipped) || !Array.isArray(raw.observed.moves.learned)) {
@@ -146,9 +161,11 @@ function adaptIndividual(raw, snapshotSourceId) {
     moves: {
       state: 'known',
       equipped: raw.observed.moves.equipped.map((move, index) =>
-        moveEntry(move, raw.sourceId, `individual.observed.moves.equipped[${index}]`, true)),
+        moveEntry(move, raw.sourceId, `individual.observed.moves.equipped[${index}]`, true),
+      ),
       learned: raw.observed.moves.learned.map((move, index) =>
-        moveEntry(move, raw.sourceId, `individual.observed.moves.learned[${index}]`, false)),
+        moveEntry(move, raw.sourceId, `individual.observed.moves.learned[${index}]`, false),
+      ),
     },
   };
 
@@ -176,7 +193,7 @@ function knownFact(value, pathName) {
 
 function statValues(fields, name) {
   const facts = fields[name];
-  return Object.fromEntries(STATS.map(stat => [stat, knownFact(facts[stat], `observed.fields.${name}.${stat}`)]));
+  return Object.fromEntries(STATS.map((stat) => [stat, knownFact(facts[stat], `observed.fields.${name}.${stat}`)]));
 }
 
 function calcName(table, id, pathName) {
@@ -223,8 +240,7 @@ function damage(attackerSpec, defenderSpec, moveId) {
   const defender = pokemon(defenderSpec, 'comparison.target');
   try {
     const result = calc.calculate(9, attacker, defender, new calc.Move(9, moveName));
-    if (!Array.isArray(result.damage) || result.damage.length === 0 ||
-        !result.damage.every(Number.isFinite)) {
+    if (!Array.isArray(result.damage) || result.damage.length === 0 || !result.damage.every(Number.isFinite)) {
       fail('calculation', 'reviewed calculator returned no finite damage rolls');
     }
     return {
@@ -276,8 +292,7 @@ function prepareOfflineInput(input) {
   keys(input, ['sources', 'snapshot', 'context', 'player', 'calculation'], 'input');
   const source = clone(input);
   record(source.snapshot, 'snapshot');
-  keys(source.snapshot,
-    ['id', 'kind', 'capturedAt', 'sourceIds', 'completeness', 'atomicity', 'fingerprint'], 'snapshot');
+  keys(source.snapshot, ['id', 'kind', 'capturedAt', 'sourceIds', 'completeness', 'atomicity', 'fingerprint'], 'snapshot');
   if (!Array.isArray(source.sources) || source.sources.length === 0) fail('sources', 'must contain fixture sources');
   if (!Array.isArray(source.snapshot.sourceIds) || source.snapshot.sourceIds.length === 0) {
     fail('snapshot.sourceIds', 'must identify fixture sources');
@@ -318,13 +333,19 @@ function prepareOfflineInput(input) {
   // a derived in-memory source, never claiming to hash an installed/game file.
   const requestId = 'offline-adapter:calculation-request-v2';
   const requestPath = 'memory:offline-adapter/calculation-request-v2';
-  if (bundle.sources.some(s => s.id === requestId || s.path === requestPath)) {
+  if (bundle.sources.some((s) => s.id === requestId || s.path === requestPath)) {
     fail('sources', 'reserved calculation request source');
   }
   const request = {engineVersion: ENGINE_VERSION, calculation: source.calculation};
-  bundle.sources.push({id: requestId, kind: 'manual-observation', path: requestPath,
-    sha256: digest(request), size: Buffer.byteLength(JSON.stringify(stable(request)), 'utf8'),
-    modifiedAt: bundle.snapshot.capturedAt, sensitivity: 'private'});
+  bundle.sources.push({
+    id: requestId,
+    kind: 'manual-observation',
+    path: requestPath,
+    sha256: digest(request),
+    size: Buffer.byteLength(JSON.stringify(stable(request)), 'utf8'),
+    modifiedAt: bundle.snapshot.capturedAt,
+    sensitivity: 'private',
+  });
   bundle.snapshot.sourceIds.push(requestId);
   return {checked: validatePreflight(bundle), source, individual, target};
 }
@@ -334,7 +355,8 @@ function prepareOfflineInput(input) {
 function assessOfflineFreshness(reference, input) {
   const {checked} = prepareOfflineInput(input);
   return assessFreshness(reference, checked.bundle, {
-    engineVersion: ENGINE_VERSION, policyVersion: checked.bundle.policy.version,
+    engineVersion: ENGINE_VERSION,
+    policyVersion: checked.bundle.policy.version,
   });
 }
 
@@ -349,14 +371,12 @@ function adaptOfflineComparison(input) {
   if (checkedIndividual.planned.item != null) {
     fail('planned.item', 'planned items are outside the supported no-item calculation');
   }
-  const currentMoves = checkedIndividual.observed.moves.equipped.map(move => move.id);
-  const candidateMoves = checkedIndividual.planned.moves.map(move => move.id);
+  const currentMoves = checkedIndividual.observed.moves.equipped.map((move) => move.id);
+  const candidateMoves = checkedIndividual.planned.moves.map((move) => move.id);
   const lockedMoves = clone(source.calculation.lockedMoves || []);
   if (!Array.isArray(lockedMoves) || lockedMoves.length === 0) fail('calculation.lockedMoves', 'must declare retained moves');
   if (currentMoves.length !== candidateMoves.length) fail('planned.moves', 'must retain the current move count');
-  const changedIndexes = currentMoves
-    .map((move, index) => move !== candidateMoves[index] ? index : -1)
-    .filter(index => index !== -1);
+  const changedIndexes = currentMoves.map((move, index) => (move !== candidateMoves[index] ? index : -1)).filter((index) => index !== -1);
   if (changedIndexes.length !== 1 || changedIndexes[0] !== 0) {
     fail('planned.moves', 'supported comparison changes only the calculated first move slot');
   }
@@ -366,13 +386,16 @@ function adaptOfflineComparison(input) {
     }
   }
 
-  const attacker = entitySpec({
-    speciesId: checkedIndividual.identity.speciesId,
-    level: knownFact(checkedIndividual.observed.fields.level, 'observed.fields.level'),
-    nature: knownFact(checkedIndividual.observed.fields.nature, 'observed.fields.nature'),
-    ivs: statValues(checkedIndividual.observed.fields, 'ivs'),
-    evs: statValues(checkedIndividual.observed.fields, 'evs'),
-  }, 'comparison.attacker');
+  const attacker = entitySpec(
+    {
+      speciesId: checkedIndividual.identity.speciesId,
+      level: knownFact(checkedIndividual.observed.fields.level, 'observed.fields.level'),
+      nature: knownFact(checkedIndividual.observed.fields.nature, 'observed.fields.nature'),
+      ivs: statValues(checkedIndividual.observed.fields, 'ivs'),
+      evs: statValues(checkedIndividual.observed.fields, 'evs'),
+    },
+    'comparison.attacker',
+  );
   const conditions = unsupportedCombatConditions(checkedIndividual.observed.fields);
   const currentDamage = damage(attacker, target, currentMoves[0]);
   const candidateDamage = damage(attacker, target, candidateMoves[0]);
@@ -433,28 +456,30 @@ function adaptOfflineComparison(input) {
     schemaVersion: 1,
     current,
     candidate,
-    learnedMoves: checkedIndividual.observed.moves.learned.map(move => move.id),
+    learnedMoves: checkedIndividual.observed.moves.learned.map((move) => move.id),
     lockedMoves,
     scope,
     metrics: {enemyHP: 'lower'},
-    evidence: [{
-      id: 'OFFLINE-ADAPTER-E1',
-      target: target.speciesId,
-      condition: 'minimum-roll-no-secondary-effects',
-      initialState,
-      current: {
-        buildId: current.id,
-        context: context(),
-        actions: [currentMoves[0]],
-        values: {enemyHP: Math.max(0, currentDamage.targetHP - currentDamage.min)},
+    evidence: [
+      {
+        id: 'OFFLINE-ADAPTER-E1',
+        target: target.speciesId,
+        condition: 'minimum-roll-no-secondary-effects',
+        initialState,
+        current: {
+          buildId: current.id,
+          context: context(),
+          actions: [currentMoves[0]],
+          values: {enemyHP: Math.max(0, currentDamage.targetHP - currentDamage.min)},
+        },
+        candidate: {
+          buildId: candidate.id,
+          context: context(),
+          actions: [candidateMoves[0]],
+          values: {enemyHP: Math.max(0, candidateDamage.targetHP - candidateDamage.min)},
+        },
       },
-      candidate: {
-        buildId: candidate.id,
-        context: context(),
-        actions: [candidateMoves[0]],
-        values: {enemyHP: Math.max(0, candidateDamage.targetHP - candidateDamage.min)},
-      },
-    }],
+    ],
   };
   const comparison = compareEvidence(comparisonInput);
   const analysisRef = makeAnalysisRef(checked.bundle, {

@@ -1,11 +1,5 @@
 import catalogJson from '../../../electron/lib/combat-compatibility.json';
-import type {
-  PlayerIndividual,
-  PlayerSnapshot,
-  PlayerStat,
-  RealDamageRequest,
-  RealDamageResult,
-} from '../../platform/api';
+import type {PlayerIndividual, PlayerSnapshot, PlayerStat, RealDamageRequest, RealDamageResult} from '../../platform/api';
 
 export type DamageTargetDraft = {
   speciesId: string;
@@ -80,11 +74,12 @@ export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, string> = {
   actorBaselineConfirmed: 'O indivíduo selecionado não tem item, status ou aspecto que altere sua forma de batalha.',
   actorFullHpConfirmed: 'O indivíduo selecionado começa com HP cheio; isso é necessário para habilidades ou golpes dependentes do HP.',
   targetBaselineConfirmed: 'O alvo usa forma normal, sem aspectos, item ou status, e começa com HP cheio.',
-  fieldBaselineConfirmed: 'Sem clima/terreno ou outros efeitos de campo; sem barreiras (Reflect, Light Screen, Aurora Veil), salas (Trick Room, Wonder Room, Magic Room), efeitos de troca/habilidade, boosts ou Terastallization.',
+  fieldBaselineConfirmed:
+    'Sem clima/terreno ou outros efeitos de campo; sem barreiras (Reflect, Light Screen, Aurora Veil), salas (Trick Room, Wonder Room, Magic Room), efeitos de troca/habilidade, boosts ou Terastallization.',
 };
 
 export const DAMAGE_SPECIES_OPTIONS = Object.entries(catalog.species)
-  .filter(([, species]) => species.abilities.some(abilityId => Boolean(catalog.abilities[abilityId])))
+  .filter(([, species]) => species.abilities.some((abilityId) => Boolean(catalog.abilities[abilityId])))
   .map(([id, species]) => ({id, name: species.name}))
   .sort((left, right) => left.name.localeCompare(right.name));
 
@@ -94,7 +89,10 @@ export const DAMAGE_NATURE_OPTIONS = Object.entries(catalog.natures)
   .sort((left, right) => left.name.localeCompare(right.name));
 
 export function importedLabel(id: string): string {
-  return id.replace(/^[^:]+:/, '').replace(/[_-]+/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase());
+  return id
+    .replace(/^[^:]+:/, '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
 export function parseDamageInteger(value: string, minimum: number, maximum: number): number | null {
@@ -217,23 +215,27 @@ export type DamageCandidateMove = PlayerIndividual['learnedMoves'][number];
 export function damageCandidateMoves(individual: PlayerIndividual): DamageCandidateMove[] {
   const currentMoveId = individual.equippedMoves[0]?.id ?? '';
   const seenMoves = new Set<string>();
-  return individual.learnedMoves.filter(move => {
+  return individual.learnedMoves.filter((move) => {
     if (
-      move.id === currentMoveId
-      || individual.equippedMoves.some(equipped => equipped.id === move.id)
-      || !catalog.moves[move.id]
-      || seenMoves.has(move.id)
-    ) return false;
+      move.id === currentMoveId ||
+      individual.equippedMoves.some((equipped) => equipped.id === move.id) ||
+      !catalog.moves[move.id] ||
+      seenMoves.has(move.id)
+    )
+      return false;
     seenMoves.add(move.id);
     return true;
   });
 }
 
 export function damageActorBlocker(individual: PlayerIndividual): string | null {
-  if (individual.formId !== 'normal' || !catalog.species[individual.speciesId]) return 'espécie ou forma não pertence ao catálogo normal compatível';
+  if (individual.formId !== 'normal' || !catalog.species[individual.speciesId])
+    return 'espécie ou forma não pertence ao catálogo normal compatível';
   if (individual.level === null || individual.level < 1 || individual.level > 100) return 'nível do indivíduo não foi capturado';
-  if (!individual.observed.nature || !catalog.natures[individual.observed.nature]) return 'natureza do indivíduo não foi capturada ou não está mapeada';
-  if (!individual.observed.ability || !catalog.abilities[individual.observed.ability]) return 'habilidade do indivíduo não foi capturada ou não está mapeada';
+  if (!individual.observed.nature || !catalog.natures[individual.observed.nature])
+    return 'natureza do indivíduo não foi capturada ou não está mapeada';
+  if (!individual.observed.ability || !catalog.abilities[individual.observed.ability])
+    return 'habilidade do indivíduo não foi capturada ou não está mapeada';
   const species = catalog.species[individual.speciesId];
   const abilityId = individual.observed.ability.startsWith('cobblemon:')
     ? individual.observed.ability
@@ -247,7 +249,8 @@ export function damageActorBlocker(individual: PlayerIndividual): string | null 
     if (override.value === null && individual.battleStats.ivs[stat].state !== 'known') return 'algum IV efetivo permanece desconhecido';
     if (individual.battleStats.evs[stat].state !== 'known') return 'algum EV permanece desconhecido';
   }
-  if (individual.equippedMovesKnown !== true || individual.learnedMovesKnown !== true) return 'listas de golpes equipados/aprendidos não foram capturadas';
+  if (individual.equippedMovesKnown !== true || individual.learnedMovesKnown !== true)
+    return 'listas de golpes equipados/aprendidos não foram capturadas';
   const currentMove = individual.equippedMoves[0]?.id;
   if (!currentMove || !catalog.moves[currentMove]) return 'o golpe do primeiro slot não pertence ao subconjunto direto compatível';
   if (damageCandidateMoves(individual).length === 0) return 'não há golpe aprendido compatível para comparar com o primeiro slot';
@@ -264,10 +267,7 @@ export type DamagePlannerView = {
   ready: boolean;
 };
 
-export function getDamagePlannerView(
-  individual: PlayerIndividual | null,
-  state: DamagePlannerState,
-): DamagePlannerView {
+export function getDamagePlannerView(individual: PlayerIndividual | null, state: DamagePlannerState): DamagePlannerView {
   const candidateMoves = individual ? damageCandidateMoves(individual) : [];
   const blocker = !individual
     ? 'Selecione um indivíduo da captura para iniciar um cálculo.'
@@ -275,21 +275,25 @@ export function getDamagePlannerView(
       ? 'O indivíduo selecionado mudou. Atualize a captura do cálculo.'
       : damageActorBlocker(individual);
   const selectedSpecies = catalog.species[state.target.speciesId];
-  const abilities = selectedSpecies?.abilities
-    .filter(id => Boolean(catalog.abilities[id]))
-    .map(id => ({id, name: catalog.abilities[id]})) ?? [];
+  const abilities =
+    selectedSpecies?.abilities.filter((id) => Boolean(catalog.abilities[id])).map((id) => ({id, name: catalog.abilities[id]})) ?? [];
 
   let profileBlocker: string | null = null;
-  if (!state.candidateMoveId || !candidateMoves.some(move => move.id === state.candidateMoveId)) profileBlocker = 'escolha um golpe aprendido compatível';
+  if (!state.candidateMoveId || !candidateMoves.some((move) => move.id === state.candidateMoveId))
+    profileBlocker = 'escolha um golpe aprendido compatível';
   else if (!selectedSpecies) profileBlocker = 'escolha uma espécie do catálogo compatível';
   else if (parseDamageInteger(state.target.level, 1, 100) === null) profileBlocker = 'informe um nível entre 1 e 100';
-  else if (!DAMAGE_NATURE_OPTIONS.some(nature => nature.id === state.target.nature)) profileBlocker = 'escolha uma natureza mapeada';
-  else if (!abilities.some(ability => ability.id === state.target.ability)) profileBlocker = 'escolha uma habilidade disponível para a espécie';
-  else if (DAMAGE_STATS.some(stat => parseDamageInteger(state.target.ivs[stat], 0, 31) === null)) profileBlocker = 'informe os seis IVs do alvo, de 0 a 31';
-  else if (DAMAGE_STATS.some(stat => parseDamageInteger(state.target.evs[stat], 0, 252) === null)) profileBlocker = 'informe os seis EVs do alvo, de 0 a 252';
-  else if (DAMAGE_STATS.reduce((sum, stat) => sum + Number(state.target.evs[stat]), 0) > 510) profileBlocker = 'a soma dos EVs do alvo não pode exceder 510';
+  else if (!DAMAGE_NATURE_OPTIONS.some((nature) => nature.id === state.target.nature)) profileBlocker = 'escolha uma natureza mapeada';
+  else if (!abilities.some((ability) => ability.id === state.target.ability))
+    profileBlocker = 'escolha uma habilidade disponível para a espécie';
+  else if (DAMAGE_STATS.some((stat) => parseDamageInteger(state.target.ivs[stat], 0, 31) === null))
+    profileBlocker = 'informe os seis IVs do alvo, de 0 a 31';
+  else if (DAMAGE_STATS.some((stat) => parseDamageInteger(state.target.evs[stat], 0, 252) === null))
+    profileBlocker = 'informe os seis EVs do alvo, de 0 a 252';
+  else if (DAMAGE_STATS.reduce((sum, stat) => sum + Number(state.target.evs[stat]), 0) > 510)
+    profileBlocker = 'a soma dos EVs do alvo não pode exceder 510';
 
-  const confirmationBlocker = DAMAGE_CONFIRMATION_KEYS.some(key => !state.confirmations[key]);
+  const confirmationBlocker = DAMAGE_CONFIRMATION_KEYS.some((key) => !state.confirmations[key]);
   const ready = !blocker && !profileBlocker && !confirmationBlocker && state.phase !== 'calculating';
   return {blocker, candidateMoves, profileBlocker, confirmationBlocker, selectedSpecies, abilities, ready};
 }
@@ -299,15 +303,22 @@ export function buildRealDamageRequest(
   snapshot: PlayerSnapshot | null,
   state: DamagePlannerState,
 ): RealDamageRequest | null {
-  if (!individual || !snapshot || state.identity.individualUuid !== individual.uuid || !getDamagePlannerView(individual, state).ready) return null;
+  if (!individual || !snapshot || state.identity.individualUuid !== individual.uuid || !getDamagePlannerView(individual, state).ready)
+    return null;
   const level = parseDamageInteger(state.target.level, 1, 100);
   if (level === null) return null;
-  const ivs = Object.fromEntries(DAMAGE_STATS.map(stat => [stat, parseDamageInteger(state.target.ivs[stat], 0, 31)])) as Record<PlayerStat, number | null>;
-  const evs = Object.fromEntries(DAMAGE_STATS.map(stat => [stat, parseDamageInteger(state.target.evs[stat], 0, 252)])) as Record<PlayerStat, number | null>;
-  if (Object.values(ivs).some(value => value === null) || Object.values(evs).some(value => value === null)) return null;
+  const ivs = Object.fromEntries(DAMAGE_STATS.map((stat) => [stat, parseDamageInteger(state.target.ivs[stat], 0, 31)])) as Record<
+    PlayerStat,
+    number | null
+  >;
+  const evs = Object.fromEntries(DAMAGE_STATS.map((stat) => [stat, parseDamageInteger(state.target.evs[stat], 0, 252)])) as Record<
+    PlayerStat,
+    number | null
+  >;
+  if (Object.values(ivs).some((value) => value === null) || Object.values(evs).some((value) => value === null)) return null;
 
   return {
-    sources: snapshot.sources.map(source => ({kind: source.kind, sha256: source.sha256})),
+    sources: snapshot.sources.map((source) => ({kind: source.kind, sha256: source.sha256})),
     individualUuid: individual.uuid,
     candidateMoveId: state.candidateMoveId,
     target: {

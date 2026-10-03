@@ -19,11 +19,11 @@ export type ComparisonRequest = {
 export type ProductResult = {
   status: 'condicional' | 'preferencia-no-recorte' | 'manter' | 'inconclusivo';
   reason: string;
-  current: { moveId: string; min: number; max: number; targetHP: number; remainingHP: number };
-  candidate: { moveId: string; min: number; max: number; targetHP: number; remainingHP: number };
+  current: {moveId: string; min: number; max: number; targetHP: number; remainingHP: number};
+  candidate: {moveId: string; min: number; max: number; targetHP: number; remainingHP: number};
   conditions: string[];
-  gains: Array<{ metric: string; before: number; after: number; target: string; condition: string }>;
-  losses: Array<{ metric: string; before: number; after: number; target: string; condition: string }>;
+  gains: Array<{metric: string; before: number; after: number; target: string; condition: string}>;
+  losses: Array<{metric: string; before: number; after: number; target: string; condition: string}>;
   traceability: {
     snapshotId: string;
     sourceIds: string[];
@@ -47,7 +47,7 @@ export type FlowState = {
   revision: number;
   form: ComparisonForm;
   phase: 'idle' | 'running' | 'result' | 'cancelled' | 'error';
-  active: { jobId: string; revision: number } | null;
+  active: {jobId: string; revision: number} | null;
   result: ProductResult | null;
   error: string | null;
 };
@@ -95,9 +95,10 @@ export function updateForm(state: FlowState, patch: Partial<ComparisonForm>): Fl
   };
 }
 
-export function beginComparison(state: FlowState, jobId: string):
-  | {state: FlowState; request: ComparisonRequest}
-  | {state: FlowState; error: string} {
+export function beginComparison(
+  state: FlowState,
+  jobId: string,
+): {state: FlowState; request: ComparisonRequest} | {state: FlowState; error: string} {
   const errors = formErrors(state.form);
   const firstError = Object.values(errors)[0];
   if (firstError) {

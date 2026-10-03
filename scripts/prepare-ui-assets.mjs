@@ -1,15 +1,7 @@
-import { createHash } from 'node:crypto';
-import {
-  lstat,
-  mkdir,
-  mkdtemp,
-  rename,
-  rm,
-  rmdir,
-  writeFile,
-} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {lstat, mkdir, mkdtemp, rename, rm, rmdir, writeFile} from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {fileURLToPath} from 'node:url';
 
 const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPECIES_CSV_REVISION = 'bc92d3b6029ef1abe9e7ad424c400b338f3c11fe';
@@ -31,7 +23,7 @@ async function fetchChecked(url, description) {
   try {
     response = await fetch(url);
   } catch (error) {
-    throw new Error(`${description}: falha ao acessar ${url}: ${errorMessage(error)}`, { cause: error });
+    throw new Error(`${description}: falha ao acessar ${url}: ${errorMessage(error)}`, {cause: error});
   }
   return response;
 }
@@ -123,11 +115,14 @@ function parseCsv(text) {
 function parseSpecies(csvText) {
   const rows = parseCsv(csvText.replace(/^\uFEFF/, ''));
   const headers = rows[0];
-  const idColumns = headers.reduce((indices, header, index) => {
-    if (header === 'id') indices.id.push(index);
-    if (header === 'identifier') indices.identifier.push(index);
-    return indices;
-  }, { id: [], identifier: [] });
+  const idColumns = headers.reduce(
+    (indices, header, index) => {
+      if (header === 'id') indices.id.push(index);
+      if (header === 'identifier') indices.identifier.push(index);
+      return indices;
+    },
+    {id: [], identifier: []},
+  );
 
   if (idColumns.id.length !== 1 || idColumns.identifier.length !== 1) {
     throw new Error('CSV inválido: cabeçalho deve conter exatamente uma coluna id e uma coluna identifier.');
@@ -158,7 +153,7 @@ function parseSpecies(csvText) {
 
     seenIds.add(dexNumber);
     seenSlugs.add(identifier);
-    species.push({ dexNumber: Number(dexNumber), identifier, speciesId: `cobblemon:${identifier}` });
+    species.push({dexNumber: Number(dexNumber), identifier, speciesId: `cobblemon:${identifier}`});
   }
   if (species.length === 0) throw new Error('CSV inválido: nenhum registro de espécie.');
   return species;
@@ -174,15 +169,15 @@ async function readSpeciesCsv() {
   try {
     bytes = Buffer.from(await response.arrayBuffer());
   } catch (error) {
-    throw new Error(`CSV de espécies: resposta ilegível: ${errorMessage(error)}`, { cause: error });
+    throw new Error(`CSV de espécies: resposta ilegível: ${errorMessage(error)}`, {cause: error});
   }
   let text;
   try {
-    text = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    text = new TextDecoder('utf-8', {fatal: true}).decode(bytes);
   } catch (error) {
-    throw new Error(`CSV de espécies: conteúdo não é UTF-8 válido: ${errorMessage(error)}`, { cause: error });
+    throw new Error(`CSV de espécies: conteúdo não é UTF-8 válido: ${errorMessage(error)}`, {cause: error});
   }
-  return { species: parseSpecies(text), csvSha256: sha256(bytes) };
+  return {species: parseSpecies(text), csvSha256: sha256(bytes)};
 }
 
 async function stageArtwork(species, pokemonStageDirectory) {
@@ -202,7 +197,7 @@ async function stageArtwork(species, pokemonStageDirectory) {
         const url = `${ARTWORK_URL}/${entry.dexNumber}.png`;
         const response = await fetchChecked(url, `Artwork de ${entry.speciesId}`);
         if (response.status === 404) {
-          results[index] = { ...entry, artworkPath: null, url, sha256: null, omitted404: true };
+          results[index] = {...entry, artworkPath: null, url, sha256: null, omitted404: true};
           continue;
         }
         if (!response.ok) {
@@ -213,7 +208,7 @@ async function stageArtwork(species, pokemonStageDirectory) {
         try {
           bytes = Buffer.from(await response.arrayBuffer());
         } catch (error) {
-          throw new Error(`Artwork de ${entry.speciesId}: resposta ilegível em ${url}: ${errorMessage(error)}`, { cause: error });
+          throw new Error(`Artwork de ${entry.speciesId}: resposta ilegível em ${url}: ${errorMessage(error)}`, {cause: error});
         }
         if (bytes.length < PNG_SIGNATURE.length || !bytes.subarray(0, PNG_SIGNATURE.length).equals(PNG_SIGNATURE)) {
           throw new Error(`Artwork de ${entry.speciesId}: assinatura PNG inválida em ${url}.`);
@@ -222,11 +217,11 @@ async function stageArtwork(species, pokemonStageDirectory) {
         const artworkPath = `/pokemon/${entry.dexNumber}.png`;
         const filePath = path.join(pokemonStageDirectory, `${entry.dexNumber}.png`);
         try {
-          await writeFile(filePath, bytes, { flag: 'wx' });
+          await writeFile(filePath, bytes, {flag: 'wx'});
         } catch (error) {
-          throw new Error(`Artwork de ${entry.speciesId}: não foi possível preparar ${filePath}: ${errorMessage(error)}`, { cause: error });
+          throw new Error(`Artwork de ${entry.speciesId}: não foi possível preparar ${filePath}: ${errorMessage(error)}`, {cause: error});
         }
-        results[index] = { ...entry, artworkPath, url, sha256: sha256(bytes), omitted404: false };
+        results[index] = {...entry, artworkPath, url, sha256: sha256(bytes), omitted404: false};
       } catch (error) {
         if (!failed) firstFailure = error;
         failed = true;
@@ -235,7 +230,7 @@ async function stageArtwork(species, pokemonStageDirectory) {
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(MAX_CONCURRENCY, species.length) }, () => worker()));
+  await Promise.all(Array.from({length: Math.min(MAX_CONCURRENCY, species.length)}, () => worker()));
   if (failed) throw firstFailure;
   return results;
 }
@@ -263,25 +258,31 @@ function createProvenance(results, csvSha256) {
       license: LICENSE_URL,
     },
     credit: 'Artwork Pokémon: The Pokémon Company; arquivos-fonte obtidos do repositório PokéAPI/sprites.',
-    copyrightWarning: 'As imagens são © The Pokémon Company. A declaração CC0 do repositório de sprites não concede direitos sobre obras de terceiros.',
-    licenseWarning: 'Uso apenas como preparação local. Não inclua PNGs ou manifestos gerados em commits/distribuições; qualquer distribuição exige autorização específica dos titulares dos direitos.',
+    copyrightWarning:
+      'As imagens são © The Pokémon Company. A declaração CC0 do repositório de sprites não concede direitos sobre obras de terceiros.',
+    licenseWarning:
+      'Uso apenas como preparação local. Não inclua PNGs ou manifestos gerados em commits/distribuições; qualquer distribuição exige autorização específica dos titulares dos direitos.',
     speciesCsv: {
       url: SPECIES_CSV_URL,
       sha256: csvSha256,
     },
-    files: results.filter((result) => !result.omitted404).map((result) => ({
-      speciesId: result.speciesId,
-      dexNumber: result.dexNumber,
-      path: result.artworkPath,
-      url: result.url,
-      sha256: result.sha256,
-    })),
-    omitted404Species: results.filter((result) => result.omitted404).map((result) => ({
-      speciesId: result.speciesId,
-      dexNumber: result.dexNumber,
-      url: result.url,
-      status: 404,
-    })),
+    files: results
+      .filter((result) => !result.omitted404)
+      .map((result) => ({
+        speciesId: result.speciesId,
+        dexNumber: result.dexNumber,
+        path: result.artworkPath,
+        url: result.url,
+        sha256: result.sha256,
+      })),
+    omitted404Species: results
+      .filter((result) => result.omitted404)
+      .map((result) => ({
+        speciesId: result.speciesId,
+        dexNumber: result.dexNumber,
+        url: result.url,
+        status: 404,
+      })),
   };
 }
 
@@ -289,10 +290,10 @@ async function writeStagedOutputs(results, csvSha256, stageManifest, pokemonStag
   const manifest = `${JSON.stringify(createSpeciesManifest(results), null, 2)}\n`;
   const provenance = `${JSON.stringify(createProvenance(results, csvSha256), null, 2)}\n`;
   try {
-    await writeFile(stageManifest, manifest, { encoding: 'utf8', flag: 'wx' });
-    await writeFile(path.join(pokemonStageDirectory, 'provenance.json'), provenance, { encoding: 'utf8', flag: 'wx' });
+    await writeFile(stageManifest, manifest, {encoding: 'utf8', flag: 'wx'});
+    await writeFile(path.join(pokemonStageDirectory, 'provenance.json'), provenance, {encoding: 'utf8', flag: 'wx'});
   } catch (error) {
-    throw new Error(`Não foi possível gravar os manifestos temporários: ${errorMessage(error)}`, { cause: error });
+    throw new Error(`Não foi possível gravar os manifestos temporários: ${errorMessage(error)}`, {cause: error});
   }
 }
 
@@ -311,7 +312,7 @@ async function ensureOutputDirectory(directoryPath, createdDirectories) {
   const type = await getPathType(directoryPath);
   if (type === 'directory') return;
   if (type !== 'missing') throw new Error(`Diretório de saída inválido: ${directoryPath} (${type}).`);
-  await mkdir(directoryPath, { recursive: true });
+  await mkdir(directoryPath, {recursive: true});
   createdDirectories.push(directoryPath);
 }
 
@@ -327,7 +328,14 @@ async function cleanupCreatedDirectories(directories) {
   }
 }
 
-async function publishOutputs({ stageRoot, stageManifest, pokemonStageDirectory, manifestDestination, pokemonDestination, createdDirectories }) {
+async function publishOutputs({
+  stageRoot,
+  stageManifest,
+  pokemonStageDirectory,
+  manifestDestination,
+  pokemonDestination,
+  createdDirectories,
+}) {
   const manifestParent = path.dirname(manifestDestination);
   const pokemonParent = path.dirname(pokemonDestination);
   await ensureOutputDirectory(manifestParent, createdDirectories);
@@ -350,7 +358,7 @@ async function publishOutputs({ stageRoot, stageManifest, pokemonStageDirectory,
   }
 
   const backupDirectory = path.join(stageRoot, 'backups');
-  await mkdir(backupDirectory, { recursive: true });
+  await mkdir(backupDirectory, {recursive: true});
   const manifestBackup = path.join(backupDirectory, 'species-artwork.json');
   const pokemonBackup = path.join(backupDirectory, 'pokemon');
   let oldManifestMoved = false;
@@ -381,20 +389,24 @@ async function publishOutputs({ stageRoot, stageManifest, pokemonStageDirectory,
       }
     };
 
-    if (newPokemonPublished) await attemptRollback('remover novo diretório public/pokemon', () => rm(pokemonDestination, { recursive: true, force: true }));
-    if (newManifestPublished) await attemptRollback('remover novo manifesto', () => rm(manifestDestination, { force: true }));
+    if (newPokemonPublished)
+      await attemptRollback('remover novo diretório public/pokemon', () => rm(pokemonDestination, {recursive: true, force: true}));
+    if (newManifestPublished) await attemptRollback('remover novo manifesto', () => rm(manifestDestination, {force: true}));
     if (oldPokemonMoved) await attemptRollback('restaurar diretório public/pokemon', () => rename(pokemonBackup, pokemonDestination));
     if (oldManifestMoved) await attemptRollback('restaurar manifesto anterior', () => rename(manifestBackup, manifestDestination));
 
     if (rollbackErrors.length > 0) {
-      throw new Error(`Publicação falhou: ${errorMessage(error)}. Falha ao restaurar saída anterior; backups preservados em ${backupDirectory}. ${rollbackErrors.join(' | ')}`, { cause: error });
+      throw new Error(
+        `Publicação falhou: ${errorMessage(error)}. Falha ao restaurar saída anterior; backups preservados em ${backupDirectory}. ${rollbackErrors.join(' | ')}`,
+        {cause: error},
+      );
     }
-    throw new Error(`Publicação falhou; saídas anteriores restauradas: ${errorMessage(error)}`, { cause: error });
+    throw new Error(`Publicação falhou; saídas anteriores restauradas: ${errorMessage(error)}`, {cause: error});
   }
 }
 
 async function main() {
-  const { species, csvSha256 } = await readSpeciesCsv();
+  const {species, csvSha256} = await readSpeciesCsv();
   const stageRoot = await mkdtemp(path.join(PROJECT_ROOT, '.prepare-ui-assets-'));
   const stageManifest = path.join(stageRoot, 'src', 'data', 'species-artwork.json');
   const pokemonStageDirectory = path.join(stageRoot, 'public', 'pokemon');
@@ -404,8 +416,8 @@ async function main() {
   let preserveStageForRecovery = false;
 
   try {
-    await mkdir(path.dirname(stageManifest), { recursive: true });
-    await mkdir(pokemonStageDirectory, { recursive: true });
+    await mkdir(path.dirname(stageManifest), {recursive: true});
+    await mkdir(pokemonStageDirectory, {recursive: true});
     const results = await stageArtwork(species, pokemonStageDirectory);
     await writeStagedOutputs(results, csvSha256, stageManifest, pokemonStageDirectory);
 
@@ -423,11 +435,13 @@ async function main() {
       throw error;
     }
 
-    console.log(`Artwork local preparado: ${results.length} espécies, ${results.filter((result) => !result.omitted404).length} PNGs, ${results.filter((result) => result.omitted404).length} omissões HTTP 404.`);
+    console.log(
+      `Artwork local preparado: ${results.length} espécies, ${results.filter((result) => !result.omitted404).length} PNGs, ${results.filter((result) => result.omitted404).length} omissões HTTP 404.`,
+    );
   } finally {
     if (!preserveStageForRecovery) {
       try {
-        await rm(stageRoot, { recursive: true, force: true });
+        await rm(stageRoot, {recursive: true, force: true});
       } catch (error) {
         console.error(`Aviso: não foi possível limpar o staging temporário ${stageRoot}: ${errorMessage(error)}`);
       }

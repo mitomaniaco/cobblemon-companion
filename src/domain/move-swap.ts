@@ -44,10 +44,7 @@ function moveKey(id: string) {
   return id.trim().toLowerCase();
 }
 
-export function getMoveSwapView(
-  individual: PlayerIndividual,
-  plan: MoveSwapPlan,
-): MoveSwapView {
+export function getMoveSwapView(individual: PlayerIndividual, plan: MoveSwapPlan): MoveSwapView {
   if (!individual.equippedMovesKnown && !individual.learnedMovesKnown) {
     return {status: 'inconclusive', reason: 'both-unknown'};
   }
@@ -61,9 +58,9 @@ export function getMoveSwapView(
     return {status: 'empty', reason: 'no-equipped'};
   }
 
-  const equippedKeys = new Set(individual.equippedMoves.map(move => moveKey(move.id)));
+  const equippedKeys = new Set(individual.equippedMoves.map((move) => moveKey(move.id)));
   const seenCandidates = new Set<string>();
-  const candidates = individual.learnedMoves.flatMap(move => {
+  const candidates = individual.learnedMoves.flatMap((move) => {
     const key = moveKey(move.id);
     if (!key || equippedKeys.has(key) || seenCandidates.has(key)) return [];
     seenCandidates.add(key);
@@ -72,27 +69,27 @@ export function getMoveSwapView(
 
   if (candidates.length === 0) return {status: 'empty', reason: 'no-candidates'};
 
-  const selectedMove = plan.individualUuid === individual.uuid
-    && plan.slotIndex !== null
-    && plan.slotIndex >= 0
-    && plan.slotIndex < individual.equippedMoves.length
-    ? individual.equippedMoves[plan.slotIndex]
-    : null;
-  const candidate = plan.individualUuid === individual.uuid
-    ? candidates.find(move => move.id === plan.candidateMoveId)
-    : undefined;
+  const selectedMove =
+    plan.individualUuid === individual.uuid &&
+    plan.slotIndex !== null &&
+    plan.slotIndex >= 0 &&
+    plan.slotIndex < individual.equippedMoves.length
+      ? individual.equippedMoves[plan.slotIndex]
+      : null;
+  const candidate = plan.individualUuid === individual.uuid ? candidates.find((move) => move.id === plan.candidateMoveId) : undefined;
 
   return {
     status: 'ready',
     equippedMoves: individual.equippedMoves,
     candidates,
-    preview: selectedMove && candidate
-      ? {
-          slotIndex: plan.slotIndex as number,
-          beforeMoveId: selectedMove.id,
-          afterMoveId: candidate.id,
-          evidence: candidate.evidence,
-        }
-      : null,
+    preview:
+      selectedMove && candidate
+        ? {
+            slotIndex: plan.slotIndex as number,
+            beforeMoveId: selectedMove.id,
+            afterMoveId: candidate.id,
+            evidence: candidate.evidence,
+          }
+        : null,
   };
 }

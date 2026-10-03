@@ -57,9 +57,8 @@ export function ComboBox({
   className,
 }: ComboBoxProps) {
   const {contains} = useFilter({sensitivity: 'base'});
-  const hasMatches = options.length > 0 && (inputValue.length === 0 || options.some((option) =>
-    contains(option.textValue ?? option.label, inputValue),
-  ));
+  const hasMatches =
+    options.length > 0 && (inputValue.length === 0 || options.some((option) => contains(option.textValue ?? option.label, inputValue)));
   return (
     <AriaComboBox
       className={`${styles.root}${className ? ` ${className}` : ''}`}
@@ -80,7 +79,11 @@ export function ComboBox({
           <CaretDown aria-hidden="true" weight="bold" />
         </AriaButton>
       </Group>
-      {description && <Text className={styles.description} slot="description">{description}</Text>}
+      {description && (
+        <Text className={styles.description} slot="description">
+          {description}
+        </Text>
+      )}
       {errorMessage && <FieldError className={styles.error}>{errorMessage}</FieldError>}
       <Popover className={styles.popover}>
         <ListBox className={styles.listBox} aria-label={`${label} opções`}>
@@ -100,7 +103,11 @@ export function ComboBox({
             </ListBoxItem>
           ))}
         </ListBox>
-        {!hasMatches && <div className={styles.emptyMessage} role="status">{emptyMessage}</div>}
+        {!hasMatches && (
+          <div className={styles.emptyMessage} role="status">
+            {emptyMessage}
+          </div>
+        )}
       </Popover>
     </AriaComboBox>
   );

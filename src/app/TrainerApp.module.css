@@ -317,7 +317,6 @@
   min-height: 0;
 }
 
-
 .helpWorkspace {
   width: min(100%, 860px);
   height: 100%;
@@ -366,7 +365,6 @@
   margin: 0;
   color: var(--color-muted);
 }
-
 
 .helpSection {
   display: grid;
@@ -489,15 +487,15 @@
     gap: 0;
   }
 
-  .workspaceGrid[data-wide='false'][data-panel='collection'] .detailPane {
+  .workspaceGrid[data-wide="false"][data-panel="collection"] .detailPane {
     display: none;
   }
 
-  .workspaceGrid[data-wide='false'][data-panel='detail'] .collectionPane {
+  .workspaceGrid[data-wide="false"][data-panel="detail"] .collectionPane {
     display: none;
   }
 
-  .workspaceGrid[data-wide='false'][data-panel='detail'] .detailPane {
+  .workspaceGrid[data-wide="false"][data-panel="detail"] .detailPane {
     justify-content: stretch;
   }
 
@@ -589,7 +587,6 @@
   .demoHelp button {
     width: 100%;
   }
-
 }
 
 @media (forced-colors: active) {

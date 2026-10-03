@@ -9,7 +9,11 @@ const FIXTURE = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
 const timers = new Map();
 
 function post(message) {
-  try { process.parentPort.postMessage(message); } catch { /* parent is already closing */ }
+  try {
+    process.parentPort.postMessage(message);
+  } catch {
+    /* parent is already closing */
+  }
 }
 
 function clone(value) {
@@ -19,7 +23,7 @@ function clone(value) {
 function productResult(output) {
   const current = output.calculation.current;
   const candidate = output.calculation.candidate;
-  const mapFact = fact => ({
+  const mapFact = (fact) => ({
     metric: fact.metric,
     before: fact.before,
     after: fact.after,
@@ -29,10 +33,20 @@ function productResult(output) {
   return {
     status: output.comparison.status,
     reason: output.comparison.reason,
-    current: {moveId: current.moveId, min: current.min, max: current.max, targetHP: current.targetHP,
-      remainingHP: Math.max(0, current.targetHP - current.min)},
-    candidate: {moveId: candidate.moveId, min: candidate.min, max: candidate.max, targetHP: candidate.targetHP,
-      remainingHP: Math.max(0, candidate.targetHP - candidate.min)},
+    current: {
+      moveId: current.moveId,
+      min: current.min,
+      max: current.max,
+      targetHP: current.targetHP,
+      remainingHP: Math.max(0, current.targetHP - current.min),
+    },
+    candidate: {
+      moveId: candidate.moveId,
+      min: candidate.min,
+      max: candidate.max,
+      targetHP: candidate.targetHP,
+      remainingHP: Math.max(0, candidate.targetHP - candidate.min),
+    },
     conditions: [...output.explanation.conditions],
     gains: output.comparison.explanation.gains.map(mapFact),
     losses: output.comparison.explanation.losses.map(mapFact),
@@ -70,13 +84,13 @@ function runCalculation(message) {
       const output = adaptOfflineComparison(input);
       post({type: 'result', jobId: message.jobId, result: productResult(output)});
     } catch (error) {
-      post({type: 'failure', jobId: message.jobId, error: String(error && error.message || error)});
+      post({type: 'failure', jobId: message.jobId, error: String((error && error.message) || error)});
     }
   }, delay);
   timers.set(message.jobId, timer);
 }
 
-process.parentPort.on('message', event => {
+process.parentPort.on('message', (event) => {
   const message = event.data;
   if (!message || typeof message !== 'object') return;
   if (message.type === 'calculate') return runCalculation(message);

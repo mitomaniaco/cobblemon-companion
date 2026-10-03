@@ -17,11 +17,16 @@ const sourceHashes = [
 ];
 
 function knownFacts<T>(value: T): Record<PlayerStat, PlayerStatFact<T>> {
-  return Object.fromEntries(DAMAGE_STATS.map(stat => [stat, {
-    state: 'known' as const,
-    value,
-    provenance: {sourceKind: 'party' as const, nbtPath: `test.${stat}`},
-  }])) as Record<PlayerStat, PlayerStatFact<T>>;
+  return Object.fromEntries(
+    DAMAGE_STATS.map((stat) => [
+      stat,
+      {
+        state: 'known' as const,
+        value,
+        provenance: {sourceKind: 'party' as const, nbtPath: `test.${stat}`},
+      },
+    ]),
+  ) as Record<PlayerStat, PlayerStatFact<T>>;
 }
 
 function individual(uuid = 'individual-one'): PlayerIndividual {
@@ -50,7 +55,7 @@ function snapshot(actor: PlayerIndividual): PlayerSnapshot {
     capturedAt: '2026-10-01T00:00:00.000Z',
     worldName: 'test-world',
     consistency: 'best-effort',
-    sources: sourceHashes.map(source => ({...source, modifiedAt: '2026-10-01T00:00:00.000Z'})),
+    sources: sourceHashes.map((source) => ({...source, modifiedAt: '2026-10-01T00:00:00.000Z'})),
     individuals: [actor],
   };
 }
@@ -88,10 +93,16 @@ describe('modelo do planejador de dano real', () => {
     expect(getDamagePlannerView(actor, initial).ready).toBe(false);
     expect(buildRealDamageRequest(actor, snapshot(actor), initial)).toBeNull();
 
-    const unknownActor = {...actor, battleStats: {
-      ...actor.battleStats,
-      evs: {...actor.battleStats.evs, hp: {state: 'unknown' as const, reason: 'not-captured' as const, provenance: actor.battleStats.evs.hp.provenance}},
-    }};
+    const unknownActor = {
+      ...actor,
+      battleStats: {
+        ...actor.battleStats,
+        evs: {
+          ...actor.battleStats.evs,
+          hp: {state: 'unknown' as const, reason: 'not-captured' as const, provenance: actor.battleStats.evs.hp.provenance},
+        },
+      },
+    };
     expect(getDamagePlannerView(unknownActor, readyState(initial.identity)).blocker).toContain('EV');
   });
 
@@ -142,7 +153,7 @@ describe('modelo do planejador de dano real', () => {
   it.each([
     {individualUuid: 'individual-two', revision: 4},
     {individualUuid: 'individual-one', revision: 5},
-  ])('invalida a prévia e ignora um resultado após mudança de identidade ou revisão', nextIdentity => {
+  ])('invalida a prévia e ignora um resultado após mudança de identidade ou revisão', (nextIdentity) => {
     const identity = {individualUuid: 'individual-one', revision: 4};
     let state = readyState(identity);
     const previousTarget = state.target;
@@ -160,7 +171,7 @@ describe('modelo do planejador de dano real', () => {
     expect(state.identity).toEqual(nextIdentity);
     expect(state.candidateMoveId).toBe('');
     expect(state.target).toEqual(previousTarget);
-    expect(Object.values(state.confirmations).every(checked => !checked)).toBe(true);
+    expect(Object.values(state.confirmations).every((checked) => !checked)).toBe(true);
     expect(state.result).toBeNull();
     expect(state.phase).toBe('idle');
   });

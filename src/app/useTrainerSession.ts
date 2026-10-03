@@ -1,11 +1,7 @@
 import {useCallback, useReducer, useRef} from 'react';
 import type {MoveSwapPlan} from '../domain/move-swap';
 import type {CompanionApi, PlayerSnapshot} from '../platform/api';
-import {
-  createInitialTrainerSessionState,
-  trainerSessionReducer,
-  type ImportPhase,
-} from './trainer-session-model';
+import {createInitialTrainerSessionState, trainerSessionReducer, type ImportPhase} from './trainer-session-model';
 
 export type TrainerSessionController = {
   snapshot: PlayerSnapshot | null;
@@ -25,11 +21,7 @@ function describeImportError(error: unknown): string {
 }
 
 export function useTrainerSession(api: () => CompanionApi): TrainerSessionController {
-  const [state, dispatch] = useReducer(
-    trainerSessionReducer,
-    undefined,
-    createInitialTrainerSessionState,
-  );
+  const [state, dispatch] = useReducer(trainerSessionReducer, undefined, createInitialTrainerSessionState);
   const pendingReadRef = useRef<Promise<void> | null>(null);
 
   const refresh = useCallback((): Promise<void> => {
@@ -38,10 +30,10 @@ export function useTrainerSession(api: () => CompanionApi): TrainerSessionContro
 
     const request = Promise.resolve()
       .then(() => api().readPlayerSnapshot())
-      .then(snapshot => {
+      .then((snapshot) => {
         dispatch({type: 'refresh-succeeded', snapshot});
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({type: 'refresh-failed', error: describeImportError(error)});
       })
       .finally(() => {
@@ -56,9 +48,7 @@ export function useTrainerSession(api: () => CompanionApi): TrainerSessionContro
     dispatch({type: 'individual-selected', uuid});
   }, []);
 
-  const updateMoveSwap = useCallback((
-    patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>,
-  ): void => {
+  const updateMoveSwap = useCallback((patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>): void => {
     dispatch({type: 'move-swap-updated', patch});
   }, []);
 
