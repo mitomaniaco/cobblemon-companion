@@ -9,7 +9,7 @@ Comparador final com 27 testes, contrato corrigido com 13 e adaptador offline co
 ## 1. Base local observada
 
 - Servidor examinado: `D:\Games\Minecraft`. `server.properties` define `level-name=world`; na reconferência, mundo e log tinham gravações em 08/09/2026. O log do cliente Prism examinado anteriormente era de 04/09/2026. Isso favorece investigar o servidor, mas não identifica sozinho a sessão de cada jogador nem prova todo o conjunto de recursos ativos.
-- Cliente informado: `C:\Users\caio\AppData\Roaming\PrismLauncher\instances\All the Mons - ATMons`.
+- Cliente informado: `C:\Users\<usuário>\AppData\Roaming\PrismLauncher\instances\All the Mons - ATMons`.
 - Arquivos instalados reconferidos: Cobblemon `1.7.3+1.21.1`; RCT Mod `0.18.1-beta`; RCT API `0.15.2-beta`; SimpleTMs `2.3.3`; Mega Showdown `1.9.3+1.7.3+1.21.1`. São versões nos nomes dos arquivos, não um manifesto completo de compatibilidade.
 - `showdown/index.js` recebe dados de registros e scripts de golpes, habilidades e itens durante a execução. O módulo estático `showdown/data/mods/cobblemon/moves.js` examinado inicia `Moves` vazio.
 - `config/simpletms/main.json`: TM, egg e tutor habilitados nas respectivas opções; level desabilitado nessa configuração de elegibilidade. A interpretação do código está registrada em [DECISOES.md](DECISOES.md).

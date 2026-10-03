@@ -2,7 +2,7 @@
 
 Adição isolada de 19/09/2026: consumidor de evidências (`battle-planner/src/compare-evidence.cjs`) e testes sintéticos (`battle-planner/test/compare-evidence.test.cjs`) cobrem comparação de duas builds e explicações estruturadas. Não estão conectados ao CLI ou ao motor; não alteram a busca de dois turnos nem encerram a avaliação da qualidade das recomendações. Ver [casos](CASOS-COMPARACAO.md).
 
-A solicitação de usar calculadores de dano na party do Caio foi implementada em battle-planner (`battle-planner/README.md`). O núcleo importa party/PC automaticamente e analisa o encontro selecionado. Essa ampliação foi pedida explicitamente após as provas técnicas; o aplicativo desktop do plano original ainda não foi implementado.
+A solicitação de usar calculadores de dano na party do jogador foi implementada em battle-planner (`battle-planner/README.md`). O núcleo importa party/PC automaticamente e analisa o encontro selecionado. Essa ampliação foi pedida explicitamente após as provas técnicas; o aplicativo desktop do plano original ainda não foi implementado.
 
 Reutiliza `@smogon/calc` 0.11.0 do experimento e o Showdown instalado com hashes verificados. Adapta dados locais de espécie/forma e carrega callbacks examinados. Não altera o servidor.
 
