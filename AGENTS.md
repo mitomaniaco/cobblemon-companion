@@ -19,7 +19,7 @@ Leia também `CLAUDE.md` (regras de privacidade, escopo e estado do projeto) e `
 
 ### Estado atual da adoção (02/10/2026)
 
-Hoje o repositório só tem `npm run check` (typecheck + Vitest + build) e o harness Electron sintético. Biome, Knip, dependency-cruiser, Commitlint, Stryker, Playwright, Codecov, CI no GitHub Actions, OpenTelemetry e Sentry **ainda não estão instalados**; são metas deste padrão, não comportamento existente. Instale-os por Issue própria, sem declarar que já existem.
+O repositório tem `npm run check` (typecheck + Vitest + build), o harness Electron sintético (só local: exige `electron.exe` no Windows) e CI no GitHub Actions (`.github/workflows/ci.yml`: typecheck, testes e build em PRs e na `main`). Biome, Knip, dependency-cruiser, Commitlint, Stryker, Playwright, Codecov, OpenTelemetry e Sentry **ainda não estão instalados**; são metas deste padrão, não comportamento existente. Instale-os por Issue própria, sem declarar que já existem. Atualize esta seção a cada ferramenta adotada.
 
 ## Regras específicas deste projeto
 
