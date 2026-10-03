@@ -1,5 +1,9 @@
 # Changelog
 
+## Não lançado
+
+- Adiciona uma tela de erro diagnóstica na raiz do renderer: exceções de renderização ou erros globais mostram um diagnóstico sanitizado e copiável em vez de uma janela vazia. Nada é enviado pela rede e não há novo IPC.
+
 ## 2026-10-02 — R1: Central de treinador
 
 - Substitui a apresentação inicial por workspaces de Equipe, PC, Dano, Demonstração e Ajuda; o detalhe individual separa resumo, golpes e atributos capturados.
