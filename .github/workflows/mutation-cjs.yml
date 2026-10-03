@@ -1,0 +1,37 @@
+name: Mutação dos adaptadores CommonJS (Stryker)
+
+# Mede os validadores fail-closed de electron/ (nbt, real-damage, player-import).
+# O runner do Vitest não instrumenta módulos carregados por createRequire, então este
+# fluxo usa o runner "command" (roda o Vitest por mutante). É lento; fica semanal e manual.
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mutation-cjs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mutation-cjs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Stryker (adaptadores CommonJS)
+        run: npm run test:mutation:cjs -- --concurrency 4
+      - name: Relatório de mutação
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-cjs-report
+          path: reports/mutation-cjs
+          if-no-files-found: ignore

@@ -9,3 +9,4 @@ src/data/species-artwork.json
 coverage/
 reports/
 .stryker-tmp/
+.stryker-tmp-*/

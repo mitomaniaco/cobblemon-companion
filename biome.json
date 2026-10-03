@@ -14,7 +14,7 @@
       "!**/.runtime",
       "!src/data",
       "!package-lock.json",
-      "!**/.stryker-tmp",
+      "!**/.stryker-tmp*",
       "!**/coverage",
       "!**/reports"
     ]

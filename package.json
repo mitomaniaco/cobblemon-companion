@@ -18,7 +18,8 @@
     "arch": "depcruise src electron --config .dependency-cruiser.cjs",
     "prepare": "lefthook install",
     "test:coverage": "vitest run --coverage",
-    "test:mutation": "stryker run"
+    "test:mutation": "stryker run",
+    "test:mutation:cjs": "stryker run stryker.cjs.config.json"
   },
   "engines": {
     "node": ">=22"

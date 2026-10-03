@@ -299,145 +299,171 @@ describe('versioned real damage adapter', () => {
     equipped.equippedMoves.push({id: 'cobblemon:seedbomb', pp: 10, ppUps: 0});
     expect(() => calculateRealDamage(makeSnapshot(equipped), makeRequest())).toThrow(/precisa ser um golpe aprendido ainda não equipado/);
   });
+});
 
-  it('rejects unknown keys in request object', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({extra: 'field'}))).toThrow(/request\.extra.*não é suportado/);
-  });
-
-  it('rejects unknown keys in target object', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, extra: 'field'}}))).toThrow(
-      /request\.target\.extra.*não é suportado/,
-    );
-  });
-
-  it('rejects unknown keys in IVs object', () => {
+  it('rejects unknown keys at each object level', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          target: {...makeRequest().target, ivs: {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31, extra: 31}},
-        }),
-      ),
-    ).toThrow(/target\.ivs\.extra.*não é suportado/);
-  });
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [{kind: 'party', sha256: 'a'.repeat(64), extra: 'field'}]})),
+    ).toThrow(/sources\[0\]\.extra.*não é suportado/);
 
-  it('rejects unknown keys in EVs object', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          target: {...makeRequest().target, evs: {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0, extra: 0}},
-        }),
-      ),
-    ).toThrow(/target\.evs\.extra.*não é suportado/);
-  });
+      calculateRealDamage(makeSnapshot(), makeRequest({candidateMoveId: 'cobblemon:seedbomb', extra: 'field'})),
+    ).toThrow(/request\.extra.*não é suportado/);
 
-  it('rejects unknown keys in assumptions object', () => {
-    const badReq = makeRequest();
-    badReq.assumptions.extra = true;
-    expect(() => calculateRealDamage(makeSnapshot(), badReq)).toThrow(/assumptions\.extra.*não é suportado/);
-  });
-
-  it('rejects source objects with extra fields', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          sources: [
-            {kind: 'party', sha256: 'a'.repeat(64), extra: 'field'},
-            {kind: 'pc', sha256: 'b'.repeat(64)},
-          ],
-        }),
-      ),
-    ).toThrow(/não é suportado/);
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, extra: 'field'}})),
+    ).toThrow(/request\.target\.extra.*não é suportado/);
+
+    const badStats = makeRequest({
+      target: {...makeRequest().target, ivs: {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31, extra: 31}}
+    });
+    expect(() => calculateRealDamage(makeSnapshot(), badStats)).toThrow(/target\.ivs\.extra.*não é suportado/);
+
+    const badAssuptions = makeRequest();
+    badAssuptions.assumptions.extra = true;
+    expect(() => calculateRealDamage(makeSnapshot(), badAssuptions)).toThrow(/assumptions\.extra.*não é suportado/);
   });
 
-  it('rejects invalid source SHA256 format - bad characters', () => {
+  it('rejects missing keys in stats objects', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          sources: [
-            {kind: 'party', sha256: 'G'.repeat(64)},
-            {kind: 'pc', sha256: 'b'.repeat(64)},
-          ],
-        }),
-      ),
-    ).toThrow(/SHA-256 hexadecimal/);
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, ivs: {hp: 31, atk: 31, def: 31, spa: 31, spd: 31}}
+      }))
+    ).toThrow(/target\.ivs\.spe.*não foi capturado/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, evs: {hp: 0, atk: 0, def: 0, spa: 0, spd: 0}}
+      }))
+    ).toThrow(/target\.evs\.spe.*não foi capturado/);
   });
 
-  it('rejects invalid source SHA256 format - wrong length', () => {
+  it('rejects integer bounds violations for level', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          sources: [
-            {kind: 'party', sha256: 'a'.repeat(63)},
-            {kind: 'pc', sha256: 'b'.repeat(64)},
-          ],
-        }),
-      ),
-    ).toThrow(/SHA-256 hexadecimal/);
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, level: 0}}))
+    ).toThrow(/target\.level.*inteiro entre 1 e 100/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, level: 101}}))
+    ).toThrow(/target\.level.*inteiro entre 1 e 100/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, level: 1.5}}))
+    ).toThrow(/target\.level.*inteiro entre 1 e 100/);
   });
 
-  it('rejects invalid source SHA256 format - too short', () => {
+  it('rejects IV bounds violations', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          sources: [
-            {kind: 'party', sha256: 'invalid'},
-            {kind: 'pc', sha256: 'b'.repeat(64)},
-          ],
-        }),
-      ),
-    ).toThrow(/SHA-256 hexadecimal/);
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, ivs: {hp: -1, atk: 31, def: 31, spa: 31, spd: 31, spe: 31}}
+      }))
+    ).toThrow(/target\.ivs\.hp.*inteiro entre 0 e 31/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, ivs: {hp: 32, atk: 31, def: 31, spa: 31, spd: 31, spe: 31}}
+      }))
+    ).toThrow(/target\.ivs\.hp.*inteiro entre 0 e 31/);
+  });
+
+  it('rejects EV bounds violations', () => {
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, evs: {hp: -1, atk: 0, def: 0, spa: 0, spd: 0, spe: 0}}
+      }))
+    ).toThrow(/target\.evs\.hp.*inteiro entre 0 e 252/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, evs: {hp: 253, atk: 0, def: 0, spa: 0, spd: 0, spe: 0}}
+      }))
+    ).toThrow(/target\.evs\.hp.*inteiro entre 0 e 252/);
+  });
+
+  it('rejects EV sum of 511', () => {
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({
+        target: {...makeRequest().target, evs: {hp: 252, atk: 252, def: 0, spa: 0, spd: 0, spe: 7}}
+      }))
+    ).toThrow(/soma excede 510/);
+  });
+
+  it('rejects invalid source SHA256 format', () => {
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [{kind: 'party', sha256: 'invalid'}]}))
+    ).toThrow(/sources\[0\]\.sha256.*SHA-256 hexadecimal/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [{kind: 'party', sha256: 'a'.repeat(63)}]}))
+    ).toThrow(/sources\[0\]\.sha256.*SHA-256 hexadecimal/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [{kind: 'party', sha256: 'G'.repeat(64)}]}))
+    ).toThrow(/sources\[0\]\.sha256.*SHA-256 hexadecimal/);
   });
 
   it('rejects duplicate source kinds', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          sources: [
-            {kind: 'party', sha256: 'a'.repeat(64)},
-            {kind: 'party', sha256: 'b'.repeat(64)},
-          ],
-        }),
-      ),
-    ).toThrow(/inválido ou repetido/);
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [
+        {kind: 'party', sha256: 'a'.repeat(64)},
+        {kind: 'party', sha256: 'b'.repeat(64)}
+      ]}))
+    ).toThrow(/sources\[1\]\.kind.*inválido ou repetido/);
   });
 
   it('rejects missing source kinds', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({sources: [{kind: 'party', sha256: 'a'.repeat(64)}]}))).toThrow(
-      /identific.*party e PC/,
-    );
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [
+        {kind: 'party', sha256: 'a'.repeat(64)}
+      ]}))
+    ).toThrow(/sources.*identific.*party e PC/);
   });
 
   it('rejects invalid source kind', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          sources: [
-            {kind: 'invalid', sha256: 'a'.repeat(64)},
-            {kind: 'pc', sha256: 'b'.repeat(64)},
-          ],
-        }),
-      ),
-    ).toThrow(/inválido ou repetido/);
+      calculateRealDamage(makeSnapshot(), makeRequest({sources: [
+        {kind: 'invalid', sha256: 'a'.repeat(64)},
+        {kind: 'pc', sha256: 'b'.repeat(64)}
+      ]}))
+    ).toThrow(/sources\[0\]\.kind.*inválido ou repetido/);
   });
 
-  it('rejects empty text fields in request', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({individualUuid: ''}))).toThrow(/individualUuid.*texto não vazio/);
+  it('rejects empty text fields', () => {
+    const individual = makeIndividual();
+    individual.observed.nature = '';
+    expect(() => calculateRealDamage(makeSnapshot(individual), makeRequest())).toThrow(/observed\.nature.*texto não vazio/);
 
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({candidateMoveId: ''}))).toThrow(/candidateMoveId.*texto não vazio/);
+    const emptyAbility = makeIndividual();
+    emptyAbility.observed.ability = '';
+    expect(() => calculateRealDamage(makeSnapshot(emptyAbility), makeRequest())).toThrow(/observed\.ability.*texto não vazio/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({individualUuid: ''}))
+    ).toThrow(/individualUuid.*texto não vazio/);
+
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({candidateMoveId: ''}))
+    ).toThrow(/candidateMoveId.*texto não vazio/);
   });
 
   it('rejects whitespace-only text fields', () => {
     const individual = makeIndividual();
     individual.observed.nature = '   ';
     expect(() => calculateRealDamage(makeSnapshot(individual), makeRequest())).toThrow(/observed\.nature.*texto não vazio/);
+  });
+
+  it('accepts bare ability IDs without cobblemon: prefix and normalizes them', () => {
+    const bareAbility = makeIndividual();
+    bareAbility.observed.ability = 'overgrow';
+    const result = calculateRealDamage(makeSnapshot(bareAbility), makeRequest());
+    expect(result.actor.abilityId).toBe('overgrow');
+  });
+
+  it('accepts bare nature IDs without cobblemon: prefix', () => {
+    const bareNature = makeIndividual();
+    bareNature.observed.nature = 'adamant';
+    const result = calculateRealDamage(makeSnapshot(bareNature), makeRequest());
+    expect(result.actor.natureId).toBe('adamant');
   });
 
   it('rejects ability IDs with unsupported namespace', () => {
@@ -452,48 +478,41 @@ describe('versioned real damage adapter', () => {
     expect(() => calculateRealDamage(makeSnapshot(badNamespace), makeRequest())).toThrow(/namespace sem mapeamento/);
   });
 
-  it('rejects actor formId other than normal', () => {
+  it('rejects formId other than normal', () => {
     const badForm = makeIndividual();
     badForm.formId = 'alternate';
     expect(() => calculateRealDamage(makeSnapshot(badForm), makeRequest())).toThrow(/actor\.formId.*forma normal/);
   });
 
-  it('rejects target formId other than normal', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, formId: 'alternate'}}))).toThrow(
-      /target\.formId.*forma normal/,
-    );
+  it('requires actor.observed to be captured', () => {
+    const noObserved = makeIndividual();
+    noObserved.observed = null;
+    expect(() => calculateRealDamage(makeSnapshot(noObserved), makeRequest())).toThrow(/actor\.observed.*não foi capturado/);
   });
 
-  it('rejects snapshot schemaVersion !== 2', () => {
+  it('rejects non-object request and snapshot structures', () => {
+    expect(() => calculateRealDamage(makeSnapshot(), null)).toThrow(/request.*não é suportado/);
+    expect(() => calculateRealDamage(null, makeRequest())).toThrow(/snapshot.*snapshot local v2/);
+    expect(() => calculateRealDamage({}, makeRequest())).toThrow(/snapshot.*snapshot local v2/);
+    expect(() => calculateRealDamage('not-object', makeRequest())).toThrow(/snapshot.*snapshot local v2/);
+  });
+
+  it('validates snapshot schemaVersion, consistency, and individuals array', () => {
     const badVersion = makeSnapshot();
     badVersion.schemaVersion = 1;
-    expect(() => calculateRealDamage(badVersion, makeRequest())).toThrow(/snapshot local v2/);
+    expect(() => calculateRealDamage(badVersion, makeRequest())).toThrow(/snapshot.*snapshot local v2/);
 
-    const badVersion3 = makeSnapshot();
-    badVersion3.schemaVersion = 3;
-    expect(() => calculateRealDamage(badVersion3, makeRequest())).toThrow(/snapshot local v2/);
-  });
-
-  it('rejects snapshot consistency !== best-effort', () => {
     const badConsistency = makeSnapshot();
     badConsistency.consistency = 'perfect';
-    expect(() => calculateRealDamage(badConsistency, makeRequest())).toThrow(/snapshot local v2/);
-  });
+    expect(() => calculateRealDamage(badConsistency, makeRequest())).toThrow(/snapshot.*snapshot local v2/);
 
-  it('rejects snapshot individuals not an array', () => {
     const noIndividuals = makeSnapshot();
     noIndividuals.individuals = null;
-    expect(() => calculateRealDamage(noIndividuals, makeRequest())).toThrow(/snapshot local v2/);
+    expect(() => calculateRealDamage(noIndividuals, makeRequest())).toThrow(/snapshot.*snapshot local v2/);
 
     const notArray = makeSnapshot();
     notArray.individuals = {0: makeIndividual()};
-    expect(() => calculateRealDamage(notArray, makeRequest())).toThrow(/snapshot local v2/);
-  });
-
-  it('rejects non-object snapshot', () => {
-    expect(() => calculateRealDamage(null, makeRequest())).toThrow(/snapshot local v2/);
-    expect(() => calculateRealDamage({}, makeRequest())).toThrow(/snapshot local v2/);
-    expect(() => calculateRealDamage('not-object', makeRequest())).toThrow(/snapshot local v2/);
+    expect(() => calculateRealDamage(notArray, makeRequest())).toThrow(/snapshot.*snapshot local v2/);
   });
 
   it('requires exactly one UUID match in snapshot', () => {
@@ -503,12 +522,12 @@ describe('versioned real damage adapter', () => {
     doubled.individuals.push(second);
     expect(() => calculateRealDamage(doubled, makeRequest())).toThrow(/individualUuid.*exatamente um indivíduo/);
 
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({individualUuid: 'nonexistent'}))).toThrow(
-      /individualUuid.*exatamente um indivíduo/,
-    );
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({individualUuid: 'nonexistent'}))
+    ).toThrow(/individualUuid.*exatamente um indivíduo/);
   });
 
-  it('requires equipped and learned move lists to be marked as known', () => {
+  it('requires equipped and learned move lists to be known', () => {
     const unknownEquipped = makeIndividual();
     unknownEquipped.equippedMovesKnown = false;
     expect(() => calculateRealDamage(makeSnapshot(unknownEquipped), makeRequest())).toThrow(/moves.*conhecidas/);
@@ -534,7 +553,7 @@ describe('versioned real damage adapter', () => {
     const equipped = makeIndividual();
     equipped.equippedMoves[0].id = 'cobblemon:seedbomb';
     expect(() => calculateRealDamage(makeSnapshot(equipped), makeRequest({candidateMoveId: 'cobblemon:seedbomb'}))).toThrow(
-      /candidateMoveId.*golpe aprendido ainda não equipado/,
+      /candidateMoveId.*golpe aprendido ainda não equipado/
     );
   });
 
@@ -542,7 +561,7 @@ describe('versioned real damage adapter', () => {
     const equipped = makeIndividual();
     equipped.equippedMoves.push({id: 'cobblemon:seedbomb', pp: 10, ppUps: 0});
     expect(() => calculateRealDamage(makeSnapshot(equipped), makeRequest({candidateMoveId: 'cobblemon:seedbomb'}))).toThrow(
-      /candidateMoveId.*golpe aprendido ainda não equipado/,
+      /candidateMoveId.*golpe aprendido ainda não equipado/
     );
   });
 
@@ -552,36 +571,18 @@ describe('versioned real damage adapter', () => {
     expect(() => calculateRealDamage(makeSnapshot(notLearned), makeRequest())).toThrow(/candidateMoveId.*aprendido neste indivíduo/);
   });
 
-  it('rejects unsupported actor species', () => {
-    const badSpecies = makeIndividual();
-    badSpecies.speciesId = 'cobblemon:missingno';
-    expect(() => calculateRealDamage(makeSnapshot(badSpecies), makeRequest())).toThrow(/actor\.speciesId.*compatível versionado/);
-  });
-
-  it('rejects unsupported actor ability', () => {
-    const badAbility = makeIndividual();
-    badAbility.observed.ability = 'cobblemon:static';
-    expect(() => calculateRealDamage(makeSnapshot(badAbility), makeRequest())).toThrow(
-      /observed\.ability.*não está mapeada para esta espécie/,
+  it('rejects unsupported candidate move', () => {
+    const unsupported = makeIndividual();
+    unsupported.learnedMoves[0].id = 'cobblemon:unsupported_move';
+    expect(() => calculateRealDamage(makeSnapshot(unsupported), makeRequest({candidateMoveId: 'cobblemon:unsupported_move'}))).toThrow(
+      /compatível versionado/
     );
   });
 
-  it('rejects unsupported actor nature', () => {
-    const badNature = makeIndividual();
-    badNature.observed.nature = 'cobblemon:unsupported_nature';
-    expect(() => calculateRealDamage(makeSnapshot(badNature), makeRequest())).toThrow(/observed\.nature.*compatível versionado/);
-  });
-
-  it('rejects unsupported target ability', () => {
-    expect(() =>
-      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, ability: 'cobblemon:static'}})),
-    ).toThrow(/target\.ability.*não está mapeada para esta espécie/);
-  });
-
-  it('rejects unsupported target nature', () => {
-    expect(() =>
-      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, nature: 'cobblemon:unsupported_nature'}})),
-    ).toThrow(/target\.nature.*compatível versionado/);
+  it('rejects unsupported current equipped move', () => {
+    const unsupported = makeIndividual();
+    unsupported.equippedMoves[0].id = 'cobblemon:unsupported_move';
+    expect(() => calculateRealDamage(makeSnapshot(unsupported), makeRequest())).toThrow(/compatível versionado/);
   });
 
   it('rejects hyper-trained IVs with unknown state', () => {
@@ -589,12 +590,30 @@ describe('versioned real damage adapter', () => {
     unknownHt.battleStats.hyperTrainedIvs.hp = {
       state: 'unknown',
       reason: 'not-captured',
-      provenance: {sourceKind: 'party', nbtPath: 'test'},
+      provenance: {sourceKind: 'party', nbtPath: 'test'}
     };
     expect(() => calculateRealDamage(makeSnapshot(unknownHt), makeRequest())).toThrow(/hyperTrainedIvs\.hp.*desconhecido/);
   });
 
-  it('rejects hyper-trained IV bounds violations', () => {
+  it('rejects base IVs when hyper-trained is null and base is unknown', () => {
+    const badIv = makeIndividual();
+    badIv.battleStats.ivs.def = {
+      state: 'unknown',
+      reason: 'not-captured',
+      provenance: {sourceKind: 'party', nbtPath: 'test'}
+    };
+    badIv.battleStats.hyperTrainedIvs.def = fact(null);
+    expect(() => calculateRealDamage(makeSnapshot(badIv), makeRequest())).toThrow(/effectiveIvs\.def.*desconhecido/);
+  });
+
+  it('uses hyper-trained numeric value when provided', () => {
+    const withHt = makeIndividual();
+    withHt.battleStats.hyperTrainedIvs.atk = fact(31);
+    const result = calculateRealDamage(makeSnapshot(withHt), makeRequest());
+    expect(result.actor.ivs.atk).toBe(31);
+  });
+
+  it('rejects unknown effective IVs in bounds', () => {
     const badBounds = makeIndividual();
     badBounds.battleStats.hyperTrainedIvs.spa = fact(-1);
     expect(() => calculateRealDamage(makeSnapshot(badBounds), makeRequest())).toThrow(/effectiveIvs\.spa.*inteiro entre 0 e 31/);
@@ -626,54 +645,67 @@ describe('versioned real damage adapter', () => {
     expect(() => calculateRealDamage(makeSnapshot(badStats), makeRequest())).toThrow(/battleStats.*objeto/);
   });
 
-  it('rejects target level out of bounds', () => {
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, level: 0}}))).toThrow(
-      /target\.level.*inteiro entre 1 e 100/,
-    );
-
-    expect(() => calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, level: 101}}))).toThrow(
-      /target\.level.*inteiro entre 1 e 100/,
-    );
+  it('rejects missing stat facts', () => {
+    const missingStat = makeIndividual();
+    missingStat.battleStats.ivs.hp = undefined;
+    expect(() => calculateRealDamage(makeSnapshot(missingStat), makeRequest())).toThrow(/ivs\.hp.*foi capturado/);
   });
 
-  it('rejects target IV bounds violations', () => {
-    expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          target: {...makeRequest().target, ivs: {hp: -1, atk: 31, def: 31, spa: 31, spd: 31, spe: 31}},
-        }),
-      ),
-    ).toThrow(/target\.ivs\.hp.*inteiro entre 0 e 31/);
+  it('validates output digest changes with input', () => {
+    const baseline = calculateRealDamage(makeSnapshot(), makeRequest());
+    
+    const strongerAttacker = makeIndividual();
+    strongerAttacker.battleStats.evs.atk = fact(252);
+    const changed = calculateRealDamage(makeSnapshot(strongerAttacker), makeRequest());
 
-    expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          target: {...makeRequest().target, ivs: {hp: 32, atk: 31, def: 31, spa: 31, spd: 31, spe: 31}},
-        }),
-      ),
-    ).toThrow(/target\.ivs\.hp.*inteiro entre 0 e 31/);
+    expect(baseline.inputDigest).not.toBe(changed.inputDigest);
   });
 
-  it('rejects target EV bounds violations', () => {
-    expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          target: {...makeRequest().target, evs: {hp: -1, atk: 0, def: 0, spa: 0, spd: 0, spe: 0}},
-        }),
-      ),
-    ).toThrow(/target\.evs\.hp.*inteiro entre 0 e 252/);
+  it('validates output has correct damage roll structure', () => {
+    const result = calculateRealDamage(makeSnapshot(), makeRequest());
+    
+    expect(result.current.rollCount).toBe(16);
+    expect(result.candidate.rollCount).toBe(16);
+    expect(result.current.min).toBeLessThanOrEqual(result.current.max);
+    expect(result.candidate.min).toBeLessThanOrEqual(result.candidate.max);
+    expect(result.current.targetHP).toBeGreaterThan(0);
+    expect(result.candidate.targetHP).toBeGreaterThan(0);
+  });
 
+  it('rejects unsupported actor species', () => {
+    const badSpecies = makeIndividual();
+    badSpecies.speciesId = 'cobblemon:missingno';
+    expect(() => calculateRealDamage(makeSnapshot(badSpecies), makeRequest())).toThrow(/actor\.speciesId.*compatível versionado/);
+  });
+
+  it('rejects unsupported actor ability', () => {
+    const badAbility = makeIndividual();
+    badAbility.observed.ability = 'cobblemon:static';
+    expect(() => calculateRealDamage(makeSnapshot(badAbility), makeRequest())).toThrow(/observed\.ability.*não está mapeada para esta espécie/);
+  });
+
+  it('rejects unsupported actor nature', () => {
+    const badNature = makeIndividual();
+    badNature.observed.nature = 'cobblemon:unsupported_nature';
+    expect(() => calculateRealDamage(makeSnapshot(badNature), makeRequest())).toThrow(/observed\.nature.*compatível versionado/);
+  });
+
+  it('rejects unsupported target species', () => {
     expect(() =>
-      calculateRealDamage(
-        makeSnapshot(),
-        makeRequest({
-          target: {...makeRequest().target, evs: {hp: 253, atk: 0, def: 0, spa: 0, spd: 0, spe: 0}},
-        }),
-      ),
-    ).toThrow(/target\.evs\.hp.*inteiro entre 0 e 252/);
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, speciesId: 'cobblemon:missingno'}}))
+    ).toThrow(/target\.speciesId.*compatível versionado/);
+  });
+
+  it('rejects unsupported target ability', () => {
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, ability: 'cobblemon:static'}}))
+    ).toThrow(/target\.ability.*não está mapeada para esta espécie/);
+  });
+
+  it('rejects unsupported target nature', () => {
+    expect(() =>
+      calculateRealDamage(makeSnapshot(), makeRequest({target: {...makeRequest().target, nature: 'cobblemon:unsupported_nature'}}))
+    ).toThrow(/target\.nature.*compatível versionado/);
   });
 
   it('requires all assumptions to be explicitly true', () => {
@@ -693,66 +725,9 @@ describe('versioned real damage adapter', () => {
       const nullReq = makeRequest();
       nullReq.assumptions[assumption] = null;
       expect(() => calculateRealDamage(makeSnapshot(), nullReq)).toThrow(/precisa ser confirmado explicitamente/);
+
+      const undefinedReq = makeRequest();
+      delete undefinedReq.assumptions[assumption];
+      expect(() => calculateRealDamage(makeSnapshot(), undefinedReq)).toThrow(/não é suportado|precisa ser confirmado/);
     }
   });
-
-  it('validates output digest changes with input', () => {
-    const baseline = calculateRealDamage(makeSnapshot(), makeRequest());
-
-    const strongerAttacker = makeIndividual();
-    strongerAttacker.battleStats.evs.atk = fact(252);
-    const changed = calculateRealDamage(makeSnapshot(strongerAttacker), makeRequest());
-
-    expect(baseline.inputDigest).not.toBe(changed.inputDigest);
-    expect(baseline.inputDigest).toMatch(/^[a-f0-9]{64}$/);
-    expect(changed.inputDigest).toMatch(/^[a-f0-9]{64}$/);
-  });
-
-  it('validates output has correct damage roll structure', () => {
-    const result = calculateRealDamage(makeSnapshot(), makeRequest());
-
-    expect(result.current.rollCount).toBe(16);
-    expect(result.candidate.rollCount).toBe(16);
-    expect(result.current.min).toBeGreaterThanOrEqual(0);
-    expect(result.current.max).toBeGreaterThanOrEqual(result.current.min);
-    expect(result.candidate.min).toBeGreaterThanOrEqual(0);
-    expect(result.candidate.max).toBeGreaterThanOrEqual(result.candidate.min);
-    expect(result.current.targetHP).toBeGreaterThan(0);
-    expect(result.candidate.targetHP).toBeGreaterThan(0);
-  });
-
-  it('validates scope fields in output', () => {
-    const result = calculateRealDamage(makeSnapshot(), makeRequest());
-
-    expect(result.scope.generation).toBe(9);
-    expect(result.scope.format).toBe('singles');
-    expect(result.scope.actions).toBe(1);
-    expect(result.scope.damageOnSuccessfulHitOnly).toBe(true);
-    expect(result.scope.rolls).toBe(16);
-    expect(result.scope.rollSummary).toBe('minimum-and-maximum');
-  });
-
-  it('validates ruleset and adapter versions in output', () => {
-    const result = calculateRealDamage(makeSnapshot(), makeRequest());
-
-    expect(result.ruleset.id).toBe(COMPATIBILITY.ruleset.id);
-    expect(result.ruleset.cobblemonVersion).toBe(COMPATIBILITY.ruleset.cobblemonVersion);
-    expect(result.ruleset.showdownVersion).toBe(COMPATIBILITY.ruleset.showdownVersion);
-    expect(result.ruleset.calcVersion).toBe('0.11.0');
-    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v9');
-  });
-
-  it('accepts bare ability IDs without cobblemon: prefix', () => {
-    const bareAbility = makeIndividual();
-    bareAbility.observed.ability = 'overgrow';
-    const result = calculateRealDamage(makeSnapshot(bareAbility), makeRequest());
-    expect(result.ruleset.id).toBeDefined();
-  });
-
-  it('accepts bare nature IDs without cobblemon: prefix', () => {
-    const bareNature = makeIndividual();
-    bareNature.observed.nature = 'adamant';
-    const result = calculateRealDamage(makeSnapshot(bareNature), makeRequest());
-    expect(result.ruleset.id).toBeDefined();
-  });
-});
