@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import speciesArtworkJson from '../data/species-artwork.json';
 import styles from './PokemonArtwork.module.css';
 
 type SpeciesArtworkRecord = {
@@ -7,7 +6,13 @@ type SpeciesArtworkRecord = {
   readonly artworkPath: string | null;
 };
 
-const speciesArtwork = speciesArtworkJson as Readonly<Record<string, SpeciesArtworkRecord>>;
+// O manifesto é gerado por `npm run prepare:ui-assets` e não é versionado. Sem ele,
+// todas as espécies mostram o placeholder "Imagem indisponível".
+const manifests = import.meta.glob<Readonly<Record<string, SpeciesArtworkRecord>>>(
+  '../data/species-artwork.json',
+  {eager: true, import: 'default'},
+);
+const speciesArtwork: Readonly<Record<string, SpeciesArtworkRecord>> = Object.values(manifests)[0] ?? {};
 
 export type PokemonArtworkVariant = 'collection' | 'detail';
 
