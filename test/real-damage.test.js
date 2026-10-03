@@ -95,7 +95,7 @@ describe('versioned real damage adapter', () => {
       abilities: ['cobblemon:synchronize', 'cobblemon:telepathy'],
     });
     for (const result of results) {
-      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v10');
+      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v11');
       expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v9');
       expect(result.actor.speciesId).toBe('cobblemon:gardevoir');
       expect(result.current.rollCount).toBe(16);

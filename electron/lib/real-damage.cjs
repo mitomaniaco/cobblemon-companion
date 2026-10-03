@@ -20,7 +20,7 @@ const ASSUMPTION_KEYS = Object.freeze([
 if (calcPackage.version !== CALC_VERSION || compatibility.ruleset.calcVersion !== CALC_VERSION) {
   throw new Error(`Real damage requires @smogon/calc ${CALC_VERSION} and its matching compatibility catalog`);
 }
-if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v10') {
+if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v11') {
   throw new Error('Real damage compatibility catalog is not a reviewed version');
 }
 
