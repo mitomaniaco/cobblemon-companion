@@ -37,6 +37,7 @@ const screenshotPaths = Object.freeze({
   team200Percent: path.join(runDirectory, 'team-200-percent.png'),
   collection800: path.join(runDirectory, 'collection-800.png'),
   collection200Percent: path.join(runDirectory, 'collection-200-percent.png'),
+  errorScreen: path.join(runDirectory, 'error-screen.png'),
 });
 require('../electron/main.cjs');
 
@@ -753,7 +754,12 @@ async function exerciseResponsiveLayout(window, snapshot) {
     window.setContentSize(layout.width, 1000);
     contents.setZoomFactor(layout.zoom);
     const expectedWidth = Math.round(layout.width / layout.zoom);
-    await waitFor(contents, `window.innerWidth === ${expectedWidth}`, `viewport ${layout.label}`);
+    try {
+      await waitFor(contents, `window.innerWidth === ${expectedWidth}`, `viewport ${layout.label}`);
+    } catch (error) {
+      const actual = await evaluate(contents, '({inner: window.innerWidth, dpr: window.devicePixelRatio, screen: screen.availWidth})');
+      throw new Error(`${error.message} Observado: ${JSON.stringify(actual)}; zoom ${contents.getZoomFactor()}.`);
+    }
     const geometry = await evaluate(
       contents,
       `(() => {
@@ -929,10 +935,40 @@ function safeErrorText(error) {
     .replace(/\b[0-9a-f]{64}\b/gi, '[hash sintético]');
 }
 
+async function exerciseErrorScreen(window) {
+  const contents = window.webContents;
+  const synthetic = 'Falha sintética em D:\\Dev\\segredo\\config.json do jogador 123e4567-e89b-12d3-a456-426614174000';
+  await evaluate(contents, `window.dispatchEvent(new ErrorEvent('error', {error: new Error(${JSON.stringify(synthetic)})}))`);
+  await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="app-error"]\'))', 'tela de erro diagnóstica');
+  const shown = await evaluate(
+    contents,
+    `(() => ({
+    role: document.querySelector('[data-testid="app-error"]')?.getAttribute('role'),
+    report: document.querySelector('[data-testid="app-error"] textarea')?.value || '',
+    appShellGone: !document.querySelector('nav[aria-label="Vistas"]'),
+  }))()`,
+  );
+  check(
+    shown.role === 'alert' && shown.appShellGone && shown.report.includes('Falha sintética'),
+    'A tela de erro não substituiu a interface com o diagnóstico.',
+  );
+  check(!/segredo|Dev|123e4567/.test(shown.report), 'O diagnóstico exibido vazou caminho local ou UUID.');
+  await waitFor(
+    contents,
+    "getComputedStyle(document.querySelector('[data-testid=\"app-error\"]')).opacity === '1'",
+    'fim da animação da tela de erro',
+  );
+  await capture(window, screenshotPaths.errorScreen, '[data-testid="app-error"] h1');
+  console.log('PASS tela de erro diagnóstica sanitizada e screenshot em diagnostics');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
   const contents = window.webContents;
+  contents.setBackgroundThrottling(false);
+  window.show();
+  window.focus();
   check(contents.getURL().startsWith('cobblemon://app/'), 'O harness não abriu o protocolo local seguro.');
   await waitFor(
     contents,
@@ -949,6 +985,7 @@ async function run() {
   await exerciseRealDamage(contents);
   await exerciseRefreshInvalidation(window, snapshot);
   await exerciseResponsiveLayout(window, snapshot);
+  await exerciseErrorScreen(window);
   console.log('PASS todos os fluxos determinísticos do TrainerApp');
 }
 
