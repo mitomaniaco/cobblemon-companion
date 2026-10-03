@@ -191,5 +191,54 @@ describe('controlador de sessão do treinador', () => {
 
     const emptyState = completeTrainerSessionRefresh(createInitialTrainerSessionState(), snapshot([]));
     expect(emptyState.selectedUuid).toBeNull();
+    expect(emptyState.moveSwapPlan).toEqual({individualUuid: null, slotIndex: null, candidateMoveId: null});
+  });
+
+  it('o reducer carrega o snapshot e seleciona o primeiro indivíduo ao concluir o refresh', () => {
+    const initial = createInitialTrainerSessionState();
+    const snap = snapshot([individual('new-uuid', 'pikachu', {container: 'party', slot: 0})]);
+
+    const result = trainerSessionReducer(initial, {
+      type: 'refresh-succeeded',
+      snapshot: snap,
+    });
+
+    expect(result.phase).toBe('loaded');
+    expect(result.snapshot).toBe(snap);
+    expect(result.selectedUuid).toBe('new-uuid');
+  });
+
+  it('o reducer seleciona o indivíduo escolhido e vincula o plano de troca ao UUID', () => {
+    const initial = completeTrainerSessionRefresh(
+      createInitialTrainerSessionState(),
+      snapshot([
+        individual('uuid-a', 'pikachu', {container: 'party', slot: 0}),
+        individual('uuid-b', 'eevee', {container: 'party', slot: 1}),
+      ]),
+    );
+
+    const result = trainerSessionReducer(initial, {
+      type: 'individual-selected',
+      uuid: 'uuid-b',
+    });
+
+    expect(result.selectedUuid).toBe('uuid-b');
+    expect(result.moveSwapPlan.individualUuid).toBe('uuid-b');
+  });
+
+  it('o reducer atualiza o plano de troca sem alterar o indivíduo selecionado', () => {
+    const initial = completeTrainerSessionRefresh(
+      createInitialTrainerSessionState(),
+      snapshot([individual('uuid-test', 'pikachu', {container: 'party', slot: 0})]),
+    );
+
+    const result = trainerSessionReducer(initial, {
+      type: 'move-swap-updated',
+      patch: {slotIndex: 1, candidateMoveId: 'thunderbolt'},
+    });
+
+    expect(result.moveSwapPlan.slotIndex).toBe(1);
+    expect(result.moveSwapPlan.candidateMoveId).toBe('thunderbolt');
+    expect(result.selectedUuid).toBe('uuid-test');
   });
 });

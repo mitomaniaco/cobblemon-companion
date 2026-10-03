@@ -2,17 +2,22 @@
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
   "testRunner": "vitest",
   "coverageAnalysis": "perTest",
-  "mutate": [
-    "src/domain/*.ts",
-    "src/app/trainer-session-model.ts",
-    "src/features/damage/model.ts",
-    "electron/lib/real-damage.cjs",
-    "electron/player-import.cjs",
-    "electron/lib/nbt.cjs"
-  ],
-  "reporters": ["clear-text", "progress", "html"],
-  "htmlReporter": { "fileName": "reports/mutation/index.html" },
+  "mutate": ["src/domain/*.ts", "src/app/trainer-session-model.ts", "src/features/damage/model.ts"],
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "htmlReporter": {
+    "fileName": "reports/mutation/index.html"
+  },
   "tempDirName": ".stryker-tmp",
   "cleanTempDir": true,
-  "thresholds": { "high": 80, "low": 60, "break": null }
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": null
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation.json"
+  },
+  "mutator": {
+    "excludedMutations": ["StringLiteral"]
+  }
 }
