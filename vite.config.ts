@@ -9,7 +9,7 @@ export default defineConfig({
     sourcemap: false,
   },
   test: {
-    exclude: ['node_modules/**', 'dist/**', '.runtime/**', '.stryker-tmp/**'],
+    exclude: ['node_modules/**', 'dist/**', '.runtime/**', '.stryker-tmp*/**'],
     coverage: {
       provider: 'v8',
       reportsDirectory: 'coverage',
