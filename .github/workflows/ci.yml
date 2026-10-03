@@ -16,6 +16,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,7 +42,16 @@ jobs:
           npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
       - name: Typecheck
         run: npm run typecheck
-      - name: Testes
-        run: npm test
+      - name: Testes com cobertura
+        run: |
+          npm run test:coverage 2>&1 | tee coverage.log
+          { echo '### Cobertura (Vitest)'; echo '```'; sed -n '/Coverage summary/,$p' coverage.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Enviar cobertura ao Codecov
+        if: env.CODECOV_TOKEN != ''
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+          fail_ci_if_error: false
       - name: Build
         run: npm run build
