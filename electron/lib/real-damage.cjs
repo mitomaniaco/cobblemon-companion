@@ -99,7 +99,7 @@ function mappedMoveName(id, pathName) {
 }
 
 function known(value, pathName) {
-  if (!value || value.state !== 'known') fail(pathName, 'é desconhecido; o cálculo não inventa o valor');
+  if (value?.state !== 'known') fail(pathName, 'é desconhecido; o cálculo não inventa o valor');
   return value.value;
 }
 
@@ -107,7 +107,7 @@ function statValues(facts, pathName, minimum, maximum) {
   record(facts, pathName);
   const output = {};
   for (const stat of STATS) {
-    if (!Object.prototype.hasOwnProperty.call(facts, stat)) fail(`${pathName}.${stat}`, 'não foi capturado');
+    if (!Object.hasOwn(facts, stat)) fail(`${pathName}.${stat}`, 'não foi capturado');
     output[stat] = integer(known(facts[stat], `${pathName}.${stat}`), `${pathName}.${stat}`, minimum, maximum);
   }
   return output;
@@ -117,10 +117,9 @@ function effectiveIvs(battleStats) {
   record(battleStats, 'actor.battleStats');
   const ivs = {};
   for (const stat of STATS) {
-    const override = battleStats.hyperTrainedIvs && battleStats.hyperTrainedIvs[stat];
-    if (!override || override.state !== 'known') fail(`actor.battleStats.hyperTrainedIvs.${stat}`, 'é desconhecido');
-    const value =
-      override.value === null ? known(battleStats.ivs && battleStats.ivs[stat], `actor.battleStats.ivs.${stat}`) : override.value;
+    const override = battleStats.hyperTrainedIvs?.[stat];
+    if (override?.state !== 'known') fail(`actor.battleStats.hyperTrainedIvs.${stat}`, 'é desconhecido');
+    const value = override.value === null ? known(battleStats.ivs?.[stat], `actor.battleStats.ivs.${stat}`) : override.value;
     ivs[stat] = integer(value, `actor.battleStats.effectiveIvs.${stat}`, 0, 31);
   }
   return ivs;
@@ -128,8 +127,7 @@ function effectiveIvs(battleStats) {
 
 function supportedSpecies(speciesId, pathName) {
   text(speciesId, pathName);
-  if (!Object.prototype.hasOwnProperty.call(compatibility.species, speciesId))
-    fail(pathName, 'está fora do subconjunto compatível versionado');
+  if (!Object.hasOwn(compatibility.species, speciesId)) fail(pathName, 'está fora do subconjunto compatível versionado');
   return compatibility.species[speciesId];
 }
 
@@ -186,7 +184,7 @@ function validateAssumptions(raw) {
 }
 
 function actorProfile(actor) {
-  if (!actor || actor.formId !== 'normal') fail('actor.formId', 'somente forma normal é compatível');
+  if (actor?.formId !== 'normal') fail('actor.formId', 'somente forma normal é compatível');
   const species = supportedSpecies(actor.speciesId, 'actor.speciesId');
   if (!Number.isSafeInteger(actor.level)) fail('actor.level', 'não foi capturado');
   integer(actor.level, 'actor.level', 1, 100);
@@ -260,7 +258,7 @@ function stable(value) {
 
 function calculateRealDamage(snapshot, rawRequest) {
   exactKeys(rawRequest, ['sources', 'individualUuid', 'candidateMoveId', 'target', 'assumptions'], 'request');
-  if (!snapshot || snapshot.schemaVersion !== 2 || snapshot.consistency !== 'best-effort' || !Array.isArray(snapshot.individuals)) {
+  if (snapshot?.schemaVersion !== 2 || snapshot?.consistency !== 'best-effort' || !Array.isArray(snapshot?.individuals)) {
     fail('snapshot', 'não corresponde ao snapshot local v2');
   }
   const sources = assertFreshSources(rawRequest.sources, snapshot.sources);

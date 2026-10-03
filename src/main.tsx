@@ -4,7 +4,12 @@ import App from './App';
 import {AppErrorBoundary} from './app/AppErrorBoundary';
 import './ui/global.css';
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element #root not found in document');
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <AppErrorBoundary>
       <App />

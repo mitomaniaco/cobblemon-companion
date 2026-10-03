@@ -929,7 +929,7 @@ async function exerciseResponsiveLayout(window, snapshot) {
 }
 
 function safeErrorText(error) {
-  return String((error && error.message) || 'falha inesperada')
+  return String(error?.message || 'falha inesperada')
     .replace(/[A-Z]:\\[^\s)]+/gi, '[caminho local]')
     .replace(/\b[0-9a-f]{8}-[0-9a-f-]{27}\b/gi, '[uuid sintético]')
     .replace(/\b[0-9a-f]{64}\b/gi, '[hash sintético]');

@@ -20,7 +20,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
   const selectedPlan = plan.individualUuid === individual.uuid;
   const preview = view.status === 'ready' ? view.preview : null;
   const previewKey = preview ? `${individual.uuid}:${preview.slotIndex}:${preview.afterMoveId}` : null;
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: dependencies are intentional triggers to reset preview confirmation when individual or preview changes
   useEffect(() => {
     setConfirmedPreviewKey(null);
   }, [individual.uuid, previewKey]);

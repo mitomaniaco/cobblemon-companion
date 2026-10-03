@@ -36,21 +36,7 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "complexity": {
-        "useOptionalChain": "warn",
-        "noImportantStyles": "warn"
-      },
-      "suspicious": {
-        "noPrototypeBuiltins": "warn",
-        "useIterableCallbackReturn": "warn",
-        "noArrayIndexKey": "warn",
-        "noAssignInExpressions": "warn"
-      },
-      "correctness": {
-        "useExhaustiveDependencies": "warn"
-      },
       "style": {
-        "noNonNullAssertion": "warn",
         "noDescendingSpecificity": "warn"
       },
       "a11y": {

@@ -103,9 +103,13 @@ textarea {
   *,
   *::before,
   *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: prefers-reduced-motion deve vencer qualquer duração/animação definida por componente */
     animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: prefers-reduced-motion deve vencer qualquer animação definida por componente */
     animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: prefers-reduced-motion deve vencer qualquer scroll suave definido por componente */
     scroll-behavior: auto !important;
+    /* biome-ignore lint/complexity/noImportantStyles: prefers-reduced-motion deve vencer qualquer transição definida por componente */
     transition-duration: 0.01ms !important;
   }
 }

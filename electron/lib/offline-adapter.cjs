@@ -36,7 +36,7 @@ function record(value, pathName) {
 }
 
 function own(value, key) {
-  return Object.prototype.hasOwnProperty.call(value, key);
+  return Object.hasOwn(value, key);
 }
 
 function keys(value, allowed, pathName) {
@@ -187,7 +187,7 @@ function adaptIndividual(raw, snapshotSourceId) {
 }
 
 function knownFact(value, pathName) {
-  if (!value || value.state !== 'known') fail(pathName, 'is unknown; the supported calculation cannot invent it');
+  if (value?.state !== 'known') fail(pathName, 'is unknown; the supported calculation cannot invent it');
   return value.value;
 }
 
@@ -298,7 +298,7 @@ function prepareOfflineInput(input) {
     fail('snapshot.sourceIds', 'must identify fixture sources');
   }
   const snapshotSourceId = source.snapshot.sourceIds[0];
-  const individual = source.player && source.player.individuals && source.player.individuals[0];
+  const individual = source.player?.individuals?.[0];
   if (!individual) fail('player.individuals', 'must contain the selected individual');
   const adaptedIndividual = adaptIndividual(individual, snapshotSourceId);
   const target = supportedCalculation(source.calculation);

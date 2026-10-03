@@ -49,7 +49,7 @@ function fail(path, message) {
 }
 
 function own(value, key) {
-  return Object.prototype.hasOwnProperty.call(value, key);
+  return Object.hasOwn(value, key);
 }
 
 function record(value, path) {
@@ -126,8 +126,7 @@ function jsonValue(value, path, depth = 0, seen = new WeakSet()) {
     }
     for (let index = 0; index < value.length; index++) {
       const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
-      if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, 'value'))
-        fail(`${path}[${index}]`, 'accessor or sparse array entry is not allowed');
+      if (!descriptor || !Object.hasOwn(descriptor, 'value')) fail(`${path}[${index}]`, 'accessor or sparse array entry is not allowed');
       jsonValue(descriptor.value, `${path}[${index}]`, depth + 1, seen);
     }
   } else {
@@ -139,8 +138,7 @@ function jsonValue(value, path, depth = 0, seen = new WeakSet()) {
       fail(path, 'non-enumerable or symbol properties are not allowed');
     names.forEach((name) => {
       const descriptor = Object.getOwnPropertyDescriptor(value, name);
-      if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, 'value'))
-        fail(`${path}.${name}`, 'accessor properties are not allowed');
+      if (!descriptor || !Object.hasOwn(descriptor, 'value')) fail(`${path}.${name}`, 'accessor properties are not allowed');
       jsonValue(descriptor.value, `${path}.${name}`, depth + 1, seen);
     });
   }
@@ -207,7 +205,9 @@ function fact(value, path, sources, {planned = false} = {}) {
     if (own(value, 'value')) fail(path, 'conflicting facts cannot collapse to one value');
     text(value.reason, `${path}.reason`, {max: 1024});
     array(value.candidates, `${path}.candidates`, {min: 2, max: 8});
-    value.candidates.forEach((candidate, index) => fact(candidate, `${path}.candidates[${index}]`, sources, {planned}));
+    value.candidates.forEach((candidate, index) => {
+      fact(candidate, `${path}.candidates[${index}]`, sources, {planned});
+    });
   }
 }
 
@@ -269,7 +269,9 @@ function validateAccess(value, path, sources, {item = false} = {}) {
   if (value.requirements !== undefined) uniqueStrings(value.requirements, `${path}.requirements`, {max: 16});
   if (value.evidenceIds !== undefined) {
     uniqueStrings(value.evidenceIds, `${path}.evidenceIds`, {max: 32});
-    value.evidenceIds.forEach((id, index) => sourceId(id, `${path}.evidenceIds[${index}]`, sources));
+    value.evidenceIds.forEach((id, index) => {
+      sourceId(id, `${path}.evidenceIds[${index}]`, sources);
+    });
   }
   if (value.reason !== undefined && value.reason !== null) text(value.reason, `${path}.reason`, {max: 1024});
   const requirements = value.requirements || [];
@@ -431,7 +433,9 @@ function validatePreflight(input) {
   if (!CAPTURE_KINDS.includes(input.snapshot.kind)) fail('snapshot.kind', 'is invalid');
   iso(input.snapshot.capturedAt, 'snapshot.capturedAt');
   uniqueStrings(input.snapshot.sourceIds, 'snapshot.sourceIds', {max: CONTRACT.limits.maxSources, min: 1});
-  input.snapshot.sourceIds.forEach((id) => sourceId(id, 'snapshot.sourceIds[]', sources));
+  input.snapshot.sourceIds.forEach((id) => {
+    sourceId(id, 'snapshot.sourceIds[]', sources);
+  });
   if (!['complete', 'partial'].includes(input.snapshot.completeness)) fail('snapshot.completeness', 'is invalid');
   if (!['atomic', 'best-effort', 'unknown'].includes(input.snapshot.atomicity)) fail('snapshot.atomicity', 'is invalid');
   record(input.snapshot.fingerprint, 'snapshot.fingerprint');
@@ -447,7 +451,9 @@ function validatePreflight(input) {
     max: CONTRACT.limits.maxSources,
     min: input.context.state === 'selected' ? 1 : 0,
   });
-  input.context.sourceIds.forEach((id) => sourceId(id, 'context.sourceIds[]', sources));
+  input.context.sourceIds.forEach((id) => {
+    sourceId(id, 'context.sourceIds[]', sources);
+  });
   if (input.context.state === 'selected') {
     text(input.context.trainerId, 'context.trainerId', {max: 256});
     integer(input.context.levelCap, 'context.levelCap', {min: 1, max: 100});

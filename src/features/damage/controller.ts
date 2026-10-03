@@ -32,7 +32,7 @@ export function useDamagePlanner(
   const latestIdentityRef = useRef(identity);
   const requestIdRef = useRef(0);
   latestIdentityRef.current = identity;
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: dependencies are intentional triggers for updating damage planner state when individual or revision changes
   useLayoutEffect(() => {
     dispatch({type: 'identity-changed', identity});
     requestIdRef.current += 1;

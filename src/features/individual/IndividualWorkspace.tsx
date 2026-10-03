@@ -73,6 +73,7 @@ function MoveGroup({title, known, moves, kind}: {title: string; known: boolean; 
       ) : (
         <ul className={styles.moveList}>
           {moves.map((move, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: a lista capturada pode repetir golpes; o índice evita chaves duplicadas e a lista é somente leitura
             <li className={styles.moveItem} key={`${index}-${move.id}`}>
               <span className={styles.moveName}>{displayId(move.id)}</span>
               <span className={styles.moveFacts}>
@@ -156,8 +157,8 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
           <p className={styles.listState}>Nenhuma origem registrada.</p>
         ) : (
           <ul className={styles.sourceList}>
-            {snapshot.sources.map((source, index) => (
-              <li key={`${source.kind}-${index}`}>
+            {snapshot.sources.map((source) => (
+              <li key={source.kind}>
                 <span className={styles.sourceTitle}>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
                 <span>Modificado em {timestampLabel(source.modifiedAt)}</span>
                 <code aria-label={`SHA-256 do arquivo ${source.kind === 'party' ? 'da equipe' : 'do PC'}`}>{source.sha256}</code>
@@ -213,8 +214,8 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
           <p className={styles.listState}>Nenhum aviso registrado.</p>
         ) : (
           <ul className={styles.warningList}>
-            {warnings.map((warning, index) => (
-              <li key={`${index}-${warning}`}>{warning}</li>
+            {warnings.map((warning) => (
+              <li key={warning}>{warning}</li>
             ))}
           </ul>
         )}
@@ -234,6 +235,7 @@ function RawMoveIds({title, moves, known}: {title: string; moves: MoveEntry[]; k
       ) : (
         <ul>
           {moves.map((move, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: a lista capturada pode repetir golpes; o índice evita chaves duplicadas e a lista é somente leitura
             <li key={`${index}-${move.id}`}>
               <code>{move.id}</code>
             </li>
