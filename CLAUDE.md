@@ -1,3 +1,5 @@
+Siga as instruções em AGENTS.md (fluxo Issue → branch → PR com `Closes #N`); o restante deste arquivo continua valendo.
+
 # Contexto do projeto para Claude
 
 Este repositório é um aplicativo desktop local para Cobblemon. Leia este arquivo e, antes de modificar código, leia também [`docs/GUIA-TECNICO.md`](docs/GUIA-TECNICO.md), [`HANDOFF.md`](HANDOFF.md) e o [índice documental](docs/README.md). O guia técnico consolida arquitetura, contratos, comandos seguros, limites e os bloqueios atuais.
