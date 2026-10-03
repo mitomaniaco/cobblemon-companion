@@ -20,7 +20,7 @@ Comandos e resultados registrados:
 
 ```text
 npm run check
-Falhou no shim global: MODULE_NOT_FOUND em C:\Users\caio\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+Falhou no shim global: MODULE_NOT_FOUND em C:\Users\<usuário>\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
 
 & 'C:\Program Files\nodejs\npm.cmd' run check
 Passou: typecheck; Vitest 4/4; Vite build.

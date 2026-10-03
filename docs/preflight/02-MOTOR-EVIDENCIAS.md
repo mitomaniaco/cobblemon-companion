@@ -92,7 +92,7 @@ Antes das correções, foram reproduzidos os dois defeitos descritos acima. Depo
 - trilha fora do horizonte com unidade explícita de turnos, traces de eventos com múltiplas entradas e unidade ausente sem inferência;
 - ponte real com `@smogon/calc`.
 
-`npm run test:comparison` também foi tentado, mas o npm do ambiente falhou antes de iniciar qualquer teste porque aponta para `C:\Users\caio\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js`, que não existe. Nenhuma instalação ou reparo foi feito; a execução direta com o Node validou a suíte.
+`npm run test:comparison` também foi tentado, mas o npm do ambiente falhou antes de iniciar qualquer teste porque aponta para `C:\Users\<usuário>\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js`, que não existe. Nenhuma instalação ou reparo foi feito; a execução direta com o Node validou a suíte.
 
 ## Arquivos desta frente
 

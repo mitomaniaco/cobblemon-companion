@@ -1,6 +1,6 @@
 # Handoff histórico — Companion Cobblemon
 
-Esta é a fotografia documental do workspace ATM10 registrada em 24/09/2026, não o estado atual do app portátil. Para a execução e o estado vigente, use o [HANDOFF portátil na raiz do app](../HANDOFF.md). O contexto ampliado abaixo preserva decisões e evidências do workspace completo de origem (`C:\mnt\c\Users\caio\Documents\ChatGPT\atm10`), incluindo ferramentas e arquivos que não foram incluídos no pacote. Esta síntese reflete inspeção documental e estática; nenhuma CLI, app, teste, save ou servidor foi executado/acessado naquela tarefa.
+Esta é a fotografia documental do workspace ATM10 registrada em 24/09/2026, não o estado atual do app portátil. Para a execução e o estado vigente, use o [HANDOFF portátil na raiz do app](../HANDOFF.md). O contexto ampliado abaixo preserva decisões e evidências do workspace completo de origem (`<raiz do workspace de origem>`), incluindo ferramentas e arquivos que não foram incluídos no pacote. Esta síntese reflete inspeção documental e estática; nenhuma CLI, app, teste, save ou servidor foi executado/acessado naquela tarefa.
 
 ## Objetivo e escopo
 

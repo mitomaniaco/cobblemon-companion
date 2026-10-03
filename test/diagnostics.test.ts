@@ -5,13 +5,13 @@ describe('scrubDiagnosticText', () => {
   it('remove caminhos locais Windows, UNC, file:// e POSIX de usuário', () => {
     const text = [
       'falha em D:\\Dev\\cobblemon-companion\\config.json',
-      'em C:/Users/caio/AppData/x.js:10:5',
+      'em C:/Users/usuario1/AppData/x.js:10:5',
       'em \\\\servidor\\share\\mundo\\pokemon.dat',
       'em file:///D:/Dev/app/index.html',
-      'em (/home/caio/jogo/world/party.dat)',
+      'em (/home/usuario1/jogo/world/party.dat)',
     ].join('\n');
     const scrubbed = scrubDiagnosticText(text);
-    expect(scrubbed).not.toMatch(/caio|Dev|servidor|share|jogo/);
+    expect(scrubbed).not.toMatch(/usuario1|Dev|servidor|share|jogo/);
     expect(scrubbed.match(/\[caminho local\]/g)).toHaveLength(5);
   });
 
@@ -29,10 +29,10 @@ describe('scrubDiagnosticText', () => {
 
 describe('buildDiagnosticReport', () => {
   it('sanitiza mensagem, pilha e componentes e limita o tamanho', () => {
-    const error = new Error('não achei C:\\Users\\caio\\world\\a.dat do jogador 123e4567-e89b-12d3-a456-426614174000');
+    const error = new Error('não achei C:\\Users\\usuario1\\world\\a.dat do jogador 123e4567-e89b-12d3-a456-426614174000');
     error.stack = `Error: x\n${Array.from({length: 200}, (_, i) => `at f${i} (D:\\Dev\\app\\f${i}.js:1:1)`).join('\n')}`;
     const report = buildDiagnosticReport({error, componentStack: '\n    at Painel (D:\\Dev\\app\\Painel.tsx:3:1)'});
-    expect(report).not.toMatch(/caio|Dev|123e4567/);
+    expect(report).not.toMatch(/usuario1|Dev|123e4567/);
     expect(report).toContain('Componentes:');
     expect(report.split('\n').length).toBeLessThan(60);
   });
