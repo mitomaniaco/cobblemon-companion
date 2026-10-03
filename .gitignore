@@ -6,3 +6,6 @@ public/pokemon/*.png
 public/pokemon/provenance.json
 src/data/species-artwork.json
 .prepare-ui-assets-*/
+coverage/
+reports/
+.stryker-tmp/

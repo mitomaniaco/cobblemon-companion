@@ -16,7 +16,9 @@
     "format": "biome format --write",
     "knip": "knip",
     "arch": "depcruise src electron --config .dependency-cruiser.cjs",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "test:coverage": "vitest run --coverage",
+    "test:mutation": "stryker run"
   },
   "engines": {
     "node": ">=22"
@@ -33,9 +35,12 @@
     "@biomejs/biome": "2.5.15",
     "@commitlint/cli": "21.2.3",
     "@commitlint/config-conventional": "21.2.3",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "5.0.4",
+    "@vitest/coverage-v8": "3.2.4",
     "dependency-cruiser": "18.5.0",
     "electron": "44.4.3",
     "knip": "6.39.0",
