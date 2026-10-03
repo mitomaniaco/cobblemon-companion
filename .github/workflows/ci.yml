@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -27,6 +29,15 @@ jobs:
         run: npm run lint
       - name: Knip (arquivos e dependências não usados)
         run: npm run knip
+      - name: dependency-cruiser (contratos de arquitetura)
+        run: npm run arch
+      - name: Commitlint (título do PR e commits)
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "$PR_TITLE" | npx commitlint
+          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
       - name: Typecheck
         run: npm run typecheck
       - name: Testes
