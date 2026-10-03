@@ -35,15 +35,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "style": {
-        "noDescendingSpecificity": "warn"
-      },
-      "a11y": {
-        "useSemanticElements": "warn",
-        "useAriaPropsSupportedByRole": "warn",
-        "noNoninteractiveTabindex": "warn"
-      }
+      "recommended": true
     }
   },
   "assist": {

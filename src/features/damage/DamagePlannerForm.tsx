@@ -174,7 +174,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   </fieldset>
                 </div>
 
-                <div className={`${styles.confirmations} real-confirmations`} role="group" aria-label="Confirmações do cenário">
+                <fieldset className={`${styles.confirmations} real-confirmations`} aria-label="Confirmações do cenário">
                   {DAMAGE_CONFIRMATION_KEYS.map((key) => (
                     <Checkbox
                       key={key}
@@ -185,7 +185,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                       {DAMAGE_CONFIRMATION_COPY[key]}
                     </Checkbox>
                   ))}
-                </div>
+                </fieldset>
               </fieldset>
             </fieldset>
 

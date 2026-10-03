@@ -79,7 +79,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
           </div>
 
           {preview ? (
-            <div className={styles.preview} aria-live="polite" aria-label="Prévia da troca planejada">
+            <output className={styles.preview} aria-label="Prévia da troca planejada">
               <div>
                 <span>Antes · slot {preview.slotIndex + 1}</span>
                 <strong>{importedLabel(preview.beforeMoveId)}</strong>
@@ -95,7 +95,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
                   ? 'O cálculo real compara o primeiro slot equipado.'
                   : `Esta prévia usa o slot ${preview.slotIndex + 1}; o cálculo real continua comparando o primeiro slot equipado.`}
               </p>
-            </div>
+            </output>
           ) : (
             <p className={styles.emptyPreview}>Escolha um slot e um candidato para conferir o antes e depois.</p>
           )}

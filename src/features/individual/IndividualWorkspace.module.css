@@ -309,6 +309,7 @@
   color: var(--color-warning);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: .warningList não está dentro de .rawMoveGroup; sem elementos em comum */
 .warningList li {
   overflow-wrap: anywhere;
 }
