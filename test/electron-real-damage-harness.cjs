@@ -34,7 +34,7 @@ async function waitForWindow() {
   while (Date.now() < deadline) {
     const window = BrowserWindow.getAllWindows()[0];
     if (window && !window.isDestroyed() && !window.webContents.isLoadingMainFrame()) return window;
-    await new Promise(resolve => setTimeout(resolve, 25));
+    await new Promise((resolve) => setTimeout(resolve, 25));
   }
   throw new Error('A janela Electron não carregou.');
 }
@@ -43,14 +43,14 @@ async function waitFor(contents, expression, description) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     if (await contents.executeJavaScript(expression)) return;
-    await new Promise(resolve => setTimeout(resolve, 25));
+    await new Promise((resolve) => setTimeout(resolve, 25));
   }
   throw new Error(`Tempo esgotado: ${description}.`);
 }
 
 function makeRequest(snapshot, individual, candidateMoveId) {
   return {
-    sources: snapshot.sources.map(source => ({kind: source.kind, sha256: source.sha256})),
+    sources: snapshot.sources.map((source) => ({kind: source.kind, sha256: source.sha256})),
     individualUuid: individual.uuid,
     candidateMoveId,
     target: {
@@ -84,11 +84,13 @@ function findRunnable(snapshot) {
     if (!individual.equippedMovesKnown || !individual.learnedMovesKnown || !individual.equippedMoves[0]) continue;
     if (!COMPATIBILITY.moves[individual.equippedMoves[0].id]) continue;
     for (const move of individual.learnedMoves) {
-      if (individual.equippedMoves.some(equipped => equipped.id === move.id) || !COMPATIBILITY.moves[move.id]) continue;
+      if (individual.equippedMoves.some((equipped) => equipped.id === move.id) || !COMPATIBILITY.moves[move.id]) continue;
       try {
         const result = calculateRealDamage(snapshot, makeRequest(snapshot, individual, move.id));
         return {individual, candidateMoveId: move.id, result};
-      } catch { /* A stricter adapter condition excludes this candidate. */ }
+      } catch {
+        /* A stricter adapter condition excludes this candidate. */
+      }
     }
   }
   return null;
@@ -130,9 +132,12 @@ async function chooseReactAriaOption(contents, label, optionName) {
     if (triggers.length !== 1) throw new Error('Campo acessível não encontrado de forma única.');
     triggers[0].click();
   })()`);
-  await waitFor(contents, `(() => [...document.querySelectorAll('[role="listbox"]')].some(listbox =>
+  await waitFor(
+    contents,
+    `(() => [...document.querySelectorAll('[role="listbox"]')].some(listbox =>
     listbox.getAttribute('aria-label') === ${JSON.stringify(listboxName)} && listbox.getClientRects().length > 0))()`,
-  `opções de ${label}`);
+    `opções de ${label}`,
+  );
   await contents.executeJavaScript(`(() => {
     const expectedListbox = ${JSON.stringify(listboxName)};
     const expectedOption = ${JSON.stringify(optionName)};
@@ -168,20 +173,23 @@ async function setLabeledNumber(contents, label, value, statGroup = null) {
 }
 
 function displayMoveLabel(id) {
-  return id.replace(/^[^:]+:/, '').replace(/[_-]+/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase());
+  return id
+    .replace(/^[^:]+:/, '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
 async function run() {
   const window = await waitForWindow();
   window.setSize(1280, 1700);
   const {webContents} = window;
-  await waitFor(webContents,
+  await waitFor(
+    webContents,
     "Boolean(window.cobblemonCompanion?.readPlayerSnapshot && [...document.querySelectorAll('button')].some(button => button.innerText.trim() === 'Atualizar do save'))",
-    'ponte e ação acessível de atualização');
+    'ponte e ação acessível de atualização',
+  );
   await clickButtonByAccessibleName(webContents, 'Atualizar do save', 'refresh-snapshot');
-  await waitFor(webContents,
-    "Boolean(document.querySelector('[data-testid=\"collection\"] h2'))",
-    'snapshot carregado na interface');
+  await waitFor(webContents, 'Boolean(document.querySelector(\'[data-testid="collection"] h2\'))', 'snapshot carregado na interface');
 
   const snapshot = await webContents.executeJavaScript('(async () => await window.cobblemonCompanion.readPlayerSnapshot())()');
   const probe = findRunnable(snapshot);
@@ -189,13 +197,17 @@ async function run() {
 
   const collectionLabel = probe.individual.location.container === 'party' ? 'Equipe' : 'PC';
   await clickButtonByAccessibleName(webContents, collectionLabel);
-  await waitFor(webContents,
+  await waitFor(
+    webContents,
     `document.querySelector('[data-testid="collection"] h2')?.textContent.trim() === ${JSON.stringify(collectionLabel)}`,
-    'coleção do indivíduo capturado');
+    'coleção do indivíduo capturado',
+  );
   const uuid = JSON.stringify(probe.individual.uuid);
-  await waitFor(webContents,
+  await waitFor(
+    webContents,
     `Boolean([...document.querySelectorAll('[data-testid="collection"] [role="option"][data-individual-id]')].some(item => item.getAttribute('data-individual-id') === ${uuid}))`,
-    'indivíduo capturado na coleção atual');
+    'indivíduo capturado na coleção atual',
+  );
   await webContents.executeJavaScript(`(() => {
     const collection = document.querySelector('[data-testid="collection"]');
     const item = [...(collection?.querySelectorAll('[role="option"][data-individual-id]') || [])]
@@ -203,14 +215,18 @@ async function run() {
     if (!item) throw new Error('Indivíduo capturado não está na coleção atual.');
     item.click();
   })()`);
-  await waitFor(webContents,
+  await waitFor(
+    webContents,
     `Boolean(document.querySelector('[data-testid="individual-details"]') && [...document.querySelectorAll('[data-testid="collection"] [role="option"][data-individual-id]')].some(item => item.getAttribute('data-individual-id') === ${uuid} && item.getAttribute('aria-selected') === 'true'))`,
-    'seleção do indivíduo capturado por UUID');
+    'seleção do indivíduo capturado por UUID',
+  );
 
   await clickButtonByAccessibleName(webContents, 'Dano');
-  await waitFor(webContents,
+  await waitFor(
+    webContents,
     "Boolean(document.querySelector('.real-damage-planner h3')?.textContent.trim() === 'Calcular dano com este indivíduo')",
-    'planner do indivíduo selecionado');
+    'planner do indivíduo selecionado',
+  );
   const initialGate = await webContents.executeJavaScript(`(() => {
     const form = document.querySelector('form.real-damage-form');
     const button = [...(form?.querySelectorAll('button, [role="button"]') || [])]
@@ -248,16 +264,28 @@ async function run() {
     }
     assumptions.forEach(input => input.click());
   })()`);
-  await waitFor(webContents, `(() => {
+  await waitFor(
+    webContents,
+    `(() => {
     const button = [...document.querySelectorAll('form.real-damage-form button, form.real-damage-form [role="button"]')]
       .find(element => (element.innerText || element.textContent).trim() === 'Calcular rolls de dano');
     const assumptions = [...document.querySelectorAll('.real-confirmations input[type="checkbox"]')];
     return button?.disabled === false && assumptions.length === 5
       && assumptions.every(input => input.checked);
-  })()`, 'formulário completo com as cinco confirmações');
+  })()`,
+    'formulário completo com as cinco confirmações',
+  );
   await clickButtonByAccessibleName(webContents, 'Calcular rolls de dano');
-  await waitFor(webContents, "document.querySelector('.real-damage-planner')?.getAttribute('aria-busy') === 'true' || Boolean(document.querySelector('.real-damage-result') || document.querySelector('.real-damage-error'))", 'o submit acionou o cálculo');
-  await waitFor(webContents, "Boolean(document.querySelector('.real-damage-result') || document.querySelector('.real-damage-error'))", 'resposta do cálculo real');
+  await waitFor(
+    webContents,
+    "document.querySelector('.real-damage-planner')?.getAttribute('aria-busy') === 'true' || Boolean(document.querySelector('.real-damage-result') || document.querySelector('.real-damage-error'))",
+    'o submit acionou o cálculo',
+  );
+  await waitFor(
+    webContents,
+    "Boolean(document.querySelector('.real-damage-result') || document.querySelector('.real-damage-error'))",
+    'resposta do cálculo real',
+  );
   const calculationError = await webContents.executeJavaScript("document.querySelector('.real-damage-error')?.textContent || null");
   check(!calculationError, `O cálculo real foi bloqueado: ${calculationError || ''}`);
 
@@ -280,15 +308,21 @@ async function run() {
     `${probe.result.candidate.min}–${probe.result.candidate.max} HP`,
   ];
   assert.deepEqual(rendered.ranges, expected);
-  check(rendered.rangeCount === 2 && rendered.ruleset && rendered.digest && rendered.blockedCopy,
-    'A UI não exibiu os dois ranges, a versão, o vínculo ou os limites do cálculo.');
+  check(
+    rendered.rangeCount === 2 && rendered.ruleset && rendered.digest && rendered.blockedCopy,
+    'A UI não exibiu os dois ranges, a versão, o vínculo ou os limites do cálculo.',
+  );
 
-  await webContents.executeJavaScript("document.querySelector('.real-damage-planner').scrollIntoView({block: 'start', behavior: 'instant'})");
+  await webContents.executeJavaScript(
+    "document.querySelector('.real-damage-planner').scrollIntoView({block: 'start', behavior: 'instant'})",
+  );
   await webContents.executeJavaScript('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
   const image = await window.capturePage();
   fs.writeFileSync(screenshotPath, image.toPNG());
   check(image.getSize().width > 0 && image.getSize().height > 0, 'A captura da tela ficou vazia.');
-  console.log(JSON.stringify({status: 'calculated', displayedRanges: rendered.rangeCount, ruleset: rendered.ruleset, digest: rendered.digest}));
+  console.log(
+    JSON.stringify({status: 'calculated', displayedRanges: rendered.rangeCount, ruleset: rendered.ruleset, digest: rendered.digest}),
+  );
 }
 
 async function finish(error) {
@@ -301,7 +335,20 @@ async function finish(error) {
   app.quit();
 }
 
-const watchdog = setTimeout(() => { void finish(new Error('Harness de cálculo real excedeu 30 segundos.')); }, 30_000);
-app.whenReady().then(run).then(() => finish(), error => finish(error)).finally(() => clearTimeout(watchdog));
-process.on('uncaughtException', error => { void finish(error); });
-process.on('unhandledRejection', error => { void finish(error); });
+const watchdog = setTimeout(() => {
+  void finish(new Error('Harness de cálculo real excedeu 30 segundos.'));
+}, 30_000);
+app
+  .whenReady()
+  .then(run)
+  .then(
+    () => finish(),
+    (error) => finish(error),
+  )
+  .finally(() => clearTimeout(watchdog));
+process.on('uncaughtException', (error) => {
+  void finish(error);
+});
+process.on('unhandledRejection', (error) => {
+  void finish(error);
+});

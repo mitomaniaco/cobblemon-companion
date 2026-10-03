@@ -11,11 +11,16 @@ import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from 
 const statNames: PlayerStat[] = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
 
 function unknownStatFacts<T>(sourceKind: 'party' | 'pc', valueType: string): Record<PlayerStat, PlayerStatFact<T>> {
-  return Object.fromEntries(statNames.map(stat => [stat, {
-    state: 'unknown' as const,
-    reason: 'not-captured' as const,
-    provenance: {sourceKind, nbtPath: `${valueType}.${stat}`},
-  }])) as Record<PlayerStat, PlayerStatFact<T>>;
+  return Object.fromEntries(
+    statNames.map((stat) => [
+      stat,
+      {
+        state: 'unknown' as const,
+        reason: 'not-captured' as const,
+        provenance: {sourceKind, nbtPath: `${valueType}.${stat}`},
+      },
+    ]),
+  ) as Record<PlayerStat, PlayerStatFact<T>>;
 }
 
 function individual(
@@ -58,7 +63,7 @@ function snapshot(individuals: PlayerIndividual[]): PlayerSnapshot {
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
-  const promise = new Promise<T>(done => {
+  const promise = new Promise<T>((done) => {
     resolve = done;
   });
   return {promise, resolve};
@@ -66,18 +71,28 @@ function deferred<T>() {
 
 describe('controlador de sessão do treinador', () => {
   it('seleciona a instância exata quando duas capturas têm a mesma espécie', () => {
-    const first = individual('uuid-first', 'pikachu', {container: 'party', slot: 0}, {
-      formId: 'normal',
-      level: 12,
-    });
-    const second = individual('uuid-second', 'pikachu', {container: 'party', slot: 1}, {
-      formId: 'cosplay',
-      level: 47,
-    });
+    const first = individual(
+      'uuid-first',
+      'pikachu',
+      {container: 'party', slot: 0},
+      {
+        formId: 'normal',
+        level: 12,
+      },
+    );
+    const second = individual(
+      'uuid-second',
+      'pikachu',
+      {container: 'party', slot: 1},
+      {
+        formId: 'cosplay',
+        level: 47,
+      },
+    );
     let state = completeTrainerSessionRefresh(createInitialTrainerSessionState(), snapshot([first, second]));
 
     state = selectTrainerSessionIndividual(state, second.uuid);
-    const selected = state.snapshot?.individuals.find(item => item.uuid === state.selectedUuid);
+    const selected = state.snapshot?.individuals.find((item) => item.uuid === state.selectedUuid);
 
     expect(state.selectedUuid).toBe('uuid-second');
     expect(selected).toMatchObject({uuid: 'uuid-second', formId: 'cosplay', level: 47});
@@ -85,10 +100,13 @@ describe('controlador de sessão do treinador', () => {
   });
 
   it('preserva o plano na mesma UUID e o redefine ao mudar de indivíduo', () => {
-    const loaded = completeTrainerSessionRefresh(createInitialTrainerSessionState(), snapshot([
-      individual('uuid-first', 'pikachu', {container: 'party', slot: 0}),
-      individual('uuid-second', 'pikachu', {container: 'party', slot: 1}),
-    ]));
+    const loaded = completeTrainerSessionRefresh(
+      createInitialTrainerSessionState(),
+      snapshot([
+        individual('uuid-first', 'pikachu', {container: 'party', slot: 0}),
+        individual('uuid-second', 'pikachu', {container: 'party', slot: 1}),
+      ]),
+    );
     const selected = selectTrainerSessionIndividual(loaded, 'uuid-first');
     const planned = updateTrainerSessionMoveSwap(selected, {
       slotIndex: 2,
@@ -116,7 +134,7 @@ describe('controlador de sessão do treinador', () => {
     const pendingRead = deferred<PlayerSnapshot>();
     let state = completeTrainerSessionRefresh(createInitialTrainerSessionState(), oldSnapshot);
     state = updateTrainerSessionMoveSwap(state, {slotIndex: 1, candidateMoveId: 'surf'});
-    const readCompletion = pendingRead.promise.then(result => {
+    const readCompletion = pendingRead.promise.then((result) => {
       state = completeTrainerSessionRefresh(state, result);
     });
 
@@ -151,18 +169,24 @@ describe('controlador de sessão do treinador', () => {
   });
 
   it('escolhe a posição mais baixa da party e usa a menor caixa e posição quando não há party', () => {
-    const partyState = completeTrainerSessionRefresh(createInitialTrainerSessionState(), snapshot([
-      individual('later-party', 'pikachu', {container: 'party', slot: 4}),
-      individual('first-party', 'eevee', {container: 'party', slot: 1}),
-      individual('pc-record', 'ditto', {container: 'pc', box: 0, boxName: null, slot: 0}),
-    ]));
+    const partyState = completeTrainerSessionRefresh(
+      createInitialTrainerSessionState(),
+      snapshot([
+        individual('later-party', 'pikachu', {container: 'party', slot: 4}),
+        individual('first-party', 'eevee', {container: 'party', slot: 1}),
+        individual('pc-record', 'ditto', {container: 'pc', box: 0, boxName: null, slot: 0}),
+      ]),
+    );
     expect(partyState.selectedUuid).toBe('first-party');
 
-    const pcState = completeTrainerSessionRefresh(createInitialTrainerSessionState(), snapshot([
-      individual('later-pc', 'pikachu', {container: 'pc', box: 3, boxName: null, slot: 0}),
-      individual('first-pc', 'eevee', {container: 'pc', box: 1, boxName: null, slot: 4}),
-      individual('same-box-earlier', 'ditto', {container: 'pc', box: 1, boxName: null, slot: 2}),
-    ]));
+    const pcState = completeTrainerSessionRefresh(
+      createInitialTrainerSessionState(),
+      snapshot([
+        individual('later-pc', 'pikachu', {container: 'pc', box: 3, boxName: null, slot: 0}),
+        individual('first-pc', 'eevee', {container: 'pc', box: 1, boxName: null, slot: 4}),
+        individual('same-box-earlier', 'ditto', {container: 'pc', box: 1, boxName: null, slot: 2}),
+      ]),
+    );
     expect(pcState.selectedUuid).toBe('same-box-earlier');
 
     const emptyState = completeTrainerSessionRefresh(createInitialTrainerSessionState(), snapshot([]));

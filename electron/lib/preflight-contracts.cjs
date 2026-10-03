@@ -20,10 +20,22 @@ const CONTRACT = Object.freeze({
 const STAT_KEYS = Object.freeze(['hp', 'atk', 'def', 'spa', 'spd', 'spe']);
 const CAPTURE_KINDS = Object.freeze(['live-capture', 'offline-reconstruction', 'synthetic-fixture']);
 const SOURCE_KINDS = Object.freeze([
-  'player-save', 'world-state', 'resource', 'ruleset', 'battle-log', 'manual-observation', 'fixture', 'export',
+  'player-save',
+  'world-state',
+  'resource',
+  'ruleset',
+  'battle-log',
+  'manual-observation',
+  'fixture',
+  'export',
 ]);
 const FACT_KINDS = Object.freeze([
-  'save', 'ruleset', 'battle-observation', 'manual-observation', 'offline-reconstruction', 'synthetic-fixture',
+  'save',
+  'ruleset',
+  'battle-observation',
+  'manual-observation',
+  'offline-reconstruction',
+  'synthetic-fixture',
 ]);
 const ACCESS_NOW = Object.freeze(['equipped', 'learned', 'acquirable-now']);
 const ACCESS_STATUSES = Object.freeze([...ACCESS_NOW, 'future', 'unknown', 'unavailable']);
@@ -105,14 +117,17 @@ function jsonValue(value, path, depth = 0, seen = new WeakSet()) {
     if (Object.getOwnPropertySymbols(value).length > 0) fail(path, 'symbol properties are not allowed');
     for (const name of ownNames) {
       if (name === 'length') continue;
-      if (!/^(0|[1-9][0-9]*)$/.test(name) || Number(name) >= value.length || !names.includes(name)) fail(`${path}.${name}`, 'arrays may contain enumerable indexed JSON values only');
+      if (!/^(0|[1-9][0-9]*)$/.test(name) || Number(name) >= value.length || !names.includes(name))
+        fail(`${path}.${name}`, 'arrays may contain enumerable indexed JSON values only');
     }
     for (const name of names) {
-      if (!/^(0|[1-9][0-9]*)$/.test(name) || Number(name) >= value.length) fail(`${path}.${name}`, 'arrays may contain indexed JSON values only');
+      if (!/^(0|[1-9][0-9]*)$/.test(name) || Number(name) >= value.length)
+        fail(`${path}.${name}`, 'arrays may contain indexed JSON values only');
     }
     for (let index = 0; index < value.length; index++) {
       const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
-      if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, 'value')) fail(`${path}[${index}]`, 'accessor or sparse array entry is not allowed');
+      if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, 'value'))
+        fail(`${path}[${index}]`, 'accessor or sparse array entry is not allowed');
       jsonValue(descriptor.value, `${path}[${index}]`, depth + 1, seen);
     }
   } else {
@@ -120,10 +135,12 @@ function jsonValue(value, path, depth = 0, seen = new WeakSet()) {
     const names = Object.keys(value);
     if (names.length > CONTRACT.limits.maxObjectKeys) fail(path, `exceeds ${CONTRACT.limits.maxObjectKeys} keys`);
     const ownNames = Object.getOwnPropertyNames(value);
-    if (ownNames.length !== names.length || Object.getOwnPropertySymbols(value).length > 0) fail(path, 'non-enumerable or symbol properties are not allowed');
-    names.forEach(name => {
+    if (ownNames.length !== names.length || Object.getOwnPropertySymbols(value).length > 0)
+      fail(path, 'non-enumerable or symbol properties are not allowed');
+    names.forEach((name) => {
       const descriptor = Object.getOwnPropertyDescriptor(value, name);
-      if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, 'value')) fail(`${path}.${name}`, 'accessor properties are not allowed');
+      if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, 'value'))
+        fail(`${path}.${name}`, 'accessor properties are not allowed');
       jsonValue(descriptor.value, `${path}.${name}`, depth + 1, seen);
     });
   }
@@ -299,20 +316,36 @@ function validateObserved(value, path, sources) {
   keys(value, ['sourceId', 'fields', 'moves'], path);
   sourceId(value.sourceId, `${path}.sourceId`, sources);
   record(value.fields, `${path}.fields`);
-  const required = ['level', 'nature', 'originalNature', 'ability', 'heldItem', 'friendship', 'savedHealth', 'savedStatus', 'teraType', 'ivs', 'evs'];
+  const required = [
+    'level',
+    'nature',
+    'originalNature',
+    'ability',
+    'heldItem',
+    'friendship',
+    'savedHealth',
+    'savedStatus',
+    'teraType',
+    'ivs',
+    'evs',
+  ];
   keys(value.fields, [...required, 'stats'], `${path}.fields`);
   for (const name of required) {
     if (!own(value.fields, name)) fail(`${path}.fields.${name}`, 'must be explicit, including unknown');
   }
-  for (const name of required.filter(name => !['ivs', 'evs'].includes(name))) fact(value.fields[name], `${path}.fields.${name}`, sources);
+  for (const name of required.filter((name) => !['ivs', 'evs'].includes(name))) fact(value.fields[name], `${path}.fields.${name}`, sources);
   statFacts(value.fields.ivs, `${path}.fields.ivs`, sources);
   statFacts(value.fields.evs, `${path}.fields.evs`, sources);
   if (value.fields.stats !== undefined) statFacts(value.fields.stats, `${path}.fields.stats`, sources);
   if (value.fields.level.state === 'known') integer(value.fields.level.value, `${path}.fields.level.value`, {min: 1, max: 100});
-  if (value.fields.friendship.state === 'known') integer(value.fields.friendship.value, `${path}.fields.friendship.value`, {min: 0, max: 255});
-  if (value.fields.savedHealth.state === 'known') integer(value.fields.savedHealth.value, `${path}.fields.savedHealth.value`, {min: 0, max: 100000});
-  if (value.fields.savedStatus.state === 'known' && value.fields.savedStatus.value !== null) text(value.fields.savedStatus.value, `${path}.fields.savedStatus.value`);
-  for (const field of ['nature', 'originalNature']) if (value.fields[field].state === 'known') text(value.fields[field].value, `${path}.fields.${field}.value`, {max: 128});
+  if (value.fields.friendship.state === 'known')
+    integer(value.fields.friendship.value, `${path}.fields.friendship.value`, {min: 0, max: 255});
+  if (value.fields.savedHealth.state === 'known')
+    integer(value.fields.savedHealth.value, `${path}.fields.savedHealth.value`, {min: 0, max: 100000});
+  if (value.fields.savedStatus.state === 'known' && value.fields.savedStatus.value !== null)
+    text(value.fields.savedStatus.value, `${path}.fields.savedStatus.value`);
+  for (const field of ['nature', 'originalNature'])
+    if (value.fields[field].state === 'known') text(value.fields[field].value, `${path}.fields.${field}.value`, {max: 128});
   for (const field of ['ability', 'heldItem', 'teraType']) {
     const entry = value.fields[field];
     if (entry.state === 'known' && entry.value !== null) resourceId(entry.value, `${path}.fields.${field}.value`);
@@ -324,7 +357,7 @@ function validatePlan(value, path, sources, observedMoves, observedHeldItem) {
   record(value, path);
   keys(value, ['state', 'buildId', 'provenance', 'moves', 'item', 'notes'], path);
   if (value.state === 'none') {
-    if (Object.keys(value).some(key => key !== 'state')) fail(path, 'state none cannot contain a draft');
+    if (Object.keys(value).some((key) => key !== 'state')) fail(path, 'state none cannot contain a draft');
     return {usableNow: false, moveStatuses: []};
   }
   if (value.state !== 'draft') fail(`${path}.state`, 'must be none or draft');
@@ -342,8 +375,10 @@ function validatePlan(value, path, sources, observedMoves, observedHeldItem) {
     if (seen.has(move.id)) fail(`${movePath}.id`, 'duplicates another planned move');
     seen.add(move.id);
     validateAccess(move.access, `${movePath}.access`, sources);
-    if (move.access.status === 'equipped' && !observedMoves.equipped.has(move.id)) fail(movePath, 'equipped availability is not observed on this individual');
-    if (move.access.status === 'learned' && !observedMoves.equipped.has(move.id) && !observedMoves.learned.has(move.id)) fail(movePath, 'learned availability is not observed on this individual');
+    if (move.access.status === 'equipped' && !observedMoves.equipped.has(move.id))
+      fail(movePath, 'equipped availability is not observed on this individual');
+    if (move.access.status === 'learned' && !observedMoves.equipped.has(move.id) && !observedMoves.learned.has(move.id))
+      fail(movePath, 'learned availability is not observed on this individual');
     if (!ACCESS_NOW.includes(move.access.status)) usableNow = false;
     moveStatuses.push({id: move.id, status: move.access.status});
   });
@@ -353,7 +388,8 @@ function validatePlan(value, path, sources, observedMoves, observedHeldItem) {
     resourceId(value.item.id, `${path}.item.id`);
     validateAccess(value.item.access, `${path}.item.access`, sources, {item: true});
     if (value.item.access.status === 'equipped') {
-      if (observedHeldItem.state !== 'known' || observedHeldItem.value !== value.item.id) fail(`${path}.item`, 'equipped item is not observed on this individual');
+      if (observedHeldItem.state !== 'known' || observedHeldItem.value !== value.item.id)
+        fail(`${path}.item`, 'equipped item is not observed on this individual');
     }
     if (!ACCESS_NOW.includes(value.item.access.status)) usableNow = false;
   }
@@ -368,9 +404,8 @@ function validateIndividual(value, path, sources, locations, identities) {
   validateLocation(value.location, `${path}.location`);
   if (identities.has(value.identity.uuid)) fail(`${path}.identity.uuid`, 'duplicates another individual UUID');
   identities.add(value.identity.uuid);
-  const locationKey = value.location.container === 'party'
-    ? `party:${value.location.slot}`
-    : `pc:${value.location.box}:${value.location.slot}`;
+  const locationKey =
+    value.location.container === 'party' ? `party:${value.location.slot}` : `pc:${value.location.box}:${value.location.slot}`;
   if (locations.has(locationKey)) fail(`${path}.location`, 'duplicates another occupied slot');
   locations.add(locationKey);
   const observed = validateObserved(value.observed, `${path}.observed`, sources);
@@ -396,7 +431,7 @@ function validatePreflight(input) {
   if (!CAPTURE_KINDS.includes(input.snapshot.kind)) fail('snapshot.kind', 'is invalid');
   iso(input.snapshot.capturedAt, 'snapshot.capturedAt');
   uniqueStrings(input.snapshot.sourceIds, 'snapshot.sourceIds', {max: CONTRACT.limits.maxSources, min: 1});
-  input.snapshot.sourceIds.forEach(id => sourceId(id, 'snapshot.sourceIds[]', sources));
+  input.snapshot.sourceIds.forEach((id) => sourceId(id, 'snapshot.sourceIds[]', sources));
   if (!['complete', 'partial'].includes(input.snapshot.completeness)) fail('snapshot.completeness', 'is invalid');
   if (!['atomic', 'best-effort', 'unknown'].includes(input.snapshot.atomicity)) fail('snapshot.atomicity', 'is invalid');
   record(input.snapshot.fingerprint, 'snapshot.fingerprint');
@@ -408,8 +443,11 @@ function validatePreflight(input) {
   keys(input.context, ['state', 'trainerId', 'levelCap', 'allowedTypes', 'sourceIds'], 'context');
   if (!['selected', 'unselected'].includes(input.context.state)) fail('context.state', 'must be selected or unselected');
   uniqueStrings(input.context.allowedTypes, 'context.allowedTypes', {max: 64, min: 0});
-  uniqueStrings(input.context.sourceIds, 'context.sourceIds', {max: CONTRACT.limits.maxSources, min: input.context.state === 'selected' ? 1 : 0});
-  input.context.sourceIds.forEach(id => sourceId(id, 'context.sourceIds[]', sources));
+  uniqueStrings(input.context.sourceIds, 'context.sourceIds', {
+    max: CONTRACT.limits.maxSources,
+    min: input.context.state === 'selected' ? 1 : 0,
+  });
+  input.context.sourceIds.forEach((id) => sourceId(id, 'context.sourceIds[]', sources));
   if (input.context.state === 'selected') {
     text(input.context.trainerId, 'context.trainerId', {max: 256});
     integer(input.context.levelCap, 'context.levelCap', {min: 1, max: 100});
@@ -425,8 +463,11 @@ function validatePreflight(input) {
   array(input.player.individuals, 'player.individuals', {max: CONTRACT.limits.maxIndividuals, min: 1});
   const locations = new Set();
   const identities = new Set();
-  const individuals = input.player.individuals.map((item, index) => validateIndividual(item, `player.individuals[${index}]`, sources, locations, identities));
-  if (individuals.filter(item => item.location.startsWith('party:')).length > 6) fail('player.individuals', 'contains more than six party slots');
+  const individuals = input.player.individuals.map((item, index) =>
+    validateIndividual(item, `player.individuals[${index}]`, sources, locations, identities),
+  );
+  if (individuals.filter((item) => item.location.startsWith('party:')).length > 6)
+    fail('player.individuals', 'contains more than six party slots');
 
   record(input.policy, 'policy');
   keys(input.policy, ['id', 'version'], 'policy');
@@ -438,9 +479,9 @@ function validatePreflight(input) {
     bundle,
     summary: {
       individualCount: individuals.length,
-      partyCount: individuals.filter(item => item.location.startsWith('party:')).length,
-      usableNowCount: individuals.filter(item => item.usableNow).length,
-      unknownOrPendingPlans: individuals.filter(item => !item.usableNow).map(item => ({id: item.id, moveStatuses: item.moveStatuses})),
+      partyCount: individuals.filter((item) => item.location.startsWith('party:')).length,
+      usableNowCount: individuals.filter((item) => item.usableNow).length,
+      unknownOrPendingPlans: individuals.filter((item) => !item.usableNow).map((item) => ({id: item.id, moveStatuses: item.moveStatuses})),
     },
     inputDigest: computeInputDigest(bundle),
   };
@@ -448,14 +489,22 @@ function validatePreflight(input) {
 
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
-  if (value !== null && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map(key => [key, stable(value[key])]));
+  if (value !== null && typeof value === 'object')
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, stable(value[key])]),
+    );
   return value;
 }
 
 function computeInputDigest(bundle) {
   record(bundle, 'bundle');
   const view = {sources: bundle.sources, snapshot: bundle.snapshot, context: bundle.context, player: bundle.player, policy: bundle.policy};
-  return crypto.createHash('sha256').update(JSON.stringify(stable(view))).digest('hex');
+  return crypto
+    .createHash('sha256')
+    .update(JSON.stringify(stable(view)))
+    .digest('hex');
 }
 
 function makeAnalysisRef(bundle, {analysisId, engineVersion, policyVersion} = {}) {
@@ -476,7 +525,11 @@ function makeAnalysisRef(bundle, {analysisId, engineVersion, policyVersion} = {}
 
 function assessFreshness(reference, bundle, {engineVersion, policyVersion} = {}) {
   record(reference, 'analysisRef');
-  keys(reference, ['schemaVersion', 'analysisId', 'snapshotId', 'playerRevision', 'inputDigest', 'engineVersion', 'policyVersion'], 'analysisRef');
+  keys(
+    reference,
+    ['schemaVersion', 'analysisId', 'snapshotId', 'playerRevision', 'inputDigest', 'engineVersion', 'policyVersion'],
+    'analysisRef',
+  );
   if (reference.schemaVersion !== 1) fail('analysisRef.schemaVersion', 'unsupported version');
   text(reference.analysisId, 'analysisRef.analysisId', {max: 256});
   text(reference.snapshotId, 'analysisRef.snapshotId', {max: 256});
@@ -502,4 +555,3 @@ module.exports = {
   makeAnalysisRef,
   assessFreshness,
 };
-

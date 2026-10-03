@@ -14,7 +14,6 @@ import {
 } from './model';
 import styles from './DamagePlannerForm.module.css';
 
-
 export interface DamagePlannerFormProps {
   individual: PlayerIndividual;
   controller: DamagePlannerController;
@@ -25,18 +24,18 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   const view = getDamagePlannerView(individual, state);
   const ids = useId();
   const levelId = `${ids}-level`;
-  const moveOptions: SelectOption[] = view.candidateMoves.map(move => ({key: move.id, label: importedLabel(move.id)}));
-  if (state.candidateMoveId && !view.candidateMoves.some(move => move.id === state.candidateMoveId)) {
+  const moveOptions: SelectOption[] = view.candidateMoves.map((move) => ({key: move.id, label: importedLabel(move.id)}));
+  if (state.candidateMoveId && !view.candidateMoves.some((move) => move.id === state.candidateMoveId)) {
     moveOptions.unshift({
       key: state.candidateMoveId,
       label: `${importedLabel(state.candidateMoveId)} · fora do subconjunto compatível`,
       isDisabled: true,
     });
   }
-  const speciesOptions: SelectOption[] = DAMAGE_SPECIES_OPTIONS.map(species => ({key: species.id, label: species.name}));
-  const natureOptions: SelectOption[] = DAMAGE_NATURE_OPTIONS.map(nature => ({key: nature.id, label: nature.name}));
-  const abilityOptions: SelectOption[] = view.abilities.map(ability => ({key: ability.id, label: ability.name}));
-  const selectedSpeciesAvailable = DAMAGE_SPECIES_OPTIONS.some(species => species.id === state.target.speciesId);
+  const speciesOptions: SelectOption[] = DAMAGE_SPECIES_OPTIONS.map((species) => ({key: species.id, label: species.name}));
+  const natureOptions: SelectOption[] = DAMAGE_NATURE_OPTIONS.map((nature) => ({key: nature.id, label: nature.name}));
+  const abilityOptions: SelectOption[] = view.abilities.map((ability) => ({key: ability.id, label: ability.name}));
+  const selectedSpeciesAvailable = DAMAGE_SPECIES_OPTIONS.some((species) => species.id === state.target.speciesId);
   const currentMove = individual.equippedMoves[0];
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -45,11 +44,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   }
 
   return (
-    <section
-      className={`${styles.planner} real-damage-planner`}
-      aria-labelledby={`${ids}-title`}
-      aria-busy={state.phase === 'calculating'}
-    >
+    <section className={`${styles.planner} real-damage-planner`} aria-labelledby={`${ids}-title`} aria-busy={state.phase === 'calculating'}>
       <h3 id={`${ids}-title`}>Calcular dano com este indivíduo</h3>
       <p className={`${styles.intro} real-damage-intro`}>
         O primeiro golpe equipado é comparado a um golpe aprendido deste UUID. O perfil do alvo é manual e não recebe valores presumidos.
@@ -69,7 +64,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   label="Golpe aprendido para comparar"
                   options={moveOptions}
                   value={state.candidateMoveId || null}
-                  onChange={value => controller.selectCandidate(value ?? '')}
+                  onChange={(value) => controller.selectCandidate(value ?? '')}
                   placeholder="Escolha um golpe compatível"
                   isDisabled={state.phase === 'calculating'}
                 />
@@ -86,7 +81,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                     label="Espécie"
                     options={speciesOptions}
                     value={selectedSpeciesAvailable ? state.target.speciesId : null}
-                    onChange={value => controller.updateTarget({speciesId: value ?? ''})}
+                    onChange={(value) => controller.updateTarget({speciesId: value ?? ''})}
                     placeholder="Escolha uma espécie"
                     isDisabled={state.phase === 'calculating'}
                   />
@@ -99,7 +94,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                       max="100"
                       step="1"
                       value={state.target.level}
-                      onChange={event => controller.updateTarget({level: event.target.value})}
+                      onChange={(event) => controller.updateTarget({level: event.target.value})}
                       disabled={state.phase === 'calculating'}
                     />
                   </div>
@@ -108,7 +103,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                     label="Natureza"
                     options={natureOptions}
                     value={state.target.nature || null}
-                    onChange={value => controller.updateTarget({nature: value ?? ''})}
+                    onChange={(value) => controller.updateTarget({nature: value ?? ''})}
                     placeholder="Escolha uma natureza"
                     isDisabled={state.phase === 'calculating'}
                   />
@@ -116,8 +111,8 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                     className={styles.formField}
                     label="Habilidade"
                     options={abilityOptions}
-                    value={abilityOptions.some(option => option.key === state.target.ability) ? state.target.ability : null}
-                    onChange={value => controller.updateTarget({ability: value ?? ''})}
+                    value={abilityOptions.some((option) => option.key === state.target.ability) ? state.target.ability : null}
+                    onChange={(value) => controller.updateTarget({ability: value ?? ''})}
                     placeholder={selectedSpeciesAvailable ? 'Escolha uma habilidade' : 'Escolha a espécie primeiro'}
                     isDisabled={!selectedSpeciesAvailable || state.phase === 'calculating'}
                     emptyMessage="Nenhuma habilidade mapeada para esta espécie."
@@ -134,7 +129,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   <fieldset className={`${styles.statGroup} real-stat-group`}>
                     <legend>IVs · 0–31</legend>
                     <div className={`${styles.statGrid} real-stat-grid`}>
-                      {DAMAGE_STATS.map(stat => {
+                      {DAMAGE_STATS.map((stat) => {
                         const statId = `${ids}-iv-${stat}`;
                         return (
                           <div className={`${styles.formField} field`} key={`iv-${stat}`}>
@@ -146,7 +141,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                               max="31"
                               step="1"
                               value={state.target.ivs[stat]}
-                              onChange={event => controller.updateStat('ivs', stat, event.target.value)}
+                              onChange={(event) => controller.updateStat('ivs', stat, event.target.value)}
                               disabled={state.phase === 'calculating'}
                             />
                           </div>
@@ -157,7 +152,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   <fieldset className={`${styles.statGroup} real-stat-group`}>
                     <legend>EVs · 0–252, soma até 510</legend>
                     <div className={`${styles.statGrid} real-stat-grid`}>
-                      {DAMAGE_STATS.map(stat => {
+                      {DAMAGE_STATS.map((stat) => {
                         const statId = `${ids}-ev-${stat}`;
                         return (
                           <div className={`${styles.formField} field`} key={`ev-${stat}`}>
@@ -169,7 +164,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                               max="252"
                               step="1"
                               value={state.target.evs[stat]}
-                              onChange={event => controller.updateStat('evs', stat, event.target.value)}
+                              onChange={(event) => controller.updateStat('evs', stat, event.target.value)}
                               disabled={state.phase === 'calculating'}
                             />
                           </div>
@@ -180,12 +175,12 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                 </div>
 
                 <div className={`${styles.confirmations} real-confirmations`} role="group" aria-label="Confirmações do cenário">
-                  {DAMAGE_CONFIRMATION_KEYS.map(key => (
+                  {DAMAGE_CONFIRMATION_KEYS.map((key) => (
                     <Checkbox
                       key={key}
                       isSelected={state.confirmations[key]}
                       isDisabled={state.phase === 'calculating'}
-                      onChange={checked => controller.updateConfirmation(key, checked)}
+                      onChange={(checked) => controller.updateConfirmation(key, checked)}
                     >
                       {DAMAGE_CONFIRMATION_COPY[key]}
                     </Checkbox>
@@ -225,12 +220,18 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               <div className={`${styles.ranges} real-damage-ranges`}>
                 <div>
                   <span>Atual · {importedLabel(state.result.current.moveId)}</span>
-                  <strong>{state.result.current.min}–{state.result.current.max}<small> HP</small></strong>
+                  <strong>
+                    {state.result.current.min}–{state.result.current.max}
+                    <small> HP</small>
+                  </strong>
                   <p>Alvo com {state.result.current.targetHP} HP máximos</p>
                 </div>
                 <div>
                   <span>Candidato · {importedLabel(state.result.candidate.moveId)}</span>
-                  <strong>{state.result.candidate.min}–{state.result.candidate.max}<small> HP</small></strong>
+                  <strong>
+                    {state.result.candidate.min}–{state.result.candidate.max}
+                    <small> HP</small>
+                  </strong>
                   <p>Alvo com {state.result.candidate.targetHP} HP máximos</p>
                 </div>
               </div>
@@ -240,10 +241,28 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               <details className={`${styles.trace} real-damage-trace`}>
                 <summary>Versões e vínculo da captura</summary>
                 <dl>
-                  <div><dt>Catálogo</dt><dd>{state.result.ruleset.id}</dd></div>
-                  <div><dt>Motor</dt><dd>@smogon/calc {state.result.ruleset.calcVersion} · adaptador {state.result.ruleset.adapterVersion}</dd></div>
-                  <div><dt>Snapshot</dt><dd>{state.result.snapshot.capturedAt} · {state.result.snapshot.worldName}</dd></div>
-                  <div><dt>Entrada SHA-256</dt><dd><code>{state.result.inputDigest}</code></dd></div>
+                  <div>
+                    <dt>Catálogo</dt>
+                    <dd>{state.result.ruleset.id}</dd>
+                  </div>
+                  <div>
+                    <dt>Motor</dt>
+                    <dd>
+                      @smogon/calc {state.result.ruleset.calcVersion} · adaptador {state.result.ruleset.adapterVersion}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Snapshot</dt>
+                    <dd>
+                      {state.result.snapshot.capturedAt} · {state.result.snapshot.worldName}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Entrada SHA-256</dt>
+                    <dd>
+                      <code>{state.result.inputDigest}</code>
+                    </dd>
+                  </div>
                 </dl>
               </details>
             </section>

@@ -36,7 +36,7 @@ function displayId(id: string) {
   return id
     .replace(/^[^:]+:/, '')
     .replace(/[_-]+/g, ' ')
-    .replace(/\b[a-z]/g, letter => letter.toUpperCase());
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
 function locationLabel(location: PlayerIndividual['location']) {
@@ -47,9 +47,7 @@ function locationLabel(location: PlayerIndividual['location']) {
 
 function timestampLabel(value: string) {
   const timestamp = Date.parse(value);
-  return Number.isFinite(timestamp)
-    ? new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'}).format(timestamp)
-    : value;
+  return Number.isFinite(timestamp) ? new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'}).format(timestamp) : value;
 }
 
 function formatFact(fact: NumericFact) {
@@ -57,34 +55,28 @@ function formatFact(fact: NumericFact) {
   return fact.value === null ? 'Sem override' : String(fact.value);
 }
 
-function MoveGroup({
-  title,
-  known,
-  moves,
-  kind,
-}: {
-  title: string;
-  known: boolean;
-  moves: MoveEntry[];
-  kind: 'equipped' | 'learned';
-}) {
+function MoveGroup({title, known, moves, kind}: {title: string; known: boolean; moves: MoveEntry[]; kind: 'equipped' | 'learned'}) {
   const titleId = useId();
   return (
     <section className={styles.moveGroup} aria-labelledby={titleId}>
-      <h3 id={titleId} className={styles.subheading}>{title}</h3>
+      <h3 id={titleId} className={styles.subheading}>
+        {title}
+      </h3>
       {!known ? (
-        <p className={styles.listState} role="status">Lista de golpes não capturada.</p>
+        <p className={styles.listState} role="status">
+          Lista de golpes não capturada.
+        </p>
       ) : moves.length === 0 ? (
-        <p className={styles.listState} role="status">Nenhum golpe registrado nesta captura.</p>
+        <p className={styles.listState} role="status">
+          Nenhum golpe registrado nesta captura.
+        </p>
       ) : (
         <ul className={styles.moveList}>
           {moves.map((move, index) => (
             <li className={styles.moveItem} key={`${index}-${move.id}`}>
               <span className={styles.moveName}>{displayId(move.id)}</span>
               <span className={styles.moveFacts}>
-                {kind === 'equipped' && (
-                  <span>PP {move.pp == null ? 'Não capturado' : move.pp}</span>
-                )}
+                {kind === 'equipped' && <span>PP {move.pp == null ? 'Não capturado' : move.pp}</span>}
                 <span>PP Ups {move.ppUps === null ? 'Não capturado' : move.ppUps}</span>
               </span>
             </li>
@@ -104,27 +96,39 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
       <dl className={styles.captureFacts}>
         <div>
           <dt>UUID</dt>
-          <dd><code>{individual.uuid}</code></dd>
+          <dd>
+            <code>{individual.uuid}</code>
+          </dd>
         </div>
         <div>
           <dt>ID da espécie</dt>
-          <dd><code>{individual.speciesId}</code></dd>
+          <dd>
+            <code>{individual.speciesId}</code>
+          </dd>
         </div>
         <div>
           <dt>ID da forma</dt>
-          <dd><code>{individual.formId}</code></dd>
+          <dd>
+            <code>{individual.formId}</code>
+          </dd>
         </div>
         <div>
           <dt>Natureza observada</dt>
-          <dd><code>{individual.observed.nature ?? 'Não capturado'}</code></dd>
+          <dd>
+            <code>{individual.observed.nature ?? 'Não capturado'}</code>
+          </dd>
         </div>
         <div>
           <dt>Habilidade observada</dt>
-          <dd><code>{individual.observed.ability ?? 'Não capturado'}</code></dd>
+          <dd>
+            <code>{individual.observed.ability ?? 'Não capturado'}</code>
+          </dd>
         </div>
         <div>
           <dt>Item observado</dt>
-          <dd><code>{individual.observed.heldItem ?? 'Não capturado'}</code></dd>
+          <dd>
+            <code>{individual.observed.heldItem ?? 'Não capturado'}</code>
+          </dd>
         </div>
         <div>
           <dt>Localização capturada</dt>
@@ -145,7 +149,9 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
       </dl>
 
       <section className={styles.captureSection} aria-labelledby={`${id}-sources-title`}>
-        <h3 id={`${id}-sources-title`} className={styles.subheading}>Arquivos de origem</h3>
+        <h3 id={`${id}-sources-title`} className={styles.subheading}>
+          Arquivos de origem
+        </h3>
         {snapshot.sources.length === 0 ? (
           <p className={styles.listState}>Nenhuma origem registrada.</p>
         ) : (
@@ -154,9 +160,7 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
               <li key={`${source.kind}-${index}`}>
                 <span className={styles.sourceTitle}>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
                 <span>Modificado em {timestampLabel(source.modifiedAt)}</span>
-                <code aria-label={`SHA-256 do arquivo ${source.kind === 'party' ? 'da equipe' : 'do PC'}`}>
-                  {source.sha256}
-                </code>
+                <code aria-label={`SHA-256 do arquivo ${source.kind === 'party' ? 'da equipe' : 'do PC'}`}>{source.sha256}</code>
               </li>
             ))}
           </ul>
@@ -164,9 +168,11 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
       </section>
 
       <section className={styles.captureSection} aria-labelledby={`${id}-provenance-title`}>
-        <h3 id={`${id}-provenance-title`} className={styles.subheading}>Origem dos atributos</h3>
+        <h3 id={`${id}-provenance-title`} className={styles.subheading}>
+          Origem dos atributos
+        </h3>
         <dl className={styles.provenanceList}>
-          {STAT_ROWS.map(stat => {
+          {STAT_ROWS.map((stat) => {
             const facts: Array<{label: string; fact: NumericFact}> = [
               {label: 'IV base', fact: individual.battleStats.ivs[stat.key]},
               {label: 'Hyper Training', fact: individual.battleStats.hyperTrainedIvs[stat.key]},
@@ -174,7 +180,9 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
             ];
             return facts.map(({label, fact}) => (
               <div key={`${stat.key}-${label}`}>
-                <dt>{stat.label} · {label}</dt>
+                <dt>
+                  {stat.label} · {label}
+                </dt>
                 <dd>
                   <span>{fact.provenance.sourceKind === 'party' ? 'Equipe' : 'PC'}</span>
                   <code>{fact.provenance.nbtPath}</code>
@@ -186,7 +194,9 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
       </section>
 
       <section className={styles.captureSection} aria-labelledby={`${id}-move-ids-title`}>
-        <h3 id={`${id}-move-ids-title`} className={styles.subheading}>IDs dos golpes</h3>
+        <h3 id={`${id}-move-ids-title`} className={styles.subheading}>
+          IDs dos golpes
+        </h3>
         <div className={styles.rawMoveColumns}>
           <RawMoveIds title="Equipados" moves={individual.equippedMoves} known={individual.equippedMovesKnown} />
           <RawMoveIds title="Aprendidos" moves={individual.learnedMoves} known={individual.learnedMovesKnown} />
@@ -194,14 +204,18 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
       </section>
 
       <section className={styles.captureSection} aria-labelledby={`${id}-warnings-title`}>
-        <h3 id={`${id}-warnings-title`} className={styles.subheading}>Avisos da captura</h3>
+        <h3 id={`${id}-warnings-title`} className={styles.subheading}>
+          Avisos da captura
+        </h3>
         {warnings === undefined ? (
           <p className={styles.listState}>Avisos não capturados.</p>
         ) : warnings.length === 0 ? (
           <p className={styles.listState}>Nenhum aviso registrado.</p>
         ) : (
           <ul className={styles.warningList}>
-            {warnings.map((warning, index) => <li key={`${index}-${warning}`}>{warning}</li>)}
+            {warnings.map((warning, index) => (
+              <li key={`${index}-${warning}`}>{warning}</li>
+            ))}
           </ul>
         )}
       </section>
@@ -209,15 +223,7 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
   );
 }
 
-function RawMoveIds({
-  title,
-  moves,
-  known,
-}: {
-  title: string;
-  moves: MoveEntry[];
-  known: boolean;
-}) {
+function RawMoveIds({title, moves, known}: {title: string; moves: MoveEntry[]; known: boolean}) {
   return (
     <div className={styles.rawMoveGroup}>
       <h4>{title}</h4>
@@ -227,7 +233,11 @@ function RawMoveIds({
         <p className={styles.listState}>Nenhum registrado</p>
       ) : (
         <ul>
-          {moves.map((move, index) => <li key={`${index}-${move.id}`}><code>{move.id}</code></li>)}
+          {moves.map((move, index) => (
+            <li key={`${index}-${move.id}`}>
+              <code>{move.id}</code>
+            </li>
+          ))}
         </ul>
       )}
     </div>
@@ -263,7 +273,9 @@ export function IndividualWorkspace({
       <header className={styles.identity}>
         <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="detail" />
         <div className={styles.identityInfo}>
-          <h2 className={styles.name} id={titleId} tabIndex={-1}>{displayName}</h2>
+          <h2 className={styles.name} id={titleId} tabIndex={-1}>
+            {displayName}
+          </h2>
           <dl className={styles.identityFacts}>
             <div>
               <dt>Nível</dt>
@@ -280,7 +292,7 @@ export function IndividualWorkspace({
       <Tabs
         className={styles.tabs}
         selectedKey={selectedTab}
-        onSelectionChange={key => {
+        onSelectionChange={(key) => {
           if (key === 'summary' || key === 'moves' || key === 'stats') onTabChange(key);
         }}
       >
@@ -292,7 +304,9 @@ export function IndividualWorkspace({
         <TabPanels>
           <TabPanel id="summary">
             <section aria-labelledby={`${panelIds}-summary-title`}>
-              <h3 id={`${panelIds}-summary-title`} className={styles.panelHeading}>Resumo</h3>
+              <h3 id={`${panelIds}-summary-title`} className={styles.panelHeading}>
+                Resumo
+              </h3>
               <dl className={styles.summaryFacts}>
                 <div>
                   <dt>Forma</dt>
@@ -315,7 +329,9 @@ export function IndividualWorkspace({
           </TabPanel>
           <TabPanel id="moves">
             <section className={styles.movesContent} aria-labelledby={`${panelIds}-moves-title`}>
-              <h3 id={`${panelIds}-moves-title`} className={styles.panelHeading}>Golpes</h3>
+              <h3 id={`${panelIds}-moves-title`} className={styles.panelHeading}>
+                Golpes
+              </h3>
               <div className={styles.moveGroups}>
                 <MoveGroup
                   title="Golpes equipados"
@@ -323,12 +339,7 @@ export function IndividualWorkspace({
                   moves={individual.equippedMoves}
                   kind="equipped"
                 />
-                <MoveGroup
-                  title="Golpes aprendidos"
-                  known={individual.learnedMovesKnown}
-                  moves={individual.learnedMoves}
-                  kind="learned"
-                />
+                <MoveGroup title="Golpes aprendidos" known={individual.learnedMovesKnown} moves={individual.learnedMoves} kind="learned" />
               </div>
               <MovePreparation
                 individual={individual}
@@ -340,7 +351,9 @@ export function IndividualWorkspace({
           </TabPanel>
           <TabPanel id="stats">
             <section aria-labelledby={`${panelIds}-attributes-title`}>
-              <h3 id={`${panelIds}-attributes-title`} className={styles.panelHeading}>Atributos</h3>
+              <h3 id={`${panelIds}-attributes-title`} className={styles.panelHeading}>
+                Atributos
+              </h3>
               <div className={styles.attributeTableScroll} role="region" aria-label="Atributos registrados" tabIndex={0}>
                 <table className={styles.attributeTable}>
                   <caption className={styles.visuallyHidden}>Valores capturados de IV base, Hyper Training e EV por atributo.</caption>
@@ -353,7 +366,7 @@ export function IndividualWorkspace({
                     </tr>
                   </thead>
                   <tbody>
-                    {STAT_ROWS.map(stat => (
+                    {STAT_ROWS.map((stat) => (
                       <tr key={stat.key}>
                         <th scope="row">{stat.label}</th>
                         <td>{formatFact(individual.battleStats.ivs[stat.key])}</td>

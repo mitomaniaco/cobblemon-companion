@@ -1,10 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {
-  createMoveSwapPlan,
-  getMoveSwapView,
-  invalidateMoveSwapPlan,
-  selectMoveSwapIndividual,
-} from '../src/domain/move-swap';
+import {createMoveSwapPlan, getMoveSwapView, invalidateMoveSwapPlan, selectMoveSwapIndividual} from '../src/domain/move-swap';
 import type {PlayerIndividual} from '../src/platform/api';
 
 const unknownFact = (nbtPath: string) => ({
@@ -108,7 +103,9 @@ describe('planejamento de troca de golpe', () => {
   it('fica inconclusivo quando qualquer lista necessária é desconhecida', () => {
     expect(getMoveSwapView(individual({equippedMovesKnown: false}), createMoveSwapPlan()).status).toBe('inconclusive');
     expect(getMoveSwapView(individual({learnedMovesKnown: false}), createMoveSwapPlan()).status).toBe('inconclusive');
-    expect(getMoveSwapView(individual({equippedMovesKnown: false, learnedMovesKnown: false}), createMoveSwapPlan()).status).toBe('inconclusive');
+    expect(getMoveSwapView(individual({equippedMovesKnown: false, learnedMovesKnown: false}), createMoveSwapPlan()).status).toBe(
+      'inconclusive',
+    );
   });
 
   it('mostra estado vazio quando as listas conhecidas não oferecem uma troca', () => {

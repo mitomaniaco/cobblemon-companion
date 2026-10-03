@@ -8,15 +8,6 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'className'> {
   className?: string;
 }
 
-export function Button({
-  variant = 'secondary',
-  className,
-  ...props
-}: ButtonProps) {
-  return (
-    <AriaButton
-      {...props}
-      className={`${styles.button} ${styles[variant]}${className ? ` ${className}` : ''}`}
-    />
-  );
+export function Button({variant = 'secondary', className, ...props}: ButtonProps) {
+  return <AriaButton {...props} className={`${styles.button} ${styles[variant]}${className ? ` ${className}` : ''}`} />;
 }

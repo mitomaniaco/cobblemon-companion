@@ -1,11 +1,4 @@
-import {
-  Button as AriaButton,
-  FieldError,
-  Input,
-  Label,
-  SearchField as AriaSearchField,
-  Text,
-} from 'react-aria-components';
+import {Button as AriaButton, FieldError, Input, Label, SearchField as AriaSearchField, Text} from 'react-aria-components';
 import {MagnifyingGlass, X} from '@phosphor-icons/react';
 import styles from './SearchField.module.css';
 
@@ -51,7 +44,11 @@ export function SearchField({
           <X aria-hidden="true" weight="bold" />
         </AriaButton>
       </div>
-      {description && <Text className={styles.description} slot="description">{description}</Text>}
+      {description && (
+        <Text className={styles.description} slot="description">
+          {description}
+        </Text>
+      )}
       {errorMessage && <FieldError className={styles.error}>{errorMessage}</FieldError>}
     </AriaSearchField>
   );

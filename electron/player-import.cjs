@@ -74,26 +74,36 @@ function readStableSource(filePath, kind, maxBytes) {
     if (error instanceof PlayerImportError) throw error;
     if (error && error.code === 'ENOENT') {
       if (kind === 'party' || kind === 'pc') {
-        fail('ERR_IMPORT_SOURCE_MISSING', `Não foi possível encontrar os dados de ${sourceLabel(kind)} no mundo ativo. Confirme que o servidor salvou o mundo e tente novamente.`);
+        fail(
+          'ERR_IMPORT_SOURCE_MISSING',
+          `Não foi possível encontrar os dados de ${sourceLabel(kind)} no mundo ativo. Confirme que o servidor salvou o mundo e tente novamente.`,
+        );
       }
-      if (kind === 'server.properties') fail('ERR_IMPORT_SERVER_CONFIG', 'Não foi possível ler server.properties no diretório configurado.');
+      if (kind === 'server.properties')
+        fail('ERR_IMPORT_SERVER_CONFIG', 'Não foi possível ler server.properties no diretório configurado.');
       fail('ERR_IMPORT_CONFIG', 'Não foi possível ler a configuração local do importador.');
     }
     fail('ERR_IMPORT_READ', `Falha ao ler a fonte de ${sourceLabel(kind)}.`);
   } finally {
     if (fd !== undefined) {
-      try { fs.closeSync(fd); } catch { /* fechamento best-effort */ }
+      try {
+        fs.closeSync(fd);
+      } catch {
+        /* fechamento best-effort */
+      }
     }
   }
 }
 
 function sameObservation(left, right) {
-  return left.source.sha256 === right.source.sha256
-    && left.source.modifiedAt === right.source.modifiedAt
-    && left.source.size === right.source.size
-    && left.observed.mtimeMs === right.observed.mtimeMs
-    && left.observed.ctimeMs === right.observed.ctimeMs
-    && left.observed.ino === right.observed.ino;
+  return (
+    left.source.sha256 === right.source.sha256 &&
+    left.source.modifiedAt === right.source.modifiedAt &&
+    left.source.size === right.source.size &&
+    left.observed.mtimeMs === right.observed.mtimeMs &&
+    left.observed.ctimeMs === right.observed.ctimeMs &&
+    left.observed.ino === right.observed.ino
+  );
 }
 
 function ensureWithin(parent, candidate, label) {
@@ -135,7 +145,8 @@ function containedFile(directory, parts, label) {
 function parseJson(bytes, label) {
   try {
     const value = JSON.parse(bytes.toString('utf8'));
-    if (!value || typeof value !== 'object' || Array.isArray(value)) fail('ERR_IMPORT_CONFIG', `A fonte de ${label} precisa conter um objeto JSON.`);
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      fail('ERR_IMPORT_CONFIG', `A fonte de ${label} precisa conter um objeto JSON.`);
     return value;
   } catch (error) {
     if (error instanceof PlayerImportError) throw error;
@@ -155,12 +166,12 @@ function parseWorldName(bytes) {
 
 function parseBoundedNbt(bytes, kind) {
   try {
-    const input = bytes[0] === 0x1f && bytes[1] === 0x8b
-      ? zlib.gunzipSync(bytes, {maxOutputLength: MAX_NBT_BYTES})
-      : bytes;
-    if (input.length > MAX_NBT_BYTES) fail('ERR_IMPORT_TOO_LARGE', `Os dados de ${sourceLabel(kind)} excedem o limite seguro após descompressão.`);
+    const input = bytes[0] === 0x1f && bytes[1] === 0x8b ? zlib.gunzipSync(bytes, {maxOutputLength: MAX_NBT_BYTES}) : bytes;
+    if (input.length > MAX_NBT_BYTES)
+      fail('ERR_IMPORT_TOO_LARGE', `Os dados de ${sourceLabel(kind)} excedem o limite seguro após descompressão.`);
     const value = parseNbt(input);
-    if (!value || typeof value !== 'object' || Array.isArray(value)) fail('ERR_IMPORT_NBT', `Os dados de ${sourceLabel(kind)} têm estrutura NBT inválida.`);
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      fail('ERR_IMPORT_NBT', `Os dados de ${sourceLabel(kind)} têm estrutura NBT inválida.`);
     return value;
   } catch (error) {
     if (error instanceof PlayerImportError) throw error;
@@ -181,10 +192,14 @@ function sourceId(value) {
 }
 
 function formatUuid(value) {
-  if (!Array.isArray(value) || value.length !== 4 || value.some(part => !Number.isInteger(part) || part < -0x80000000 || part > 0xffffffff)) {
+  if (
+    !Array.isArray(value) ||
+    value.length !== 4 ||
+    value.some((part) => !Number.isInteger(part) || part < -0x80000000 || part > 0xffffffff)
+  ) {
     fail('ERR_IMPORT_IDENTITY', 'Um indivíduo da party/PC tem UUID ausente ou inválido; snapshot recusado.');
   }
-  const hex = value.map(part => (part >>> 0).toString(16).padStart(8, '0')).join('');
+  const hex = value.map((part) => (part >>> 0).toString(16).padStart(8, '0')).join('');
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
@@ -203,7 +218,7 @@ function normalizeMoves(value, field, maxLength, unknownCounts) {
   }
   if (!Array.isArray(value)) fail('ERR_IMPORT_MOVES', `O campo ${field} tem estrutura inválida; snapshot recusado.`);
   if (value.length > maxLength) fail('ERR_IMPORT_LIMIT', `O campo ${field} excede o limite seguro de golpes.`);
-  const moves = value.map(move => {
+  const moves = value.map((move) => {
     if (!isRecord(move)) fail('ERR_IMPORT_MOVES', `O campo ${field} contém um golpe inválido; snapshot recusado.`);
     const id = sourceId(move.MoveName);
     if (!id) fail('ERR_IMPORT_MOVES', `O campo ${field} contém golpe sem identificador; snapshot recusado.`);
@@ -231,25 +246,23 @@ const STAT_FIELD_NAMES = new Set(STAT_FIELDS.map(([name]) => name));
 const INVALID_STATS_MESSAGE = 'IVs/EVs têm dados inválidos ou formato não suportado; snapshot recusado.';
 
 function normalizeBattleStats(value, location, unknownCounts) {
-  const nbtRoot = location.container === 'party'
-    ? `Slot${location.slot}`
-    : `Box${location.box}.Slot${location.slot}`;
-  const provenance = nbtPath => ({sourceKind: location.container, nbtPath});
+  const nbtRoot = location.container === 'party' ? `Slot${location.slot}` : `Box${location.box}.Slot${location.slot}`;
+  const provenance = (nbtPath) => ({sourceKind: location.container, nbtPath});
   const known = (factValue, nbtPath) => ({state: 'known', value: factValue, provenance: provenance(nbtPath)});
   const unknown = (group, nbtPath) => {
     addUnknown(unknownCounts, group);
     return {state: 'unknown', reason: 'not-captured', provenance: provenance(nbtPath)};
   };
   const invalid = () => fail('ERR_IMPORT_STATS', INVALID_STATS_MESSAGE);
-  const validateMap = map => {
-    if (!isRecord(map) || Object.keys(map).some(name => !STAT_FIELD_NAMES.has(name))) invalid();
+  const validateMap = (map) => {
+    if (!isRecord(map) || Object.keys(map).some((name) => !STAT_FIELD_NAMES.has(name))) invalid();
     return map;
   };
 
   let baseMap;
   let hyperTrainedMap;
   if (value.IVs !== undefined) {
-    if (!isRecord(value.IVs) || Object.keys(value.IVs).some(name => name !== 'Base' && name !== 'HyperTrained')) invalid();
+    if (!isRecord(value.IVs) || Object.keys(value.IVs).some((name) => name !== 'Base' && name !== 'HyperTrained')) invalid();
     if (value.IVs.Base !== undefined) baseMap = validateMap(value.IVs.Base);
     if (value.IVs.HyperTrained !== undefined) hyperTrainedMap = validateMap(value.IVs.HyperTrained);
   }
@@ -262,9 +275,7 @@ function normalizeBattleStats(value, location, unknownCounts) {
     for (const [nbtName, stat] of STAT_FIELDS) {
       const nbtPath = `${rootPath}.${nbtName}`;
       if (map === undefined || !Object.hasOwn(map, nbtName)) {
-        facts[stat] = missingOverrideIsKnownNull && map !== undefined
-          ? known(null, nbtPath)
-          : unknown(group, nbtPath);
+        facts[stat] = missingOverrideIsKnownNull && map !== undefined ? known(null, nbtPath) : unknown(group, nbtPath);
         continue;
       }
       const factValue = map[nbtName];
@@ -275,21 +286,14 @@ function normalizeBattleStats(value, location, unknownCounts) {
   };
 
   const ivs = readGroup(baseMap, 'ivs', `${nbtRoot}.IVs.Base`, 31);
-  const hyperTrainedIvs = readGroup(
-    hyperTrainedMap,
-    'hyperTrainedIvs',
-    `${nbtRoot}.IVs.HyperTrained`,
-    31,
-    true,
-  );
+  const hyperTrainedIvs = readGroup(hyperTrainedMap, 'hyperTrainedIvs', `${nbtRoot}.IVs.HyperTrained`, 31, true);
   const evs = readGroup(evMap, 'evs', `${nbtRoot}.EVs`, 252);
   const knownEvTotal = Object.values(evs)
-    .filter(fact => fact.state === 'known')
+    .filter((fact) => fact.state === 'known')
     .reduce((total, fact) => total + fact.value, 0);
   if (knownEvTotal > 510) invalid();
   return {ivs, hyperTrainedIvs, evs};
 }
-
 
 function occupiedIndividual(value) {
   if (value === undefined || value === null) return false;
@@ -307,14 +311,12 @@ function collectSlot(value, location, output, seenUuids, unknownCounts) {
   if (seenUuids.has(uuid)) fail('ERR_IMPORT_DUPLICATE_UUID', 'UUID repetido entre party e PC; snapshot recusado como inconsistente.');
   seenUuids.add(uuid);
 
-  let formId = sourceId(value.FormId) || 'unknown';
+  const formId = sourceId(value.FormId) || 'unknown';
   if (formId === 'unknown') addUnknown(unknownCounts, 'formId');
   const level = nonNegativeInteger(value.Level);
   if (level === null) addUnknown(unknownCounts, 'level');
 
-  const natureSource = typeof value.MintedNature === 'string' && value.MintedNature.trim()
-    ? value.MintedNature
-    : value.Nature;
+  const natureSource = typeof value.MintedNature === 'string' && value.MintedNature.trim() ? value.MintedNature : value.Nature;
   const nature = sourceId(natureSource);
   if (nature === null) addUnknown(unknownCounts, 'nature');
 
@@ -442,9 +444,16 @@ function readPlayerSnapshotFromConfig(options = {}) {
     const pcAgain = readSource(pcPath, 'pc', MAX_SOURCE_BYTES);
     const propertiesAgain = readSource(propertiesPath, 'server.properties', MAX_PROPERTIES_BYTES);
     const configAgain = readSource(configPath, 'config', MAX_CONFIG_BYTES);
-    if (!sameObservation(partyFirst, partyAgain) || !sameObservation(pcFirst, pcAgain)
-      || !sameObservation(initialProperties, propertiesAgain) || !sameObservation(initialConfigSource, configAgain)) {
-      fail('ERR_IMPORT_CHANGED', 'Party, PC ou configuração do mundo mudou durante a leitura; atualize novamente após o servidor estabilizar.');
+    if (
+      !sameObservation(partyFirst, partyAgain) ||
+      !sameObservation(pcFirst, pcAgain) ||
+      !sameObservation(initialProperties, propertiesAgain) ||
+      !sameObservation(initialConfigSource, configAgain)
+    ) {
+      fail(
+        'ERR_IMPORT_CHANGED',
+        'Party, PC ou configuração do mundo mudou durante a leitura; atualize novamente após o servidor estabilizar.',
+      );
     }
 
     const snapshot = {

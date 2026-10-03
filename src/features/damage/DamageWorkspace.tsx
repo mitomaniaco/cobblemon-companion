@@ -41,9 +41,12 @@ export function DamageWorkspace({
         {returnButtonLabel}
       </Button>
       <header className={styles.heading}>
-        <h2 id={headingId} ref={headingRef} tabIndex={-1}>Planejador de dano</h2>
+        <h2 id={headingId} ref={headingRef} tabIndex={-1}>
+          Planejador de dano
+        </h2>
         <p>
-          Compare um golpe observado neste indivíduo com um perfil de alvo preenchido manualmente. O cálculo vem do Companion; esta área não escreve no save.
+          Compare um golpe observado neste indivíduo com um perfil de alvo preenchido manualmente. O cálculo vem do Companion; esta área não
+          escreve no save.
         </p>
       </header>
 

@@ -1,8 +1,6 @@
 import type {ComparisonRequest, FlowResponse} from '../domain/compare-flow';
 
-export type PlayerLocation =
-  | {container: 'party'; slot: number}
-  | {container: 'pc'; box: number; boxName: string | null; slot: number};
+export type PlayerLocation = {container: 'party'; slot: number} | {container: 'pc'; box: number; boxName: string | null; slot: number};
 
 export type PlayerStat = 'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe';
 
@@ -11,10 +9,9 @@ export type PlayerStatProvenance = {
   nbtPath: string;
 };
 
-export type PlayerStatFact<T> = (
-  | {state: 'known'; value: T}
-  | {state: 'unknown'; reason: 'not-captured'}
-) & {provenance: PlayerStatProvenance};
+export type PlayerStatFact<T> = ({state: 'known'; value: T} | {state: 'unknown'; reason: 'not-captured'}) & {
+  provenance: PlayerStatProvenance;
+};
 
 export type PlayerIndividual = {
   uuid: string;
@@ -104,7 +101,6 @@ export type CompanionApi = {
   cancel(jobId: string): Promise<{status: string; jobId: string}>;
   readPlayerSnapshot(): Promise<PlayerSnapshot>;
 };
-
 
 declare global {
   interface Window {

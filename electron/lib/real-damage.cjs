@@ -38,7 +38,6 @@ function exactKeys(value, allowed, pathName) {
   for (const key of Object.keys(value)) if (!allowedSet.has(key)) fail(`${pathName}.${key}`, 'não é suportado');
 }
 
-
 function text(value, pathName) {
   if (typeof value !== 'string' || value.trim().length === 0) fail(pathName, 'precisa ser texto não vazio');
   return value;
@@ -55,17 +54,21 @@ function sourceHashes(raw, pathName) {
   for (const [index, source] of raw.entries()) {
     exactKeys(source, ['kind', 'sha256'], `${pathName}[${index}]`);
     if (!SOURCE_KINDS.includes(source.kind) || found.has(source.kind)) fail(`${pathName}[${index}].kind`, 'é inválido ou repetido');
-    if (typeof source.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(source.sha256)) fail(`${pathName}[${index}].sha256`, 'precisa ser SHA-256 hexadecimal');
+    if (typeof source.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(source.sha256))
+      fail(`${pathName}[${index}].sha256`, 'precisa ser SHA-256 hexadecimal');
     found.set(source.kind, source.sha256);
   }
-  if (SOURCE_KINDS.some(kind => !found.has(kind))) fail(pathName, 'precisa identificar party e PC');
-  return SOURCE_KINDS.map(kind => ({kind, sha256: found.get(kind)}));
+  if (SOURCE_KINDS.some((kind) => !found.has(kind))) fail(pathName, 'precisa identificar party e PC');
+  return SOURCE_KINDS.map((kind) => ({kind, sha256: found.get(kind)}));
 }
 
 function assertFreshSources(requested, current) {
   const expected = sourceHashes(requested, 'request.sources');
   if (!Array.isArray(current)) fail('snapshot.sources', 'não foram capturadas');
-  const actual = sourceHashes(current.map(source => ({kind: source.kind, sha256: source.sha256})), 'snapshot.sources');
+  const actual = sourceHashes(
+    current.map((source) => ({kind: source.kind, sha256: source.sha256})),
+    'snapshot.sources',
+  );
   if (expected.some((source, index) => source.sha256 !== actual[index].sha256)) {
     fail('snapshot', 'mudou desde a captura; atualize o save antes de calcular');
   }
@@ -116,9 +119,8 @@ function effectiveIvs(battleStats) {
   for (const stat of STATS) {
     const override = battleStats.hyperTrainedIvs && battleStats.hyperTrainedIvs[stat];
     if (!override || override.state !== 'known') fail(`actor.battleStats.hyperTrainedIvs.${stat}`, 'é desconhecido');
-    const value = override.value === null
-      ? known(battleStats.ivs && battleStats.ivs[stat], `actor.battleStats.ivs.${stat}`)
-      : override.value;
+    const value =
+      override.value === null ? known(battleStats.ivs && battleStats.ivs[stat], `actor.battleStats.ivs.${stat}`) : override.value;
     ivs[stat] = integer(value, `actor.battleStats.effectiveIvs.${stat}`, 0, 31);
   }
   return ivs;
@@ -126,7 +128,8 @@ function effectiveIvs(battleStats) {
 
 function supportedSpecies(speciesId, pathName) {
   text(speciesId, pathName);
-  if (!Object.prototype.hasOwnProperty.call(compatibility.species, speciesId)) fail(pathName, 'está fora do subconjunto compatível versionado');
+  if (!Object.prototype.hasOwnProperty.call(compatibility.species, speciesId))
+    fail(pathName, 'está fora do subconjunto compatível versionado');
   return compatibility.species[speciesId];
 }
 
@@ -210,7 +213,7 @@ function pokemon(spec, pathName) {
       ability: spec.ability,
       item: '',
       status: '',
-      boosts: Object.fromEntries(STATS.map(stat => [stat, 0])),
+      boosts: Object.fromEntries(STATS.map((stat) => [stat, 0])),
       ivs: spec.ivs,
       evs: spec.evs,
     });
@@ -223,7 +226,11 @@ function damage(attacker, defender, moveId, pathName) {
   const moveName = mappedMoveName(moveId, pathName);
   try {
     const result = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), new calc.Field());
-    if (!Array.isArray(result.damage) || result.damage.length !== 16 || !result.damage.every(value => Number.isSafeInteger(value) && value >= 0)) {
+    if (
+      !Array.isArray(result.damage) ||
+      result.damage.length !== 16 ||
+      !result.damage.every((value) => Number.isSafeInteger(value) && value >= 0)
+    ) {
       fail(pathName, 'o motor não retornou os 16 rolls inteiros esperados');
     }
     return {
@@ -242,11 +249,14 @@ function damage(attacker, defender, moveId, pathName) {
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
   if (value !== null && typeof value === 'object') {
-    return Object.fromEntries(Object.keys(value).sort().map(key => [key, stable(value[key])]));
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, stable(value[key])]),
+    );
   }
   return value;
 }
-
 
 function calculateRealDamage(snapshot, rawRequest) {
   exactKeys(rawRequest, ['sources', 'individualUuid', 'candidateMoveId', 'target', 'assumptions'], 'request');
@@ -256,24 +266,32 @@ function calculateRealDamage(snapshot, rawRequest) {
   const sources = assertFreshSources(rawRequest.sources, snapshot.sources);
   const assumptions = validateAssumptions(rawRequest.assumptions);
   const individualUuid = text(rawRequest.individualUuid, 'request.individualUuid');
-  const actors = snapshot.individuals.filter(individual => individual.uuid === individualUuid);
+  const actors = snapshot.individuals.filter((individual) => individual.uuid === individualUuid);
   if (actors.length !== 1) fail('request.individualUuid', 'não identifica exatamente um indivíduo no snapshot atual');
   const actor = actors[0];
   const profile = actorProfile(actor);
-  if (actor.equippedMovesKnown !== true || actor.learnedMovesKnown !== true) fail('actor.moves', 'as listas equipadas e aprendidas precisam ser conhecidas');
-  if (!Array.isArray(actor.equippedMoves) || actor.equippedMoves.length === 0) fail('actor.equippedMoves', 'não há golpe equipado no primeiro slot');
+  if (actor.equippedMovesKnown !== true || actor.learnedMovesKnown !== true)
+    fail('actor.moves', 'as listas equipadas e aprendidas precisam ser conhecidas');
+  if (!Array.isArray(actor.equippedMoves) || actor.equippedMoves.length === 0)
+    fail('actor.equippedMoves', 'não há golpe equipado no primeiro slot');
   if (!Array.isArray(actor.learnedMoves)) fail('actor.learnedMoves', 'a lista aprendida não foi capturada');
   const currentMoveId = text(actor.equippedMoves[0].id, 'actor.equippedMoves[0].id');
   const candidateMoveId = text(rawRequest.candidateMoveId, 'request.candidateMoveId');
-  if (candidateMoveId === currentMoveId || actor.equippedMoves.some(move => move.id === candidateMoveId)) {
+  if (candidateMoveId === currentMoveId || actor.equippedMoves.some((move) => move.id === candidateMoveId)) {
     fail('request.candidateMoveId', 'precisa ser um golpe aprendido ainda não equipado');
   }
-  if (!actor.learnedMoves.some(move => move.id === candidateMoveId)) fail('request.candidateMoveId', 'não foi observado como aprendido neste indivíduo');
+  if (!actor.learnedMoves.some((move) => move.id === candidateMoveId))
+    fail('request.candidateMoveId', 'não foi observado como aprendido neste indivíduo');
   mappedMoveName(currentMoveId, 'actor.equippedMoves[0].id');
   mappedMoveName(candidateMoveId, 'request.candidateMoveId');
   const target = validateTarget(rawRequest.target);
   const current = damage(pokemon(profile, 'actor.current'), pokemon(target, 'target.current'), currentMoveId, 'actor.equippedMoves[0].id');
-  const candidate = damage(pokemon(profile, 'actor.candidate'), pokemon(target, 'target.candidate'), candidateMoveId, 'request.candidateMoveId');
+  const candidate = damage(
+    pokemon(profile, 'actor.candidate'),
+    pokemon(target, 'target.candidate'),
+    candidateMoveId,
+    'request.candidateMoveId',
+  );
   const input = {
     adapterVersion: ADAPTER_VERSION,
     rulesetId: compatibility.ruleset.id,
@@ -304,7 +322,7 @@ function calculateRealDamage(snapshot, rawRequest) {
     snapshot: {
       capturedAt: snapshot.capturedAt,
       worldName: snapshot.worldName,
-      sources: snapshot.sources.map(source => ({kind: source.kind, sha256: source.sha256, modifiedAt: source.modifiedAt})),
+      sources: snapshot.sources.map((source) => ({kind: source.kind, sha256: source.sha256, modifiedAt: source.modifiedAt})),
     },
     individualUuid,
     actor: {speciesId: actor.speciesId, level: actor.level},
@@ -324,7 +342,10 @@ function calculateRealDamage(snapshot, rawRequest) {
     },
     current,
     candidate,
-    inputDigest: crypto.createHash('sha256').update(JSON.stringify(stable(input))).digest('hex'),
+    inputDigest: crypto
+      .createHash('sha256')
+      .update(JSON.stringify(stable(input)))
+      .digest('hex'),
   };
 }
 

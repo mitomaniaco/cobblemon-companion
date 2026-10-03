@@ -30,16 +30,17 @@ const metadata = {
   pid: null,
   exitCode: null,
   timedOut: false,
-  status: 'preflight'
+  status: 'preflight',
 };
 
 function saveMetadata() {
-  fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2) + '\n');
+  fs.writeFileSync(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`);
 }
 
 function whoami(args) {
   const result = spawnSync('whoami.exe', args, {encoding: 'utf8', timeout: 5000, windowsHide: true});
-  if (result.error || result.status !== 0) throw new Error(`whoami ${args.join(' ')} falhou: ${result.error?.message || result.stderr?.trim() || result.status}`);
+  if (result.error || result.status !== 0)
+    throw new Error(`whoami ${args.join(' ')} falhou: ${result.error?.message || result.stderr?.trim() || result.status}`);
   return result.stdout.trim();
 }
 
@@ -51,13 +52,16 @@ async function main() {
     metadata.launcherToken = {user, integritySid};
     if (integritySid !== 'S-1-16-8192') {
       metadata.status = 'blocked-not-medium';
-      console.error(`Teste bloqueado: Explorer/launcher iniciou com ${integritySid || 'integridade desconhecida'}; requer Medium (S-1-16-8192). Nenhum Electron foi aberto.`);
+      console.error(
+        `Teste bloqueado: Explorer/launcher iniciou com ${integritySid || 'integridade desconhecida'}; requer Medium (S-1-16-8192). Nenhum Electron foi aberto.`,
+      );
       saveMetadata();
       process.exitCode = 2;
       return;
     }
     const electronVersion = require(path.join(appDir, 'node_modules', 'electron', 'package.json')).version;
-    if (electronVersion !== '44.4.3' || !fs.existsSync(electronExe)) throw new Error(`Electron 44.4.3 indisponível (encontrado ${electronVersion}).`);
+    if (electronVersion !== '44.4.3' || !fs.existsSync(electronExe))
+      throw new Error(`Electron 44.4.3 indisponível (encontrado ${electronVersion}).`);
     metadata.electronVersion = electronVersion;
 
     const stdoutFd = fs.openSync(stdoutPath, 'w');
@@ -70,10 +74,10 @@ async function main() {
           ...process.env,
           COMPANION_RUNTIME_PROFILE: profilePath,
           COMPANION_RUNTIME_SCREENSHOT: screenshotPath,
-          COMPANION_REQUIRE_MEDIUM: '1'
+          COMPANION_REQUIRE_MEDIUM: '1',
         },
         stdio: ['ignore', stdoutFd, stderrFd],
-        windowsHide: false
+        windowsHide: false,
       });
     } finally {
       fs.closeSync(stdoutFd);
@@ -84,16 +88,22 @@ async function main() {
     saveMetadata();
 
     let cleanup = null;
-    const outcome = await new Promise(resolve => {
+    const outcome = await new Promise((resolve) => {
       let spawnError = null;
       const timer = setTimeout(() => {
         metadata.timedOut = true;
         if (child.pid) {
-          const killed = spawnSync('taskkill.exe', ['/PID', String(child.pid), '/T', '/F'], {encoding: 'utf8', timeout: 5000, windowsHide: true});
+          const killed = spawnSync('taskkill.exe', ['/PID', String(child.pid), '/T', '/F'], {
+            encoding: 'utf8',
+            timeout: 5000,
+            windowsHide: true,
+          });
           cleanup = {targetPid: child.pid, exitCode: killed.status, output: (killed.stdout || killed.stderr || '').trim()};
         }
       }, timeoutMs);
-      child.on('error', error => { spawnError = error.message; });
+      child.on('error', (error) => {
+        spawnError = error.message;
+      });
       child.on('close', (code, signal) => {
         clearTimeout(timer);
         resolve({code, signal, spawnError});
@@ -103,7 +113,11 @@ async function main() {
     const stdout = fs.existsSync(stdoutPath) ? fs.readFileSync(stdoutPath, 'utf8') : '';
     const marker = stdout.match(/^RUNTIME_TOKEN (.+)$/m);
     if (marker) {
-      try { metadata.runtimeToken = JSON.parse(marker[1]); } catch { /* kept as unconfirmed */ }
+      try {
+        metadata.runtimeToken = JSON.parse(marker[1]);
+      } catch {
+        /* kept as unconfirmed */
+      }
     }
     metadata.exitCode = outcome.code;
     metadata.signal = outcome.signal;
@@ -111,22 +125,29 @@ async function main() {
     metadata.cleanup = cleanup;
     metadata.finishedAt = new Date().toISOString();
     const screenshotStat = fs.existsSync(screenshotPath) ? fs.statSync(screenshotPath) : null;
-    const screenshotBytes = screenshotStat?.isFile() && screenshotStat.size > 8
-      ? fs.readFileSync(screenshotPath)
-      : null;
+    const screenshotBytes = screenshotStat?.isFile() && screenshotStat.size > 8 ? fs.readFileSync(screenshotPath) : null;
     const pngSignature = screenshotBytes?.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) || false;
     metadata.screenshotCreated = Boolean(pngSignature);
     metadata.swapAssertionsPassed = stdout.includes('PASS candidato do mesmo UUID, slot, preview antes/depois e golpes restantes');
     metadata.screenshotMarkerSeen = stdout.includes('SCREENSHOT_READY move-swap-preview');
-    const tokenConfirmed = metadata.runtimeToken?.pid === child.pid
-      && metadata.runtimeToken.integritySid === 'S-1-16-8192'
-      && typeof metadata.runtimeToken.user === 'string'
-      && metadata.runtimeToken.user.toLowerCase() === metadata.launcherToken.user.toLowerCase();
-    metadata.status = tokenConfirmed && outcome.code === 0 && !metadata.timedOut
-      && metadata.swapAssertionsPassed && metadata.screenshotMarkerSeen && metadata.screenshotCreated
-      ? 'passed' : 'failed-or-incomplete';
+    const tokenConfirmed =
+      metadata.runtimeToken?.pid === child.pid &&
+      metadata.runtimeToken.integritySid === 'S-1-16-8192' &&
+      typeof metadata.runtimeToken.user === 'string' &&
+      metadata.runtimeToken.user.toLowerCase() === metadata.launcherToken.user.toLowerCase();
+    metadata.status =
+      tokenConfirmed &&
+      outcome.code === 0 &&
+      !metadata.timedOut &&
+      metadata.swapAssertionsPassed &&
+      metadata.screenshotMarkerSeen &&
+      metadata.screenshotCreated
+        ? 'passed'
+        : 'failed-or-incomplete';
     saveMetadata();
-    console.log(`PID ${metadata.pid} TOKEN ${metadata.runtimeToken?.integritySid || 'não confirmado'} EXIT ${outcome.code} TIMEOUT ${metadata.timedOut}`);
+    console.log(
+      `PID ${metadata.pid} TOKEN ${metadata.runtimeToken?.integritySid || 'não confirmado'} EXIT ${outcome.code} TIMEOUT ${metadata.timedOut}`,
+    );
     console.log(`RESULT ${metadata.status}; logs: ${stdoutPath}, ${stderrPath}`);
     process.exitCode = metadata.status === 'passed' ? 0 : 1;
   } catch (error) {

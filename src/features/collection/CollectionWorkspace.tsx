@@ -25,7 +25,7 @@ function speciesLabel(id: string) {
   return id
     .replace(/^[^:]+:/, '')
     .replace(/[_-]+/g, ' ')
-    .replace(/\b[a-z]/g, letter => letter.toUpperCase());
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 }
 
 function locationLabel(individual: PlayerIndividual) {
@@ -44,7 +44,10 @@ function locationSearchText(individual: PlayerIndividual) {
 }
 
 function normalizeSearch(value: string) {
-  return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+  return value
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase();
 }
 
 function individualTextValue(individual: PlayerIndividual) {
@@ -72,9 +75,7 @@ function getBoxOptions(individuals: readonly PlayerIndividual[]): BoxOption[] {
 
 function sortedIndividuals(individuals: readonly PlayerIndividual[], view: CollectionView) {
   return individuals
-    .filter(individual => view === 'team'
-      ? individual.location.container === 'party'
-      : individual.location.container === 'pc')
+    .filter((individual) => (view === 'team' ? individual.location.container === 'party' : individual.location.container === 'pc'))
     .sort((first, second) => {
       if (view === 'team') {
         return first.location.container === 'party' && second.location.container === 'party'
@@ -111,38 +112,40 @@ export function CollectionWorkspace({
   const allInView = sortedIndividuals(individuals, view);
   const boxOptions = view === 'pc' ? getBoxOptions(individuals) : [];
   const normalizedSearch = normalizeSearch(search.trim());
-  const visibleIndividuals = allInView.filter(individual => {
-    if (view === 'pc' && boxFilter !== null && individual.location.container === 'pc'
-      && String(individual.location.box) !== boxFilter) return false;
+  const visibleIndividuals = allInView.filter((individual) => {
+    if (view === 'pc' && boxFilter !== null && individual.location.container === 'pc' && String(individual.location.box) !== boxFilter)
+      return false;
     if (!normalizedSearch) return true;
     const candidates = [speciesLabel(individual.speciesId), individual.speciesId, locationSearchText(individual)];
-    return candidates.some(candidate => normalizeSearch(candidate).includes(normalizedSearch));
+    return candidates.some((candidate) => normalizeSearch(candidate).includes(normalizedSearch));
   });
-  const selectedIndividualIsHidden = selectedUuid !== null
-    && (snapshot?.individuals.some(individual => individual.uuid === selectedUuid) ?? false)
-    && !visibleIndividuals.some(individual => individual.uuid === selectedUuid);
-  const selectedVisibleKeys = selectedUuid !== null && visibleIndividuals.some(individual => individual.uuid === selectedUuid)
-    ? [selectedUuid]
-    : [];
+  const selectedIndividualIsHidden =
+    selectedUuid !== null &&
+    (snapshot?.individuals.some((individual) => individual.uuid === selectedUuid) ?? false) &&
+    !visibleIndividuals.some((individual) => individual.uuid === selectedUuid);
+  const selectedVisibleKeys =
+    selectedUuid !== null && visibleIndividuals.some((individual) => individual.uuid === selectedUuid) ? [selectedUuid] : [];
   const heading = view === 'team' ? 'Equipe' : 'PC';
   const countLabel = view === 'team' ? 'na equipe' : 'no PC';
   const uniquePartySlots = view === 'team' ? getUniquePartySlots(allInView) : new Set<number>();
-  const emptyPartySlots = view === 'team'
-    ? Array.from({length: 6}, (_, slot) => slot).filter(slot => !allInView.some(individual =>
-      individual.location.container === 'party' && individual.location.slot === slot))
-    : [];
+  const emptyPartySlots =
+    view === 'team'
+      ? Array.from({length: 6}, (_, slot) => slot).filter(
+          (slot) => !allInView.some((individual) => individual.location.container === 'party' && individual.location.slot === slot),
+        )
+      : [];
   const searchOrBoxFilterActive = normalizedSearch.length > 0 || (view === 'pc' && boxFilter !== null);
   const hasVisibleIndividuals = visibleIndividuals.length > 0;
-  const noResults = snapshot !== null
-    && searchOrBoxFilterActive
-    && visibleIndividuals.length === 0;
+  const noResults = snapshot !== null && searchOrBoxFilterActive && visibleIndividuals.length === 0;
   const emptyTeam = snapshot !== null && view === 'team' && allInView.length === 0 && !searchOrBoxFilterActive;
   const emptyPc = snapshot !== null && view === 'pc' && allInView.length === 0 && !searchOrBoxFilterActive;
 
   return (
     <section className={styles.root} data-testid="collection" aria-labelledby={headingId}>
       <header className={styles.header}>
-        <h2 className={styles.heading} id={headingId} tabIndex={-1}>{heading}</h2>
+        <h2 className={styles.heading} id={headingId} tabIndex={-1}>
+          {heading}
+        </h2>
         {snapshot && (
           <p className={styles.count} aria-live="polite">
             {allInView.length} Pokémon {countLabel}
@@ -175,7 +178,9 @@ export function CollectionWorkspace({
       {selectedIndividualIsHidden && (
         <div className={styles.hiddenSelection} role="status">
           <span>Selecionado fora do filtro</span>
-          <Button variant="quiet" onPress={onClearFilters}>Limpar filtros</Button>
+          <Button variant="quiet" onPress={onClearFilters}>
+            Limpar filtros
+          </Button>
         </div>
       )}
 
@@ -184,17 +189,17 @@ export function CollectionWorkspace({
           Nenhuma captura disponível. Importe uma captura para consultar a coleção.
         </p>
       ) : noResults ? (
-        <p className={styles.emptyState} role="status">Nenhum Pokémon corresponde à busca</p>
+        <p className={styles.emptyState} role="status">
+          Nenhum Pokémon corresponde à busca
+        </p>
       ) : emptyPc ? (
-        <p className={styles.emptyState} role="status">Nenhum Pokémon capturado no PC nesta captura.</p>
+        <p className={styles.emptyState} role="status">
+          Nenhum Pokémon capturado no PC nesta captura.
+        </p>
       ) : emptyTeam ? (
         <div className={styles.teamGrid} role="group" aria-label="Posições da equipe">
           {Array.from({length: 6}, (_, slot) => (
-            <div
-              className={styles.emptyPosition}
-              data-slot={slot}
-              key={slot}
-            >
+            <div className={styles.emptyPosition} data-slot={slot} key={slot}>
               <span className={styles.emptyPositionTitle}>Posição vazia</span>
               <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>
             </div>
@@ -209,13 +214,13 @@ export function CollectionWorkspace({
             selectedKeys={selectedVisibleKeys}
             selectionMode="single"
             selectionBehavior="replace"
-            onSelectionChange={keys => {
+            onSelectionChange={(keys) => {
               if (keys === 'all') return;
               const selection = keys.values().next();
               if (!selection.done) onSelect(String(selection.value));
             }}
           >
-            {individual => {
+            {(individual) => {
               const hasUniqueSlot = uniquePartySlots.has(individual.location.container === 'party' ? individual.location.slot : -1);
               const slot = individual.location.container === 'party' ? individual.location.slot : undefined;
               const dataSlot = hasUniqueSlot && slot !== undefined && slot >= 0 && slot < 6 ? slot : undefined;
@@ -246,12 +251,8 @@ export function CollectionWorkspace({
               );
             }}
           </ListBox>
-          {emptyPartySlots.map(slot => (
-            <div
-              className={styles.emptyPosition}
-              data-slot={slot}
-              key={slot}
-            >
+          {emptyPartySlots.map((slot) => (
+            <div className={styles.emptyPosition} data-slot={slot} key={slot}>
               <span className={styles.emptyPositionTitle}>Posição vazia</span>
               <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>
             </div>
@@ -265,13 +266,13 @@ export function CollectionWorkspace({
           selectedKeys={selectedVisibleKeys}
           selectionMode="single"
           selectionBehavior="replace"
-          onSelectionChange={keys => {
+          onSelectionChange={(keys) => {
             if (keys === 'all') return;
             const selection = keys.values().next();
             if (!selection.done) onSelect(String(selection.value));
           }}
         >
-          {individual => {
+          {(individual) => {
             const textValue = individualTextValue(individual);
             return (
               <ListBoxItem

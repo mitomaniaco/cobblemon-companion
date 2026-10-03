@@ -7,10 +7,7 @@ import {createRequire} from 'node:module';
 import {afterAll, test} from 'vitest';
 
 const require = createRequire(import.meta.url);
-const {
-  readPlayerSnapshotFromConfig,
-  readStableSource,
-} = require('../electron/player-import.cjs');
+const {readPlayerSnapshotFromConfig, readStableSource} = require('../electron/player-import.cjs');
 const {parseNbt} = require('../electron/lib/nbt.cjs');
 
 const temporaryRoots = [];
@@ -46,7 +43,6 @@ function doubleTag(name, value) {
   return named(6, name, payload);
 }
 
-
 function intArrayTag(name, values) {
   const payload = Buffer.alloc(4 + values.length * 4);
   payload.writeInt32BE(values.length, 0);
@@ -80,9 +76,7 @@ const STAT_NBT_NAMES = [
 
 function statValueTag(name, value) {
   if (typeof value === 'number') {
-    return Number.isInteger(value) && Number.isFinite(value)
-      ? intTag(name, value)
-      : doubleTag(name, value);
+    return Number.isInteger(value) && Number.isFinite(value) ? intTag(name, value) : doubleTag(name, value);
   }
   if (typeof value === 'string') return stringTag(name, value);
   if (Array.isArray(value)) return intArrayTag(name, value);
@@ -90,7 +84,10 @@ function statValueTag(name, value) {
 }
 
 function statMapTag(name, values) {
-  return compoundTag(name, Object.entries(values).map(([key, value]) => statValueTag(key, value)));
+  return compoundTag(
+    name,
+    Object.entries(values).map(([key, value]) => statValueTag(key, value)),
+  );
 }
 
 function battleStatTags({base, hyperTrained, evs} = {}) {
@@ -108,7 +105,6 @@ function battleStatTags({base, hyperTrained, evs} = {}) {
 function valuesByStat(values) {
   return Object.fromEntries(STAT_NBT_NAMES.map((name, index) => [name, values[index]]));
 }
-
 
 function move(name, options = {}) {
   const fields = [stringTag('MoveName', name)];
@@ -186,21 +182,25 @@ test('captura o contrato v2, mantém espécies repetidas por UUID e não inventa
     now: () => new Date('2026-09-24T10:00:00.000Z'),
   });
 
-  assert.deepEqual(Object.keys(snapshot).sort(), [
-    'capturedAt', 'consistency', 'individuals', 'schemaVersion', 'sources', 'warnings', 'worldName',
-  ].sort());
+  assert.deepEqual(
+    Object.keys(snapshot).sort(),
+    ['capturedAt', 'consistency', 'individuals', 'schemaVersion', 'sources', 'warnings', 'worldName'].sort(),
+  );
   assert.equal(snapshot.schemaVersion, 2);
   assert.equal(snapshot.capturedAt, '2026-09-24T10:00:00.000Z');
   assert.equal(snapshot.worldName, 'world');
   assert.equal(snapshot.consistency, 'best-effort');
-  assert.deepEqual(snapshot.sources.map(source => source.kind), ['party', 'pc']);
-  assert(snapshot.sources.every(source => /^[a-f0-9]{64}$/.test(source.sha256) && Number.isFinite(Date.parse(source.modifiedAt))));
+  assert.deepEqual(
+    snapshot.sources.map((source) => source.kind),
+    ['party', 'pc'],
+  );
+  assert(snapshot.sources.every((source) => /^[a-f0-9]{64}$/.test(source.sha256) && Number.isFinite(Date.parse(source.modifiedAt))));
   assert.equal(snapshot.individuals.length, 2);
-  assert.deepEqual(snapshot.individuals.map(item => item.uuid), [
-    '00000001-0000-0002-0000-000300000004',
-    '00000005-0000-0006-0000-000700000008',
-  ]);
-  assert(snapshot.individuals.every(item => item.speciesId === 'cobblemon:oddish'));
+  assert.deepEqual(
+    snapshot.individuals.map((item) => item.uuid),
+    ['00000001-0000-0002-0000-000300000004', '00000005-0000-0006-0000-000700000008'],
+  );
+  assert(snapshot.individuals.every((item) => item.speciesId === 'cobblemon:oddish'));
 
   const party = snapshot.individuals[0];
   assert.equal(party.formId, 'unknown');
@@ -223,8 +223,8 @@ test('captura o contrato v2, mantém espécies repetidas por UUID e não inventa
     }
   }
   const statUnknownCounts = snapshot.warnings
-    .filter(warning => /IVs|EVs|HyperTrained/.test(warning))
-    .map(warning => Number(warning.match(/em (\d+) campo/)?.[1]));
+    .filter((warning) => /IVs|EVs|HyperTrained/.test(warning))
+    .map((warning) => Number(warning.match(/em (\d+) campo/)?.[1]));
   assert.deepEqual(statUnknownCounts, [12, 12, 12]);
 });
 
@@ -279,7 +279,7 @@ test('mapeia IVs, overrides e EVs por indivíduo com procedência de party e PC'
   assert.equal(snapshot.individuals[0].uuid === snapshot.individuals[1].uuid, false);
   assert.equal(snapshot.individuals[0].battleStats.ivs.hp.value, 1);
   assert.equal(snapshot.individuals[1].battleStats.ivs.hp.value, 26);
-  assert(snapshot.sources.every(source => /^[a-f0-9]{64}$/.test(source.sha256)));
+  assert(snapshot.sources.every((source) => /^[a-f0-9]{64}$/.test(source.sha256)));
 });
 
 test('distingue ausência, mapas vazios, parciais e override observado sem base', () => {
@@ -298,19 +298,21 @@ test('distingue ausência, mapas vazios, parciais e override observado sem base'
   });
   const partial = readPlayerSnapshotFromConfig({configPath: partialFixture.configPath}).individuals[0].battleStats;
   assert.deepEqual(partial.ivs.hp, {
-    state: 'known', value: 0,
+    state: 'known',
+    value: 0,
     provenance: {sourceKind: 'party', nbtPath: 'Slot0.IVs.Base.cobblemon:hp'},
   });
   assert.equal(partial.ivs.atk.state, 'unknown');
   assert.equal(Object.hasOwn(partial.ivs.atk, 'value'), false);
   assert.deepEqual(partial.hyperTrainedIvs.hp, {
-    state: 'known', value: null,
+    state: 'known',
+    value: null,
     provenance: {sourceKind: 'party', nbtPath: 'Slot0.IVs.HyperTrained.cobblemon:hp'},
   });
   assert.equal(partial.evs.hp.value, 0);
   assert.equal(partial.evs.atk.state, 'unknown');
   assert.equal(
-    readPlayerSnapshotFromConfig({configPath: partialFixture.configPath}).warnings.some(warning => /HyperTrained/.test(warning)),
+    readPlayerSnapshotFromConfig({configPath: partialFixture.configPath}).warnings.some((warning) => /HyperTrained/.test(warning)),
     false,
   );
 
@@ -321,19 +323,20 @@ test('distingue ausência, mapas vazios, parciais e override observado sem base'
   assert.equal(emptyMaps.ivs.hp.state, 'unknown');
   assert.equal(Object.hasOwn(emptyMaps.ivs.hp, 'value'), false);
   assert.deepEqual(emptyMaps.hyperTrainedIvs.hp, {
-    state: 'known', value: null,
+    state: 'known',
+    value: null,
     provenance: {sourceKind: 'party', nbtPath: 'Slot0.IVs.HyperTrained.cobblemon:hp'},
   });
   assert.equal(emptyMaps.evs.hp.state, 'unknown');
 
   const overrideOnlyFixture = makeWorld({
-
     partyStatTags: battleStatTags({hyperTrained: {'cobblemon:attack': 0}}),
   });
   const overrideOnly = readPlayerSnapshotFromConfig({configPath: overrideOnlyFixture.configPath}).individuals[0].battleStats;
   assert.equal(overrideOnly.ivs.atk.state, 'unknown');
   assert.deepEqual(overrideOnly.hyperTrainedIvs.atk, {
-    state: 'known', value: 0,
+    state: 'known',
+    value: 0,
     provenance: {sourceKind: 'party', nbtPath: 'Slot0.IVs.HyperTrained.cobblemon:attack'},
   });
   assert.equal(overrideOnly.hyperTrainedIvs.hp.value, null);
@@ -393,49 +396,35 @@ test('aceita limites de IV/EV e rejeita valores, mapas e totais inválidos', () 
     const fixture = makeWorld(options);
     assert.throws(
       () => readPlayerSnapshotFromConfig({configPath: fixture.configPath}),
-      error => error?.code === 'ERR_IMPORT_STATS'
-        && error.message === 'IVs/EVs têm dados inválidos ou formato não suportado; snapshot recusado.',
+      (error) =>
+        error?.code === 'ERR_IMPORT_STATS' && error.message === 'IVs/EVs têm dados inválidos ou formato não suportado; snapshot recusado.',
     );
   }
 });
 
 test('o parser rejeita chaves duplicadas sem manter a última ocorrência', () => {
-  const input = rootNbt([compoundTag('Slot0', [
-    compoundTag('IVs', [
-      compoundTag('Base', [
-        intTag('cobblemon:hp', 7),
-        intTag('cobblemon:hp', 31),
-      ]),
-    ]),
-  ])]);
+  const input = rootNbt([
+    compoundTag('Slot0', [compoundTag('IVs', [compoundTag('Base', [intTag('cobblemon:hp', 7), intTag('cobblemon:hp', 31)])])]),
+  ]);
 
   assert.throws(
     () => parseNbt(input),
-    error => error?.message === 'Chave NBT duplicada',
+    (error) => error?.message === 'Chave NBT duplicada',
   );
 });
 
 test('recusa snapshot quando Base ou IVs contém uma chave NBT repetida', () => {
   const duplicateStat = makeWorld({
-    partyStatTags: [compoundTag('IVs', [
-      compoundTag('Base', [
-        intTag('cobblemon:hp', 7),
-        intTag('cobblemon:hp', 31),
-      ]),
-    ])],
+    partyStatTags: [compoundTag('IVs', [compoundTag('Base', [intTag('cobblemon:hp', 7), intTag('cobblemon:hp', 31)])])],
   });
   const duplicateIvs = makeWorld({
-    partyStatTags: [
-      compoundTag('IVs', []),
-      compoundTag('IVs', []),
-    ],
+    partyStatTags: [compoundTag('IVs', []), compoundTag('IVs', [])],
   });
 
   for (const fixture of [duplicateStat, duplicateIvs]) {
     assert.throws(
       () => readPlayerSnapshotFromConfig({configPath: fixture.configPath}),
-      error => error?.code === 'ERR_IMPORT_NBT'
-        && error.message === 'Não foi possível interpretar os dados NBT de party.',
+      (error) => error?.code === 'ERR_IMPORT_NBT' && error.message === 'Não foi possível interpretar os dados NBT de party.',
     );
   }
 });
@@ -462,7 +451,7 @@ test('descarta alteração de bytes IV/EV entre as leituras de consistência', (
 
   assert.throws(
     () => readPlayerSnapshotFromConfig({configPath: fixture.configPath, readSource}),
-    error => error?.code === 'ERR_IMPORT_CHANGED',
+    (error) => error?.code === 'ERR_IMPORT_CHANGED',
   );
 });
 
@@ -514,16 +503,10 @@ test('preserva identificadores sem namespace sem acrescentar um namespace presum
 
 test('rejeita IDs obrigatórios inválidos ou acima do limite e mantém IDs opcionais inválidos como desconhecidos', () => {
   const invalidSpecies = makeWorld({partySpecies: 'Mod:oddish'});
-  assert.throws(
-    () => readPlayerSnapshotFromConfig({configPath: invalidSpecies.configPath}),
-    /speciesId válido/,
-  );
+  assert.throws(() => readPlayerSnapshotFromConfig({configPath: invalidSpecies.configPath}), /speciesId válido/);
 
   const invalidMove = makeWorld({partyEquippedMove: 'mod:move with spaces'});
-  assert.throws(
-    () => readPlayerSnapshotFromConfig({configPath: invalidMove.configPath}),
-    /golpe sem identificador/,
-  );
+  assert.throws(() => readPlayerSnapshotFromConfig({configPath: invalidMove.configPath}), /golpe sem identificador/);
 
   const boundaryMoveId = `mod:${'a'.repeat(252)}`;
   const boundaryMove = makeWorld({partyLearnedMove: boundaryMoveId});
@@ -531,10 +514,7 @@ test('rejeita IDs obrigatórios inválidos ou acima do limite e mantém IDs opci
   assert.equal(boundarySnapshot.individuals[0].learnedMoves[0].id, boundaryMoveId);
 
   const oversizedMove = makeWorld({partyLearnedMove: `mod:${'a'.repeat(253)}`});
-  assert.throws(
-    () => readPlayerSnapshotFromConfig({configPath: oversizedMove.configPath}),
-    /golpe sem identificador/,
-  );
+  assert.throws(() => readPlayerSnapshotFromConfig({configPath: oversizedMove.configPath}), /golpe sem identificador/);
 
   const invalidOptionalIds = makeWorld({
     partyNature: 'brave nature',
@@ -551,8 +531,8 @@ test('rejeita IDs obrigatórios inválidos ou acima do limite e mantém IDs opci
 test('distingue listas de golpes ausentes de listas presentes e vazias', () => {
   const fixture = makeWorld({unknownMoves: true});
   const snapshot = readPlayerSnapshotFromConfig({configPath: fixture.configPath});
-  const party = snapshot.individuals.find(item => item.location.container === 'party');
-  const pc = snapshot.individuals.find(item => item.location.container === 'pc');
+  const party = snapshot.individuals.find((item) => item.location.container === 'party');
+  const pc = snapshot.individuals.find((item) => item.location.container === 'pc');
 
   assert.deepEqual(party.equippedMoves, [{id: 'cobblemon:tackle', pp: 0, ppUps: null}]);
   assert.equal(party.equippedMovesKnown, true);
@@ -564,24 +544,16 @@ test('distingue listas de golpes ausentes de listas presentes e vazias', () => {
 
 test('recusa UUID duplicado entre party e PC', () => {
   const fixture = makeWorld({duplicateUuid: true});
-  assert.throws(
-    () => readPlayerSnapshotFromConfig({configPath: fixture.configPath}),
-    /UUID repetido entre party e PC/,
-  );
+  assert.throws(() => readPlayerSnapshotFromConfig({configPath: fixture.configPath}), /UUID repetido entre party e PC/);
 });
 
 test('recusa indivíduo sem UUID em vez de associá-lo por espécie', () => {
   const fixture = makeWorld();
-  writeNbt(fixture.partyPath, [compoundTag('Slot0', [
-    stringTag('Species', 'cobblemon:oddish'),
-    listTag('MoveSet', 10, []),
-    listTag('BenchedMoves', 10, []),
-  ])]);
+  writeNbt(fixture.partyPath, [
+    compoundTag('Slot0', [stringTag('Species', 'cobblemon:oddish'), listTag('MoveSet', 10, []), listTag('BenchedMoves', 10, [])]),
+  ]);
 
-  assert.throws(
-    () => readPlayerSnapshotFromConfig({configPath: fixture.configPath}),
-    /UUID ausente ou inválido/,
-  );
+  assert.throws(() => readPlayerSnapshotFromConfig({configPath: fixture.configPath}), /UUID ausente ou inválido/);
 });
 
 test('descarta o snapshot se party ou PC mudar entre as leituras de consistência', () => {
@@ -591,21 +563,20 @@ test('descarta o snapshot se party ou PC mudar entre as leituras de consistênci
     const observed = readStableSource(filePath, kind, maxBytes);
     if (kind === 'pc' && !changedPc) {
       changedPc = true;
-      writeNbt(fixture.pcPath, [compoundTag('Box0', [
-        stringTag('BoxName', 'Changed Box'),
-        compoundTag('Slot0', [
-          intArrayTag('UUID', [9, 10, 11, 12]),
-          stringTag('Species', 'cobblemon:oddish'),
-          listTag('MoveSet', 10, []),
-          listTag('BenchedMoves', 10, []),
+      writeNbt(fixture.pcPath, [
+        compoundTag('Box0', [
+          stringTag('BoxName', 'Changed Box'),
+          compoundTag('Slot0', [
+            intArrayTag('UUID', [9, 10, 11, 12]),
+            stringTag('Species', 'cobblemon:oddish'),
+            listTag('MoveSet', 10, []),
+            listTag('BenchedMoves', 10, []),
+          ]),
         ]),
-      ])]);
+      ]);
     }
     return observed;
   };
 
-  assert.throws(
-    () => readPlayerSnapshotFromConfig({configPath: fixture.configPath, readSource}),
-    /mudou durante a leitura/,
-  );
+  assert.throws(() => readPlayerSnapshotFromConfig({configPath: fixture.configPath, readSource}), /mudou durante a leitura/);
 });

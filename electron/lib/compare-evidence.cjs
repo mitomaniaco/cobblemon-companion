@@ -38,7 +38,7 @@ function compareEvidence(input) {
   requireValue(input.current.id !== input.candidate.id, 'distinct build ids');
   strings(input.learnedMoves, 'learnedMoves');
   strings(input.lockedMoves, 'lockedMoves');
-  input.lockedMoves.forEach(m => requireValue(input.current.moves.includes(m), 'locked move not current'));
+  input.lockedMoves.forEach((m) => requireValue(input.current.moves.includes(m), 'locked move not current'));
   record(input.scope, 'scope');
   for (const k of ['id', 'snapshotId', 'individualId', 'objective', 'provenance']) text(input.scope[k], `scope.${k}`);
   strings(input.scope.assumptions, 'scope.assumptions');
@@ -49,8 +49,7 @@ function compareEvidence(input) {
   requireValue(Number.isInteger(input.scope.requiredHorizon) && input.scope.requiredHorizon > 0, 'scope.requiredHorizon');
   requireValue(Number.isInteger(input.scope.evaluatedHorizon) && input.scope.evaluatedHorizon >= 0, 'scope.evaluatedHorizon');
   if (input.scope.actionTraceUnit !== undefined) {
-    requireValue(['turns', 'events'].includes(input.scope.actionTraceUnit),
-      'scope.actionTraceUnit');
+    requireValue(['turns', 'events'].includes(input.scope.actionTraceUnit), 'scope.actionTraceUnit');
   }
   record(input.metrics, 'metrics');
   const metricIds = Object.keys(input.metrics);
@@ -74,27 +73,42 @@ function compareEvidence(input) {
       record(outcome, side);
       requireValue(outcome.buildId === input[side].id, `${side}.buildId`);
       record(outcome.context, `${side}.context`);
-      requireValue(isDeepStrictEqual(outcome.context, {
-        scopeId: input.scope.id, snapshotId: input.scope.snapshotId,
-        individualId: input.scope.individualId, initialState: e.initialState,
-        horizon: input.scope.evaluatedHorizon,
-      }), `${side}.context mismatch`);
+      requireValue(
+        isDeepStrictEqual(outcome.context, {
+          scopeId: input.scope.id,
+          snapshotId: input.scope.snapshotId,
+          individualId: input.scope.individualId,
+          initialState: e.initialState,
+          horizon: input.scope.evaluatedHorizon,
+        }),
+        `${side}.context mismatch`,
+      );
       requireValue(Array.isArray(outcome.actions), `${side}.actions`);
-      outcome.actions.forEach(action => text(action, `${side}.action`));
+      outcome.actions.forEach((action) => text(action, `${side}.action`));
       if (input.scope.actionTraceUnit === 'turns') {
-        requireValue(outcome.actions.length === input.scope.evaluatedHorizon,
-          `${side}.actions: length must equal evaluated horizon for turn traces`);
+        requireValue(
+          outcome.actions.length === input.scope.evaluatedHorizon,
+          `${side}.actions: length must equal evaluated horizon for turn traces`,
+        );
       }
       record(outcome.values, `${side}.values`);
       requireValue(isDeepStrictEqual(Object.keys(outcome.values).sort(), [...metricIds].sort()), `${side}.metric coverage`);
       for (const id of metricIds) requireValue(Number.isFinite(outcome.values[id]), `${side}.${id}: finite number`);
     }
     for (const metric of metricIds) {
-      const before = e.current.values[metric], after = e.candidate.values[metric];
+      const before = e.current.values[metric],
+        after = e.candidate.values[metric];
       const sign = after === before ? 0 : after > before ? 1 : -1;
       const direction = sign * (input.metrics[metric] === 'higher' ? 1 : -1);
-      facts.push({evidenceId: e.id, target: e.target, condition: e.condition,
-        metric, before, after, effect: direction > 0 ? 'gain' : direction < 0 ? 'loss' : 'equal'});
+      facts.push({
+        evidenceId: e.id,
+        target: e.target,
+        condition: e.condition,
+        metric,
+        before,
+        after,
+        effect: direction > 0 ? 'gain' : direction < 0 ? 'loss' : 'equal',
+      });
     }
   }
 
@@ -102,45 +116,66 @@ function compareEvidence(input) {
   // when it is already equipped on the observed individual. This preserves
   // the observed state without treating a newly introduced, unlearned move
   // as available.
-  const requirements = input.candidate.moves.filter(m =>
-    !input.learnedMoves.includes(m) && !input.current.moves.includes(m));
-  const missingLocked = input.lockedMoves.filter(m => !input.candidate.moves.includes(m));
-  const missingEvidence = input.scope.requiredEvidenceIds.filter(id => !seen.has(id));
+  const requirements = input.candidate.moves.filter((m) => !input.learnedMoves.includes(m) && !input.current.moves.includes(m));
+  const missingLocked = input.lockedMoves.filter((m) => !input.candidate.moves.includes(m));
+  const missingEvidence = input.scope.requiredEvidenceIds.filter((id) => !seen.has(id));
   const blockers = [...input.scope.blockers];
   if (!input.scope.completeCoverage) blockers.push('partial-coverage');
   if (input.scope.evaluatedHorizon < input.scope.requiredHorizon) blockers.push('insufficient-horizon');
   if (!input.scope.requiredEvidenceIds.length || !input.evidence.length) blockers.push('no-evidence');
   if (missingEvidence.length) blockers.push('missing-evidence');
-  const gains = facts.filter(f => f.effect === 'gain');
-  const losses = facts.filter(f => f.effect === 'loss');
-  let status, reason, preferredBuildId = null;
+  const gains = facts.filter((f) => f.effect === 'gain');
+  const losses = facts.filter((f) => f.effect === 'loss');
+  let status,
+    reason,
+    preferredBuildId = null;
   if (requirements.length || missingLocked.length) {
-    status = 'inconclusivo'; reason = 'candidate-ineligible';
+    status = 'inconclusivo';
+    reason = 'candidate-ineligible';
   } else if (blockers.length) {
-    status = 'inconclusivo'; reason = 'insufficient-evidence';
+    status = 'inconclusivo';
+    reason = 'insufficient-evidence';
   } else if (input.scope.conditions.length || (gains.length && losses.length)) {
-    status = 'condicional'; reason = input.scope.conditions.length ? 'unresolved-conditions' : 'tradeoff';
+    status = 'condicional';
+    reason = input.scope.conditions.length ? 'unresolved-conditions' : 'tradeoff';
   } else if (gains.length) {
-    status = 'preferencia-no-recorte'; reason = 'improvement-without-observed-loss';
+    status = 'preferencia-no-recorte';
+    reason = 'improvement-without-observed-loss';
     preferredBuildId = input.candidate.id;
   } else {
-    status = 'manter'; reason = losses.length ? 'candidate-worse-in-scope' : 'equivalent-in-scope';
+    status = 'manter';
+    reason = losses.length ? 'candidate-worse-in-scope' : 'equivalent-in-scope';
     preferredBuildId = input.current.id;
   }
   // Returned objects never share mutable state with the caller's observed build.
-  return structuredClone({schemaVersion: 1, policyVersion: 'pairwise-evidence-v1',
-    status, reason, preferredBuildId, usableNow: requirements.length === 0 && missingLocked.length === 0,
-    requirements: requirements.map(move => ({move, availability: 'not-confirmed-learned'})),
-    missingLocked, blockers: [...new Set(blockers)], missingEvidence,
-    scope: input.scope, current: input.current, candidate: input.candidate,
-    changes: {added: input.candidate.moves.filter(m => !input.current.moves.includes(m)),
-      removed: input.current.moves.filter(m => !input.candidate.moves.includes(m)),
-      retained: input.current.moves.filter(m => input.candidate.moves.includes(m))},
-    explanation: {evidenceIds: [...seen], gains, losses,
-      unchanged: facts.filter(f => f.effect === 'equal'), conditions: input.scope.conditions},
+  return structuredClone({
+    schemaVersion: 1,
+    policyVersion: 'pairwise-evidence-v1',
+    status,
+    reason,
+    preferredBuildId,
+    usableNow: requirements.length === 0 && missingLocked.length === 0,
+    requirements: requirements.map((move) => ({move, availability: 'not-confirmed-learned'})),
+    missingLocked,
+    blockers: [...new Set(blockers)],
+    missingEvidence,
+    scope: input.scope,
+    current: input.current,
+    candidate: input.candidate,
+    changes: {
+      added: input.candidate.moves.filter((m) => !input.current.moves.includes(m)),
+      removed: input.current.moves.filter((m) => !input.candidate.moves.includes(m)),
+      retained: input.current.moves.filter((m) => input.candidate.moves.includes(m)),
+    },
+    explanation: {
+      evidenceIds: [...seen],
+      gains,
+      losses,
+      unchanged: facts.filter((f) => f.effect === 'equal'),
+      conditions: input.scope.conditions,
+    },
     evidence: input.evidence,
   });
 }
 
 module.exports = {compareEvidence};
-

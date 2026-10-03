@@ -17,8 +17,8 @@
   --color-warning: #f5c264;
   --color-error: #ff9a9f;
 
-  --font-sans: 'Manrope Variable', 'Segoe UI', sans-serif;
-  --font-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace;
+  --font-sans: "Manrope Variable", "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
 
   --text-body: 14px;
   --line-body: 20px;

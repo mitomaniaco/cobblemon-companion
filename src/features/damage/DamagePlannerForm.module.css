@@ -91,7 +91,7 @@
   line-height: var(--line-secondary);
 }
 
-.planner .formField input[type='number'] {
+.planner .formField input[type="number"] {
   width: 100%;
   min-width: 0;
   min-height: var(--size-control);

@@ -1,9 +1,5 @@
 import type {MoveSwapPlan} from '../domain/move-swap';
-import {
-  createMoveSwapPlan,
-  invalidateMoveSwapPlan,
-  selectMoveSwapIndividual,
-} from '../domain/move-swap';
+import {createMoveSwapPlan, invalidateMoveSwapPlan, selectMoveSwapIndividual} from '../domain/move-swap';
 import type {PlayerIndividual, PlayerSnapshot} from '../platform/api';
 
 export type ImportPhase = 'idle' | 'loading' | 'loaded' | 'error';
@@ -43,7 +39,6 @@ export function beginTrainerSessionRefresh(): TrainerSessionState {
   };
 }
 
-
 function comparePcPosition(a: PlayerIndividual, b: PlayerIndividual): number {
   if (a.location.container !== 'pc' || b.location.container !== 'pc') return 0;
   return a.location.box - b.location.box || a.location.slot - b.location.slot;
@@ -51,25 +46,18 @@ function comparePcPosition(a: PlayerIndividual, b: PlayerIndividual): number {
 
 function firstSnapshotIndividual(snapshot: PlayerSnapshot): PlayerIndividual | null {
   const party = snapshot.individuals
-    .filter(individual => individual.location.container === 'party')
+    .filter((individual) => individual.location.container === 'party')
     .sort((a, b) => a.location.slot - b.location.slot);
   if (party.length > 0) return party[0];
 
-  const pc = snapshot.individuals
-    .filter(individual => individual.location.container === 'pc')
-    .sort(comparePcPosition);
+  const pc = snapshot.individuals.filter((individual) => individual.location.container === 'pc').sort(comparePcPosition);
   return pc[0] ?? null;
 }
 
-export function completeTrainerSessionRefresh(
-  state: TrainerSessionState,
-  snapshot: PlayerSnapshot,
-): TrainerSessionState {
+export function completeTrainerSessionRefresh(state: TrainerSessionState, snapshot: PlayerSnapshot): TrainerSessionState {
   const selected = firstSnapshotIndividual(snapshot);
   const selectedUuid = selected?.uuid ?? null;
-  const moveSwapPlan = selectedUuid === null
-    ? invalidateMoveSwapPlan()
-    : selectMoveSwapIndividual(state.moveSwapPlan, selectedUuid);
+  const moveSwapPlan = selectedUuid === null ? invalidateMoveSwapPlan() : selectMoveSwapIndividual(state.moveSwapPlan, selectedUuid);
 
   return {
     snapshot,
@@ -90,10 +78,7 @@ export function failTrainerSessionRefresh(error: string): TrainerSessionState {
   };
 }
 
-export function selectTrainerSessionIndividual(
-  state: TrainerSessionState,
-  uuid: string,
-): TrainerSessionState {
+export function selectTrainerSessionIndividual(state: TrainerSessionState, uuid: string): TrainerSessionState {
   return {
     ...state,
     selectedUuid: uuid,
@@ -111,10 +96,7 @@ export function updateTrainerSessionMoveSwap(
   };
 }
 
-export function trainerSessionReducer(
-  state: TrainerSessionState,
-  action: TrainerSessionAction,
-): TrainerSessionState {
+export function trainerSessionReducer(state: TrainerSessionState, action: TrainerSessionAction): TrainerSessionState {
   switch (action.type) {
     case 'refresh-started':
       return beginTrainerSessionRefresh();

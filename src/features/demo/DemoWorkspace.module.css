@@ -83,17 +83,17 @@
   line-height: var(--line-secondary);
 }
 
-.statusValue[data-phase='running'] {
+.statusValue[data-phase="running"] {
   border-color: var(--color-warning);
   color: var(--color-warning);
 }
 
-.statusValue[data-phase='error'] {
+.statusValue[data-phase="error"] {
   border-color: var(--color-error);
   color: var(--color-error);
 }
 
-.statusValue[data-phase='result'] {
+.statusValue[data-phase="result"] {
   border-color: var(--color-success);
   color: var(--color-success);
 }
@@ -177,7 +177,6 @@
   align-items: start;
   gap: var(--space-4);
 }
-
 
 .contextStrip {
   display: grid;

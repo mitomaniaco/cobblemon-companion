@@ -65,7 +65,11 @@ export function Select({
         <SelectValue className={styles.value} />
         <CaretDown className={styles.triggerIcon} aria-hidden="true" weight="bold" />
       </AriaButton>
-      {description && <Text className={styles.description} slot="description">{description}</Text>}
+      {description && (
+        <Text className={styles.description} slot="description">
+          {description}
+        </Text>
+      )}
       {errorMessage && <FieldError className={styles.error}>{errorMessage}</FieldError>}
       <Popover className={styles.popover}>
         <ListBox className={styles.listBox} aria-label={`${label} opções`}>
@@ -85,7 +89,11 @@ export function Select({
             </ListBoxItem>
           ))}
         </ListBox>
-        {options.length === 0 && <div className={styles.emptyMessage} role="status">{emptyMessage}</div>}
+        {options.length === 0 && (
+          <div className={styles.emptyMessage} role="status">
+            {emptyMessage}
+          </div>
+        )}
       </Popover>
     </AriaSelect>
   );
