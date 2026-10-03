@@ -1,0 +1,392 @@
+.workspace {
+  display: flex;
+  width: 100%;
+  max-width: 440px;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-collection);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.returnButton {
+  align-self: flex-start;
+  min-height: var(--size-navigation-target);
+}
+
+.identity {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 160px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.identityInfo {
+  min-width: 0;
+}
+
+.name {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-individual);
+  font-weight: 700;
+  line-height: var(--line-individual);
+  overflow-wrap: anywhere;
+}
+
+.identityFacts,
+.summaryFacts,
+.captureFacts,
+.provenanceList {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+}
+
+.identityFacts {
+  gap: var(--space-3);
+}
+
+.identityFacts > div,
+.summaryFacts > div,
+.captureFacts > div,
+.provenanceList > div {
+  min-width: 0;
+}
+
+.identityFacts dt,
+.summaryFacts dt,
+.captureFacts dt,
+.provenanceList dt {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.identityFacts dd,
+.summaryFacts dd,
+.captureFacts dd,
+.provenanceList dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.identityFacts dd {
+  font-weight: 600;
+}
+
+.tabs {
+  min-width: 0;
+}
+
+.panelHeading {
+  margin: 0 0 var(--space-3);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.summaryFacts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-3);
+}
+
+.summaryFacts dd {
+  margin-top: var(--space-1);
+}
+
+.movesContent {
+  min-width: 0;
+}
+
+.moveGroups {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.moveGroup {
+  min-width: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.subheading {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-body);
+  font-weight: 700;
+  line-height: var(--line-body);
+}
+
+.listState {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.moveList,
+.sourceList,
+.warningList,
+.rawMoveGroup ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moveList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.moveItem {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-1);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.moveName {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.moveFacts {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.attributeTableScroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+  scrollbar-width: thin;
+}
+
+.attributeTable {
+  width: 100%;
+  min-width: 360px;
+  border-collapse: collapse;
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.attributeTable th,
+.attributeTable td {
+  padding: var(--space-2) var(--space-1);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.attributeTable thead th {
+  color: var(--color-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.attributeTable tbody th {
+  font-weight: 600;
+}
+
+.attributeTable td {
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.captureDisclosure {
+  flex: 0 0 auto;
+}
+
+.captureData {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+}
+
+.captureFacts {
+  gap: var(--space-3);
+}
+
+.captureFacts code,
+.provenanceList code,
+.sourceList code,
+.rawMoveGroup code {
+  font-family: var(--font-mono);
+  font-size: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.captureFacts code {
+  color: var(--color-text);
+}
+
+.captureSection {
+  min-width: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.sourceList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.sourceList li {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-1);
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.sourceTitle {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.sourceList code {
+  color: var(--color-text);
+}
+
+.provenanceList {
+  gap: var(--space-3);
+}
+
+.provenanceList dd {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.provenanceList code {
+  color: var(--color-text);
+}
+
+.rawMoveColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.rawMoveGroup {
+  min-width: 0;
+}
+
+.rawMoveGroup h4 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-secondary);
+  font-weight: 700;
+  line-height: var(--line-secondary);
+}
+
+.rawMoveGroup li + li {
+  margin-top: var(--space-1);
+}
+
+.rawMoveGroup code {
+  color: var(--color-text);
+}
+
+.warningList {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-warning);
+}
+
+.warningList li {
+  overflow-wrap: anywhere;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 1099px) {
+  .workspace {
+    max-width: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .identity {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+
+  .identityFacts {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .moveGroups,
+  .rawMoveColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (forced-colors: active) {
+  .workspace {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .identity,
+  .moveGroup,
+  .moveItem,
+  .attributeTableScroll,
+  .attributeTable th,
+  .attributeTable td,
+  .captureSection {
+    border-color: CanvasText;
+  }
+
+  .identityFacts dt,
+  .summaryFacts dt,
+  .captureFacts dt,
+  .provenanceList dt,
+  .listState,
+  .moveFacts,
+  .sourceList li,
+  .provenanceList dd {
+    color: CanvasText;
+  }
+
+  .attributeTable thead th,
+  .attributeTable tbody th,
+  .attributeTable td,
+  .captureFacts code,
+  .sourceTitle,
+  .sourceList code,
+  .provenanceList code,
+  .rawMoveGroup code {
+    color: CanvasText;
+  }
+
+  .warningList {
+    color: CanvasText;
+  }
+}

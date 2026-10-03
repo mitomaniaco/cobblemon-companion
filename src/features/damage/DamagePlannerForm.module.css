@@ -1,0 +1,346 @@
+.planner {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  color: var(--color-text);
+  caret-color: var(--color-accent);
+}
+
+.planner h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+}
+
+.intro,
+.blockerText,
+.fieldHelp {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.form {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+}
+
+.inputs {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.inputsLegend {
+  margin-bottom: var(--space-1);
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  font-weight: 700;
+  line-height: var(--line-secondary);
+}
+
+.moveField {
+  max-width: 520px;
+}
+
+.fieldHelp {
+  margin-top: var(--space-2);
+}
+
+.targetProfile,
+.statGroup {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.targetProfile > legend,
+.statGroup > legend {
+  margin-bottom: var(--space-3);
+  color: var(--color-text);
+  font-size: var(--text-body);
+  font-weight: 700;
+  line-height: var(--line-body);
+}
+
+.targetFields {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.formField {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-2);
+}
+
+.formField label {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  font-weight: 600;
+  line-height: var(--line-secondary);
+}
+
+.planner .formField input[type='number'] {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--size-control);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.planner .formField input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.planner .formField input:disabled {
+  color: var(--color-muted);
+  background: var(--color-navigation);
+  opacity: 1;
+}
+
+.statGroups {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.statGrid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.confirmations {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.planner ::selection {
+  color: var(--color-text-on-accent);
+  background: var(--color-accent);
+}
+
+.unknownSelection {
+  margin: var(--space-2) 0 0;
+  color: var(--color-warning);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.blocker {
+  max-width: 72ch;
+}
+
+.blockerText {
+  max-width: 72ch;
+}
+
+.error {
+  max-width: 72ch;
+}
+
+.actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.actions > span {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.result {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.resultHeading {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.resultHeading h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.resultHeading span,
+.limits {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.ranges {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.ranges > div {
+  min-width: 0;
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--color-border);
+}
+
+.ranges span,
+.ranges p {
+  display: block;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+  overflow-wrap: anywhere;
+}
+
+.ranges strong {
+  display: block;
+  margin-block: var(--space-2);
+  color: var(--color-text);
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 32px;
+}
+
+.ranges strong small {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  font-weight: 600;
+}
+
+.trace {
+  min-width: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.trace summary {
+  padding-block: var(--space-3);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: var(--text-secondary);
+  font-weight: 700;
+  line-height: var(--line-secondary);
+  text-underline-offset: 3px;
+}
+
+.trace summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.trace dl {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.trace dl > div {
+  min-width: 0;
+}
+
+.trace dt {
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.trace dd {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+  overflow-wrap: anywhere;
+}
+
+.trace code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 850px) {
+  .targetFields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statGroups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .ranges {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions > :first-child {
+    width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .planner .formField input,
+  .ranges > div,
+  .trace {
+    border-color: CanvasText;
+  }
+
+  .planner .formField label,
+  .fieldHelp,
+  .intro,
+  .blockerText,
+  .actions > span,
+  .resultHeading span,
+  .limits,
+  .ranges span,
+  .ranges p,
+  .trace dt {
+    color: CanvasText;
+  }
+}

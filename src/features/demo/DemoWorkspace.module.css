@@ -1,0 +1,686 @@
+.workspace {
+  display: flex;
+  width: min(100%, 1240px);
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-inline: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-2) var(--space-8);
+  scrollbar-gutter: stable;
+  scrollbar-color: var(--color-control-border) var(--color-surface);
+  color: var(--color-text);
+}
+
+.heading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.heading > div:first-child {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: var(--line-section);
+}
+
+.heading h2:focus,
+.heading h2:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.heading p,
+.sectionIntro,
+.context > p {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--color-muted);
+  line-height: var(--line-body);
+}
+
+.statusBlock {
+  display: grid;
+  min-width: 150px;
+  gap: var(--space-1);
+  justify-items: end;
+  text-align: right;
+}
+
+.statusLabel {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.statusValue,
+.resultBadge,
+.awaitingState {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: var(--color-raised);
+  font-size: var(--text-secondary);
+  font-weight: 700;
+  line-height: var(--line-secondary);
+}
+
+.statusValue[data-phase='running'] {
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.statusValue[data-phase='error'] {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.statusValue[data-phase='result'] {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.contentGrid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1.5fr) minmax(230px, 0.7fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.formSection {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-collection);
+  background: var(--color-surface);
+}
+
+.formSection h3,
+.context h3,
+.resultHeading h3,
+.awaiting h3 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 700;
+  line-height: var(--line-body);
+}
+
+.sectionIntro {
+  max-width: 65ch;
+}
+
+.form {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+}
+
+.fixedFacts {
+  display: grid;
+  margin: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--color-border);
+}
+
+.fixedFacts > div {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: var(--space-1);
+}
+
+.fixedFacts span {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  font-weight: 600;
+  line-height: var(--line-secondary);
+}
+
+.fixedFacts strong {
+  font-size: var(--text-body);
+  line-height: var(--line-body);
+}
+
+.fixedFacts small {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.formFields {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+}
+
+
+.contextStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-block: 1px solid var(--color-border);
+}
+
+.contextStrip > div {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-1);
+}
+
+.contextStrip span {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.contextStrip strong {
+  overflow-wrap: anywhere;
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.errorMessage {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-control);
+  background: var(--color-raised);
+  line-height: var(--line-body);
+}
+
+.errorMessage p {
+  margin: 0;
+}
+
+.formActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.formActions > p {
+  flex: 1 1 220px;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.context {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+.context h3 {
+  font-size: var(--text-section);
+  line-height: var(--line-section);
+}
+
+.demoLabel {
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.scope,
+.boundary {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.scope h4,
+.boundary h4,
+.detailSection h4,
+.conditions h4,
+.limits h4 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 700;
+  line-height: var(--line-body);
+}
+
+.scope dl {
+  display: grid;
+  margin: 0;
+}
+
+.scope dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.scope dt {
+  color: var(--color-muted);
+}
+
+.scope dd {
+  margin: 0;
+  text-align: right;
+}
+
+.boundary ul,
+.detailSection ul,
+.conditions ul,
+.limits ul {
+  display: grid;
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  gap: var(--space-2);
+}
+
+.boundary ul {
+  color: var(--color-muted);
+}
+
+.awaiting {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.awaiting > div {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.awaiting p,
+.detailSection p,
+.limits p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: var(--line-body);
+}
+
+.result {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.resultHeading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.resultHeading > div {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.resultHeading h3 {
+  font-size: var(--text-section);
+  line-height: var(--line-section);
+}
+
+.resultHeading p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.resultBadge {
+  flex: 0 0 auto;
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.summary {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--color-muted);
+  line-height: var(--line-body);
+}
+
+.summary strong {
+  color: var(--color-text);
+}
+
+.damageCompare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+
+.damageSide {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-collection);
+  background: var(--color-surface);
+}
+
+.moveHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.moveHeading span,
+.damageMeta {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.moveHeading strong {
+  text-align: right;
+}
+
+.damageValue {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+}
+
+.damageValue strong {
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.damageValue span {
+  color: var(--color-muted);
+}
+
+.damageTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--color-raised);
+}
+
+.damageTrack span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-accent);
+}
+
+.damageMeta {
+  margin: 0;
+}
+
+.evidence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+
+.detailSection {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.detailSection li,
+.conditions li,
+.limits li {
+  overflow-wrap: anywhere;
+}
+
+.conditions {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-collection);
+  background: var(--color-surface);
+}
+
+.trace {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-collection);
+  background: var(--color-surface);
+}
+
+.trace summary {
+  min-height: var(--size-navigation-target);
+  padding: var(--space-3) var(--space-4);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.traceContent {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.traceFacts {
+  display: grid;
+  margin: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3) var(--space-4);
+}
+
+.traceFacts > div {
+  min-width: 0;
+}
+
+.traceFacts dt {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.traceFacts dd {
+  margin: var(--space-1) 0 0;
+  overflow-wrap: anywhere;
+}
+
+.traceFacts code {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.limits {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 899px) {
+  .contentGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .context {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--space-4) var(--space-6);
+  }
+
+  .context > h3,
+  .context > p,
+  .demoLabel {
+    grid-column: 1 / -1;
+  }
+
+  .scope,
+  .boundary {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .workspace {
+    gap: var(--space-4);
+    padding-inline: 0;
+  }
+
+  .heading {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .statusBlock {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .formSection {
+    padding: var(--space-4);
+  }
+
+  .fixedFacts,
+  .formFields,
+  .contextStrip,
+  .context,
+  .damageCompare,
+  .evidence,
+  .traceFacts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fixedFacts > div {
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .fixedFacts > div:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .context > h3,
+  .context > p,
+  .demoLabel {
+    grid-column: auto;
+  }
+
+  .contextStrip > div {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .contextStrip strong {
+    text-align: right;
+  }
+
+  .awaiting,
+  .resultHeading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .damageSide {
+    padding: var(--space-3);
+  }
+}
+
+@media (forced-colors: active) {
+  .heading,
+  .fixedFacts,
+  .contextStrip,
+  .scope,
+  .boundary,
+  .awaiting,
+  .result,
+  .detailSection,
+  .limits {
+    border-color: CanvasText;
+  }
+
+  .formSection,
+  .statusValue,
+  .resultBadge,
+  .awaitingState,
+  .damageSide,
+  .conditions,
+  .trace {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .heading p,
+  .sectionIntro,
+  .context > p,
+  .statusLabel,
+  .fixedFacts small,
+  .contextStrip span,
+  .scope dt,
+  .boundary ul,
+  .awaiting p,
+  .resultHeading p,
+  .summary,
+  .moveHeading span,
+  .damageMeta,
+  .detailSection p,
+  .traceFacts dt,
+  .limits p {
+    color: CanvasText;
+  }
+
+  .damageTrack span {
+    background: Highlight;
+  }
+}

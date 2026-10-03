@@ -1,0 +1,107 @@
+{
+  "sources": [
+    {
+      "id": "fixture-snapshot",
+      "kind": "fixture",
+      "path": "test/fixtures/offline-companion-snapshot.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "size": 4096,
+      "modifiedAt": "2026-09-19T12:00:00.000Z",
+      "sensitivity": "public"
+    },
+    {
+      "id": "reviewed-calc",
+      "kind": "resource",
+      "path": "node_modules/@smogon/calc/package.json",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "size": 12345,
+      "modifiedAt": "2026-09-19T12:00:00.000Z",
+      "sensitivity": "public"
+    }
+  ],
+  "snapshot": {
+    "id": "offline-companion-e2e-v1",
+    "kind": "offline-reconstruction",
+    "capturedAt": "2026-09-19T12:00:00.000Z",
+    "sourceIds": ["fixture-snapshot", "reviewed-calc"],
+    "completeness": "partial",
+    "atomicity": "atomic",
+    "fingerprint": {
+      "algorithm": "sha256",
+      "value": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "context": {
+    "state": "selected",
+    "trainerId": "fixture:offline-pikachu-floatzel",
+    "levelCap": 20,
+    "allowedTypes": ["electric", "water"],
+    "sourceIds": ["fixture-snapshot", "reviewed-calc"]
+  },
+  "player": {
+    "playerUuid": "00000000-0000-4000-8000-000000000001",
+    "revision": 1,
+    "individuals": [
+      {
+        "uuid": "00000000-0000-4000-8000-000000000002",
+        "speciesId": "cobblemon:pikachu",
+        "formId": "normal",
+        "aspects": [],
+        "location": {"container": "party", "slot": 0},
+        "sourceId": "fixture-snapshot",
+        "observed": {
+          "level": 20,
+          "nature": "Hardy",
+          "originalNature": "Hardy",
+          "ability": {"unknown": "not-captured-in-offline-fixture"},
+          "heldItem": {"unknown": "not-modeled-by-supported-calculation"},
+          "friendship": {"unknown": "not-needed-for-one-hit"},
+          "savedHealth": {"unknown": "not-captured"},
+          "savedStatus": {"unknown": "not-captured"},
+          "teraType": {"unknown": "not-modeled"},
+          "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+          "evs": {"hp": 0, "atk": 0, "def": 0, "spa": 0, "spd": 0, "spe": 0},
+          "moves": {
+            "equipped": [
+              {"id": "cobblemon:spark", "pp": 20, "ppUps": 0},
+              {"id": "cobblemon:protect", "pp": 40, "ppUps": 0},
+              {"id": "cobblemon:roost", "pp": 10, "ppUps": 0},
+              {"id": "cobblemon:nuzzle", "pp": 20, "ppUps": 0}
+            ],
+            "learned": [
+              {"id": "cobblemon:thunderbolt", "ppUps": 0}
+            ]
+          }
+        },
+        "planned": {
+          "state": "draft",
+          "buildId": "build-pikachu-thunderbolt-v1",
+          "provenance": {"kind": "user-plan", "note": "frozen offline comparison fixture"},
+          "moves": [
+            {"id": "cobblemon:thunderbolt", "access": {"status": "learned"}},
+            {"id": "cobblemon:protect", "access": {"status": "equipped"}},
+            {"id": "cobblemon:roost", "access": {"status": "equipped"}},
+            {"id": "cobblemon:nuzzle", "access": {"status": "equipped"}}
+          ],
+          "item": null,
+          "notes": ["one changed move; no live-save claim"]
+        }
+      }
+    ]
+  },
+  "calculation": {
+    "individualId": "00000000-0000-4000-8000-000000000002",
+    "generation": 9,
+    "format": "singles",
+    "horizon": 1,
+    "roll": "minimum",
+    "target": {
+      "speciesId": "cobblemon:floatzel",
+      "level": 20,
+      "nature": "Hardy",
+      "ivs": {"hp": 31, "atk": 31, "def": 31, "spa": 31, "spd": 31, "spe": 31},
+      "evs": {"hp": 0, "atk": 0, "def": 0, "spa": 0, "spd": 0, "spe": 0}
+    },
+    "lockedMoves": ["cobblemon:protect", "cobblemon:roost", "cobblemon:nuzzle"]
+  }
+}

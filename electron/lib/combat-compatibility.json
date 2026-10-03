@@ -1,0 +1,7573 @@
+{
+  "schemaVersion": 2,
+  "ruleset": {
+    "id": "cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v10",
+    "cobblemonVersion": "1.7.3+1.21.1",
+    "showdownVersion": "16",
+    "calcVersion": "0.11.0",
+    "sourceSha256": {
+      "cobblemonJar": "962d75df4fb649d94863a7a7d130d4d2b3de4da9b3cae4c44b1ce90f37ec0ed5",
+      "showdownZip": "1c398031f28fefcb2ce6b44a5ca289061ed4c5d0dccefaae0f7c070b3f7e8d10",
+      "speciesRecords": "baf84894f4a041cd08527a99161cbaeece654ca036e7b1abed1c0b39e395a2cb"
+    }
+  },
+  "species": {
+    "cobblemon:abra": {
+      "name": "Abra",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:innerfocus",
+        "cobblemon:magicguard"
+      ]
+    },
+    "cobblemon:arbok": {
+      "name": "Arbok",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:shedskin",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:bellsprout": {
+      "name": "Bellsprout",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:bulbasaur": {
+      "name": "Bulbasaur",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:chlorophyll"
+      ]
+    },
+    "cobblemon:caterpie": {
+      "name": "Caterpie",
+      "abilities": [
+        "cobblemon:shielddust",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:chansey": {
+      "name": "Chansey",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:serenegrace",
+        "cobblemon:healer"
+      ]
+    },
+    "cobblemon:charmander": {
+      "name": "Charmander",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:solarpower"
+      ]
+    },
+    "cobblemon:charmeleon": {
+      "name": "Charmeleon",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:solarpower"
+      ]
+    },
+    "cobblemon:clefable": {
+      "name": "Clefable",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:magicguard",
+        "cobblemon:unaware"
+      ]
+    },
+    "cobblemon:clefairy": {
+      "name": "Clefairy",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:magicguard",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:cloyster": {
+      "name": "Cloyster",
+      "abilities": [
+        "cobblemon:shellarmor",
+        "cobblemon:skilllink",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:dewgong": {
+      "name": "Dewgong",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:hydration",
+        "cobblemon:icebody"
+      ]
+    },
+    "cobblemon:ditto": {
+      "name": "Ditto",
+      "abilities": [
+        "cobblemon:limber"
+      ]
+    },
+    "cobblemon:dodrio": {
+      "name": "Dodrio",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:earlybird",
+        "cobblemon:tangledfeet"
+      ]
+    },
+    "cobblemon:doduo": {
+      "name": "Doduo",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:earlybird",
+        "cobblemon:tangledfeet"
+      ]
+    },
+    "cobblemon:dragonair": {
+      "name": "Dragonair",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:marvelscale"
+      ]
+    },
+    "cobblemon:dragonite": {
+      "name": "Dragonite",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:multiscale"
+      ]
+    },
+    "cobblemon:dratini": {
+      "name": "Dratini",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:marvelscale"
+      ]
+    },
+    "cobblemon:drowzee": {
+      "name": "Drowzee",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:forewarn",
+        "cobblemon:innerfocus"
+      ]
+    },
+    "cobblemon:ekans": {
+      "name": "Ekans",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:shedskin",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:electabuzz": {
+      "name": "Electabuzz",
+      "abilities": [
+        "cobblemon:static",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:fearow": {
+      "name": "Fearow",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:sniper"
+      ]
+    },
+    "cobblemon:flareon": {
+      "name": "Flareon",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:guts"
+      ]
+    },
+    "cobblemon:gastly": {
+      "name": "Gastly",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:gloom": {
+      "name": "Gloom",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:stench"
+      ]
+    },
+    "cobblemon:golbat": {
+      "name": "Golbat",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:goldeen": {
+      "name": "Goldeen",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterveil",
+        "cobblemon:lightningrod"
+      ]
+    },
+    "cobblemon:golduck": {
+      "name": "Golduck",
+      "abilities": [
+        "cobblemon:damp",
+        "cobblemon:cloudnine",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:haunter": {
+      "name": "Haunter",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:hitmonchan": {
+      "name": "Hitmonchan",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:ironfist",
+        "cobblemon:innerfocus"
+      ]
+    },
+    "cobblemon:hitmonlee": {
+      "name": "Hitmonlee",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:reckless",
+        "cobblemon:unburden"
+      ]
+    },
+    "cobblemon:horsea": {
+      "name": "Horsea",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:sniper",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:hypno": {
+      "name": "Hypno",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:forewarn",
+        "cobblemon:innerfocus"
+      ]
+    },
+    "cobblemon:ivysaur": {
+      "name": "Ivysaur",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:chlorophyll"
+      ]
+    },
+    "cobblemon:jigglypuff": {
+      "name": "Jigglypuff",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:competitive",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:jolteon": {
+      "name": "Jolteon",
+      "abilities": [
+        "cobblemon:voltabsorb",
+        "cobblemon:quickfeet"
+      ]
+    },
+    "cobblemon:jynx": {
+      "name": "Jynx",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:forewarn",
+        "cobblemon:dryskin"
+      ]
+    },
+    "cobblemon:kabuto": {
+      "name": "Kabuto",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:battlearmor",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:kabutops": {
+      "name": "Kabutops",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:battlearmor",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:kadabra": {
+      "name": "Kadabra",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:innerfocus",
+        "cobblemon:magicguard"
+      ]
+    },
+    "cobblemon:kakuna": {
+      "name": "Kakuna",
+      "abilities": [
+        "cobblemon:shedskin"
+      ]
+    },
+    "cobblemon:krabby": {
+      "name": "Krabby",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:shellarmor",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:lickitung": {
+      "name": "Lickitung",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:oblivious",
+        "cobblemon:cloudnine"
+      ]
+    },
+    "cobblemon:machoke": {
+      "name": "Machoke",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:noguard",
+        "cobblemon:steadfast"
+      ]
+    },
+    "cobblemon:machop": {
+      "name": "Machop",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:noguard",
+        "cobblemon:steadfast"
+      ]
+    },
+    "cobblemon:magikarp": {
+      "name": "Magikarp",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:magmar": {
+      "name": "Magmar",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:magnemite": {
+      "name": "Magnemite",
+      "abilities": [
+        "cobblemon:magnetpull",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:magneton": {
+      "name": "Magneton",
+      "abilities": [
+        "cobblemon:magnetpull",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:mankey": {
+      "name": "Mankey",
+      "abilities": [
+        "cobblemon:vitalspirit",
+        "cobblemon:angerpoint",
+        "cobblemon:defiant"
+      ]
+    },
+    "cobblemon:metapod": {
+      "name": "Metapod",
+      "abilities": [
+        "cobblemon:shedskin"
+      ]
+    },
+    "cobblemon:mew": {
+      "name": "Mew",
+      "abilities": [
+        "cobblemon:synchronize"
+      ]
+    },
+    "cobblemon:nidoking": {
+      "name": "Nidoking",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:nidoqueen": {
+      "name": "Nidoqueen",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:nidoranf": {
+      "name": "Nidoran-F",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:nidoranm": {
+      "name": "Nidoran-M",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:nidorina": {
+      "name": "Nidorina",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:nidorino": {
+      "name": "Nidorino",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:oddish": {
+      "name": "Oddish",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:omanyte": {
+      "name": "Omanyte",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:shellarmor",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:omastar": {
+      "name": "Omastar",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:shellarmor",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:onix": {
+      "name": "Onix",
+      "abilities": [
+        "cobblemon:rockhead",
+        "cobblemon:sturdy",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:paras": {
+      "name": "Paras",
+      "abilities": [
+        "cobblemon:effectspore",
+        "cobblemon:dryskin",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:parasect": {
+      "name": "Parasect",
+      "abilities": [
+        "cobblemon:effectspore",
+        "cobblemon:dryskin",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:pidgeotto": {
+      "name": "Pidgeotto",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:tangledfeet",
+        "cobblemon:bigpecks"
+      ]
+    },
+    "cobblemon:pidgey": {
+      "name": "Pidgey",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:tangledfeet",
+        "cobblemon:bigpecks"
+      ]
+    },
+    "cobblemon:poliwag": {
+      "name": "Poliwag",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:damp",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:poliwhirl": {
+      "name": "Poliwhirl",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:damp",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:poliwrath": {
+      "name": "Poliwrath",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:damp",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:primeape": {
+      "name": "Primeape",
+      "abilities": [
+        "cobblemon:vitalspirit",
+        "cobblemon:angerpoint",
+        "cobblemon:defiant"
+      ]
+    },
+    "cobblemon:psyduck": {
+      "name": "Psyduck",
+      "abilities": [
+        "cobblemon:damp",
+        "cobblemon:cloudnine",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:rhydon": {
+      "name": "Rhydon",
+      "abilities": [
+        "cobblemon:lightningrod",
+        "cobblemon:rockhead",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:rhyhorn": {
+      "name": "Rhyhorn",
+      "abilities": [
+        "cobblemon:lightningrod",
+        "cobblemon:rockhead",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:scyther": {
+      "name": "Scyther",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:technician",
+        "cobblemon:steadfast"
+      ]
+    },
+    "cobblemon:seadra": {
+      "name": "Seadra",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:sniper",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:seaking": {
+      "name": "Seaking",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterveil",
+        "cobblemon:lightningrod"
+      ]
+    },
+    "cobblemon:seel": {
+      "name": "Seel",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:hydration",
+        "cobblemon:icebody"
+      ]
+    },
+    "cobblemon:shellder": {
+      "name": "Shellder",
+      "abilities": [
+        "cobblemon:shellarmor",
+        "cobblemon:skilllink",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:spearow": {
+      "name": "Spearow",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:sniper"
+      ]
+    },
+    "cobblemon:squirtle": {
+      "name": "Squirtle",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:starmie": {
+      "name": "Starmie",
+      "abilities": [
+        "cobblemon:illuminate",
+        "cobblemon:naturalcure"
+      ]
+    },
+    "cobblemon:staryu": {
+      "name": "Staryu",
+      "abilities": [
+        "cobblemon:illuminate",
+        "cobblemon:naturalcure"
+      ]
+    },
+    "cobblemon:tangela": {
+      "name": "Tangela",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:leafguard",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:tentacool": {
+      "name": "Tentacool",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:liquidooze",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:tentacruel": {
+      "name": "Tentacruel",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:liquidooze",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:vaporeon": {
+      "name": "Vaporeon",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:venomoth": {
+      "name": "Venomoth",
+      "abilities": [
+        "cobblemon:shielddust",
+        "cobblemon:tintedlens",
+        "cobblemon:wonderskin"
+      ]
+    },
+    "cobblemon:venonat": {
+      "name": "Venonat",
+      "abilities": [
+        "cobblemon:compoundeyes",
+        "cobblemon:tintedlens",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:victreebel": {
+      "name": "Victreebel",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:vileplume": {
+      "name": "Vileplume",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:effectspore"
+      ]
+    },
+    "cobblemon:wartortle": {
+      "name": "Wartortle",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:weedle": {
+      "name": "Weedle",
+      "abilities": [
+        "cobblemon:shielddust",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:weepinbell": {
+      "name": "Weepinbell",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:wigglytuff": {
+      "name": "Wigglytuff",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:competitive",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:zubat": {
+      "name": "Zubat",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:aipom": {
+      "name": "Aipom",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:pickup",
+        "cobblemon:skilllink"
+      ]
+    },
+    "cobblemon:ariados": {
+      "name": "Ariados",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:insomnia",
+        "cobblemon:sniper"
+      ]
+    },
+    "cobblemon:azumarill": {
+      "name": "Azumarill",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:hugepower",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:bayleef": {
+      "name": "Bayleef",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:leafguard"
+      ]
+    },
+    "cobblemon:bellossom": {
+      "name": "Bellossom",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:healer"
+      ]
+    },
+    "cobblemon:blissey": {
+      "name": "Blissey",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:serenegrace",
+        "cobblemon:healer"
+      ]
+    },
+    "cobblemon:chikorita": {
+      "name": "Chikorita",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:leafguard"
+      ]
+    },
+    "cobblemon:chinchou": {
+      "name": "Chinchou",
+      "abilities": [
+        "cobblemon:voltabsorb",
+        "cobblemon:illuminate",
+        "cobblemon:waterabsorb"
+      ]
+    },
+    "cobblemon:cleffa": {
+      "name": "Cleffa",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:magicguard",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:crobat": {
+      "name": "Crobat",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:croconaw": {
+      "name": "Croconaw",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:delibird": {
+      "name": "Delibird",
+      "abilities": [
+        "cobblemon:vitalspirit",
+        "cobblemon:hustle",
+        "cobblemon:insomnia"
+      ]
+    },
+    "cobblemon:donphan": {
+      "name": "Donphan",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:dunsparce": {
+      "name": "Dunsparce",
+      "abilities": [
+        "cobblemon:serenegrace",
+        "cobblemon:runaway",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:elekid": {
+      "name": "Elekid",
+      "abilities": [
+        "cobblemon:static",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:espeon": {
+      "name": "Espeon",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:magicbounce"
+      ]
+    },
+    "cobblemon:feraligatr": {
+      "name": "Feraligatr",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:flaaffy": {
+      "name": "Flaaffy",
+      "abilities": [
+        "cobblemon:static",
+        "cobblemon:plus"
+      ]
+    },
+    "cobblemon:forretress": {
+      "name": "Forretress",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:furret": {
+      "name": "Furret",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:keeneye",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:girafarig": {
+      "name": "Girafarig",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:earlybird",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:gligar": {
+      "name": "Gligar",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:sandveil",
+        "cobblemon:immunity"
+      ]
+    },
+    "cobblemon:granbull": {
+      "name": "Granbull",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:quickfeet",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:hitmontop": {
+      "name": "Hitmontop",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:technician",
+        "cobblemon:steadfast"
+      ]
+    },
+    "cobblemon:hooh": {
+      "name": "Ho-Oh",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:hoothoot": {
+      "name": "Hoothoot",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:keeneye",
+        "cobblemon:tintedlens"
+      ]
+    },
+    "cobblemon:hoppip": {
+      "name": "Hoppip",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:leafguard",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:houndour": {
+      "name": "Houndour",
+      "abilities": [
+        "cobblemon:earlybird",
+        "cobblemon:flashfire",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:igglybuff": {
+      "name": "Igglybuff",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:competitive",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:jumpluff": {
+      "name": "Jumpluff",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:leafguard",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:kingdra": {
+      "name": "Kingdra",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:sniper",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:lanturn": {
+      "name": "Lanturn",
+      "abilities": [
+        "cobblemon:voltabsorb",
+        "cobblemon:illuminate",
+        "cobblemon:waterabsorb"
+      ]
+    },
+    "cobblemon:larvitar": {
+      "name": "Larvitar",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:ledian": {
+      "name": "Ledian",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:earlybird",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:ledyba": {
+      "name": "Ledyba",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:earlybird",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:lugia": {
+      "name": "Lugia",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:multiscale"
+      ]
+    },
+    "cobblemon:magby": {
+      "name": "Magby",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:magcargo": {
+      "name": "Magcargo",
+      "abilities": [
+        "cobblemon:magmaarmor",
+        "cobblemon:flamebody",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:mantine": {
+      "name": "Mantine",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterabsorb",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:mareep": {
+      "name": "Mareep",
+      "abilities": [
+        "cobblemon:static",
+        "cobblemon:plus"
+      ]
+    },
+    "cobblemon:marill": {
+      "name": "Marill",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:hugepower",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:meganium": {
+      "name": "Meganium",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:leafguard"
+      ]
+    },
+    "cobblemon:miltank": {
+      "name": "Miltank",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:scrappy",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:misdreavus": {
+      "name": "Misdreavus",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:murkrow": {
+      "name": "Murkrow",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:superluck",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:natu": {
+      "name": "Natu",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:earlybird",
+        "cobblemon:magicbounce"
+      ]
+    },
+    "cobblemon:noctowl": {
+      "name": "Noctowl",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:keeneye",
+        "cobblemon:tintedlens"
+      ]
+    },
+    "cobblemon:octillery": {
+      "name": "Octillery",
+      "abilities": [
+        "cobblemon:suctioncups",
+        "cobblemon:sniper",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:phanpy": {
+      "name": "Phanpy",
+      "abilities": [
+        "cobblemon:pickup",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:piloswine": {
+      "name": "Piloswine",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:snowcloak",
+        "cobblemon:thickfat"
+      ]
+    },
+    "cobblemon:pineco": {
+      "name": "Pineco",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:politoed": {
+      "name": "Politoed",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:damp",
+        "cobblemon:drizzle"
+      ]
+    },
+    "cobblemon:pupitar": {
+      "name": "Pupitar",
+      "abilities": [
+        "cobblemon:shedskin"
+      ]
+    },
+    "cobblemon:quagsire": {
+      "name": "Quagsire",
+      "abilities": [
+        "cobblemon:damp",
+        "cobblemon:waterabsorb",
+        "cobblemon:unaware"
+      ]
+    },
+    "cobblemon:remoraid": {
+      "name": "Remoraid",
+      "abilities": [
+        "cobblemon:hustle",
+        "cobblemon:sniper",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:sentret": {
+      "name": "Sentret",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:keeneye",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:shuckle": {
+      "name": "Shuckle",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:gluttony",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:skarmory": {
+      "name": "Skarmory",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:sturdy",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:skiploom": {
+      "name": "Skiploom",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:leafguard",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:slugma": {
+      "name": "Slugma",
+      "abilities": [
+        "cobblemon:magmaarmor",
+        "cobblemon:flamebody",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:smeargle": {
+      "name": "Smeargle",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:technician",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:smoochum": {
+      "name": "Smoochum",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:forewarn",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:snubbull": {
+      "name": "Snubbull",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:runaway",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:spinarak": {
+      "name": "Spinarak",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:insomnia",
+        "cobblemon:sniper"
+      ]
+    },
+    "cobblemon:stantler": {
+      "name": "Stantler",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:frisk",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:sudowoodo": {
+      "name": "Sudowoodo",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:rockhead",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:sunflora": {
+      "name": "Sunflora",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:solarpower",
+        "cobblemon:earlybird"
+      ]
+    },
+    "cobblemon:sunkern": {
+      "name": "Sunkern",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:solarpower",
+        "cobblemon:earlybird"
+      ]
+    },
+    "cobblemon:swinub": {
+      "name": "Swinub",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:snowcloak",
+        "cobblemon:thickfat"
+      ]
+    },
+    "cobblemon:teddiursa": {
+      "name": "Teddiursa",
+      "abilities": [
+        "cobblemon:pickup",
+        "cobblemon:quickfeet",
+        "cobblemon:honeygather"
+      ]
+    },
+    "cobblemon:togepi": {
+      "name": "Togepi",
+      "abilities": [
+        "cobblemon:hustle",
+        "cobblemon:serenegrace",
+        "cobblemon:superluck"
+      ]
+    },
+    "cobblemon:togetic": {
+      "name": "Togetic",
+      "abilities": [
+        "cobblemon:hustle",
+        "cobblemon:serenegrace",
+        "cobblemon:superluck"
+      ]
+    },
+    "cobblemon:totodile": {
+      "name": "Totodile",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:tyrogue": {
+      "name": "Tyrogue",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:steadfast",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:umbreon": {
+      "name": "Umbreon",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:innerfocus"
+      ]
+    },
+    "cobblemon:ursaring": {
+      "name": "Ursaring",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:quickfeet",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:wobbuffet": {
+      "name": "Wobbuffet",
+      "abilities": [
+        "cobblemon:shadowtag",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:xatu": {
+      "name": "Xatu",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:earlybird",
+        "cobblemon:magicbounce"
+      ]
+    },
+    "cobblemon:yanma": {
+      "name": "Yanma",
+      "abilities": [
+        "cobblemon:speedboost",
+        "cobblemon:compoundeyes",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:anorith": {
+      "name": "Anorith",
+      "abilities": [
+        "cobblemon:battlearmor",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:armaldo": {
+      "name": "Armaldo",
+      "abilities": [
+        "cobblemon:battlearmor",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:aron": {
+      "name": "Aron",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:rockhead",
+        "cobblemon:heavymetal"
+      ]
+    },
+    "cobblemon:azurill": {
+      "name": "Azurill",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:hugepower",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:bagon": {
+      "name": "Bagon",
+      "abilities": [
+        "cobblemon:rockhead",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:baltoy": {
+      "name": "Baltoy",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:barboach": {
+      "name": "Barboach",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:anticipation",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:beldum": {
+      "name": "Beldum",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:lightmetal"
+      ]
+    },
+    "cobblemon:breloom": {
+      "name": "Breloom",
+      "abilities": [
+        "cobblemon:effectspore",
+        "cobblemon:poisonheal",
+        "cobblemon:technician"
+      ]
+    },
+    "cobblemon:cacnea": {
+      "name": "Cacnea",
+      "abilities": [
+        "cobblemon:sandveil",
+        "cobblemon:waterabsorb"
+      ]
+    },
+    "cobblemon:cacturne": {
+      "name": "Cacturne",
+      "abilities": [
+        "cobblemon:sandveil",
+        "cobblemon:waterabsorb"
+      ]
+    },
+    "cobblemon:carvanha": {
+      "name": "Carvanha",
+      "abilities": [
+        "cobblemon:roughskin",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:chimecho": {
+      "name": "Chimecho",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:clamperl": {
+      "name": "Clamperl",
+      "abilities": [
+        "cobblemon:shellarmor",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:claydol": {
+      "name": "Claydol",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:combusken": {
+      "name": "Combusken",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:corphish": {
+      "name": "Corphish",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:shellarmor",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:cradily": {
+      "name": "Cradily",
+      "abilities": [
+        "cobblemon:suctioncups",
+        "cobblemon:stormdrain"
+      ]
+    },
+    "cobblemon:crawdaunt": {
+      "name": "Crawdaunt",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:shellarmor",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:dusclops": {
+      "name": "Dusclops",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:duskull": {
+      "name": "Duskull",
+      "abilities": [
+        "cobblemon:levitate",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:electrike": {
+      "name": "Electrike",
+      "abilities": [
+        "cobblemon:static",
+        "cobblemon:lightningrod",
+        "cobblemon:minus"
+      ]
+    },
+    "cobblemon:exploud": {
+      "name": "Exploud",
+      "abilities": [
+        "cobblemon:soundproof",
+        "cobblemon:scrappy"
+      ]
+    },
+    "cobblemon:feebas": {
+      "name": "Feebas",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:oblivious",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:flygon": {
+      "name": "Flygon",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:gardevoir": {
+      "name": "Gardevoir",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:gorebyss": {
+      "name": "Gorebyss",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:grovyle": {
+      "name": "Grovyle",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:unburden"
+      ]
+    },
+    "cobblemon:grumpig": {
+      "name": "Grumpig",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:owntempo",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:hariyama": {
+      "name": "Hariyama",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:guts",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:huntail": {
+      "name": "Huntail",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:illumise": {
+      "name": "Illumise",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:tintedlens",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:kirlia": {
+      "name": "Kirlia",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:lairon": {
+      "name": "Lairon",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:rockhead",
+        "cobblemon:heavymetal"
+      ]
+    },
+    "cobblemon:lileep": {
+      "name": "Lileep",
+      "abilities": [
+        "cobblemon:suctioncups",
+        "cobblemon:stormdrain"
+      ]
+    },
+    "cobblemon:lombre": {
+      "name": "Lombre",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:raindish",
+        "cobblemon:owntempo"
+      ]
+    },
+    "cobblemon:lotad": {
+      "name": "Lotad",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:raindish",
+        "cobblemon:owntempo"
+      ]
+    },
+    "cobblemon:loudred": {
+      "name": "Loudred",
+      "abilities": [
+        "cobblemon:soundproof",
+        "cobblemon:scrappy"
+      ]
+    },
+    "cobblemon:ludicolo": {
+      "name": "Ludicolo",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:raindish",
+        "cobblemon:owntempo"
+      ]
+    },
+    "cobblemon:lunatone": {
+      "name": "Lunatone",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:luvdisc": {
+      "name": "Luvdisc",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:makuhita": {
+      "name": "Makuhita",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:guts",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:marshtomp": {
+      "name": "Marshtomp",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:masquerain": {
+      "name": "Masquerain",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:meditite": {
+      "name": "Meditite",
+      "abilities": [
+        "cobblemon:purepower",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:metang": {
+      "name": "Metang",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:lightmetal"
+      ]
+    },
+    "cobblemon:mightyena": {
+      "name": "Mightyena",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:quickfeet",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:milotic": {
+      "name": "Milotic",
+      "abilities": [
+        "cobblemon:marvelscale",
+        "cobblemon:competitive",
+        "cobblemon:cutecharm"
+      ]
+    },
+    "cobblemon:minun": {
+      "name": "Minun",
+      "abilities": [
+        "cobblemon:minus",
+        "cobblemon:voltabsorb"
+      ]
+    },
+    "cobblemon:mudkip": {
+      "name": "Mudkip",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:nincada": {
+      "name": "Nincada",
+      "abilities": [
+        "cobblemon:compoundeyes",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:ninjask": {
+      "name": "Ninjask",
+      "abilities": [
+        "cobblemon:speedboost",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:nosepass": {
+      "name": "Nosepass",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:magnetpull",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:numel": {
+      "name": "Numel",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:simple",
+        "cobblemon:owntempo"
+      ]
+    },
+    "cobblemon:nuzleaf": {
+      "name": "Nuzleaf",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:earlybird",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:pelipper": {
+      "name": "Pelipper",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:drizzle",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:plusle": {
+      "name": "Plusle",
+      "abilities": [
+        "cobblemon:plus",
+        "cobblemon:lightningrod"
+      ]
+    },
+    "cobblemon:poochyena": {
+      "name": "Poochyena",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:quickfeet",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:ralts": {
+      "name": "Ralts",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:regice": {
+      "name": "Regice",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:icebody"
+      ]
+    },
+    "cobblemon:regirock": {
+      "name": "Regirock",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:registeel": {
+      "name": "Registeel",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:lightmetal"
+      ]
+    },
+    "cobblemon:relicanth": {
+      "name": "Relicanth",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:rockhead",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:roselia": {
+      "name": "Roselia",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:poisonpoint",
+        "cobblemon:leafguard"
+      ]
+    },
+    "cobblemon:sealeo": {
+      "name": "Sealeo",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:icebody",
+        "cobblemon:oblivious"
+      ]
+    },
+    "cobblemon:seedot": {
+      "name": "Seedot",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:earlybird",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:shedinja": {
+      "name": "Shedinja",
+      "abilities": [
+        "cobblemon:wonderguard"
+      ]
+    },
+    "cobblemon:shelgon": {
+      "name": "Shelgon",
+      "abilities": [
+        "cobblemon:rockhead",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:shiftry": {
+      "name": "Shiftry",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:windrider",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:shroomish": {
+      "name": "Shroomish",
+      "abilities": [
+        "cobblemon:effectspore",
+        "cobblemon:poisonheal",
+        "cobblemon:quickfeet"
+      ]
+    },
+    "cobblemon:shuppet": {
+      "name": "Shuppet",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:frisk",
+        "cobblemon:cursedbody"
+      ]
+    },
+    "cobblemon:slaking": {
+      "name": "Slaking",
+      "abilities": [
+        "cobblemon:truant"
+      ]
+    },
+    "cobblemon:slakoth": {
+      "name": "Slakoth",
+      "abilities": [
+        "cobblemon:truant"
+      ]
+    },
+    "cobblemon:snorunt": {
+      "name": "Snorunt",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:icebody",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:solrock": {
+      "name": "Solrock",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:spheal": {
+      "name": "Spheal",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:icebody",
+        "cobblemon:oblivious"
+      ]
+    },
+    "cobblemon:spinda": {
+      "name": "Spinda",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:tangledfeet",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:spoink": {
+      "name": "Spoink",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:owntempo",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:surskit": {
+      "name": "Surskit",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:swablu": {
+      "name": "Swablu",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:cloudnine"
+      ]
+    },
+    "cobblemon:swellow": {
+      "name": "Swellow",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:scrappy"
+      ]
+    },
+    "cobblemon:taillow": {
+      "name": "Taillow",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:scrappy"
+      ]
+    },
+    "cobblemon:torchic": {
+      "name": "Torchic",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:torkoal": {
+      "name": "Torkoal",
+      "abilities": [
+        "cobblemon:whitesmoke",
+        "cobblemon:drought",
+        "cobblemon:shellarmor"
+      ]
+    },
+    "cobblemon:trapinch": {
+      "name": "Trapinch",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:arenatrap",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:treecko": {
+      "name": "Treecko",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:unburden"
+      ]
+    },
+    "cobblemon:tropius": {
+      "name": "Tropius",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:solarpower",
+        "cobblemon:harvest"
+      ]
+    },
+    "cobblemon:vibrava": {
+      "name": "Vibrava",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:vigoroth": {
+      "name": "Vigoroth",
+      "abilities": [
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:volbeat": {
+      "name": "Volbeat",
+      "abilities": [
+        "cobblemon:illuminate",
+        "cobblemon:swarm",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:wailmer": {
+      "name": "Wailmer",
+      "abilities": [
+        "cobblemon:waterveil",
+        "cobblemon:oblivious",
+        "cobblemon:pressure"
+      ]
+    },
+    "cobblemon:wailord": {
+      "name": "Wailord",
+      "abilities": [
+        "cobblemon:waterveil",
+        "cobblemon:oblivious",
+        "cobblemon:pressure"
+      ]
+    },
+    "cobblemon:walrein": {
+      "name": "Walrein",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:icebody",
+        "cobblemon:oblivious"
+      ]
+    },
+    "cobblemon:whiscash": {
+      "name": "Whiscash",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:anticipation",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:whismur": {
+      "name": "Whismur",
+      "abilities": [
+        "cobblemon:soundproof",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:wingull": {
+      "name": "Wingull",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:hydration",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:wynaut": {
+      "name": "Wynaut",
+      "abilities": [
+        "cobblemon:shadowtag",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:ambipom": {
+      "name": "Ambipom",
+      "abilities": [
+        "cobblemon:technician",
+        "cobblemon:pickup",
+        "cobblemon:skilllink"
+      ]
+    },
+    "cobblemon:bastiodon": {
+      "name": "Bastiodon",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:soundproof"
+      ]
+    },
+    "cobblemon:bibarel": {
+      "name": "Bibarel",
+      "abilities": [
+        "cobblemon:simple",
+        "cobblemon:unaware",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:bidoof": {
+      "name": "Bidoof",
+      "abilities": [
+        "cobblemon:simple",
+        "cobblemon:unaware",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:bonsly": {
+      "name": "Bonsly",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:rockhead",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:bronzong": {
+      "name": "Bronzong",
+      "abilities": [
+        "cobblemon:levitate",
+        "cobblemon:heatproof",
+        "cobblemon:heavymetal"
+      ]
+    },
+    "cobblemon:bronzor": {
+      "name": "Bronzor",
+      "abilities": [
+        "cobblemon:levitate",
+        "cobblemon:heatproof",
+        "cobblemon:heavymetal"
+      ]
+    },
+    "cobblemon:budew": {
+      "name": "Budew",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:poisonpoint",
+        "cobblemon:leafguard"
+      ]
+    },
+    "cobblemon:buizel": {
+      "name": "Buizel",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:buneary": {
+      "name": "Buneary",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:klutz",
+        "cobblemon:limber"
+      ]
+    },
+    "cobblemon:carnivine": {
+      "name": "Carnivine",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:chatot": {
+      "name": "Chatot",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:tangledfeet",
+        "cobblemon:bigpecks"
+      ]
+    },
+    "cobblemon:chimchar": {
+      "name": "Chimchar",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:chingling": {
+      "name": "Chingling",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:combee": {
+      "name": "Combee",
+      "abilities": [
+        "cobblemon:honeygather",
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:cranidos": {
+      "name": "Cranidos",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:croagunk": {
+      "name": "Croagunk",
+      "abilities": [
+        "cobblemon:anticipation",
+        "cobblemon:dryskin",
+        "cobblemon:poisontouch"
+      ]
+    },
+    "cobblemon:drapion": {
+      "name": "Drapion",
+      "abilities": [
+        "cobblemon:battlearmor",
+        "cobblemon:sniper",
+        "cobblemon:keeneye"
+      ]
+    },
+    "cobblemon:drifblim": {
+      "name": "Drifblim",
+      "abilities": [
+        "cobblemon:aftermath",
+        "cobblemon:unburden",
+        "cobblemon:flareboost"
+      ]
+    },
+    "cobblemon:drifloon": {
+      "name": "Drifloon",
+      "abilities": [
+        "cobblemon:aftermath",
+        "cobblemon:unburden",
+        "cobblemon:flareboost"
+      ]
+    },
+    "cobblemon:dusknoir": {
+      "name": "Dusknoir",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:electivire": {
+      "name": "Electivire",
+      "abilities": [
+        "cobblemon:motordrive",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:empoleon": {
+      "name": "Empoleon",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:competitive"
+      ]
+    },
+    "cobblemon:finneon": {
+      "name": "Finneon",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:stormdrain",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:floatzel": {
+      "name": "Floatzel",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:froslass": {
+      "name": "Froslass",
+      "abilities": [
+        "cobblemon:snowcloak",
+        "cobblemon:cursedbody"
+      ]
+    },
+    "cobblemon:gabite": {
+      "name": "Gabite",
+      "abilities": [
+        "cobblemon:sandveil",
+        "cobblemon:roughskin"
+      ]
+    },
+    "cobblemon:gible": {
+      "name": "Gible",
+      "abilities": [
+        "cobblemon:sandveil",
+        "cobblemon:roughskin"
+      ]
+    },
+    "cobblemon:glaceon": {
+      "name": "Glaceon",
+      "abilities": [
+        "cobblemon:snowcloak",
+        "cobblemon:icebody"
+      ]
+    },
+    "cobblemon:glameow": {
+      "name": "Glameow",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:owntempo",
+        "cobblemon:keeneye"
+      ]
+    },
+    "cobblemon:gliscor": {
+      "name": "Gliscor",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:sandveil",
+        "cobblemon:poisonheal"
+      ]
+    },
+    "cobblemon:grotle": {
+      "name": "Grotle",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:shellarmor"
+      ]
+    },
+    "cobblemon:happiny": {
+      "name": "Happiny",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:serenegrace",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:hippopotas": {
+      "name": "Hippopotas",
+      "abilities": [
+        "cobblemon:sandstream",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:hippowdon": {
+      "name": "Hippowdon",
+      "abilities": [
+        "cobblemon:sandstream",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:honchkrow": {
+      "name": "Honchkrow",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:superluck",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:infernape": {
+      "name": "Infernape",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:kricketot": {
+      "name": "Kricketot",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:kricketune": {
+      "name": "Kricketune",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:technician"
+      ]
+    },
+    "cobblemon:leafeon": {
+      "name": "Leafeon",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:chlorophyll"
+      ]
+    },
+    "cobblemon:lickilicky": {
+      "name": "Lickilicky",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:oblivious",
+        "cobblemon:cloudnine"
+      ]
+    },
+    "cobblemon:lumineon": {
+      "name": "Lumineon",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:stormdrain",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:luxio": {
+      "name": "Luxio",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:guts"
+      ]
+    },
+    "cobblemon:luxray": {
+      "name": "Luxray",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:guts"
+      ]
+    },
+    "cobblemon:magmortar": {
+      "name": "Magmortar",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:vitalspirit"
+      ]
+    },
+    "cobblemon:magnezone": {
+      "name": "Magnezone",
+      "abilities": [
+        "cobblemon:magnetpull",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:mamoswine": {
+      "name": "Mamoswine",
+      "abilities": [
+        "cobblemon:oblivious",
+        "cobblemon:snowcloak",
+        "cobblemon:thickfat"
+      ]
+    },
+    "cobblemon:mantyke": {
+      "name": "Mantyke",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:waterabsorb",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:mismagius": {
+      "name": "Mismagius",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:monferno": {
+      "name": "Monferno",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:munchlax": {
+      "name": "Munchlax",
+      "abilities": [
+        "cobblemon:pickup",
+        "cobblemon:thickfat",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:pachirisu": {
+      "name": "Pachirisu",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:pickup",
+        "cobblemon:voltabsorb"
+      ]
+    },
+    "cobblemon:piplup": {
+      "name": "Piplup",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:competitive"
+      ]
+    },
+    "cobblemon:porygonz": {
+      "name": "Porygon-Z",
+      "abilities": [
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:prinplup": {
+      "name": "Prinplup",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:competitive"
+      ]
+    },
+    "cobblemon:probopass": {
+      "name": "Probopass",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:magnetpull",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:purugly": {
+      "name": "Purugly",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:owntempo",
+        "cobblemon:defiant"
+      ]
+    },
+    "cobblemon:rampardos": {
+      "name": "Rampardos",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:regigigas": {
+      "name": "Regigigas",
+      "abilities": [
+        "cobblemon:slowstart"
+      ]
+    },
+    "cobblemon:rhyperior": {
+      "name": "Rhyperior",
+      "abilities": [
+        "cobblemon:lightningrod",
+        "cobblemon:solidrock",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:riolu": {
+      "name": "Riolu",
+      "abilities": [
+        "cobblemon:steadfast",
+        "cobblemon:innerfocus",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:roserade": {
+      "name": "Roserade",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:poisonpoint",
+        "cobblemon:technician"
+      ]
+    },
+    "cobblemon:shieldon": {
+      "name": "Shieldon",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:soundproof"
+      ]
+    },
+    "cobblemon:shinx": {
+      "name": "Shinx",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:guts"
+      ]
+    },
+    "cobblemon:skorupi": {
+      "name": "Skorupi",
+      "abilities": [
+        "cobblemon:battlearmor",
+        "cobblemon:sniper",
+        "cobblemon:keeneye"
+      ]
+    },
+    "cobblemon:spiritomb": {
+      "name": "Spiritomb",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:staraptor": {
+      "name": "Staraptor",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:staravia": {
+      "name": "Staravia",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:starly": {
+      "name": "Starly",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:tangrowth": {
+      "name": "Tangrowth",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:leafguard",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:togekiss": {
+      "name": "Togekiss",
+      "abilities": [
+        "cobblemon:hustle",
+        "cobblemon:serenegrace",
+        "cobblemon:superluck"
+      ]
+    },
+    "cobblemon:torterra": {
+      "name": "Torterra",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:shellarmor"
+      ]
+    },
+    "cobblemon:toxicroak": {
+      "name": "Toxicroak",
+      "abilities": [
+        "cobblemon:anticipation",
+        "cobblemon:dryskin",
+        "cobblemon:poisontouch"
+      ]
+    },
+    "cobblemon:turtwig": {
+      "name": "Turtwig",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:shellarmor"
+      ]
+    },
+    "cobblemon:vespiquen": {
+      "name": "Vespiquen",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:weavile": {
+      "name": "Weavile",
+      "abilities": [
+        "cobblemon:pressure",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:yanmega": {
+      "name": "Yanmega",
+      "abilities": [
+        "cobblemon:speedboost",
+        "cobblemon:tintedlens",
+        "cobblemon:frisk"
+      ]
+    },
+    "cobblemon:accelgor": {
+      "name": "Accelgor",
+      "abilities": [
+        "cobblemon:hydration",
+        "cobblemon:stickyhold",
+        "cobblemon:unburden"
+      ]
+    },
+    "cobblemon:alomomola": {
+      "name": "Alomomola",
+      "abilities": [
+        "cobblemon:healer",
+        "cobblemon:hydration",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:amoonguss": {
+      "name": "Amoonguss",
+      "abilities": [
+        "cobblemon:effectspore",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:archen": {
+      "name": "Archen",
+      "abilities": [
+        "cobblemon:defeatist"
+      ]
+    },
+    "cobblemon:archeops": {
+      "name": "Archeops",
+      "abilities": [
+        "cobblemon:defeatist"
+      ]
+    },
+    "cobblemon:axew": {
+      "name": "Axew",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:beartic": {
+      "name": "Beartic",
+      "abilities": [
+        "cobblemon:snowcloak",
+        "cobblemon:slushrush",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:beheeyem": {
+      "name": "Beheeyem",
+      "abilities": [
+        "cobblemon:telepathy",
+        "cobblemon:synchronize"
+      ]
+    },
+    "cobblemon:blitzle": {
+      "name": "Blitzle",
+      "abilities": [
+        "cobblemon:lightningrod",
+        "cobblemon:motordrive",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:boldore": {
+      "name": "Boldore",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:weakarmor",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:bouffalant": {
+      "name": "Bouffalant",
+      "abilities": [
+        "cobblemon:reckless",
+        "cobblemon:sapsipper",
+        "cobblemon:soundproof"
+      ]
+    },
+    "cobblemon:carracosta": {
+      "name": "Carracosta",
+      "abilities": [
+        "cobblemon:solidrock",
+        "cobblemon:sturdy",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:chandelure": {
+      "name": "Chandelure",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:flamebody",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:cinccino": {
+      "name": "Cinccino",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:technician",
+        "cobblemon:skilllink"
+      ]
+    },
+    "cobblemon:cofagrigus": {
+      "name": "Cofagrigus",
+      "abilities": [
+        "cobblemon:mummy"
+      ]
+    },
+    "cobblemon:conkeldurr": {
+      "name": "Conkeldurr",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:sheerforce",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:cottonee": {
+      "name": "Cottonee",
+      "abilities": [
+        "cobblemon:prankster",
+        "cobblemon:infiltrator",
+        "cobblemon:chlorophyll"
+      ]
+    },
+    "cobblemon:crustle": {
+      "name": "Crustle",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:shellarmor",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:cryogonal": {
+      "name": "Cryogonal",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:cubchoo": {
+      "name": "Cubchoo",
+      "abilities": [
+        "cobblemon:snowcloak",
+        "cobblemon:slushrush",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:deino": {
+      "name": "Deino",
+      "abilities": [
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:drilbur": {
+      "name": "Drilbur",
+      "abilities": [
+        "cobblemon:sandrush",
+        "cobblemon:sandforce",
+        "cobblemon:moldbreaker"
+      ]
+    },
+    "cobblemon:druddigon": {
+      "name": "Druddigon",
+      "abilities": [
+        "cobblemon:roughskin",
+        "cobblemon:sheerforce",
+        "cobblemon:moldbreaker"
+      ]
+    },
+    "cobblemon:ducklett": {
+      "name": "Ducklett",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:bigpecks",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:duosion": {
+      "name": "Duosion",
+      "abilities": [
+        "cobblemon:overcoat",
+        "cobblemon:magicguard",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:durant": {
+      "name": "Durant",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:hustle",
+        "cobblemon:truant"
+      ]
+    },
+    "cobblemon:dwebble": {
+      "name": "Dwebble",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:shellarmor",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:eelektrik": {
+      "name": "Eelektrik",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:eelektross": {
+      "name": "Eelektross",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:elgyem": {
+      "name": "Elgyem",
+      "abilities": [
+        "cobblemon:telepathy",
+        "cobblemon:synchronize"
+      ]
+    },
+    "cobblemon:emboar": {
+      "name": "Emboar",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:emolga": {
+      "name": "Emolga",
+      "abilities": [
+        "cobblemon:static",
+        "cobblemon:motordrive"
+      ]
+    },
+    "cobblemon:escavalier": {
+      "name": "Escavalier",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:shellarmor",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:excadrill": {
+      "name": "Excadrill",
+      "abilities": [
+        "cobblemon:sandrush",
+        "cobblemon:sandforce",
+        "cobblemon:moldbreaker"
+      ]
+    },
+    "cobblemon:ferroseed": {
+      "name": "Ferroseed",
+      "abilities": [
+        "cobblemon:ironbarbs"
+      ]
+    },
+    "cobblemon:ferrothorn": {
+      "name": "Ferrothorn",
+      "abilities": [
+        "cobblemon:ironbarbs",
+        "cobblemon:anticipation"
+      ]
+    },
+    "cobblemon:foongus": {
+      "name": "Foongus",
+      "abilities": [
+        "cobblemon:effectspore",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:fraxure": {
+      "name": "Fraxure",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:frillish": {
+      "name": "Frillish",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:cursedbody",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:galvantula": {
+      "name": "Galvantula",
+      "abilities": [
+        "cobblemon:compoundeyes",
+        "cobblemon:unnerve",
+        "cobblemon:swarm"
+      ]
+    },
+    "cobblemon:gigalith": {
+      "name": "Gigalith",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:sandstream",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:golett": {
+      "name": "Golett",
+      "abilities": [
+        "cobblemon:ironfist",
+        "cobblemon:klutz",
+        "cobblemon:noguard"
+      ]
+    },
+    "cobblemon:golurk": {
+      "name": "Golurk",
+      "abilities": [
+        "cobblemon:ironfist",
+        "cobblemon:klutz",
+        "cobblemon:noguard"
+      ]
+    },
+    "cobblemon:gothita": {
+      "name": "Gothita",
+      "abilities": [
+        "cobblemon:frisk",
+        "cobblemon:competitive",
+        "cobblemon:shadowtag"
+      ]
+    },
+    "cobblemon:gothitelle": {
+      "name": "Gothitelle",
+      "abilities": [
+        "cobblemon:frisk",
+        "cobblemon:competitive",
+        "cobblemon:shadowtag"
+      ]
+    },
+    "cobblemon:gothorita": {
+      "name": "Gothorita",
+      "abilities": [
+        "cobblemon:frisk",
+        "cobblemon:competitive",
+        "cobblemon:shadowtag"
+      ]
+    },
+    "cobblemon:gurdurr": {
+      "name": "Gurdurr",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:sheerforce",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:haxorus": {
+      "name": "Haxorus",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:heatmor": {
+      "name": "Heatmor",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:flashfire",
+        "cobblemon:whitesmoke"
+      ]
+    },
+    "cobblemon:herdier": {
+      "name": "Herdier",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:sandrush",
+        "cobblemon:scrappy"
+      ]
+    },
+    "cobblemon:hydreigon": {
+      "name": "Hydreigon",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:jellicent": {
+      "name": "Jellicent",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:cursedbody",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:joltik": {
+      "name": "Joltik",
+      "abilities": [
+        "cobblemon:compoundeyes",
+        "cobblemon:unnerve",
+        "cobblemon:swarm"
+      ]
+    },
+    "cobblemon:karrablast": {
+      "name": "Karrablast",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:shedskin",
+        "cobblemon:noguard"
+      ]
+    },
+    "cobblemon:klang": {
+      "name": "Klang",
+      "abilities": [
+        "cobblemon:plus",
+        "cobblemon:minus",
+        "cobblemon:clearbody"
+      ]
+    },
+    "cobblemon:klink": {
+      "name": "Klink",
+      "abilities": [
+        "cobblemon:plus",
+        "cobblemon:minus",
+        "cobblemon:clearbody"
+      ]
+    },
+    "cobblemon:klinklang": {
+      "name": "Klinklang",
+      "abilities": [
+        "cobblemon:plus",
+        "cobblemon:minus",
+        "cobblemon:clearbody"
+      ]
+    },
+    "cobblemon:krokorok": {
+      "name": "Krokorok",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:moxie",
+        "cobblemon:angerpoint"
+      ]
+    },
+    "cobblemon:krookodile": {
+      "name": "Krookodile",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:moxie",
+        "cobblemon:angerpoint"
+      ]
+    },
+    "cobblemon:lampent": {
+      "name": "Lampent",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:flamebody",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:larvesta": {
+      "name": "Larvesta",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:swarm"
+      ]
+    },
+    "cobblemon:leavanny": {
+      "name": "Leavanny",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:chlorophyll",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:liepard": {
+      "name": "Liepard",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:unburden",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:lillipup": {
+      "name": "Lillipup",
+      "abilities": [
+        "cobblemon:vitalspirit",
+        "cobblemon:pickup",
+        "cobblemon:runaway"
+      ]
+    },
+    "cobblemon:litwick": {
+      "name": "Litwick",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:flamebody",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:maractus": {
+      "name": "Maractus",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:chlorophyll",
+        "cobblemon:stormdrain"
+      ]
+    },
+    "cobblemon:mienfoo": {
+      "name": "Mienfoo",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:regenerator",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:mienshao": {
+      "name": "Mienshao",
+      "abilities": [
+        "cobblemon:innerfocus",
+        "cobblemon:regenerator",
+        "cobblemon:reckless"
+      ]
+    },
+    "cobblemon:minccino": {
+      "name": "Minccino",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:technician",
+        "cobblemon:skilllink"
+      ]
+    },
+    "cobblemon:munna": {
+      "name": "Munna",
+      "abilities": [
+        "cobblemon:forewarn",
+        "cobblemon:synchronize",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:musharna": {
+      "name": "Musharna",
+      "abilities": [
+        "cobblemon:forewarn",
+        "cobblemon:synchronize",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:panpour": {
+      "name": "Panpour",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:torrent"
+      ]
+    },
+    "cobblemon:pansage": {
+      "name": "Pansage",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:overgrow"
+      ]
+    },
+    "cobblemon:pansear": {
+      "name": "Pansear",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:blaze"
+      ]
+    },
+    "cobblemon:patrat": {
+      "name": "Patrat",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:keeneye"
+      ]
+    },
+    "cobblemon:pidove": {
+      "name": "Pidove",
+      "abilities": [
+        "cobblemon:bigpecks",
+        "cobblemon:superluck"
+      ]
+    },
+    "cobblemon:pignite": {
+      "name": "Pignite",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:thickfat"
+      ]
+    },
+    "cobblemon:purrloin": {
+      "name": "Purrloin",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:unburden",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:reuniclus": {
+      "name": "Reuniclus",
+      "abilities": [
+        "cobblemon:overcoat",
+        "cobblemon:magicguard",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:roggenrola": {
+      "name": "Roggenrola",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:weakarmor",
+        "cobblemon:sandforce"
+      ]
+    },
+    "cobblemon:sandile": {
+      "name": "Sandile",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:moxie",
+        "cobblemon:angerpoint"
+      ]
+    },
+    "cobblemon:sawk": {
+      "name": "Sawk",
+      "abilities": [
+        "cobblemon:sturdy",
+        "cobblemon:innerfocus",
+        "cobblemon:moldbreaker"
+      ]
+    },
+    "cobblemon:scolipede": {
+      "name": "Scolipede",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:swarm",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:scrafty": {
+      "name": "Scrafty",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:moxie",
+        "cobblemon:intimidate"
+      ]
+    },
+    "cobblemon:scraggy": {
+      "name": "Scraggy",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:moxie",
+        "cobblemon:intimidate"
+      ]
+    },
+    "cobblemon:serperior": {
+      "name": "Serperior",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:servine": {
+      "name": "Servine",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:sewaddle": {
+      "name": "Sewaddle",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:chlorophyll",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:shelmet": {
+      "name": "Shelmet",
+      "abilities": [
+        "cobblemon:hydration",
+        "cobblemon:shellarmor",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:sigilyph": {
+      "name": "Sigilyph",
+      "abilities": [
+        "cobblemon:wonderskin",
+        "cobblemon:magicguard",
+        "cobblemon:tintedlens"
+      ]
+    },
+    "cobblemon:simipour": {
+      "name": "Simipour",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:torrent"
+      ]
+    },
+    "cobblemon:simisage": {
+      "name": "Simisage",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:overgrow"
+      ]
+    },
+    "cobblemon:simisear": {
+      "name": "Simisear",
+      "abilities": [
+        "cobblemon:gluttony",
+        "cobblemon:blaze"
+      ]
+    },
+    "cobblemon:snivy": {
+      "name": "Snivy",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:solosis": {
+      "name": "Solosis",
+      "abilities": [
+        "cobblemon:overcoat",
+        "cobblemon:magicguard",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:stoutland": {
+      "name": "Stoutland",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:sandrush",
+        "cobblemon:scrappy"
+      ]
+    },
+    "cobblemon:swadloon": {
+      "name": "Swadloon",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:chlorophyll",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:swanna": {
+      "name": "Swanna",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:bigpecks",
+        "cobblemon:hydration"
+      ]
+    },
+    "cobblemon:swoobat": {
+      "name": "Swoobat",
+      "abilities": [
+        "cobblemon:unaware",
+        "cobblemon:klutz",
+        "cobblemon:simple"
+      ]
+    },
+    "cobblemon:tepig": {
+      "name": "Tepig",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:thickfat"
+      ]
+    },
+    "cobblemon:throh": {
+      "name": "Throh",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:innerfocus",
+        "cobblemon:moldbreaker"
+      ]
+    },
+    "cobblemon:timburr": {
+      "name": "Timburr",
+      "abilities": [
+        "cobblemon:guts",
+        "cobblemon:sheerforce",
+        "cobblemon:ironfist"
+      ]
+    },
+    "cobblemon:tirtouga": {
+      "name": "Tirtouga",
+      "abilities": [
+        "cobblemon:solidrock",
+        "cobblemon:sturdy",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:tranquill": {
+      "name": "Tranquill",
+      "abilities": [
+        "cobblemon:bigpecks",
+        "cobblemon:superluck"
+      ]
+    },
+    "cobblemon:trubbish": {
+      "name": "Trubbish",
+      "abilities": [
+        "cobblemon:stench",
+        "cobblemon:stickyhold",
+        "cobblemon:aftermath"
+      ]
+    },
+    "cobblemon:tynamo": {
+      "name": "Tynamo",
+      "abilities": [
+        "cobblemon:levitate"
+      ]
+    },
+    "cobblemon:unfezant": {
+      "name": "Unfezant",
+      "abilities": [
+        "cobblemon:bigpecks",
+        "cobblemon:superluck"
+      ]
+    },
+    "cobblemon:vanillish": {
+      "name": "Vanillish",
+      "abilities": [
+        "cobblemon:icebody",
+        "cobblemon:snowcloak",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:vanillite": {
+      "name": "Vanillite",
+      "abilities": [
+        "cobblemon:icebody",
+        "cobblemon:snowcloak",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:vanilluxe": {
+      "name": "Vanilluxe",
+      "abilities": [
+        "cobblemon:icebody",
+        "cobblemon:snowwarning",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:venipede": {
+      "name": "Venipede",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:swarm",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:volcarona": {
+      "name": "Volcarona",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:swarm"
+      ]
+    },
+    "cobblemon:watchog": {
+      "name": "Watchog",
+      "abilities": [
+        "cobblemon:illuminate",
+        "cobblemon:keeneye"
+      ]
+    },
+    "cobblemon:whimsicott": {
+      "name": "Whimsicott",
+      "abilities": [
+        "cobblemon:prankster",
+        "cobblemon:infiltrator",
+        "cobblemon:chlorophyll"
+      ]
+    },
+    "cobblemon:whirlipede": {
+      "name": "Whirlipede",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:swarm",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:woobat": {
+      "name": "Woobat",
+      "abilities": [
+        "cobblemon:unaware",
+        "cobblemon:klutz",
+        "cobblemon:simple"
+      ]
+    },
+    "cobblemon:zebstrika": {
+      "name": "Zebstrika",
+      "abilities": [
+        "cobblemon:lightningrod",
+        "cobblemon:motordrive",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:zweilous": {
+      "name": "Zweilous",
+      "abilities": [
+        "cobblemon:hustle"
+      ]
+    },
+    "cobblemon:amaura": {
+      "name": "Amaura",
+      "abilities": [
+        "cobblemon:refrigerate",
+        "cobblemon:snowwarning"
+      ]
+    },
+    "cobblemon:aromatisse": {
+      "name": "Aromatisse",
+      "abilities": [
+        "cobblemon:healer",
+        "cobblemon:aromaveil"
+      ]
+    },
+    "cobblemon:aurorus": {
+      "name": "Aurorus",
+      "abilities": [
+        "cobblemon:refrigerate",
+        "cobblemon:snowwarning"
+      ]
+    },
+    "cobblemon:barbaracle": {
+      "name": "Barbaracle",
+      "abilities": [
+        "cobblemon:toughclaws",
+        "cobblemon:sniper",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:bergmite": {
+      "name": "Bergmite",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:icebody",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:binacle": {
+      "name": "Binacle",
+      "abilities": [
+        "cobblemon:toughclaws",
+        "cobblemon:sniper",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:braixen": {
+      "name": "Braixen",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:magician"
+      ]
+    },
+    "cobblemon:bunnelby": {
+      "name": "Bunnelby",
+      "abilities": [
+        "cobblemon:pickup",
+        "cobblemon:cheekpouch",
+        "cobblemon:hugepower"
+      ]
+    },
+    "cobblemon:carbink": {
+      "name": "Carbink",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:chesnaught": {
+      "name": "Chesnaught",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:bulletproof"
+      ]
+    },
+    "cobblemon:chespin": {
+      "name": "Chespin",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:bulletproof"
+      ]
+    },
+    "cobblemon:clauncher": {
+      "name": "Clauncher",
+      "abilities": [
+        "cobblemon:megalauncher"
+      ]
+    },
+    "cobblemon:clawitzer": {
+      "name": "Clawitzer",
+      "abilities": [
+        "cobblemon:megalauncher"
+      ]
+    },
+    "cobblemon:dedenne": {
+      "name": "Dedenne",
+      "abilities": [
+        "cobblemon:cheekpouch",
+        "cobblemon:pickup",
+        "cobblemon:plus"
+      ]
+    },
+    "cobblemon:delphox": {
+      "name": "Delphox",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:magician"
+      ]
+    },
+    "cobblemon:diggersby": {
+      "name": "Diggersby",
+      "abilities": [
+        "cobblemon:pickup",
+        "cobblemon:cheekpouch",
+        "cobblemon:hugepower"
+      ]
+    },
+    "cobblemon:doublade": {
+      "name": "Doublade",
+      "abilities": [
+        "cobblemon:noguard"
+      ]
+    },
+    "cobblemon:dragalge": {
+      "name": "Dragalge",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:poisontouch",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:espurr": {
+      "name": "Espurr",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:infiltrator",
+        "cobblemon:owntempo"
+      ]
+    },
+    "cobblemon:fennekin": {
+      "name": "Fennekin",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:magician"
+      ]
+    },
+    "cobblemon:fletchinder": {
+      "name": "Fletchinder",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:galewings"
+      ]
+    },
+    "cobblemon:fletchling": {
+      "name": "Fletchling",
+      "abilities": [
+        "cobblemon:bigpecks",
+        "cobblemon:galewings"
+      ]
+    },
+    "cobblemon:froakie": {
+      "name": "Froakie",
+      "abilities": [
+        "cobblemon:torrent"
+      ]
+    },
+    "cobblemon:frogadier": {
+      "name": "Frogadier",
+      "abilities": [
+        "cobblemon:torrent"
+      ]
+    },
+    "cobblemon:gogoat": {
+      "name": "Gogoat",
+      "abilities": [
+        "cobblemon:sapsipper",
+        "cobblemon:grasspelt"
+      ]
+    },
+    "cobblemon:hawlucha": {
+      "name": "Hawlucha",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:unburden",
+        "cobblemon:moldbreaker"
+      ]
+    },
+    "cobblemon:honedge": {
+      "name": "Honedge",
+      "abilities": [
+        "cobblemon:noguard"
+      ]
+    },
+    "cobblemon:inkay": {
+      "name": "Inkay",
+      "abilities": [
+        "cobblemon:contrary",
+        "cobblemon:suctioncups",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:klefki": {
+      "name": "Klefki",
+      "abilities": [
+        "cobblemon:prankster",
+        "cobblemon:magician"
+      ]
+    },
+    "cobblemon:litleo": {
+      "name": "Litleo",
+      "abilities": [
+        "cobblemon:unnerve",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:malamar": {
+      "name": "Malamar",
+      "abilities": [
+        "cobblemon:contrary",
+        "cobblemon:suctioncups",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:noibat": {
+      "name": "Noibat",
+      "abilities": [
+        "cobblemon:frisk",
+        "cobblemon:infiltrator",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:noivern": {
+      "name": "Noivern",
+      "abilities": [
+        "cobblemon:frisk",
+        "cobblemon:infiltrator",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:phantump": {
+      "name": "Phantump",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:frisk",
+        "cobblemon:harvest"
+      ]
+    },
+    "cobblemon:pyroar": {
+      "name": "Pyroar",
+      "abilities": [
+        "cobblemon:unnerve",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:quilladin": {
+      "name": "Quilladin",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:bulletproof"
+      ]
+    },
+    "cobblemon:scatterbug": {
+      "name": "Scatterbug",
+      "abilities": [
+        "cobblemon:shielddust",
+        "cobblemon:compoundeyes",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:skiddo": {
+      "name": "Skiddo",
+      "abilities": [
+        "cobblemon:sapsipper",
+        "cobblemon:grasspelt"
+      ]
+    },
+    "cobblemon:skrelp": {
+      "name": "Skrelp",
+      "abilities": [
+        "cobblemon:poisonpoint",
+        "cobblemon:poisontouch",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:slurpuff": {
+      "name": "Slurpuff",
+      "abilities": [
+        "cobblemon:sweetveil",
+        "cobblemon:unburden"
+      ]
+    },
+    "cobblemon:spewpa": {
+      "name": "Spewpa",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:friendguard"
+      ]
+    },
+    "cobblemon:spritzee": {
+      "name": "Spritzee",
+      "abilities": [
+        "cobblemon:healer",
+        "cobblemon:aromaveil"
+      ]
+    },
+    "cobblemon:swirlix": {
+      "name": "Swirlix",
+      "abilities": [
+        "cobblemon:sweetveil",
+        "cobblemon:unburden"
+      ]
+    },
+    "cobblemon:sylveon": {
+      "name": "Sylveon",
+      "abilities": [
+        "cobblemon:cutecharm",
+        "cobblemon:pixilate"
+      ]
+    },
+    "cobblemon:talonflame": {
+      "name": "Talonflame",
+      "abilities": [
+        "cobblemon:flamebody",
+        "cobblemon:galewings"
+      ]
+    },
+    "cobblemon:trevenant": {
+      "name": "Trevenant",
+      "abilities": [
+        "cobblemon:naturalcure",
+        "cobblemon:frisk",
+        "cobblemon:harvest"
+      ]
+    },
+    "cobblemon:tyrantrum": {
+      "name": "Tyrantrum",
+      "abilities": [
+        "cobblemon:strongjaw",
+        "cobblemon:rockhead"
+      ]
+    },
+    "cobblemon:tyrunt": {
+      "name": "Tyrunt",
+      "abilities": [
+        "cobblemon:strongjaw",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:araquanid": {
+      "name": "Araquanid",
+      "abilities": [
+        "cobblemon:waterbubble",
+        "cobblemon:waterabsorb"
+      ]
+    },
+    "cobblemon:bewear": {
+      "name": "Bewear",
+      "abilities": [
+        "cobblemon:fluffy",
+        "cobblemon:klutz",
+        "cobblemon:unnerve"
+      ]
+    },
+    "cobblemon:bounsweet": {
+      "name": "Bounsweet",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:oblivious",
+        "cobblemon:sweetveil"
+      ]
+    },
+    "cobblemon:brionne": {
+      "name": "Brionne",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:liquidvoice"
+      ]
+    },
+    "cobblemon:bruxish": {
+      "name": "Bruxish",
+      "abilities": [
+        "cobblemon:dazzling",
+        "cobblemon:strongjaw",
+        "cobblemon:wonderskin"
+      ]
+    },
+    "cobblemon:comfey": {
+      "name": "Comfey",
+      "abilities": [
+        "cobblemon:flowerveil",
+        "cobblemon:triage",
+        "cobblemon:naturalcure"
+      ]
+    },
+    "cobblemon:crabominable": {
+      "name": "Crabominable",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:ironfist",
+        "cobblemon:angerpoint"
+      ]
+    },
+    "cobblemon:crabrawler": {
+      "name": "Crabrawler",
+      "abilities": [
+        "cobblemon:hypercutter",
+        "cobblemon:ironfist",
+        "cobblemon:angerpoint"
+      ]
+    },
+    "cobblemon:cutiefly": {
+      "name": "Cutiefly",
+      "abilities": [
+        "cobblemon:honeygather",
+        "cobblemon:shielddust",
+        "cobblemon:sweetveil"
+      ]
+    },
+    "cobblemon:dewpider": {
+      "name": "Dewpider",
+      "abilities": [
+        "cobblemon:waterbubble",
+        "cobblemon:waterabsorb"
+      ]
+    },
+    "cobblemon:dhelmise": {
+      "name": "Dhelmise",
+      "abilities": [
+        "cobblemon:steelworker"
+      ]
+    },
+    "cobblemon:drampa": {
+      "name": "Drampa",
+      "abilities": [
+        "cobblemon:berserk",
+        "cobblemon:sapsipper",
+        "cobblemon:cloudnine"
+      ]
+    },
+    "cobblemon:fomantis": {
+      "name": "Fomantis",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:golisopod": {
+      "name": "Golisopod",
+      "abilities": [
+        "cobblemon:emergencyexit"
+      ]
+    },
+    "cobblemon:gumshoos": {
+      "name": "Gumshoos",
+      "abilities": [
+        "cobblemon:stakeout",
+        "cobblemon:strongjaw",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:hakamoo": {
+      "name": "Hakamo-o",
+      "abilities": [
+        "cobblemon:bulletproof",
+        "cobblemon:soundproof",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:incineroar": {
+      "name": "Incineroar",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:intimidate"
+      ]
+    },
+    "cobblemon:jangmoo": {
+      "name": "Jangmo-o",
+      "abilities": [
+        "cobblemon:bulletproof",
+        "cobblemon:soundproof",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:kommoo": {
+      "name": "Kommo-o",
+      "abilities": [
+        "cobblemon:bulletproof",
+        "cobblemon:soundproof",
+        "cobblemon:overcoat"
+      ]
+    },
+    "cobblemon:litten": {
+      "name": "Litten",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:intimidate"
+      ]
+    },
+    "cobblemon:lurantis": {
+      "name": "Lurantis",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:contrary"
+      ]
+    },
+    "cobblemon:mareanie": {
+      "name": "Mareanie",
+      "abilities": [
+        "cobblemon:merciless",
+        "cobblemon:limber",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:morelull": {
+      "name": "Morelull",
+      "abilities": [
+        "cobblemon:illuminate",
+        "cobblemon:effectspore",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:mudbray": {
+      "name": "Mudbray",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:stamina",
+        "cobblemon:innerfocus"
+      ]
+    },
+    "cobblemon:mudsdale": {
+      "name": "Mudsdale",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:stamina",
+        "cobblemon:innerfocus"
+      ]
+    },
+    "cobblemon:naganadel": {
+      "name": "Naganadel",
+      "abilities": [
+        "cobblemon:beastboost"
+      ]
+    },
+    "cobblemon:palossand": {
+      "name": "Palossand",
+      "abilities": [
+        "cobblemon:watercompaction",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:pikipek": {
+      "name": "Pikipek",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:skilllink",
+        "cobblemon:pickup"
+      ]
+    },
+    "cobblemon:poipole": {
+      "name": "Poipole",
+      "abilities": [
+        "cobblemon:beastboost"
+      ]
+    },
+    "cobblemon:popplio": {
+      "name": "Popplio",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:liquidvoice"
+      ]
+    },
+    "cobblemon:primarina": {
+      "name": "Primarina",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:liquidvoice"
+      ]
+    },
+    "cobblemon:pyukumuku": {
+      "name": "Pyukumuku",
+      "abilities": [
+        "cobblemon:innardsout",
+        "cobblemon:unaware"
+      ]
+    },
+    "cobblemon:ribombee": {
+      "name": "Ribombee",
+      "abilities": [
+        "cobblemon:honeygather",
+        "cobblemon:shielddust",
+        "cobblemon:sweetveil"
+      ]
+    },
+    "cobblemon:salandit": {
+      "name": "Salandit",
+      "abilities": [
+        "cobblemon:corrosion",
+        "cobblemon:oblivious"
+      ]
+    },
+    "cobblemon:salazzle": {
+      "name": "Salazzle",
+      "abilities": [
+        "cobblemon:corrosion",
+        "cobblemon:oblivious"
+      ]
+    },
+    "cobblemon:sandygast": {
+      "name": "Sandygast",
+      "abilities": [
+        "cobblemon:watercompaction",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:shiinotic": {
+      "name": "Shiinotic",
+      "abilities": [
+        "cobblemon:illuminate",
+        "cobblemon:effectspore",
+        "cobblemon:raindish"
+      ]
+    },
+    "cobblemon:steenee": {
+      "name": "Steenee",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:oblivious",
+        "cobblemon:sweetveil"
+      ]
+    },
+    "cobblemon:stufful": {
+      "name": "Stufful",
+      "abilities": [
+        "cobblemon:fluffy",
+        "cobblemon:klutz",
+        "cobblemon:cutecharm"
+      ]
+    },
+    "cobblemon:togedemaru": {
+      "name": "Togedemaru",
+      "abilities": [
+        "cobblemon:ironbarbs",
+        "cobblemon:lightningrod",
+        "cobblemon:sturdy"
+      ]
+    },
+    "cobblemon:torracat": {
+      "name": "Torracat",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:intimidate"
+      ]
+    },
+    "cobblemon:toucannon": {
+      "name": "Toucannon",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:skilllink",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:toxapex": {
+      "name": "Toxapex",
+      "abilities": [
+        "cobblemon:merciless",
+        "cobblemon:limber",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:trumbeak": {
+      "name": "Trumbeak",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:skilllink",
+        "cobblemon:pickup"
+      ]
+    },
+    "cobblemon:tsareena": {
+      "name": "Tsareena",
+      "abilities": [
+        "cobblemon:leafguard",
+        "cobblemon:queenlymajesty",
+        "cobblemon:sweetveil"
+      ]
+    },
+    "cobblemon:turtonator": {
+      "name": "Turtonator",
+      "abilities": [
+        "cobblemon:shellarmor"
+      ]
+    },
+    "cobblemon:wimpod": {
+      "name": "Wimpod",
+      "abilities": [
+        "cobblemon:wimpout"
+      ]
+    },
+    "cobblemon:yungoos": {
+      "name": "Yungoos",
+      "abilities": [
+        "cobblemon:stakeout",
+        "cobblemon:strongjaw",
+        "cobblemon:adaptability"
+      ]
+    },
+    "cobblemon:arctovish": {
+      "name": "Arctovish",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:icebody",
+        "cobblemon:slushrush"
+      ]
+    },
+    "cobblemon:arctozolt": {
+      "name": "Arctozolt",
+      "abilities": [
+        "cobblemon:voltabsorb",
+        "cobblemon:static",
+        "cobblemon:slushrush"
+      ]
+    },
+    "cobblemon:arrokuda": {
+      "name": "Arrokuda",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:propellertail"
+      ]
+    },
+    "cobblemon:barraskewda": {
+      "name": "Barraskewda",
+      "abilities": [
+        "cobblemon:swiftswim",
+        "cobblemon:propellertail"
+      ]
+    },
+    "cobblemon:boltund": {
+      "name": "Boltund",
+      "abilities": [
+        "cobblemon:strongjaw",
+        "cobblemon:competitive"
+      ]
+    },
+    "cobblemon:chewtle": {
+      "name": "Chewtle",
+      "abilities": [
+        "cobblemon:strongjaw",
+        "cobblemon:shellarmor",
+        "cobblemon:swiftswim"
+      ]
+    },
+    "cobblemon:clobbopus": {
+      "name": "Clobbopus",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:technician"
+      ]
+    },
+    "cobblemon:corvisquire": {
+      "name": "Corvisquire",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:unnerve",
+        "cobblemon:bigpecks"
+      ]
+    },
+    "cobblemon:cufant": {
+      "name": "Cufant",
+      "abilities": [
+        "cobblemon:sheerforce",
+        "cobblemon:heavymetal"
+      ]
+    },
+    "cobblemon:dracovish": {
+      "name": "Dracovish",
+      "abilities": [
+        "cobblemon:waterabsorb",
+        "cobblemon:strongjaw",
+        "cobblemon:sandrush"
+      ]
+    },
+    "cobblemon:dracozolt": {
+      "name": "Dracozolt",
+      "abilities": [
+        "cobblemon:voltabsorb",
+        "cobblemon:hustle",
+        "cobblemon:sandrush"
+      ]
+    },
+    "cobblemon:dragapult": {
+      "name": "Dragapult",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:infiltrator",
+        "cobblemon:cursedbody"
+      ]
+    },
+    "cobblemon:drakloak": {
+      "name": "Drakloak",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:infiltrator",
+        "cobblemon:cursedbody"
+      ]
+    },
+    "cobblemon:dreepy": {
+      "name": "Dreepy",
+      "abilities": [
+        "cobblemon:clearbody",
+        "cobblemon:infiltrator",
+        "cobblemon:cursedbody"
+      ]
+    },
+    "cobblemon:drizzile": {
+      "name": "Drizzile",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:sniper"
+      ]
+    },
+    "cobblemon:dubwool": {
+      "name": "Dubwool",
+      "abilities": [
+        "cobblemon:fluffy",
+        "cobblemon:steadfast",
+        "cobblemon:bulletproof"
+      ]
+    },
+    "cobblemon:eldegoss": {
+      "name": "Eldegoss",
+      "abilities": [
+        "cobblemon:cottondown",
+        "cobblemon:regenerator",
+        "cobblemon:effectspore"
+      ]
+    },
+    "cobblemon:falinks": {
+      "name": "Falinks",
+      "abilities": [
+        "cobblemon:battlearmor",
+        "cobblemon:defiant"
+      ]
+    },
+    "cobblemon:gossifleur": {
+      "name": "Gossifleur",
+      "abilities": [
+        "cobblemon:cottondown",
+        "cobblemon:regenerator",
+        "cobblemon:effectspore"
+      ]
+    },
+    "cobblemon:grapploct": {
+      "name": "Grapploct",
+      "abilities": [
+        "cobblemon:limber",
+        "cobblemon:technician"
+      ]
+    },
+    "cobblemon:greedent": {
+      "name": "Greedent",
+      "abilities": [
+        "cobblemon:cheekpouch",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:grookey": {
+      "name": "Grookey",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:grassysurge"
+      ]
+    },
+    "cobblemon:hatenna": {
+      "name": "Hatenna",
+      "abilities": [
+        "cobblemon:healer",
+        "cobblemon:anticipation",
+        "cobblemon:magicbounce"
+      ]
+    },
+    "cobblemon:hattrem": {
+      "name": "Hattrem",
+      "abilities": [
+        "cobblemon:healer",
+        "cobblemon:anticipation",
+        "cobblemon:magicbounce"
+      ]
+    },
+    "cobblemon:impidimp": {
+      "name": "Impidimp",
+      "abilities": [
+        "cobblemon:prankster",
+        "cobblemon:frisk",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:milcery": {
+      "name": "Milcery",
+      "abilities": [
+        "cobblemon:sweetveil",
+        "cobblemon:aromaveil"
+      ]
+    },
+    "cobblemon:morgrem": {
+      "name": "Morgrem",
+      "abilities": [
+        "cobblemon:prankster",
+        "cobblemon:frisk",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:nickit": {
+      "name": "Nickit",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:unburden",
+        "cobblemon:stakeout"
+      ]
+    },
+    "cobblemon:pincurchin": {
+      "name": "Pincurchin",
+      "abilities": [
+        "cobblemon:lightningrod",
+        "cobblemon:electricsurge"
+      ]
+    },
+    "cobblemon:raboot": {
+      "name": "Raboot",
+      "abilities": [
+        "cobblemon:blaze"
+      ]
+    },
+    "cobblemon:regidrago": {
+      "name": "Regidrago",
+      "abilities": [
+        "cobblemon:dragonsmaw"
+      ]
+    },
+    "cobblemon:regieleki": {
+      "name": "Regieleki",
+      "abilities": [
+        "cobblemon:transistor"
+      ]
+    },
+    "cobblemon:rookidee": {
+      "name": "Rookidee",
+      "abilities": [
+        "cobblemon:keeneye",
+        "cobblemon:unnerve",
+        "cobblemon:bigpecks"
+      ]
+    },
+    "cobblemon:scorbunny": {
+      "name": "Scorbunny",
+      "abilities": [
+        "cobblemon:blaze"
+      ]
+    },
+    "cobblemon:silicobra": {
+      "name": "Silicobra",
+      "abilities": [
+        "cobblemon:sandspit",
+        "cobblemon:shedskin",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:sizzlipede": {
+      "name": "Sizzlipede",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:whitesmoke",
+        "cobblemon:flamebody"
+      ]
+    },
+    "cobblemon:skwovet": {
+      "name": "Skwovet",
+      "abilities": [
+        "cobblemon:cheekpouch",
+        "cobblemon:gluttony"
+      ]
+    },
+    "cobblemon:sobble": {
+      "name": "Sobble",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:sniper"
+      ]
+    },
+    "cobblemon:stonjourner": {
+      "name": "Stonjourner",
+      "abilities": [
+        "cobblemon:powerspot"
+      ]
+    },
+    "cobblemon:thievul": {
+      "name": "Thievul",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:unburden",
+        "cobblemon:stakeout"
+      ]
+    },
+    "cobblemon:thwackey": {
+      "name": "Thwackey",
+      "abilities": [
+        "cobblemon:overgrow",
+        "cobblemon:grassysurge"
+      ]
+    },
+    "cobblemon:toxel": {
+      "name": "Toxel",
+      "abilities": [
+        "cobblemon:rattled",
+        "cobblemon:static",
+        "cobblemon:klutz"
+      ]
+    },
+    "cobblemon:wooloo": {
+      "name": "Wooloo",
+      "abilities": [
+        "cobblemon:fluffy",
+        "cobblemon:runaway",
+        "cobblemon:bulletproof"
+      ]
+    },
+    "cobblemon:yamper": {
+      "name": "Yamper",
+      "abilities": [
+        "cobblemon:ballfetch",
+        "cobblemon:rattled"
+      ]
+    },
+    "cobblemon:kleavor": {
+      "name": "Kleavor",
+      "abilities": [
+        "cobblemon:swarm",
+        "cobblemon:sheerforce",
+        "cobblemon:sharpness"
+      ]
+    },
+    "cobblemon:wyrdeer": {
+      "name": "Wyrdeer",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:frisk",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:annihilape": {
+      "name": "Annihilape",
+      "abilities": [
+        "cobblemon:vitalspirit",
+        "cobblemon:innerfocus",
+        "cobblemon:defiant"
+      ]
+    },
+    "cobblemon:arboliva": {
+      "name": "Arboliva",
+      "abilities": [
+        "cobblemon:seedsower",
+        "cobblemon:harvest"
+      ]
+    },
+    "cobblemon:armarouge": {
+      "name": "Armarouge",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:bellibolt": {
+      "name": "Bellibolt",
+      "abilities": [
+        "cobblemon:electromorphosis",
+        "cobblemon:static",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:brambleghast": {
+      "name": "Brambleghast",
+      "abilities": [
+        "cobblemon:windrider",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:bramblin": {
+      "name": "Bramblin",
+      "abilities": [
+        "cobblemon:windrider",
+        "cobblemon:infiltrator"
+      ]
+    },
+    "cobblemon:capsakid": {
+      "name": "Capsakid",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:insomnia",
+        "cobblemon:klutz"
+      ]
+    },
+    "cobblemon:ceruledge": {
+      "name": "Ceruledge",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:weakarmor"
+      ]
+    },
+    "cobblemon:cetitan": {
+      "name": "Cetitan",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:slushrush",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:cetoddle": {
+      "name": "Cetoddle",
+      "abilities": [
+        "cobblemon:thickfat",
+        "cobblemon:snowcloak",
+        "cobblemon:sheerforce"
+      ]
+    },
+    "cobblemon:charcadet": {
+      "name": "Charcadet",
+      "abilities": [
+        "cobblemon:flashfire",
+        "cobblemon:flamebody"
+      ]
+    },
+    "cobblemon:crocalor": {
+      "name": "Crocalor",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:unaware"
+      ]
+    },
+    "cobblemon:cyclizar": {
+      "name": "Cyclizar",
+      "abilities": [
+        "cobblemon:shedskin",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:dachsbun": {
+      "name": "Dachsbun",
+      "abilities": [
+        "cobblemon:wellbakedbody",
+        "cobblemon:aromaveil"
+      ]
+    },
+    "cobblemon:dolliv": {
+      "name": "Dolliv",
+      "abilities": [
+        "cobblemon:earlybird",
+        "cobblemon:harvest"
+      ]
+    },
+    "cobblemon:dondozo": {
+      "name": "Dondozo",
+      "abilities": [
+        "cobblemon:unaware",
+        "cobblemon:oblivious",
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:espathra": {
+      "name": "Espathra",
+      "abilities": [
+        "cobblemon:opportunist",
+        "cobblemon:frisk",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:farigiraf": {
+      "name": "Farigiraf",
+      "abilities": [
+        "cobblemon:cudchew",
+        "cobblemon:armortail",
+        "cobblemon:sapsipper"
+      ]
+    },
+    "cobblemon:fidough": {
+      "name": "Fidough",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:klutz"
+      ]
+    },
+    "cobblemon:finizen": {
+      "name": "Finizen",
+      "abilities": [
+        "cobblemon:waterveil"
+      ]
+    },
+    "cobblemon:flamigo": {
+      "name": "Flamigo",
+      "abilities": [
+        "cobblemon:scrappy",
+        "cobblemon:tangledfeet",
+        "cobblemon:costar"
+      ]
+    },
+    "cobblemon:flittle": {
+      "name": "Flittle",
+      "abilities": [
+        "cobblemon:anticipation",
+        "cobblemon:frisk",
+        "cobblemon:speedboost"
+      ]
+    },
+    "cobblemon:floragato": {
+      "name": "Floragato",
+      "abilities": [
+        "cobblemon:overgrow"
+      ]
+    },
+    "cobblemon:fuecoco": {
+      "name": "Fuecoco",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:unaware"
+      ]
+    },
+    "cobblemon:garganacl": {
+      "name": "Garganacl",
+      "abilities": [
+        "cobblemon:purifyingsalt",
+        "cobblemon:sturdy",
+        "cobblemon:clearbody"
+      ]
+    },
+    "cobblemon:gholdengo": {
+      "name": "Gholdengo",
+      "abilities": [
+        "cobblemon:goodasgold"
+      ]
+    },
+    "cobblemon:glimmet": {
+      "name": "Glimmet",
+      "abilities": [
+        "cobblemon:toxicdebris",
+        "cobblemon:corrosion"
+      ]
+    },
+    "cobblemon:glimmora": {
+      "name": "Glimmora",
+      "abilities": [
+        "cobblemon:toxicdebris",
+        "cobblemon:corrosion"
+      ]
+    },
+    "cobblemon:grafaiai": {
+      "name": "Grafaiai",
+      "abilities": [
+        "cobblemon:unburden",
+        "cobblemon:poisontouch",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:ironleaves": {
+      "name": "Iron Leaves",
+      "abilities": [
+        "cobblemon:quarkdrive"
+      ]
+    },
+    "cobblemon:kilowattrel": {
+      "name": "Kilowattrel",
+      "abilities": [
+        "cobblemon:windpower",
+        "cobblemon:voltabsorb",
+        "cobblemon:competitive"
+      ]
+    },
+    "cobblemon:klawf": {
+      "name": "Klawf",
+      "abilities": [
+        "cobblemon:angershell",
+        "cobblemon:shellarmor",
+        "cobblemon:regenerator"
+      ]
+    },
+    "cobblemon:lechonk": {
+      "name": "Lechonk",
+      "abilities": [
+        "cobblemon:aromaveil",
+        "cobblemon:gluttony",
+        "cobblemon:thickfat"
+      ]
+    },
+    "cobblemon:mabosstiff": {
+      "name": "Mabosstiff",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:guarddog",
+        "cobblemon:stakeout"
+      ]
+    },
+    "cobblemon:maschiff": {
+      "name": "Maschiff",
+      "abilities": [
+        "cobblemon:intimidate",
+        "cobblemon:runaway",
+        "cobblemon:stakeout"
+      ]
+    },
+    "cobblemon:meowscarada": {
+      "name": "Meowscarada",
+      "abilities": [
+        "cobblemon:overgrow"
+      ]
+    },
+    "cobblemon:nacli": {
+      "name": "Nacli",
+      "abilities": [
+        "cobblemon:purifyingsalt",
+        "cobblemon:sturdy",
+        "cobblemon:clearbody"
+      ]
+    },
+    "cobblemon:naclstack": {
+      "name": "Naclstack",
+      "abilities": [
+        "cobblemon:purifyingsalt",
+        "cobblemon:sturdy",
+        "cobblemon:clearbody"
+      ]
+    },
+    "cobblemon:orthworm": {
+      "name": "Orthworm",
+      "abilities": [
+        "cobblemon:eartheater",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:quaquaval": {
+      "name": "Quaquaval",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:quaxly": {
+      "name": "Quaxly",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:quaxwell": {
+      "name": "Quaxwell",
+      "abilities": [
+        "cobblemon:torrent",
+        "cobblemon:moxie"
+      ]
+    },
+    "cobblemon:rabsca": {
+      "name": "Rabsca",
+      "abilities": [
+        "cobblemon:synchronize",
+        "cobblemon:telepathy"
+      ]
+    },
+    "cobblemon:rellor": {
+      "name": "Rellor",
+      "abilities": [
+        "cobblemon:compoundeyes",
+        "cobblemon:shedskin"
+      ]
+    },
+    "cobblemon:revavroom": {
+      "name": "Revavroom",
+      "abilities": [
+        "cobblemon:overcoat",
+        "cobblemon:filter"
+      ]
+    },
+    "cobblemon:scovillain": {
+      "name": "Scovillain",
+      "abilities": [
+        "cobblemon:chlorophyll",
+        "cobblemon:insomnia",
+        "cobblemon:moody"
+      ]
+    },
+    "cobblemon:shroodle": {
+      "name": "Shroodle",
+      "abilities": [
+        "cobblemon:unburden",
+        "cobblemon:pickpocket",
+        "cobblemon:prankster"
+      ]
+    },
+    "cobblemon:skeledirge": {
+      "name": "Skeledirge",
+      "abilities": [
+        "cobblemon:blaze",
+        "cobblemon:unaware"
+      ]
+    },
+    "cobblemon:smoliv": {
+      "name": "Smoliv",
+      "abilities": [
+        "cobblemon:earlybird",
+        "cobblemon:harvest"
+      ]
+    },
+    "cobblemon:spidops": {
+      "name": "Spidops",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:stakeout"
+      ]
+    },
+    "cobblemon:sprigatito": {
+      "name": "Sprigatito",
+      "abilities": [
+        "cobblemon:overgrow"
+      ]
+    },
+    "cobblemon:tadbulb": {
+      "name": "Tadbulb",
+      "abilities": [
+        "cobblemon:owntempo",
+        "cobblemon:static",
+        "cobblemon:damp"
+      ]
+    },
+    "cobblemon:tandemaus": {
+      "name": "Tandemaus",
+      "abilities": [
+        "cobblemon:runaway",
+        "cobblemon:pickup",
+        "cobblemon:owntempo"
+      ]
+    },
+    "cobblemon:tarountula": {
+      "name": "Tarountula",
+      "abilities": [
+        "cobblemon:insomnia",
+        "cobblemon:stakeout"
+      ]
+    },
+    "cobblemon:tinkatink": {
+      "name": "Tinkatink",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:owntempo",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:tinkaton": {
+      "name": "Tinkaton",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:owntempo",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:tinkatuff": {
+      "name": "Tinkatuff",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:owntempo",
+        "cobblemon:pickpocket"
+      ]
+    },
+    "cobblemon:toedscool": {
+      "name": "Toedscool",
+      "abilities": [
+        "cobblemon:myceliummight"
+      ]
+    },
+    "cobblemon:toedscruel": {
+      "name": "Toedscruel",
+      "abilities": [
+        "cobblemon:myceliummight"
+      ]
+    },
+    "cobblemon:varoom": {
+      "name": "Varoom",
+      "abilities": [
+        "cobblemon:overcoat",
+        "cobblemon:slowstart"
+      ]
+    },
+    "cobblemon:veluza": {
+      "name": "Veluza",
+      "abilities": [
+        "cobblemon:moldbreaker",
+        "cobblemon:sharpness"
+      ]
+    },
+    "cobblemon:walkingwake": {
+      "name": "Walking Wake",
+      "abilities": [
+        "cobblemon:protosynthesis"
+      ]
+    },
+    "cobblemon:wattrel": {
+      "name": "Wattrel",
+      "abilities": [
+        "cobblemon:windpower",
+        "cobblemon:voltabsorb",
+        "cobblemon:competitive"
+      ]
+    },
+    "cobblemon:wiglett": {
+      "name": "Wiglett",
+      "abilities": [
+        "cobblemon:gooey",
+        "cobblemon:rattled",
+        "cobblemon:sandveil"
+      ]
+    },
+    "cobblemon:wugtrio": {
+      "name": "Wugtrio",
+      "abilities": [
+        "cobblemon:gooey",
+        "cobblemon:rattled",
+        "cobblemon:sandveil"
+      ]
+    }
+  },
+  "moves": {
+    "cobblemon:absorb": {
+      "name": "Absorb"
+    },
+    "absorb": {
+      "name": "Absorb"
+    },
+    "cobblemon:accelerock": {
+      "name": "Accelerock"
+    },
+    "accelerock": {
+      "name": "Accelerock"
+    },
+    "cobblemon:acidspray": {
+      "name": "Acid Spray"
+    },
+    "acidspray": {
+      "name": "Acid Spray"
+    },
+    "cobblemon:alluringvoice": {
+      "name": "Alluring Voice"
+    },
+    "alluringvoice": {
+      "name": "Alluring Voice"
+    },
+    "cobblemon:anchorshot": {
+      "name": "Anchor Shot"
+    },
+    "anchorshot": {
+      "name": "Anchor Shot"
+    },
+    "cobblemon:ancientpower": {
+      "name": "Ancient Power"
+    },
+    "ancientpower": {
+      "name": "Ancient Power"
+    },
+    "cobblemon:appleacid": {
+      "name": "Apple Acid"
+    },
+    "appleacid": {
+      "name": "Apple Acid"
+    },
+    "cobblemon:aquajet": {
+      "name": "Aqua Jet"
+    },
+    "aquajet": {
+      "name": "Aqua Jet"
+    },
+    "cobblemon:aquastep": {
+      "name": "Aqua Step"
+    },
+    "aquastep": {
+      "name": "Aqua Step"
+    },
+    "cobblemon:aquatail": {
+      "name": "Aqua Tail"
+    },
+    "aquatail": {
+      "name": "Aqua Tail"
+    },
+    "cobblemon:armorcannon": {
+      "name": "Armor Cannon"
+    },
+    "armorcannon": {
+      "name": "Armor Cannon"
+    },
+    "cobblemon:astonish": {
+      "name": "Astonish"
+    },
+    "astonish": {
+      "name": "Astonish"
+    },
+    "cobblemon:aurawheel": {
+      "name": "Aura Wheel"
+    },
+    "aurawheel": {
+      "name": "Aura Wheel"
+    },
+    "cobblemon:aurorabeam": {
+      "name": "Aurora Beam"
+    },
+    "aurorabeam": {
+      "name": "Aurora Beam"
+    },
+    "cobblemon:axekick": {
+      "name": "Axe Kick"
+    },
+    "axekick": {
+      "name": "Axe Kick"
+    },
+    "cobblemon:beakblast": {
+      "name": "Beak Blast"
+    },
+    "beakblast": {
+      "name": "Beak Blast"
+    },
+    "cobblemon:behemothbash": {
+      "name": "Behemoth Bash"
+    },
+    "behemothbash": {
+      "name": "Behemoth Bash"
+    },
+    "cobblemon:behemothblade": {
+      "name": "Behemoth Blade"
+    },
+    "behemothblade": {
+      "name": "Behemoth Blade"
+    },
+    "cobblemon:bind": {
+      "name": "Bind"
+    },
+    "bind": {
+      "name": "Bind"
+    },
+    "cobblemon:bite": {
+      "name": "Bite"
+    },
+    "bite": {
+      "name": "Bite"
+    },
+    "cobblemon:bitterblade": {
+      "name": "Bitter Blade"
+    },
+    "bitterblade": {
+      "name": "Bitter Blade"
+    },
+    "cobblemon:bittermalice": {
+      "name": "Bitter Malice"
+    },
+    "bittermalice": {
+      "name": "Bitter Malice"
+    },
+    "cobblemon:blastburn": {
+      "name": "Blast Burn"
+    },
+    "blastburn": {
+      "name": "Blast Burn"
+    },
+    "cobblemon:blazingtorque": {
+      "name": "Blazing Torque"
+    },
+    "blazingtorque": {
+      "name": "Blazing Torque"
+    },
+    "cobblemon:bloodmoon": {
+      "name": "Blood Moon"
+    },
+    "bloodmoon": {
+      "name": "Blood Moon"
+    },
+    "cobblemon:blueflare": {
+      "name": "Blue Flare"
+    },
+    "blueflare": {
+      "name": "Blue Flare"
+    },
+    "cobblemon:bodypress": {
+      "name": "Body Press"
+    },
+    "bodypress": {
+      "name": "Body Press"
+    },
+    "cobblemon:bodyslam": {
+      "name": "Body Slam"
+    },
+    "bodyslam": {
+      "name": "Body Slam"
+    },
+    "cobblemon:boltstrike": {
+      "name": "Bolt Strike"
+    },
+    "boltstrike": {
+      "name": "Bolt Strike"
+    },
+    "cobblemon:boneclub": {
+      "name": "Bone Club"
+    },
+    "boneclub": {
+      "name": "Bone Club"
+    },
+    "cobblemon:branchpoke": {
+      "name": "Branch Poke"
+    },
+    "branchpoke": {
+      "name": "Branch Poke"
+    },
+    "cobblemon:brickbreak": {
+      "name": "Brick Break"
+    },
+    "brickbreak": {
+      "name": "Brick Break"
+    },
+    "cobblemon:bubblebeam": {
+      "name": "Bubble Beam"
+    },
+    "bubblebeam": {
+      "name": "Bubble Beam"
+    },
+    "cobblemon:bugbite": {
+      "name": "Bug Bite"
+    },
+    "bugbite": {
+      "name": "Bug Bite"
+    },
+    "cobblemon:bugbuzz": {
+      "name": "Bug Buzz"
+    },
+    "bugbuzz": {
+      "name": "Bug Buzz"
+    },
+    "cobblemon:bulletpunch": {
+      "name": "Bullet Punch"
+    },
+    "bulletpunch": {
+      "name": "Bullet Punch"
+    },
+    "cobblemon:ceaselessedge": {
+      "name": "Ceaseless Edge"
+    },
+    "ceaselessedge": {
+      "name": "Ceaseless Edge"
+    },
+    "cobblemon:chargebeam": {
+      "name": "Charge Beam"
+    },
+    "chargebeam": {
+      "name": "Charge Beam"
+    },
+    "cobblemon:chillingwater": {
+      "name": "Chilling Water"
+    },
+    "chillingwater": {
+      "name": "Chilling Water"
+    },
+    "cobblemon:chipaway": {
+      "name": "Chip Away"
+    },
+    "chipaway": {
+      "name": "Chip Away"
+    },
+    "cobblemon:chloroblast": {
+      "name": "Chloroblast"
+    },
+    "chloroblast": {
+      "name": "Chloroblast"
+    },
+    "cobblemon:clamp": {
+      "name": "Clamp"
+    },
+    "clamp": {
+      "name": "Clamp"
+    },
+    "cobblemon:clearsmog": {
+      "name": "Clear Smog"
+    },
+    "clearsmog": {
+      "name": "Clear Smog"
+    },
+    "cobblemon:closecombat": {
+      "name": "Close Combat"
+    },
+    "closecombat": {
+      "name": "Close Combat"
+    },
+    "cobblemon:combattorque": {
+      "name": "Combat Torque"
+    },
+    "combattorque": {
+      "name": "Combat Torque"
+    },
+    "cobblemon:confusion": {
+      "name": "Confusion"
+    },
+    "confusion": {
+      "name": "Confusion"
+    },
+    "cobblemon:constrict": {
+      "name": "Constrict"
+    },
+    "constrict": {
+      "name": "Constrict"
+    },
+    "cobblemon:covet": {
+      "name": "Covet"
+    },
+    "covet": {
+      "name": "Covet"
+    },
+    "cobblemon:crunch": {
+      "name": "Crunch"
+    },
+    "crunch": {
+      "name": "Crunch"
+    },
+    "cobblemon:crushclaw": {
+      "name": "Crush Claw"
+    },
+    "crushclaw": {
+      "name": "Crush Claw"
+    },
+    "cobblemon:cut": {
+      "name": "Cut"
+    },
+    "cut": {
+      "name": "Cut"
+    },
+    "cobblemon:darkestlariat": {
+      "name": "Darkest Lariat"
+    },
+    "darkestlariat": {
+      "name": "Darkest Lariat"
+    },
+    "cobblemon:direclaw": {
+      "name": "Dire Claw"
+    },
+    "direclaw": {
+      "name": "Dire Claw"
+    },
+    "cobblemon:dizzypunch": {
+      "name": "Dizzy Punch"
+    },
+    "dizzypunch": {
+      "name": "Dizzy Punch"
+    },
+    "cobblemon:doomdesire": {
+      "name": "Doom Desire"
+    },
+    "doomdesire": {
+      "name": "Doom Desire"
+    },
+    "cobblemon:doubleedge": {
+      "name": "Double-Edge"
+    },
+    "doubleedge": {
+      "name": "Double-Edge"
+    },
+    "cobblemon:dracometeor": {
+      "name": "Draco Meteor"
+    },
+    "dracometeor": {
+      "name": "Draco Meteor"
+    },
+    "cobblemon:dragonbreath": {
+      "name": "Dragon Breath"
+    },
+    "dragonbreath": {
+      "name": "Dragon Breath"
+    },
+    "cobblemon:dragonclaw": {
+      "name": "Dragon Claw"
+    },
+    "dragonclaw": {
+      "name": "Dragon Claw"
+    },
+    "cobblemon:dragonhammer": {
+      "name": "Dragon Hammer"
+    },
+    "dragonhammer": {
+      "name": "Dragon Hammer"
+    },
+    "cobblemon:dragonrush": {
+      "name": "Dragon Rush"
+    },
+    "dragonrush": {
+      "name": "Dragon Rush"
+    },
+    "cobblemon:drainingkiss": {
+      "name": "Draining Kiss"
+    },
+    "drainingkiss": {
+      "name": "Draining Kiss"
+    },
+    "cobblemon:drainpunch": {
+      "name": "Drain Punch"
+    },
+    "drainpunch": {
+      "name": "Drain Punch"
+    },
+    "cobblemon:drumbeating": {
+      "name": "Drum Beating"
+    },
+    "drumbeating": {
+      "name": "Drum Beating"
+    },
+    "cobblemon:dynamaxcannon": {
+      "name": "Dynamax Cannon"
+    },
+    "dynamaxcannon": {
+      "name": "Dynamax Cannon"
+    },
+    "cobblemon:dynamicpunch": {
+      "name": "Dynamic Punch"
+    },
+    "dynamicpunch": {
+      "name": "Dynamic Punch"
+    },
+    "cobblemon:earthpower": {
+      "name": "Earth Power"
+    },
+    "earthpower": {
+      "name": "Earth Power"
+    },
+    "cobblemon:eeriespell": {
+      "name": "Eerie Spell"
+    },
+    "eeriespell": {
+      "name": "Eerie Spell"
+    },
+    "cobblemon:eggbomb": {
+      "name": "Egg Bomb"
+    },
+    "eggbomb": {
+      "name": "Egg Bomb"
+    },
+    "cobblemon:ember": {
+      "name": "Ember"
+    },
+    "ember": {
+      "name": "Ember"
+    },
+    "cobblemon:energyball": {
+      "name": "Energy Ball"
+    },
+    "energyball": {
+      "name": "Energy Ball"
+    },
+    "cobblemon:eternabeam": {
+      "name": "Eternabeam"
+    },
+    "eternabeam": {
+      "name": "Eternabeam"
+    },
+    "cobblemon:extrasensory": {
+      "name": "Extrasensory"
+    },
+    "extrasensory": {
+      "name": "Extrasensory"
+    },
+    "cobblemon:extremespeed": {
+      "name": "Extreme Speed"
+    },
+    "extremespeed": {
+      "name": "Extreme Speed"
+    },
+    "cobblemon:fairywind": {
+      "name": "Fairy Wind"
+    },
+    "fairywind": {
+      "name": "Fairy Wind"
+    },
+    "cobblemon:falsesurrender": {
+      "name": "False Surrender"
+    },
+    "falsesurrender": {
+      "name": "False Surrender"
+    },
+    "cobblemon:feint": {
+      "name": "Feint"
+    },
+    "feint": {
+      "name": "Feint"
+    },
+    "cobblemon:feintattack": {
+      "name": "Feint Attack"
+    },
+    "feintattack": {
+      "name": "Feint Attack"
+    },
+    "cobblemon:fellstinger": {
+      "name": "Fell Stinger"
+    },
+    "fellstinger": {
+      "name": "Fell Stinger"
+    },
+    "cobblemon:fierydance": {
+      "name": "Fiery Dance"
+    },
+    "fierydance": {
+      "name": "Fiery Dance"
+    },
+    "cobblemon:fireblast": {
+      "name": "Fire Blast"
+    },
+    "fireblast": {
+      "name": "Fire Blast"
+    },
+    "cobblemon:firefang": {
+      "name": "Fire Fang"
+    },
+    "firefang": {
+      "name": "Fire Fang"
+    },
+    "cobblemon:firelash": {
+      "name": "Fire Lash"
+    },
+    "firelash": {
+      "name": "Fire Lash"
+    },
+    "cobblemon:firepunch": {
+      "name": "Fire Punch"
+    },
+    "firepunch": {
+      "name": "Fire Punch"
+    },
+    "cobblemon:firespin": {
+      "name": "Fire Spin"
+    },
+    "firespin": {
+      "name": "Fire Spin"
+    },
+    "cobblemon:flameburst": {
+      "name": "Flame Burst"
+    },
+    "flameburst": {
+      "name": "Flame Burst"
+    },
+    "cobblemon:flamecharge": {
+      "name": "Flame Charge"
+    },
+    "flamecharge": {
+      "name": "Flame Charge"
+    },
+    "cobblemon:flamewheel": {
+      "name": "Flame Wheel"
+    },
+    "flamewheel": {
+      "name": "Flame Wheel"
+    },
+    "cobblemon:flamethrower": {
+      "name": "Flamethrower"
+    },
+    "flamethrower": {
+      "name": "Flamethrower"
+    },
+    "cobblemon:flareblitz": {
+      "name": "Flare Blitz"
+    },
+    "flareblitz": {
+      "name": "Flare Blitz"
+    },
+    "cobblemon:flashcannon": {
+      "name": "Flash Cannon"
+    },
+    "flashcannon": {
+      "name": "Flash Cannon"
+    },
+    "cobblemon:fleurcannon": {
+      "name": "Fleur Cannon"
+    },
+    "fleurcannon": {
+      "name": "Fleur Cannon"
+    },
+    "cobblemon:flipturn": {
+      "name": "Flip Turn"
+    },
+    "flipturn": {
+      "name": "Flip Turn"
+    },
+    "cobblemon:focusblast": {
+      "name": "Focus Blast"
+    },
+    "focusblast": {
+      "name": "Focus Blast"
+    },
+    "cobblemon:forcepalm": {
+      "name": "Force Palm"
+    },
+    "forcepalm": {
+      "name": "Force Palm"
+    },
+    "cobblemon:foulplay": {
+      "name": "Foul Play"
+    },
+    "foulplay": {
+      "name": "Foul Play"
+    },
+    "cobblemon:freezedry": {
+      "name": "Freeze-Dry"
+    },
+    "freezedry": {
+      "name": "Freeze-Dry"
+    },
+    "cobblemon:freezingglare": {
+      "name": "Freezing Glare"
+    },
+    "freezingglare": {
+      "name": "Freezing Glare"
+    },
+    "cobblemon:frenzyplant": {
+      "name": "Frenzy Plant"
+    },
+    "frenzyplant": {
+      "name": "Frenzy Plant"
+    },
+    "cobblemon:futuresight": {
+      "name": "Future Sight"
+    },
+    "futuresight": {
+      "name": "Future Sight"
+    },
+    "cobblemon:gigadrain": {
+      "name": "Giga Drain"
+    },
+    "gigadrain": {
+      "name": "Giga Drain"
+    },
+    "cobblemon:gigaimpact": {
+      "name": "Giga Impact"
+    },
+    "gigaimpact": {
+      "name": "Giga Impact"
+    },
+    "cobblemon:gigatonhammer": {
+      "name": "Gigaton Hammer"
+    },
+    "gigatonhammer": {
+      "name": "Gigaton Hammer"
+    },
+    "cobblemon:glaiverush": {
+      "name": "Glaive Rush"
+    },
+    "glaiverush": {
+      "name": "Glaive Rush"
+    },
+    "cobblemon:gunkshot": {
+      "name": "Gunk Shot"
+    },
+    "gunkshot": {
+      "name": "Gunk Shot"
+    },
+    "cobblemon:hammerarm": {
+      "name": "Hammer Arm"
+    },
+    "hammerarm": {
+      "name": "Hammer Arm"
+    },
+    "cobblemon:headbutt": {
+      "name": "Headbutt"
+    },
+    "headbutt": {
+      "name": "Headbutt"
+    },
+    "cobblemon:headcharge": {
+      "name": "Head Charge"
+    },
+    "headcharge": {
+      "name": "Head Charge"
+    },
+    "cobblemon:headlongrush": {
+      "name": "Headlong Rush"
+    },
+    "headlongrush": {
+      "name": "Headlong Rush"
+    },
+    "cobblemon:headsmash": {
+      "name": "Head Smash"
+    },
+    "headsmash": {
+      "name": "Head Smash"
+    },
+    "cobblemon:heartstamp": {
+      "name": "Heart Stamp"
+    },
+    "heartstamp": {
+      "name": "Heart Stamp"
+    },
+    "cobblemon:hiddenpower": {
+      "name": "Hidden Power"
+    },
+    "hiddenpower": {
+      "name": "Hidden Power"
+    },
+    "cobblemon:hiddenpowerbug": {
+      "name": "Hidden Power Bug"
+    },
+    "hiddenpowerbug": {
+      "name": "Hidden Power Bug"
+    },
+    "cobblemon:hiddenpowerdark": {
+      "name": "Hidden Power Dark"
+    },
+    "hiddenpowerdark": {
+      "name": "Hidden Power Dark"
+    },
+    "cobblemon:hiddenpowerdragon": {
+      "name": "Hidden Power Dragon"
+    },
+    "hiddenpowerdragon": {
+      "name": "Hidden Power Dragon"
+    },
+    "cobblemon:hiddenpowerelectric": {
+      "name": "Hidden Power Electric"
+    },
+    "hiddenpowerelectric": {
+      "name": "Hidden Power Electric"
+    },
+    "cobblemon:hiddenpowerfighting": {
+      "name": "Hidden Power Fighting"
+    },
+    "hiddenpowerfighting": {
+      "name": "Hidden Power Fighting"
+    },
+    "cobblemon:hiddenpowerfire": {
+      "name": "Hidden Power Fire"
+    },
+    "hiddenpowerfire": {
+      "name": "Hidden Power Fire"
+    },
+    "cobblemon:hiddenpowerflying": {
+      "name": "Hidden Power Flying"
+    },
+    "hiddenpowerflying": {
+      "name": "Hidden Power Flying"
+    },
+    "cobblemon:hiddenpowerghost": {
+      "name": "Hidden Power Ghost"
+    },
+    "hiddenpowerghost": {
+      "name": "Hidden Power Ghost"
+    },
+    "cobblemon:hiddenpowergrass": {
+      "name": "Hidden Power Grass"
+    },
+    "hiddenpowergrass": {
+      "name": "Hidden Power Grass"
+    },
+    "cobblemon:hiddenpowerground": {
+      "name": "Hidden Power Ground"
+    },
+    "hiddenpowerground": {
+      "name": "Hidden Power Ground"
+    },
+    "cobblemon:hiddenpowerice": {
+      "name": "Hidden Power Ice"
+    },
+    "hiddenpowerice": {
+      "name": "Hidden Power Ice"
+    },
+    "cobblemon:hiddenpowerpoison": {
+      "name": "Hidden Power Poison"
+    },
+    "hiddenpowerpoison": {
+      "name": "Hidden Power Poison"
+    },
+    "cobblemon:hiddenpowerpsychic": {
+      "name": "Hidden Power Psychic"
+    },
+    "hiddenpowerpsychic": {
+      "name": "Hidden Power Psychic"
+    },
+    "cobblemon:hiddenpowerrock": {
+      "name": "Hidden Power Rock"
+    },
+    "hiddenpowerrock": {
+      "name": "Hidden Power Rock"
+    },
+    "cobblemon:hiddenpowersteel": {
+      "name": "Hidden Power Steel"
+    },
+    "hiddenpowersteel": {
+      "name": "Hidden Power Steel"
+    },
+    "cobblemon:hiddenpowerwater": {
+      "name": "Hidden Power Water"
+    },
+    "hiddenpowerwater": {
+      "name": "Hidden Power Water"
+    },
+    "cobblemon:highhorsepower": {
+      "name": "High Horsepower"
+    },
+    "highhorsepower": {
+      "name": "High Horsepower"
+    },
+    "cobblemon:highjumpkick": {
+      "name": "High Jump Kick"
+    },
+    "highjumpkick": {
+      "name": "High Jump Kick"
+    },
+    "cobblemon:hornattack": {
+      "name": "Horn Attack"
+    },
+    "hornattack": {
+      "name": "Horn Attack"
+    },
+    "cobblemon:hornleech": {
+      "name": "Horn Leech"
+    },
+    "hornleech": {
+      "name": "Horn Leech"
+    },
+    "cobblemon:hydrocannon": {
+      "name": "Hydro Cannon"
+    },
+    "hydrocannon": {
+      "name": "Hydro Cannon"
+    },
+    "cobblemon:hydropump": {
+      "name": "Hydro Pump"
+    },
+    "hydropump": {
+      "name": "Hydro Pump"
+    },
+    "cobblemon:hydrosteam": {
+      "name": "Hydro Steam"
+    },
+    "hydrosteam": {
+      "name": "Hydro Steam"
+    },
+    "cobblemon:hyperbeam": {
+      "name": "Hyper Beam"
+    },
+    "hyperbeam": {
+      "name": "Hyper Beam"
+    },
+    "cobblemon:hyperdrill": {
+      "name": "Hyper Drill"
+    },
+    "hyperdrill": {
+      "name": "Hyper Drill"
+    },
+    "cobblemon:hyperfang": {
+      "name": "Hyper Fang"
+    },
+    "hyperfang": {
+      "name": "Hyper Fang"
+    },
+    "cobblemon:hyperspacefury": {
+      "name": "Hyperspace Fury"
+    },
+    "hyperspacefury": {
+      "name": "Hyperspace Fury"
+    },
+    "cobblemon:hyperspacehole": {
+      "name": "Hyperspace Hole"
+    },
+    "hyperspacehole": {
+      "name": "Hyperspace Hole"
+    },
+    "cobblemon:icebeam": {
+      "name": "Ice Beam"
+    },
+    "icebeam": {
+      "name": "Ice Beam"
+    },
+    "cobblemon:icefang": {
+      "name": "Ice Fang"
+    },
+    "icefang": {
+      "name": "Ice Fang"
+    },
+    "cobblemon:icehammer": {
+      "name": "Ice Hammer"
+    },
+    "icehammer": {
+      "name": "Ice Hammer"
+    },
+    "cobblemon:icepunch": {
+      "name": "Ice Punch"
+    },
+    "icepunch": {
+      "name": "Ice Punch"
+    },
+    "cobblemon:iceshard": {
+      "name": "Ice Shard"
+    },
+    "iceshard": {
+      "name": "Ice Shard"
+    },
+    "cobblemon:icespinner": {
+      "name": "Ice Spinner"
+    },
+    "icespinner": {
+      "name": "Ice Spinner"
+    },
+    "cobblemon:iciclecrash": {
+      "name": "Icicle Crash"
+    },
+    "iciclecrash": {
+      "name": "Icicle Crash"
+    },
+    "cobblemon:inferno": {
+      "name": "Inferno"
+    },
+    "inferno": {
+      "name": "Inferno"
+    },
+    "cobblemon:infestation": {
+      "name": "Infestation"
+    },
+    "infestation": {
+      "name": "Infestation"
+    },
+    "cobblemon:ironhead": {
+      "name": "Iron Head"
+    },
+    "ironhead": {
+      "name": "Iron Head"
+    },
+    "cobblemon:irontail": {
+      "name": "Iron Tail"
+    },
+    "irontail": {
+      "name": "Iron Tail"
+    },
+    "cobblemon:jawlock": {
+      "name": "Jaw Lock"
+    },
+    "jawlock": {
+      "name": "Jaw Lock"
+    },
+    "cobblemon:jetpunch": {
+      "name": "Jet Punch"
+    },
+    "jetpunch": {
+      "name": "Jet Punch"
+    },
+    "cobblemon:judgment": {
+      "name": "Judgment"
+    },
+    "judgment": {
+      "name": "Judgment"
+    },
+    "cobblemon:jumpkick": {
+      "name": "Jump Kick"
+    },
+    "jumpkick": {
+      "name": "Jump Kick"
+    },
+    "cobblemon:kowtowcleave": {
+      "name": "Kowtow Cleave"
+    },
+    "kowtowcleave": {
+      "name": "Kowtow Cleave"
+    },
+    "cobblemon:leafage": {
+      "name": "Leafage"
+    },
+    "leafage": {
+      "name": "Leafage"
+    },
+    "cobblemon:leafstorm": {
+      "name": "Leaf Storm"
+    },
+    "leafstorm": {
+      "name": "Leaf Storm"
+    },
+    "cobblemon:leaftornado": {
+      "name": "Leaf Tornado"
+    },
+    "leaftornado": {
+      "name": "Leaf Tornado"
+    },
+    "cobblemon:leechlife": {
+      "name": "Leech Life"
+    },
+    "leechlife": {
+      "name": "Leech Life"
+    },
+    "cobblemon:lick": {
+      "name": "Lick"
+    },
+    "lick": {
+      "name": "Lick"
+    },
+    "cobblemon:lightofruin": {
+      "name": "Light of Ruin"
+    },
+    "lightofruin": {
+      "name": "Light of Ruin"
+    },
+    "cobblemon:liquidation": {
+      "name": "Liquidation"
+    },
+    "liquidation": {
+      "name": "Liquidation"
+    },
+    "cobblemon:lowsweep": {
+      "name": "Low Sweep"
+    },
+    "lowsweep": {
+      "name": "Low Sweep"
+    },
+    "cobblemon:luminacrash": {
+      "name": "Lumina Crash"
+    },
+    "luminacrash": {
+      "name": "Lumina Crash"
+    },
+    "cobblemon:lunge": {
+      "name": "Lunge"
+    },
+    "lunge": {
+      "name": "Lunge"
+    },
+    "cobblemon:machpunch": {
+      "name": "Mach Punch"
+    },
+    "machpunch": {
+      "name": "Mach Punch"
+    },
+    "cobblemon:magicalleaf": {
+      "name": "Magical Leaf"
+    },
+    "magicalleaf": {
+      "name": "Magical Leaf"
+    },
+    "cobblemon:magicaltorque": {
+      "name": "Magical Torque"
+    },
+    "magicaltorque": {
+      "name": "Magical Torque"
+    },
+    "cobblemon:magmastorm": {
+      "name": "Magma Storm"
+    },
+    "magmastorm": {
+      "name": "Magma Storm"
+    },
+    "cobblemon:magnetbomb": {
+      "name": "Magnet Bomb"
+    },
+    "magnetbomb": {
+      "name": "Magnet Bomb"
+    },
+    "cobblemon:malignantchain": {
+      "name": "Malignant Chain"
+    },
+    "malignantchain": {
+      "name": "Malignant Chain"
+    },
+    "cobblemon:megadrain": {
+      "name": "Mega Drain"
+    },
+    "megadrain": {
+      "name": "Mega Drain"
+    },
+    "cobblemon:megahorn": {
+      "name": "Megahorn"
+    },
+    "megahorn": {
+      "name": "Megahorn"
+    },
+    "cobblemon:megakick": {
+      "name": "Mega Kick"
+    },
+    "megakick": {
+      "name": "Mega Kick"
+    },
+    "cobblemon:megapunch": {
+      "name": "Mega Punch"
+    },
+    "megapunch": {
+      "name": "Mega Punch"
+    },
+    "cobblemon:metalclaw": {
+      "name": "Metal Claw"
+    },
+    "metalclaw": {
+      "name": "Metal Claw"
+    },
+    "cobblemon:meteorassault": {
+      "name": "Meteor Assault"
+    },
+    "meteorassault": {
+      "name": "Meteor Assault"
+    },
+    "cobblemon:meteormash": {
+      "name": "Meteor Mash"
+    },
+    "meteormash": {
+      "name": "Meteor Mash"
+    },
+    "cobblemon:mightycleave": {
+      "name": "Mighty Cleave"
+    },
+    "mightycleave": {
+      "name": "Mighty Cleave"
+    },
+    "cobblemon:mirrorshot": {
+      "name": "Mirror Shot"
+    },
+    "mirrorshot": {
+      "name": "Mirror Shot"
+    },
+    "cobblemon:moonblast": {
+      "name": "Moonblast"
+    },
+    "moonblast": {
+      "name": "Moonblast"
+    },
+    "cobblemon:moongeistbeam": {
+      "name": "Moongeist Beam"
+    },
+    "moongeistbeam": {
+      "name": "Moongeist Beam"
+    },
+    "cobblemon:mountaingale": {
+      "name": "Mountain Gale"
+    },
+    "mountaingale": {
+      "name": "Mountain Gale"
+    },
+    "cobblemon:mudbomb": {
+      "name": "Mud Bomb"
+    },
+    "mudbomb": {
+      "name": "Mud Bomb"
+    },
+    "cobblemon:mudshot": {
+      "name": "Mud Shot"
+    },
+    "mudshot": {
+      "name": "Mud Shot"
+    },
+    "cobblemon:mudslap": {
+      "name": "Mud-Slap"
+    },
+    "mudslap": {
+      "name": "Mud-Slap"
+    },
+    "cobblemon:multiattack": {
+      "name": "Multi-Attack"
+    },
+    "multiattack": {
+      "name": "Multi-Attack"
+    },
+    "cobblemon:mysticalfire": {
+      "name": "Mystical Fire"
+    },
+    "mysticalfire": {
+      "name": "Mystical Fire"
+    },
+    "cobblemon:mysticalpower": {
+      "name": "Mystical Power"
+    },
+    "mysticalpower": {
+      "name": "Mystical Power"
+    },
+    "cobblemon:needlearm": {
+      "name": "Needle Arm"
+    },
+    "needlearm": {
+      "name": "Needle Arm"
+    },
+    "cobblemon:nightdaze": {
+      "name": "Night Daze"
+    },
+    "nightdaze": {
+      "name": "Night Daze"
+    },
+    "cobblemon:noxioustorque": {
+      "name": "Noxious Torque"
+    },
+    "noxioustorque": {
+      "name": "Noxious Torque"
+    },
+    "cobblemon:nuzzle": {
+      "name": "Nuzzle"
+    },
+    "nuzzle": {
+      "name": "Nuzzle"
+    },
+    "cobblemon:octazooka": {
+      "name": "Octazooka"
+    },
+    "octazooka": {
+      "name": "Octazooka"
+    },
+    "cobblemon:ominouswind": {
+      "name": "Ominous Wind"
+    },
+    "ominouswind": {
+      "name": "Ominous Wind"
+    },
+    "cobblemon:orderup": {
+      "name": "Order Up"
+    },
+    "orderup": {
+      "name": "Order Up"
+    },
+    "cobblemon:overheat": {
+      "name": "Overheat"
+    },
+    "overheat": {
+      "name": "Overheat"
+    },
+    "cobblemon:paleowave": {
+      "name": "Paleo Wave"
+    },
+    "paleowave": {
+      "name": "Paleo Wave"
+    },
+    "cobblemon:payday": {
+      "name": "Pay Day"
+    },
+    "payday": {
+      "name": "Pay Day"
+    },
+    "cobblemon:photongeyser": {
+      "name": "Photon Geyser"
+    },
+    "photongeyser": {
+      "name": "Photon Geyser"
+    },
+    "cobblemon:plasmafists": {
+      "name": "Plasma Fists"
+    },
+    "plasmafists": {
+      "name": "Plasma Fists"
+    },
+    "cobblemon:playrough": {
+      "name": "Play Rough"
+    },
+    "playrough": {
+      "name": "Play Rough"
+    },
+    "cobblemon:poisonfang": {
+      "name": "Poison Fang"
+    },
+    "poisonfang": {
+      "name": "Poison Fang"
+    },
+    "cobblemon:poisonjab": {
+      "name": "Poison Jab"
+    },
+    "poisonjab": {
+      "name": "Poison Jab"
+    },
+    "cobblemon:poisonsting": {
+      "name": "Poison Sting"
+    },
+    "poisonsting": {
+      "name": "Poison Sting"
+    },
+    "cobblemon:pollenpuff": {
+      "name": "Pollen Puff"
+    },
+    "pollenpuff": {
+      "name": "Pollen Puff"
+    },
+    "cobblemon:pounce": {
+      "name": "Pounce"
+    },
+    "pounce": {
+      "name": "Pounce"
+    },
+    "cobblemon:pound": {
+      "name": "Pound"
+    },
+    "pound": {
+      "name": "Pound"
+    },
+    "cobblemon:powergem": {
+      "name": "Power Gem"
+    },
+    "powergem": {
+      "name": "Power Gem"
+    },
+    "cobblemon:poweruppunch": {
+      "name": "Power-Up Punch"
+    },
+    "poweruppunch": {
+      "name": "Power-Up Punch"
+    },
+    "cobblemon:powerwhip": {
+      "name": "Power Whip"
+    },
+    "powerwhip": {
+      "name": "Power Whip"
+    },
+    "cobblemon:prismaticlaser": {
+      "name": "Prismatic Laser"
+    },
+    "prismaticlaser": {
+      "name": "Prismatic Laser"
+    },
+    "cobblemon:psybeam": {
+      "name": "Psybeam"
+    },
+    "psybeam": {
+      "name": "Psybeam"
+    },
+    "cobblemon:psychic": {
+      "name": "Psychic"
+    },
+    "psychic": {
+      "name": "Psychic"
+    },
+    "cobblemon:psychicfangs": {
+      "name": "Psychic Fangs"
+    },
+    "psychicfangs": {
+      "name": "Psychic Fangs"
+    },
+    "cobblemon:psychicnoise": {
+      "name": "Psychic Noise"
+    },
+    "psychicnoise": {
+      "name": "Psychic Noise"
+    },
+    "cobblemon:psychoboost": {
+      "name": "Psycho Boost"
+    },
+    "psychoboost": {
+      "name": "Psycho Boost"
+    },
+    "cobblemon:psyshieldbash": {
+      "name": "Psyshield Bash"
+    },
+    "psyshieldbash": {
+      "name": "Psyshield Bash"
+    },
+    "cobblemon:psyshock": {
+      "name": "Psyshock"
+    },
+    "psyshock": {
+      "name": "Psyshock"
+    },
+    "cobblemon:psystrike": {
+      "name": "Psystrike"
+    },
+    "psystrike": {
+      "name": "Psystrike"
+    },
+    "cobblemon:pyroball": {
+      "name": "Pyro Ball"
+    },
+    "pyroball": {
+      "name": "Pyro Ball"
+    },
+    "cobblemon:quickattack": {
+      "name": "Quick Attack"
+    },
+    "quickattack": {
+      "name": "Quick Attack"
+    },
+    "cobblemon:rage": {
+      "name": "Rage"
+    },
+    "rage": {
+      "name": "Rage"
+    },
+    "cobblemon:rapidspin": {
+      "name": "Rapid Spin"
+    },
+    "rapidspin": {
+      "name": "Rapid Spin"
+    },
+    "cobblemon:razorshell": {
+      "name": "Razor Shell"
+    },
+    "razorshell": {
+      "name": "Razor Shell"
+    },
+    "cobblemon:revelationdance": {
+      "name": "Revelation Dance"
+    },
+    "revelationdance": {
+      "name": "Revelation Dance"
+    },
+    "cobblemon:roaroftime": {
+      "name": "Roar of Time"
+    },
+    "roaroftime": {
+      "name": "Roar of Time"
+    },
+    "cobblemon:rockclimb": {
+      "name": "Rock Climb"
+    },
+    "rockclimb": {
+      "name": "Rock Climb"
+    },
+    "cobblemon:rocksmash": {
+      "name": "Rock Smash"
+    },
+    "rocksmash": {
+      "name": "Rock Smash"
+    },
+    "cobblemon:rockthrow": {
+      "name": "Rock Throw"
+    },
+    "rockthrow": {
+      "name": "Rock Throw"
+    },
+    "cobblemon:rocktomb": {
+      "name": "Rock Tomb"
+    },
+    "rocktomb": {
+      "name": "Rock Tomb"
+    },
+    "cobblemon:rockwrecker": {
+      "name": "Rock Wrecker"
+    },
+    "rockwrecker": {
+      "name": "Rock Wrecker"
+    },
+    "cobblemon:rollingkick": {
+      "name": "Rolling Kick"
+    },
+    "rollingkick": {
+      "name": "Rolling Kick"
+    },
+    "cobblemon:sacredfire": {
+      "name": "Sacred Fire"
+    },
+    "sacredfire": {
+      "name": "Sacred Fire"
+    },
+    "cobblemon:sacredsword": {
+      "name": "Sacred Sword"
+    },
+    "sacredsword": {
+      "name": "Sacred Sword"
+    },
+    "cobblemon:saltcure": {
+      "name": "Salt Cure"
+    },
+    "saltcure": {
+      "name": "Salt Cure"
+    },
+    "cobblemon:sandtomb": {
+      "name": "Sand Tomb"
+    },
+    "sandtomb": {
+      "name": "Sand Tomb"
+    },
+    "cobblemon:scald": {
+      "name": "Scald"
+    },
+    "scald": {
+      "name": "Scald"
+    },
+    "cobblemon:scorchingsands": {
+      "name": "Scorching Sands"
+    },
+    "scorchingsands": {
+      "name": "Scorching Sands"
+    },
+    "cobblemon:scratch": {
+      "name": "Scratch"
+    },
+    "scratch": {
+      "name": "Scratch"
+    },
+    "cobblemon:secretpower": {
+      "name": "Secret Power"
+    },
+    "secretpower": {
+      "name": "Secret Power"
+    },
+    "cobblemon:secretsword": {
+      "name": "Secret Sword"
+    },
+    "secretsword": {
+      "name": "Secret Sword"
+    },
+    "cobblemon:seedbomb": {
+      "name": "Seed Bomb"
+    },
+    "seedbomb": {
+      "name": "Seed Bomb"
+    },
+    "cobblemon:seedflare": {
+      "name": "Seed Flare"
+    },
+    "seedflare": {
+      "name": "Seed Flare"
+    },
+    "cobblemon:shadowball": {
+      "name": "Shadow Ball"
+    },
+    "shadowball": {
+      "name": "Shadow Ball"
+    },
+    "cobblemon:shadowbone": {
+      "name": "Shadow Bone"
+    },
+    "shadowbone": {
+      "name": "Shadow Bone"
+    },
+    "cobblemon:shadowpunch": {
+      "name": "Shadow Punch"
+    },
+    "shadowpunch": {
+      "name": "Shadow Punch"
+    },
+    "cobblemon:shadowsneak": {
+      "name": "Shadow Sneak"
+    },
+    "shadowsneak": {
+      "name": "Shadow Sneak"
+    },
+    "cobblemon:shadowstrike": {
+      "name": "Shadow Strike"
+    },
+    "shadowstrike": {
+      "name": "Shadow Strike"
+    },
+    "cobblemon:shellsidearm": {
+      "name": "Shell Side Arm"
+    },
+    "shellsidearm": {
+      "name": "Shell Side Arm"
+    },
+    "cobblemon:shockwave": {
+      "name": "Shock Wave"
+    },
+    "shockwave": {
+      "name": "Shock Wave"
+    },
+    "cobblemon:signalbeam": {
+      "name": "Signal Beam"
+    },
+    "signalbeam": {
+      "name": "Signal Beam"
+    },
+    "cobblemon:silverwind": {
+      "name": "Silver Wind"
+    },
+    "silverwind": {
+      "name": "Silver Wind"
+    },
+    "cobblemon:skittersmack": {
+      "name": "Skitter Smack"
+    },
+    "skittersmack": {
+      "name": "Skitter Smack"
+    },
+    "cobblemon:skyuppercut": {
+      "name": "Sky Uppercut"
+    },
+    "skyuppercut": {
+      "name": "Sky Uppercut"
+    },
+    "cobblemon:slam": {
+      "name": "Slam"
+    },
+    "slam": {
+      "name": "Slam"
+    },
+    "cobblemon:sludge": {
+      "name": "Sludge"
+    },
+    "sludge": {
+      "name": "Sludge"
+    },
+    "cobblemon:sludgebomb": {
+      "name": "Sludge Bomb"
+    },
+    "sludgebomb": {
+      "name": "Sludge Bomb"
+    },
+    "cobblemon:smackdown": {
+      "name": "Smack Down"
+    },
+    "smackdown": {
+      "name": "Smack Down"
+    },
+    "cobblemon:smartstrike": {
+      "name": "Smart Strike"
+    },
+    "smartstrike": {
+      "name": "Smart Strike"
+    },
+    "cobblemon:smog": {
+      "name": "Smog"
+    },
+    "smog": {
+      "name": "Smog"
+    },
+    "cobblemon:snaptrap": {
+      "name": "Snap Trap"
+    },
+    "snaptrap": {
+      "name": "Snap Trap"
+    },
+    "cobblemon:spark": {
+      "name": "Spark"
+    },
+    "spark": {
+      "name": "Spark"
+    },
+    "cobblemon:spectralthief": {
+      "name": "Spectral Thief"
+    },
+    "spectralthief": {
+      "name": "Spectral Thief"
+    },
+    "cobblemon:spinout": {
+      "name": "Spin Out"
+    },
+    "spinout": {
+      "name": "Spin Out"
+    },
+    "cobblemon:spiritbreak": {
+      "name": "Spirit Break"
+    },
+    "spiritbreak": {
+      "name": "Spirit Break"
+    },
+    "cobblemon:spiritshackle": {
+      "name": "Spirit Shackle"
+    },
+    "spiritshackle": {
+      "name": "Spirit Shackle"
+    },
+    "cobblemon:steameruption": {
+      "name": "Steam Eruption"
+    },
+    "steameruption": {
+      "name": "Steam Eruption"
+    },
+    "cobblemon:steamroller": {
+      "name": "Steamroller"
+    },
+    "steamroller": {
+      "name": "Steamroller"
+    },
+    "cobblemon:steelbeam": {
+      "name": "Steel Beam"
+    },
+    "steelbeam": {
+      "name": "Steel Beam"
+    },
+    "cobblemon:steelroller": {
+      "name": "Steel Roller"
+    },
+    "steelroller": {
+      "name": "Steel Roller"
+    },
+    "cobblemon:steelwing": {
+      "name": "Steel Wing"
+    },
+    "steelwing": {
+      "name": "Steel Wing"
+    },
+    "cobblemon:stomp": {
+      "name": "Stomp"
+    },
+    "stomp": {
+      "name": "Stomp"
+    },
+    "cobblemon:stoneaxe": {
+      "name": "Stone Axe"
+    },
+    "stoneaxe": {
+      "name": "Stone Axe"
+    },
+    "cobblemon:strangesteam": {
+      "name": "Strange Steam"
+    },
+    "strangesteam": {
+      "name": "Strange Steam"
+    },
+    "cobblemon:strength": {
+      "name": "Strength"
+    },
+    "strength": {
+      "name": "Strength"
+    },
+    "cobblemon:submission": {
+      "name": "Submission"
+    },
+    "submission": {
+      "name": "Submission"
+    },
+    "cobblemon:sunsteelstrike": {
+      "name": "Sunsteel Strike"
+    },
+    "sunsteelstrike": {
+      "name": "Sunsteel Strike"
+    },
+    "cobblemon:supercellslam": {
+      "name": "Supercell Slam"
+    },
+    "supercellslam": {
+      "name": "Supercell Slam"
+    },
+    "cobblemon:superpower": {
+      "name": "Superpower"
+    },
+    "superpower": {
+      "name": "Superpower"
+    },
+    "cobblemon:syrupbomb": {
+      "name": "Syrup Bomb"
+    },
+    "syrupbomb": {
+      "name": "Syrup Bomb"
+    },
+    "cobblemon:tackle": {
+      "name": "Tackle"
+    },
+    "tackle": {
+      "name": "Tackle"
+    },
+    "cobblemon:takedown": {
+      "name": "Take Down"
+    },
+    "takedown": {
+      "name": "Take Down"
+    },
+    "cobblemon:technoblast": {
+      "name": "Techno Blast"
+    },
+    "technoblast": {
+      "name": "Techno Blast"
+    },
+    "cobblemon:terrainpulse": {
+      "name": "Terrain Pulse"
+    },
+    "terrainpulse": {
+      "name": "Terrain Pulse"
+    },
+    "cobblemon:thief": {
+      "name": "Thief"
+    },
+    "thief": {
+      "name": "Thief"
+    },
+    "cobblemon:throatchop": {
+      "name": "Throat Chop"
+    },
+    "throatchop": {
+      "name": "Throat Chop"
+    },
+    "cobblemon:thunder": {
+      "name": "Thunder"
+    },
+    "thunder": {
+      "name": "Thunder"
+    },
+    "cobblemon:thunderbolt": {
+      "name": "Thunderbolt"
+    },
+    "thunderbolt": {
+      "name": "Thunderbolt"
+    },
+    "cobblemon:thundercage": {
+      "name": "Thunder Cage"
+    },
+    "thundercage": {
+      "name": "Thunder Cage"
+    },
+    "cobblemon:thunderfang": {
+      "name": "Thunder Fang"
+    },
+    "thunderfang": {
+      "name": "Thunder Fang"
+    },
+    "cobblemon:thunderouskick": {
+      "name": "Thunderous Kick"
+    },
+    "thunderouskick": {
+      "name": "Thunderous Kick"
+    },
+    "cobblemon:thunderpunch": {
+      "name": "Thunder Punch"
+    },
+    "thunderpunch": {
+      "name": "Thunder Punch"
+    },
+    "cobblemon:thundershock": {
+      "name": "Thunder Shock"
+    },
+    "thundershock": {
+      "name": "Thunder Shock"
+    },
+    "cobblemon:torchsong": {
+      "name": "Torch Song"
+    },
+    "torchsong": {
+      "name": "Torch Song"
+    },
+    "cobblemon:trailblaze": {
+      "name": "Trailblaze"
+    },
+    "trailblaze": {
+      "name": "Trailblaze"
+    },
+    "cobblemon:triattack": {
+      "name": "Tri Attack"
+    },
+    "triattack": {
+      "name": "Tri Attack"
+    },
+    "cobblemon:tropkick": {
+      "name": "Trop Kick"
+    },
+    "tropkick": {
+      "name": "Trop Kick"
+    },
+    "cobblemon:uturn": {
+      "name": "U-turn"
+    },
+    "uturn": {
+      "name": "U-turn"
+    },
+    "cobblemon:vacuumwave": {
+      "name": "Vacuum Wave"
+    },
+    "vacuumwave": {
+      "name": "Vacuum Wave"
+    },
+    "cobblemon:vcreate": {
+      "name": "V-create"
+    },
+    "vcreate": {
+      "name": "V-create"
+    },
+    "cobblemon:vinewhip": {
+      "name": "Vine Whip"
+    },
+    "vinewhip": {
+      "name": "Vine Whip"
+    },
+    "cobblemon:visegrip": {
+      "name": "Vise Grip"
+    },
+    "visegrip": {
+      "name": "Vise Grip"
+    },
+    "cobblemon:vitalthrow": {
+      "name": "Vital Throw"
+    },
+    "vitalthrow": {
+      "name": "Vital Throw"
+    },
+    "cobblemon:voltswitch": {
+      "name": "Volt Switch"
+    },
+    "voltswitch": {
+      "name": "Volt Switch"
+    },
+    "cobblemon:volttackle": {
+      "name": "Volt Tackle"
+    },
+    "volttackle": {
+      "name": "Volt Tackle"
+    },
+    "cobblemon:waterfall": {
+      "name": "Waterfall"
+    },
+    "waterfall": {
+      "name": "Waterfall"
+    },
+    "cobblemon:watergun": {
+      "name": "Water Gun"
+    },
+    "watergun": {
+      "name": "Water Gun"
+    },
+    "cobblemon:wavecrash": {
+      "name": "Wave Crash"
+    },
+    "wavecrash": {
+      "name": "Wave Crash"
+    },
+    "cobblemon:weatherball": {
+      "name": "Weather Ball"
+    },
+    "weatherball": {
+      "name": "Weather Ball"
+    },
+    "cobblemon:whirlpool": {
+      "name": "Whirlpool"
+    },
+    "whirlpool": {
+      "name": "Whirlpool"
+    },
+    "cobblemon:wickedtorque": {
+      "name": "Wicked Torque"
+    },
+    "wickedtorque": {
+      "name": "Wicked Torque"
+    },
+    "cobblemon:wildcharge": {
+      "name": "Wild Charge"
+    },
+    "wildcharge": {
+      "name": "Wild Charge"
+    },
+    "cobblemon:woodhammer": {
+      "name": "Wood Hammer"
+    },
+    "woodhammer": {
+      "name": "Wood Hammer"
+    },
+    "cobblemon:wrap": {
+      "name": "Wrap"
+    },
+    "wrap": {
+      "name": "Wrap"
+    },
+    "cobblemon:xscissor": {
+      "name": "X-Scissor"
+    },
+    "xscissor": {
+      "name": "X-Scissor"
+    },
+    "cobblemon:zapcannon": {
+      "name": "Zap Cannon"
+    },
+    "zapcannon": {
+      "name": "Zap Cannon"
+    },
+    "cobblemon:zenheadbutt": {
+      "name": "Zen Headbutt"
+    },
+    "zenheadbutt": {
+      "name": "Zen Headbutt"
+    },
+    "cobblemon:zingzap": {
+      "name": "Zing Zap"
+    },
+    "zingzap": {
+      "name": "Zing Zap"
+    }
+  },
+  "abilities": {
+    "cobblemon:adaptability": "Adaptability",
+    "adaptability": "Adaptability",
+    "cobblemon:aerilate": "Aerilate",
+    "aerilate": "Aerilate",
+    "cobblemon:aftermath": "Aftermath",
+    "aftermath": "Aftermath",
+    "cobblemon:airlock": "Air Lock",
+    "airlock": "Air Lock",
+    "cobblemon:angerpoint": "Anger Point",
+    "angerpoint": "Anger Point",
+    "cobblemon:angershell": "Anger Shell",
+    "angershell": "Anger Shell",
+    "cobblemon:anticipation": "Anticipation",
+    "anticipation": "Anticipation",
+    "cobblemon:arenatrap": "Arena Trap",
+    "arenatrap": "Arena Trap",
+    "cobblemon:armortail": "Armor Tail",
+    "armortail": "Armor Tail",
+    "cobblemon:aromaveil": "Aroma Veil",
+    "aromaveil": "Aroma Veil",
+    "cobblemon:asoneglastrier": "As One (Glastrier)",
+    "asoneglastrier": "As One (Glastrier)",
+    "cobblemon:asonespectrier": "As One (Spectrier)",
+    "asonespectrier": "As One (Spectrier)",
+    "cobblemon:aurabreak": "Aura Break",
+    "aurabreak": "Aura Break",
+    "cobblemon:baddreams": "Bad Dreams",
+    "baddreams": "Bad Dreams",
+    "cobblemon:ballfetch": "Ball Fetch",
+    "ballfetch": "Ball Fetch",
+    "cobblemon:battery": "Battery",
+    "battery": "Battery",
+    "cobblemon:battlearmor": "Battle Armor",
+    "battlearmor": "Battle Armor",
+    "cobblemon:beadsofruin": "Beads of Ruin",
+    "beadsofruin": "Beads of Ruin",
+    "cobblemon:beastboost": "Beast Boost",
+    "beastboost": "Beast Boost",
+    "cobblemon:berserk": "Berserk",
+    "berserk": "Berserk",
+    "cobblemon:bigpecks": "Big Pecks",
+    "bigpecks": "Big Pecks",
+    "cobblemon:blaze": "Blaze",
+    "blaze": "Blaze",
+    "cobblemon:bulletproof": "Bulletproof",
+    "bulletproof": "Bulletproof",
+    "cobblemon:cheekpouch": "Cheek Pouch",
+    "cheekpouch": "Cheek Pouch",
+    "cobblemon:chillingneigh": "Chilling Neigh",
+    "chillingneigh": "Chilling Neigh",
+    "cobblemon:chlorophyll": "Chlorophyll",
+    "chlorophyll": "Chlorophyll",
+    "cobblemon:clearbody": "Clear Body",
+    "clearbody": "Clear Body",
+    "cobblemon:cloudnine": "Cloud Nine",
+    "cloudnine": "Cloud Nine",
+    "cobblemon:commander": "Commander",
+    "commander": "Commander",
+    "cobblemon:competitive": "Competitive",
+    "competitive": "Competitive",
+    "cobblemon:compoundeyes": "Compound Eyes",
+    "compoundeyes": "Compound Eyes",
+    "cobblemon:contrary": "Contrary",
+    "contrary": "Contrary",
+    "cobblemon:corrosion": "Corrosion",
+    "corrosion": "Corrosion",
+    "cobblemon:costar": "Costar",
+    "costar": "Costar",
+    "cobblemon:cottondown": "Cotton Down",
+    "cottondown": "Cotton Down",
+    "cobblemon:cudchew": "Cud Chew",
+    "cudchew": "Cud Chew",
+    "cobblemon:curiousmedicine": "Curious Medicine",
+    "curiousmedicine": "Curious Medicine",
+    "cobblemon:cursedbody": "Cursed Body",
+    "cursedbody": "Cursed Body",
+    "cobblemon:cutecharm": "Cute Charm",
+    "cutecharm": "Cute Charm",
+    "cobblemon:damp": "Damp",
+    "damp": "Damp",
+    "cobblemon:dancer": "Dancer",
+    "dancer": "Dancer",
+    "cobblemon:darkaura": "Dark Aura",
+    "darkaura": "Dark Aura",
+    "cobblemon:dazzling": "Dazzling",
+    "dazzling": "Dazzling",
+    "cobblemon:defeatist": "Defeatist",
+    "defeatist": "Defeatist",
+    "cobblemon:defiant": "Defiant",
+    "defiant": "Defiant",
+    "cobblemon:deltastream": "Delta Stream",
+    "deltastream": "Delta Stream",
+    "cobblemon:desolateland": "Desolate Land",
+    "desolateland": "Desolate Land",
+    "cobblemon:dragonsmaw": "Dragon's Maw",
+    "dragonsmaw": "Dragon's Maw",
+    "cobblemon:drizzle": "Drizzle",
+    "drizzle": "Drizzle",
+    "cobblemon:drought": "Drought",
+    "drought": "Drought",
+    "cobblemon:dryskin": "Dry Skin",
+    "dryskin": "Dry Skin",
+    "cobblemon:earlybird": "Early Bird",
+    "earlybird": "Early Bird",
+    "cobblemon:eartheater": "Earth Eater",
+    "eartheater": "Earth Eater",
+    "cobblemon:effectspore": "Effect Spore",
+    "effectspore": "Effect Spore",
+    "cobblemon:electricsurge": "Electric Surge",
+    "electricsurge": "Electric Surge",
+    "cobblemon:electromorphosis": "Electromorphosis",
+    "electromorphosis": "Electromorphosis",
+    "cobblemon:emergencyexit": "Emergency Exit",
+    "emergencyexit": "Emergency Exit",
+    "cobblemon:fairyaura": "Fairy Aura",
+    "fairyaura": "Fairy Aura",
+    "cobblemon:filter": "Filter",
+    "filter": "Filter",
+    "cobblemon:flamebody": "Flame Body",
+    "flamebody": "Flame Body",
+    "cobblemon:flareboost": "Flare Boost",
+    "flareboost": "Flare Boost",
+    "cobblemon:flashfire": "Flash Fire",
+    "flashfire": "Flash Fire",
+    "cobblemon:flowergift": "Flower Gift",
+    "flowergift": "Flower Gift",
+    "cobblemon:flowerveil": "Flower Veil",
+    "flowerveil": "Flower Veil",
+    "cobblemon:fluffy": "Fluffy",
+    "fluffy": "Fluffy",
+    "cobblemon:forecast": "Forecast",
+    "forecast": "Forecast",
+    "cobblemon:forewarn": "Forewarn",
+    "forewarn": "Forewarn",
+    "cobblemon:friendguard": "Friend Guard",
+    "friendguard": "Friend Guard",
+    "cobblemon:frisk": "Frisk",
+    "frisk": "Frisk",
+    "cobblemon:fullmetalbody": "Full Metal Body",
+    "fullmetalbody": "Full Metal Body",
+    "cobblemon:furcoat": "Fur Coat",
+    "furcoat": "Fur Coat",
+    "cobblemon:galewings": "Gale Wings",
+    "galewings": "Gale Wings",
+    "cobblemon:galvanize": "Galvanize",
+    "galvanize": "Galvanize",
+    "cobblemon:gluttony": "Gluttony",
+    "gluttony": "Gluttony",
+    "cobblemon:goodasgold": "Good as Gold",
+    "goodasgold": "Good as Gold",
+    "cobblemon:gooey": "Gooey",
+    "gooey": "Gooey",
+    "cobblemon:gorillatactics": "Gorilla Tactics",
+    "gorillatactics": "Gorilla Tactics",
+    "cobblemon:grasspelt": "Grass Pelt",
+    "grasspelt": "Grass Pelt",
+    "cobblemon:grassysurge": "Grassy Surge",
+    "grassysurge": "Grassy Surge",
+    "cobblemon:grimneigh": "Grim Neigh",
+    "grimneigh": "Grim Neigh",
+    "cobblemon:guarddog": "Guard Dog",
+    "guarddog": "Guard Dog",
+    "cobblemon:gulpmissile": "Gulp Missile",
+    "gulpmissile": "Gulp Missile",
+    "cobblemon:guts": "Guts",
+    "guts": "Guts",
+    "cobblemon:hadronengine": "Hadron Engine",
+    "hadronengine": "Hadron Engine",
+    "cobblemon:harvest": "Harvest",
+    "harvest": "Harvest",
+    "cobblemon:healer": "Healer",
+    "healer": "Healer",
+    "cobblemon:heatproof": "Heatproof",
+    "heatproof": "Heatproof",
+    "cobblemon:heavymetal": "Heavy Metal",
+    "heavymetal": "Heavy Metal",
+    "cobblemon:honeygather": "Honey Gather",
+    "honeygather": "Honey Gather",
+    "cobblemon:hospitality": "Hospitality",
+    "hospitality": "Hospitality",
+    "cobblemon:hugepower": "Huge Power",
+    "hugepower": "Huge Power",
+    "cobblemon:hustle": "Hustle",
+    "hustle": "Hustle",
+    "cobblemon:hydration": "Hydration",
+    "hydration": "Hydration",
+    "cobblemon:hypercutter": "Hyper Cutter",
+    "hypercutter": "Hyper Cutter",
+    "cobblemon:icebody": "Ice Body",
+    "icebody": "Ice Body",
+    "cobblemon:icescales": "Ice Scales",
+    "icescales": "Ice Scales",
+    "cobblemon:illuminate": "Illuminate",
+    "illuminate": "Illuminate",
+    "cobblemon:illusion": "Illusion",
+    "illusion": "Illusion",
+    "cobblemon:immunity": "Immunity",
+    "immunity": "Immunity",
+    "cobblemon:infiltrator": "Infiltrator",
+    "infiltrator": "Infiltrator",
+    "cobblemon:innardsout": "Innards Out",
+    "innardsout": "Innards Out",
+    "cobblemon:innerfocus": "Inner Focus",
+    "innerfocus": "Inner Focus",
+    "cobblemon:insomnia": "Insomnia",
+    "insomnia": "Insomnia",
+    "cobblemon:intimidate": "Intimidate",
+    "intimidate": "Intimidate",
+    "cobblemon:ironbarbs": "Iron Barbs",
+    "ironbarbs": "Iron Barbs",
+    "cobblemon:ironfist": "Iron Fist",
+    "ironfist": "Iron Fist",
+    "cobblemon:justified": "Justified",
+    "justified": "Justified",
+    "cobblemon:keeneye": "Keen Eye",
+    "keeneye": "Keen Eye",
+    "cobblemon:klutz": "Klutz",
+    "klutz": "Klutz",
+    "cobblemon:leafguard": "Leaf Guard",
+    "leafguard": "Leaf Guard",
+    "cobblemon:levitate": "Levitate",
+    "levitate": "Levitate",
+    "cobblemon:lightmetal": "Light Metal",
+    "lightmetal": "Light Metal",
+    "cobblemon:lightningrod": "Lightning Rod",
+    "lightningrod": "Lightning Rod",
+    "cobblemon:limber": "Limber",
+    "limber": "Limber",
+    "cobblemon:lingeringaroma": "Lingering Aroma",
+    "lingeringaroma": "Lingering Aroma",
+    "cobblemon:liquidooze": "Liquid Ooze",
+    "liquidooze": "Liquid Ooze",
+    "cobblemon:liquidvoice": "Liquid Voice",
+    "liquidvoice": "Liquid Voice",
+    "cobblemon:longreach": "Long Reach",
+    "longreach": "Long Reach",
+    "cobblemon:magicbounce": "Magic Bounce",
+    "magicbounce": "Magic Bounce",
+    "cobblemon:magicguard": "Magic Guard",
+    "magicguard": "Magic Guard",
+    "cobblemon:magician": "Magician",
+    "magician": "Magician",
+    "cobblemon:magmaarmor": "Magma Armor",
+    "magmaarmor": "Magma Armor",
+    "cobblemon:magnetpull": "Magnet Pull",
+    "magnetpull": "Magnet Pull",
+    "cobblemon:marvelscale": "Marvel Scale",
+    "marvelscale": "Marvel Scale",
+    "cobblemon:megalauncher": "Mega Launcher",
+    "megalauncher": "Mega Launcher",
+    "cobblemon:merciless": "Merciless",
+    "merciless": "Merciless",
+    "cobblemon:mimicry": "Mimicry",
+    "mimicry": "Mimicry",
+    "cobblemon:mindseye": "Mind's Eye",
+    "mindseye": "Mind's Eye",
+    "cobblemon:minus": "Minus",
+    "minus": "Minus",
+    "cobblemon:mirrorarmor": "Mirror Armor",
+    "mirrorarmor": "Mirror Armor",
+    "cobblemon:mistysurge": "Misty Surge",
+    "mistysurge": "Misty Surge",
+    "cobblemon:moldbreaker": "Mold Breaker",
+    "moldbreaker": "Mold Breaker",
+    "cobblemon:moody": "Moody",
+    "moody": "Moody",
+    "cobblemon:motordrive": "Motor Drive",
+    "motordrive": "Motor Drive",
+    "cobblemon:moxie": "Moxie",
+    "moxie": "Moxie",
+    "cobblemon:multiscale": "Multiscale",
+    "multiscale": "Multiscale",
+    "cobblemon:multitype": "Multitype",
+    "multitype": "Multitype",
+    "cobblemon:mummy": "Mummy",
+    "mummy": "Mummy",
+    "cobblemon:myceliummight": "Mycelium Might",
+    "myceliummight": "Mycelium Might",
+    "cobblemon:naturalcure": "Natural Cure",
+    "naturalcure": "Natural Cure",
+    "cobblemon:neuroforce": "Neuroforce",
+    "neuroforce": "Neuroforce",
+    "cobblemon:neutralizinggas": "Neutralizing Gas",
+    "neutralizinggas": "Neutralizing Gas",
+    "cobblemon:noguard": "No Guard",
+    "noguard": "No Guard",
+    "cobblemon:normalize": "Normalize",
+    "normalize": "Normalize",
+    "cobblemon:oblivious": "Oblivious",
+    "oblivious": "Oblivious",
+    "cobblemon:opportunist": "Opportunist",
+    "opportunist": "Opportunist",
+    "cobblemon:orichalcumpulse": "Orichalcum Pulse",
+    "orichalcumpulse": "Orichalcum Pulse",
+    "cobblemon:overcoat": "Overcoat",
+    "overcoat": "Overcoat",
+    "cobblemon:overgrow": "Overgrow",
+    "overgrow": "Overgrow",
+    "cobblemon:owntempo": "Own Tempo",
+    "owntempo": "Own Tempo",
+    "cobblemon:pastelveil": "Pastel Veil",
+    "pastelveil": "Pastel Veil",
+    "cobblemon:perishbody": "Perish Body",
+    "perishbody": "Perish Body",
+    "cobblemon:pickpocket": "Pickpocket",
+    "pickpocket": "Pickpocket",
+    "cobblemon:pickup": "Pickup",
+    "pickup": "Pickup",
+    "cobblemon:pixilate": "Pixilate",
+    "pixilate": "Pixilate",
+    "cobblemon:plus": "Plus",
+    "plus": "Plus",
+    "cobblemon:poisonheal": "Poison Heal",
+    "poisonheal": "Poison Heal",
+    "cobblemon:poisonpoint": "Poison Point",
+    "poisonpoint": "Poison Point",
+    "cobblemon:poisonpuppeteer": "Poison Puppeteer",
+    "poisonpuppeteer": "Poison Puppeteer",
+    "cobblemon:poisontouch": "Poison Touch",
+    "poisontouch": "Poison Touch",
+    "cobblemon:powerconstruct": "Power Construct",
+    "powerconstruct": "Power Construct",
+    "cobblemon:powerspot": "Power Spot",
+    "powerspot": "Power Spot",
+    "cobblemon:prankster": "Prankster",
+    "prankster": "Prankster",
+    "cobblemon:pressure": "Pressure",
+    "pressure": "Pressure",
+    "cobblemon:primordialsea": "Primordial Sea",
+    "primordialsea": "Primordial Sea",
+    "cobblemon:prismarmor": "Prism Armor",
+    "prismarmor": "Prism Armor",
+    "cobblemon:propellertail": "Propeller Tail",
+    "propellertail": "Propeller Tail",
+    "cobblemon:protosynthesis": "Protosynthesis",
+    "protosynthesis": "Protosynthesis",
+    "cobblemon:psychicsurge": "Psychic Surge",
+    "psychicsurge": "Psychic Surge",
+    "cobblemon:punkrock": "Punk Rock",
+    "punkrock": "Punk Rock",
+    "cobblemon:purepower": "Pure Power",
+    "purepower": "Pure Power",
+    "cobblemon:purifyingsalt": "Purifying Salt",
+    "purifyingsalt": "Purifying Salt",
+    "cobblemon:quarkdrive": "Quark Drive",
+    "quarkdrive": "Quark Drive",
+    "cobblemon:queenlymajesty": "Queenly Majesty",
+    "queenlymajesty": "Queenly Majesty",
+    "cobblemon:quickdraw": "Quick Draw",
+    "quickdraw": "Quick Draw",
+    "cobblemon:quickfeet": "Quick Feet",
+    "quickfeet": "Quick Feet",
+    "cobblemon:raindish": "Rain Dish",
+    "raindish": "Rain Dish",
+    "cobblemon:rattled": "Rattled",
+    "rattled": "Rattled",
+    "cobblemon:reckless": "Reckless",
+    "reckless": "Reckless",
+    "cobblemon:refrigerate": "Refrigerate",
+    "refrigerate": "Refrigerate",
+    "cobblemon:regenerator": "Regenerator",
+    "regenerator": "Regenerator",
+    "cobblemon:ripen": "Ripen",
+    "ripen": "Ripen",
+    "cobblemon:rkssystem": "RKS System",
+    "rkssystem": "RKS System",
+    "cobblemon:rockhead": "Rock Head",
+    "rockhead": "Rock Head",
+    "cobblemon:rockypayload": "Rocky Payload",
+    "rockypayload": "Rocky Payload",
+    "cobblemon:roughskin": "Rough Skin",
+    "roughskin": "Rough Skin",
+    "cobblemon:runaway": "Run Away",
+    "runaway": "Run Away",
+    "cobblemon:sandforce": "Sand Force",
+    "sandforce": "Sand Force",
+    "cobblemon:sandrush": "Sand Rush",
+    "sandrush": "Sand Rush",
+    "cobblemon:sandspit": "Sand Spit",
+    "sandspit": "Sand Spit",
+    "cobblemon:sandstream": "Sand Stream",
+    "sandstream": "Sand Stream",
+    "cobblemon:sandveil": "Sand Veil",
+    "sandveil": "Sand Veil",
+    "cobblemon:sapsipper": "Sap Sipper",
+    "sapsipper": "Sap Sipper",
+    "cobblemon:scrappy": "Scrappy",
+    "scrappy": "Scrappy",
+    "cobblemon:screencleaner": "Screen Cleaner",
+    "screencleaner": "Screen Cleaner",
+    "cobblemon:seedsower": "Seed Sower",
+    "seedsower": "Seed Sower",
+    "cobblemon:serenegrace": "Serene Grace",
+    "serenegrace": "Serene Grace",
+    "cobblemon:shadowshield": "Shadow Shield",
+    "shadowshield": "Shadow Shield",
+    "cobblemon:shadowtag": "Shadow Tag",
+    "shadowtag": "Shadow Tag",
+    "cobblemon:sharpness": "Sharpness",
+    "sharpness": "Sharpness",
+    "cobblemon:shedskin": "Shed Skin",
+    "shedskin": "Shed Skin",
+    "cobblemon:sheerforce": "Sheer Force",
+    "sheerforce": "Sheer Force",
+    "cobblemon:shellarmor": "Shell Armor",
+    "shellarmor": "Shell Armor",
+    "cobblemon:shielddust": "Shield Dust",
+    "shielddust": "Shield Dust",
+    "cobblemon:simple": "Simple",
+    "simple": "Simple",
+    "cobblemon:skilllink": "Skill Link",
+    "skilllink": "Skill Link",
+    "cobblemon:slowstart": "Slow Start",
+    "slowstart": "Slow Start",
+    "cobblemon:slushrush": "Slush Rush",
+    "slushrush": "Slush Rush",
+    "cobblemon:sniper": "Sniper",
+    "sniper": "Sniper",
+    "cobblemon:snowcloak": "Snow Cloak",
+    "snowcloak": "Snow Cloak",
+    "cobblemon:snowwarning": "Snow Warning",
+    "snowwarning": "Snow Warning",
+    "cobblemon:solarpower": "Solar Power",
+    "solarpower": "Solar Power",
+    "cobblemon:solidrock": "Solid Rock",
+    "solidrock": "Solid Rock",
+    "cobblemon:soulheart": "Soul-Heart",
+    "soulheart": "Soul-Heart",
+    "cobblemon:soundproof": "Soundproof",
+    "soundproof": "Soundproof",
+    "cobblemon:speedboost": "Speed Boost",
+    "speedboost": "Speed Boost",
+    "cobblemon:stakeout": "Stakeout",
+    "stakeout": "Stakeout",
+    "cobblemon:stall": "Stall",
+    "stall": "Stall",
+    "cobblemon:stalwart": "Stalwart",
+    "stalwart": "Stalwart",
+    "cobblemon:stamina": "Stamina",
+    "stamina": "Stamina",
+    "cobblemon:static": "Static",
+    "static": "Static",
+    "cobblemon:steadfast": "Steadfast",
+    "steadfast": "Steadfast",
+    "cobblemon:steamengine": "Steam Engine",
+    "steamengine": "Steam Engine",
+    "cobblemon:steelworker": "Steelworker",
+    "steelworker": "Steelworker",
+    "cobblemon:steelyspirit": "Steely Spirit",
+    "steelyspirit": "Steely Spirit",
+    "cobblemon:stench": "Stench",
+    "stench": "Stench",
+    "cobblemon:stickyhold": "Sticky Hold",
+    "stickyhold": "Sticky Hold",
+    "cobblemon:stormdrain": "Storm Drain",
+    "stormdrain": "Storm Drain",
+    "cobblemon:strongjaw": "Strong Jaw",
+    "strongjaw": "Strong Jaw",
+    "cobblemon:sturdy": "Sturdy",
+    "sturdy": "Sturdy",
+    "cobblemon:suctioncups": "Suction Cups",
+    "suctioncups": "Suction Cups",
+    "cobblemon:superluck": "Super Luck",
+    "superluck": "Super Luck",
+    "cobblemon:supersweetsyrup": "Supersweet Syrup",
+    "supersweetsyrup": "Supersweet Syrup",
+    "cobblemon:surgesurfer": "Surge Surfer",
+    "surgesurfer": "Surge Surfer",
+    "cobblemon:swarm": "Swarm",
+    "swarm": "Swarm",
+    "cobblemon:sweetveil": "Sweet Veil",
+    "sweetveil": "Sweet Veil",
+    "cobblemon:swiftswim": "Swift Swim",
+    "swiftswim": "Swift Swim",
+    "cobblemon:symbiosis": "Symbiosis",
+    "symbiosis": "Symbiosis",
+    "cobblemon:synchronize": "Synchronize",
+    "synchronize": "Synchronize",
+    "cobblemon:swordofruin": "Sword of Ruin",
+    "swordofruin": "Sword of Ruin",
+    "cobblemon:tabletsofruin": "Tablets of Ruin",
+    "tabletsofruin": "Tablets of Ruin",
+    "cobblemon:tangledfeet": "Tangled Feet",
+    "tangledfeet": "Tangled Feet",
+    "cobblemon:tanglinghair": "Tangling Hair",
+    "tanglinghair": "Tangling Hair",
+    "cobblemon:technician": "Technician",
+    "technician": "Technician",
+    "cobblemon:telepathy": "Telepathy",
+    "telepathy": "Telepathy",
+    "cobblemon:teraformzero": "Teraform Zero",
+    "teraformzero": "Teraform Zero",
+    "cobblemon:terashell": "Tera Shell",
+    "terashell": "Tera Shell",
+    "cobblemon:teravolt": "Teravolt",
+    "teravolt": "Teravolt",
+    "cobblemon:thermalexchange": "Thermal Exchange",
+    "thermalexchange": "Thermal Exchange",
+    "cobblemon:thickfat": "Thick Fat",
+    "thickfat": "Thick Fat",
+    "cobblemon:tintedlens": "Tinted Lens",
+    "tintedlens": "Tinted Lens",
+    "cobblemon:torrent": "Torrent",
+    "torrent": "Torrent",
+    "cobblemon:toughclaws": "Tough Claws",
+    "toughclaws": "Tough Claws",
+    "cobblemon:toxicboost": "Toxic Boost",
+    "toxicboost": "Toxic Boost",
+    "cobblemon:toxicchain": "Toxic Chain",
+    "toxicchain": "Toxic Chain",
+    "cobblemon:toxicdebris": "Toxic Debris",
+    "toxicdebris": "Toxic Debris",
+    "cobblemon:transistor": "Transistor",
+    "transistor": "Transistor",
+    "cobblemon:triage": "Triage",
+    "triage": "Triage",
+    "cobblemon:truant": "Truant",
+    "truant": "Truant",
+    "cobblemon:turboblaze": "Turboblaze",
+    "turboblaze": "Turboblaze",
+    "cobblemon:unaware": "Unaware",
+    "unaware": "Unaware",
+    "cobblemon:unburden": "Unburden",
+    "unburden": "Unburden",
+    "cobblemon:unnerve": "Unnerve",
+    "unnerve": "Unnerve",
+    "cobblemon:unseenfist": "Unseen Fist",
+    "unseenfist": "Unseen Fist",
+    "cobblemon:vesselofruin": "Vessel of Ruin",
+    "vesselofruin": "Vessel of Ruin",
+    "cobblemon:victorystar": "Victory Star",
+    "victorystar": "Victory Star",
+    "cobblemon:vitalspirit": "Vital Spirit",
+    "vitalspirit": "Vital Spirit",
+    "cobblemon:voltabsorb": "Volt Absorb",
+    "voltabsorb": "Volt Absorb",
+    "cobblemon:wanderingspirit": "Wandering Spirit",
+    "wanderingspirit": "Wandering Spirit",
+    "cobblemon:waterabsorb": "Water Absorb",
+    "waterabsorb": "Water Absorb",
+    "cobblemon:waterbubble": "Water Bubble",
+    "waterbubble": "Water Bubble",
+    "cobblemon:watercompaction": "Water Compaction",
+    "watercompaction": "Water Compaction",
+    "cobblemon:waterveil": "Water Veil",
+    "waterveil": "Water Veil",
+    "cobblemon:weakarmor": "Weak Armor",
+    "weakarmor": "Weak Armor",
+    "cobblemon:wellbakedbody": "Well-Baked Body",
+    "wellbakedbody": "Well-Baked Body",
+    "cobblemon:whitesmoke": "White Smoke",
+    "whitesmoke": "White Smoke",
+    "cobblemon:wimpout": "Wimp Out",
+    "wimpout": "Wimp Out",
+    "cobblemon:windpower": "Wind Power",
+    "windpower": "Wind Power",
+    "cobblemon:windrider": "Wind Rider",
+    "windrider": "Wind Rider",
+    "cobblemon:wonderguard": "Wonder Guard",
+    "wonderguard": "Wonder Guard",
+    "cobblemon:wonderskin": "Wonder Skin",
+    "wonderskin": "Wonder Skin",
+    "cobblemon:zenmode": "Zen Mode",
+    "zenmode": "Zen Mode",
+    "cobblemon:mountaineer": "Mountaineer",
+    "mountaineer": "Mountaineer",
+    "cobblemon:rebound": "Rebound",
+    "rebound": "Rebound",
+    "cobblemon:persistent": "Persistent",
+    "persistent": "Persistent"
+  },
+  "natures": {
+    "cobblemon:adamant": "Adamant",
+    "adamant": "Adamant",
+    "cobblemon:bashful": "Bashful",
+    "bashful": "Bashful",
+    "cobblemon:bold": "Bold",
+    "bold": "Bold",
+    "cobblemon:brave": "Brave",
+    "brave": "Brave",
+    "cobblemon:calm": "Calm",
+    "calm": "Calm",
+    "cobblemon:careful": "Careful",
+    "careful": "Careful",
+    "cobblemon:docile": "Docile",
+    "docile": "Docile",
+    "cobblemon:gentle": "Gentle",
+    "gentle": "Gentle",
+    "cobblemon:hardy": "Hardy",
+    "hardy": "Hardy",
+    "cobblemon:hasty": "Hasty",
+    "hasty": "Hasty",
+    "cobblemon:impish": "Impish",
+    "impish": "Impish",
+    "cobblemon:jolly": "Jolly",
+    "jolly": "Jolly",
+    "cobblemon:lax": "Lax",
+    "lax": "Lax",
+    "cobblemon:lonely": "Lonely",
+    "lonely": "Lonely",
+    "cobblemon:mild": "Mild",
+    "mild": "Mild",
+    "cobblemon:modest": "Modest",
+    "modest": "Modest",
+    "cobblemon:naive": "Naive",
+    "naive": "Naive",
+    "cobblemon:naughty": "Naughty",
+    "naughty": "Naughty",
+    "cobblemon:quiet": "Quiet",
+    "quiet": "Quiet",
+    "cobblemon:quirky": "Quirky",
+    "quirky": "Quirky",
+    "cobblemon:rash": "Rash",
+    "rash": "Rash",
+    "cobblemon:relaxed": "Relaxed",
+    "relaxed": "Relaxed",
+    "cobblemon:sassy": "Sassy",
+    "sassy": "Sassy",
+    "cobblemon:serious": "Serious",
+    "serious": "Serious",
+    "cobblemon:timid": "Timid",
+    "timid": "Timid"
+  }
+}

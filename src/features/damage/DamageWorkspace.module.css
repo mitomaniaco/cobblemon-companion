@@ -1,0 +1,88 @@
+.workspace {
+  display: flex;
+  width: min(100%, 1120px);
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-inline: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-2) var(--space-8);
+  scrollbar-gutter: stable;
+  scrollbar-color: var(--color-control-border) var(--color-surface);
+  color: var(--color-text);
+}
+
+.backButton {
+  align-self: flex-start;
+  min-height: var(--size-navigation-target);
+  gap: var(--space-2);
+}
+
+.backButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+.heading {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.heading h2 {
+  margin: 0;
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: var(--line-section);
+}
+
+.heading h2:focus,
+.heading h2:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.heading p {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--color-muted);
+  line-height: var(--line-body);
+}
+
+.emptyState {
+  display: grid;
+  max-width: 72ch;
+  align-content: start;
+  justify-items: start;
+  gap: var(--space-4);
+}
+
+@media (max-width: 1099px) {
+  .workspace {
+    padding-inline: var(--space-2);
+  }
+}
+
+@media (max-width: 639px) {
+  .workspace {
+    padding-inline: 0;
+  }
+
+  .emptyState > :last-child {
+    width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .heading {
+    border-color: CanvasText;
+  }
+
+  .heading p {
+    color: CanvasText;
+  }
+}

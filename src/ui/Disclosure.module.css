@@ -1,0 +1,88 @@
+.root {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-collection);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--line-body);
+}
+
+.trigger {
+  display: flex;
+  width: 100%;
+  min-height: var(--size-navigation-target);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  color: var(--color-text);
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trigger:not([data-disabled]):hover {
+    background: var(--color-raised);
+  }
+}
+
+.indicator {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--color-muted);
+  transition: transform var(--duration-overlay-enter) var(--ease-out);
+}
+
+.root[data-expanded] .indicator {
+  transform: rotate(90deg);
+}
+
+.panel {
+  padding: 0 var(--space-4) var(--space-4);
+  color: var(--color-text);
+}
+
+@starting-style {
+  .panel {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.panel {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--duration-overlay-enter) var(--ease-out),
+    transform var(--duration-overlay-enter) var(--ease-out);
+}
+
+.root[data-disabled] .trigger {
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .root {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .trigger {
+    color: ButtonText;
+  }
+
+  .indicator {
+    color: ButtonText;
+  }
+}

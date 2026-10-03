@@ -1,0 +1,8 @@
+config.json
+node_modules/
+dist/
+.runtime/
+public/pokemon/*.png
+public/pokemon/provenance.json
+src/data/species-artwork.json
+.prepare-ui-assets-*/

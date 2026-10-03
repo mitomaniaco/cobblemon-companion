@@ -1,0 +1,49 @@
+:root {
+  color-scheme: dark;
+
+  --color-canvas: #111318;
+  --color-navigation: #151820;
+  --color-surface: #1b1f28;
+  --color-raised: #252b36;
+  --color-border: #343d4b;
+  --color-control-border: #778397;
+
+  --color-text: #f4f6fa;
+  --color-muted: #b2bdcd;
+  --color-accent: #ff806c;
+  --color-text-on-accent: #17191f;
+  --color-focus: #f5c264;
+  --color-success: #7dd8aa;
+  --color-warning: #f5c264;
+  --color-error: #ff9a9f;
+
+  --font-sans: 'Manrope Variable', 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace;
+
+  --text-body: 14px;
+  --line-body: 20px;
+  --text-secondary: 12px;
+  --line-secondary: 18px;
+  --text-section: 20px;
+  --line-section: 28px;
+  --text-individual: 28px;
+  --line-individual: 34px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --size-control: 40px;
+  --size-navigation-target: 44px;
+  --radius-control: 8px;
+  --radius-collection: 12px;
+  --radius-dialog: 16px;
+
+  --duration-hover: 120ms;
+  --duration-overlay-enter: 160ms;
+  --duration-overlay-exit: 100ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}

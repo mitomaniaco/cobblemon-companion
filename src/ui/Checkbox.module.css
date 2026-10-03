@@ -1,0 +1,90 @@
+.checkbox {
+  display: inline-flex;
+  min-height: var(--size-navigation-target);
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.indicator {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--color-control-border);
+  border-radius: 5px;
+  color: var(--color-text-on-accent);
+  background: var(--color-surface);
+  transition:
+    background-color var(--duration-hover) var(--ease-out),
+    border-color var(--duration-hover) var(--ease-out);
+}
+
+.indicator svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+}
+
+.checkbox[data-selected] .indicator,
+.checkbox[data-indeterminate] .indicator {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.checkbox[data-selected] .indicator svg,
+.checkbox[data-indeterminate] .indicator svg {
+  opacity: 1;
+}
+
+.checkbox[data-focus-visible] .indicator {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.checkbox[data-disabled] {
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+.checkbox[data-disabled] .indicator {
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  background: var(--color-raised);
+}
+
+.label {
+  line-height: var(--line-body);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .checkbox:not([data-disabled]):hover .indicator {
+    border-color: var(--color-text);
+  }
+}
+
+@media (forced-colors: active) {
+  .indicator {
+    border-color: FieldText;
+    color: FieldText;
+    background: Field;
+  }
+
+  .checkbox[data-selected] .indicator,
+  .checkbox[data-indeterminate] .indicator {
+    border-color: Highlight;
+    color: HighlightText;
+    background: Highlight;
+  }
+  .checkbox[data-focus-visible] .indicator {
+    outline-color: Highlight;
+  }
+
+  .checkbox[data-disabled] .indicator {
+    border-color: GrayText;
+    color: GrayText;
+  }
+}

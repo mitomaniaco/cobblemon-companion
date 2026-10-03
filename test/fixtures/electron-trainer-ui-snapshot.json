@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 2,
+  "capturedAt": "2026-09-30T12:00:00.000Z",
+  "worldName": "synthetic-trainer-ui",
+  "consistency": "best-effort",
+  "sources": [
+    {
+      "kind": "party",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "modifiedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "kind": "pc",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "modifiedAt": "2026-09-30T12:00:00.000Z"
+    }
+  ],
+  "individuals": [
+    {
+      "uuid": "00000000-0000-4000-8000-000000000001",
+      "speciesId": "cobblemon:gardevoir",
+      "formId": "normal",
+      "level": 30,
+      "location": {"container": "party", "slot": 0},
+      "equippedMoves": [{"id": "cobblemon:tackle", "pp": 35, "ppUps": 0}],
+      "equippedMovesKnown": true,
+      "learnedMoves": [{"id": "cobblemon:seedbomb", "ppUps": 0}],
+      "learnedMovesKnown": true,
+      "observed": {"nature": "cobblemon:adamant", "ability": "cobblemon:synchronize", "heldItem": null},
+      "battleStats": {
+        "ivs": {
+          "hp": {"state": "known", "value": 31, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].IVs.hp"}},
+          "atk": {"state": "known", "value": 31, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].IVs.atk"}},
+          "def": {"state": "known", "value": 31, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].IVs.def"}},
+          "spa": {"state": "known", "value": 31, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].IVs.spa"}},
+          "spd": {"state": "known", "value": 31, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].IVs.spd"}},
+          "spe": {"state": "known", "value": 31, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].IVs.spe"}}
+        },
+        "hyperTrainedIvs": {
+          "hp": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.hp"}},
+          "atk": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.atk"}},
+          "def": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.def"}},
+          "spa": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.spa"}},
+          "spd": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.spd"}},
+          "spe": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.spe"}}
+        },
+        "evs": {
+          "hp": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.hp"}},
+          "atk": {"state": "known", "value": 252, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.atk"}},
+          "def": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.def"}},
+          "spa": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spa"}},
+          "spd": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spd"}},
+          "spe": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spe"}}
+        }
+      }
+    },
+    {
+      "uuid": "00000000-0000-4000-8000-000000000002",
+      "speciesId": "cobblemon:bulbasaur",
+      "formId": "synthetic-alternate",
+      "level": null,
+      "location": {"container": "party", "slot": 1},
+      "equippedMoves": [],
+      "equippedMovesKnown": false,
+      "learnedMoves": [],
+      "learnedMovesKnown": false,
+      "observed": {"nature": null, "ability": null, "heldItem": null},
+      "battleStats": {
+        "ivs": {
+          "hp": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].IVs.hp"}},
+          "atk": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].IVs.atk"}},
+          "def": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].IVs.def"}},
+          "spa": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].IVs.spa"}},
+          "spd": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].IVs.spd"}},
+          "spe": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].IVs.spe"}}
+        },
+        "hyperTrainedIvs": {
+          "hp": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].HyperTrain.hp"}},
+          "atk": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].HyperTrain.atk"}},
+          "def": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].HyperTrain.def"}},
+          "spa": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].HyperTrain.spa"}},
+          "spd": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].HyperTrain.spd"}},
+          "spe": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].HyperTrain.spe"}}
+        },
+        "evs": {
+          "hp": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].EVs.hp"}},
+          "atk": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].EVs.atk"}},
+          "def": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].EVs.def"}},
+          "spa": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].EVs.spa"}},
+          "spd": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].EVs.spd"}},
+          "spe": {"state": "unknown", "reason": "not-captured", "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[1].EVs.spe"}}
+        }
+      }
+    },
+    {
+      "uuid": "00000000-0000-4000-8000-000000000003",
+      "speciesId": "cobblemon:bulbasaur",
+      "formId": "normal",
+      "level": 18,
+      "location": {"container": "pc", "box": 2, "boxName": "Synthetic Box", "slot": 4},
+      "equippedMoves": [],
+      "equippedMovesKnown": true,
+      "learnedMoves": [],
+      "learnedMovesKnown": true,
+      "observed": {"nature": null, "ability": null, "heldItem": null},
+      "battleStats": {
+        "ivs": {
+          "hp": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].IVs.hp"}},
+          "atk": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].IVs.atk"}},
+          "def": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].IVs.def"}},
+          "spa": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].IVs.spa"}},
+          "spd": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].IVs.spd"}},
+          "spe": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].IVs.spe"}}
+        },
+        "hyperTrainedIvs": {
+          "hp": {"state": "known", "value": null, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].HyperTrain.hp"}},
+          "atk": {"state": "known", "value": null, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].HyperTrain.atk"}},
+          "def": {"state": "known", "value": null, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].HyperTrain.def"}},
+          "spa": {"state": "known", "value": null, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].HyperTrain.spa"}},
+          "spd": {"state": "known", "value": null, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].HyperTrain.spd"}},
+          "spe": {"state": "known", "value": null, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].HyperTrain.spe"}}
+        },
+        "evs": {
+          "hp": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].EVs.hp"}},
+          "atk": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].EVs.atk"}},
+          "def": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].EVs.def"}},
+          "spa": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].EVs.spa"}},
+          "spd": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].EVs.spd"}},
+          "spe": {"state": "known", "value": 0, "provenance": {"sourceKind": "pc", "nbtPath": "Synthetic.PC[2][4].EVs.spe"}}
+        }
+      }
+    }
+  ],
+  "warnings": []
+}

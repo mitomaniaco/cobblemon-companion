@@ -1,0 +1,94 @@
+.button {
+  display: inline-flex;
+  min-height: var(--size-control);
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font: inherit;
+  font-weight: 600;
+  line-height: var(--line-body);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-hover) var(--ease-out),
+    border-color var(--duration-hover) var(--ease-out),
+    color var(--duration-hover) var(--ease-out);
+}
+
+.primary {
+  border-color: var(--color-accent);
+  color: var(--color-text-on-accent);
+  background: var(--color-accent);
+}
+
+.secondary {
+  border-color: var(--color-control-border);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.quiet {
+  border-color: transparent;
+  color: var(--color-muted);
+  background: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primary:not([data-disabled]):hover {
+    background: color-mix(in srgb, var(--color-accent) 94%, black);
+  }
+
+  .secondary:not([data-disabled]):hover {
+    border-color: var(--color-text);
+    background: var(--color-raised);
+  }
+
+  .quiet:not([data-disabled]):hover {
+    color: var(--color-text);
+    background: var(--color-raised);
+  }
+}
+
+.button[data-pressed] {
+  background: var(--color-raised);
+}
+
+.primary[data-pressed] {
+  color: var(--color-text-on-accent);
+  background: color-mix(in srgb, var(--color-accent) 88%, black);
+}
+
+.button[data-disabled],
+.button:disabled {
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  background: var(--color-raised);
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .button {
+    border-color: ButtonText;
+    color: ButtonText;
+    background: ButtonFace;
+  }
+
+  .button[data-disabled],
+  .button:disabled {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .primary {
+    border-color: Highlight;
+    color: HighlightText;
+    background: Highlight;
+  }
+}

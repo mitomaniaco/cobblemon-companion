@@ -1,0 +1,241 @@
+.root {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-text);
+}
+
+.label {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+  font-weight: 600;
+}
+
+.control {
+  display: flex;
+  min-width: 0;
+  min-height: var(--size-control);
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) 0 var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  transition: border-color var(--duration-hover) var(--ease-out);
+}
+
+.root:focus-within .control {
+  border-color: var(--color-focus);
+}
+
+.root[data-invalid] .control {
+  border-color: var(--color-error);
+}
+
+.root[data-disabled] .control {
+  border-color: var(--color-border);
+  background: var(--color-raised);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  height: calc(var(--size-control) - 2px);
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: var(--color-text);
+  background: transparent;
+}
+.input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.input::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+.root[data-disabled] .input {
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+.trigger {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--color-muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.trigger svg {
+  width: 16px;
+  height: 16px;
+}
+
+.trigger[data-disabled] {
+  cursor: not-allowed;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trigger:not([data-disabled]):hover {
+    color: var(--color-text);
+    background: var(--color-raised);
+  }
+}
+
+.description,
+.error {
+  margin: 0;
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.description {
+  color: var(--color-muted);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.popover {
+  z-index: 1200;
+  min-width: var(--trigger-width);
+  max-height: min(320px, 50vh);
+  overflow: auto;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 36%);
+  outline: none;
+}
+
+.listBox {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+.option {
+  display: flex;
+  min-height: var(--size-control);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--color-text);
+  line-height: var(--line-body);
+  cursor: pointer;
+}
+
+.option[data-hovered],
+.option[data-focused] {
+  background: var(--color-raised);
+}
+
+.option[data-focus-visible] {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.option[data-selected] {
+  border-color: var(--color-border);
+  background: var(--color-raised);
+}
+
+.option[data-disabled] {
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+.optionText {
+  display: grid;
+  min-width: 0;
+}
+
+.optionDescription {
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+.checkIcon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  opacity: 0;
+}
+
+.option[data-selected] .checkIcon {
+  opacity: 1;
+}
+
+.emptyMessage {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-muted);
+  font-size: var(--text-secondary);
+  line-height: var(--line-secondary);
+}
+
+@media (forced-colors: active) {
+  .control {
+    border-color: FieldText;
+    background: Field;
+  }
+
+  .input {
+    color: FieldText;
+  }
+
+  .input:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .trigger {
+    color: ButtonText;
+    background: ButtonFace;
+  }
+
+  .popover {
+    border-color: CanvasText;
+    color: CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  .option[data-selected] {
+    border-color: Highlight;
+  }
+
+  .option[data-focus-visible] {
+    outline-color: Highlight;
+  }
+
+  .option[data-disabled] {
+    color: GrayText;
+  }
+
+  .checkIcon {
+    color: Highlight;
+  }
+
+  .error {
+    color: Mark;
+  }
+}

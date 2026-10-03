@@ -1,0 +1,36 @@
+{
+  "name": "cobblemon-companion-local",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Primeira fatia local do companion Cobblemon",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "build": "vite build",
+    "prepare:ui-assets": "node scripts/prepare-ui-assets.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run test && npm run build",
+    "start": "npm run build && electron electron/main.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "5.3.0",
+    "@phosphor-icons/react": "2.1.10",
+    "@smogon/calc": "0.11.0",
+    "react": "19.1.1",
+    "react-aria-components": "1.21.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.0.4",
+    "electron": "44.4.3",
+    "typescript": "5.9.2",
+    "vite": "7.1.5",
+    "vitest": "3.2.4"
+  }
+}
