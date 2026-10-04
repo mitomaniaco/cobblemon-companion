@@ -1211,3 +1211,28 @@ test('sourceLabel for server.properties kind', () => {
     (err) => err.message.includes('server.properties'),
   );
 });
+
+test('explica cabeçalho corrompido do .dat de party e do PC sem confundir com NBT inválido', () => {
+  const header =
+    'O cabeçalho do arquivo de %s está corrompido (não é gzip nem NBT). Restaure o backup (.dat.old) ou corrija o arquivo com o servidor parado.';
+  for (const [which, label] of [
+    ['partyPath', 'party'],
+    ['pcPath', 'PC'],
+  ]) {
+    const fixture = makeWorld();
+    const bytes = fs.readFileSync(fixture[which]);
+    bytes[0] = ~bytes[0] & 0xff;
+    fs.writeFileSync(fixture[which], bytes);
+    assert.throws(
+      () => readPlayerSnapshotFromConfig({configPath: fixture.configPath}),
+      (error) => error?.code === 'ERR_IMPORT_NBT' && error.message === header.replace('%s', label),
+    );
+  }
+
+  const truncated = makeWorld({rawNbt: true});
+  fs.writeFileSync(truncated.partyPath, Buffer.from([10, 0, 0, 1]));
+  assert.throws(
+    () => readPlayerSnapshotFromConfig({configPath: truncated.configPath}),
+    (error) => error?.code === 'ERR_IMPORT_NBT' && error.message === 'Não foi possível interpretar os dados NBT de party.',
+  );
+});
