@@ -178,6 +178,13 @@ function parseBoundedNbt(bytes, kind) {
     if (error?.code === 'ERR_BUFFER_TOO_LARGE') {
       fail('ERR_IMPORT_TOO_LARGE', `Os dados de ${sourceLabel(kind)} excedem o limite seguro após descompressão.`);
     }
+    // Um .dat válido é gzip (1f 8b) ou NBT cru começando por TAG_Compound (0x0a); qualquer outro primeiro byte é cabeçalho danificado.
+    if (!(bytes[0] === 0x1f && bytes[1] === 0x8b) && bytes[0] !== 0x0a) {
+      fail(
+        'ERR_IMPORT_NBT',
+        `O cabeçalho do arquivo de ${sourceLabel(kind)} está corrompido (não é gzip nem NBT). Restaure o backup (.dat.old) ou corrija o arquivo com o servidor parado.`,
+      );
+    }
     fail('ERR_IMPORT_NBT', `Não foi possível interpretar os dados NBT de ${sourceLabel(kind)}.`);
   }
 }
