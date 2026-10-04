@@ -43,6 +43,7 @@ export type PlayerSnapshot = {
 export type RealDamageRequest = {
   sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
   individualUuid: string;
+  currentSlotIndex: number;
   candidateMoveId: string;
   target: {
     speciesId: string;
@@ -77,7 +78,7 @@ export type RealDamageResult = {
     sources: PlayerSnapshot['sources'];
   };
   individualUuid: string;
-  actor: {speciesId: string; level: number};
+  actor: {speciesId: string; level: number; heldItem: string | null; currentSlotIndex: number};
   target: {speciesId: string; formId: 'normal'; level: number};
   scope: {
     generation: 9;

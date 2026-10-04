@@ -6,12 +6,16 @@ import {
   additionBattleKeys,
   battleDifferences,
   canonicalJson,
+  classMethodFingerprints,
   compareShowdownEntries,
   compareWithCalc,
+  deriveItemsCatalog,
   deriveMovesCatalog,
   deriveSpeciesCatalog,
+  itemStatus,
   moveStatus,
   showdownEntryFingerprints,
+  showdownEntryNames,
   showdownMoveFacts,
   speciesFacts,
   speciesSlug,
@@ -264,6 +268,46 @@ describe('fatos e regras dos golpes do Showdown', () => {
   });
 });
 
+describe('catálogo de itens segurados', () => {
+  it('lê o nome literal de cada entrada e devolve null quando falta', () => {
+    const source = 'var Items = {focussash: {name: "Focus Sash"}, odd: {num: 1}};';
+    expect(showdownEntryNames(source, 'Items')).toEqual({focussash: 'Focus Sash', odd: null});
+    expect(() => showdownEntryNames(source, 'Moves')).toThrow(/Moves não encontrado/);
+  });
+
+  it('exclui por nome ausente, ausência no calc ou redefinição por outro pacote, nessa ordem', () => {
+    expect(itemStatus({name: null, calcHasItem: false, packDiffers: true})).toEqual({status: 'excluded', reason: 'no-name'});
+    expect(itemStatus({name: 'X', calcHasItem: false, packDiffers: true})).toEqual({status: 'excluded', reason: 'calc-missing'});
+    expect(itemStatus({name: 'X', calcHasItem: true, packDiffers: true})).toEqual({status: 'excluded', reason: 'pack-override'});
+    expect(itemStatus({name: 'X', calcHasItem: true, packDiffers: false})).toEqual({status: 'derived'});
+  });
+
+  it('deriva só os itens aceitos, ordenados pelo id', () => {
+    const derived = deriveItemsCatalog({
+      zzz: {name: 'Z', status: 'derived'},
+      bad: {name: 'B', status: 'excluded', reason: 'pack-override'},
+      aaa: {name: 'A', status: 'derived'},
+    });
+    expect(Object.keys(derived)).toEqual(['aaa', 'zzz']);
+    expect(derived.aaa).toEqual({name: 'A'});
+  });
+});
+
+describe('impressão digital dos métodos de classe do Showdown', () => {
+  const source = (body) => `class BattleActions { ${body} }\nmodule.exports = { BattleActions };`;
+
+  it('iguala métodos idênticos e distingue os que mudam, ignorando formatação', () => {
+    const base = classMethodFingerprints(source('getDamage() {return 1}'));
+    expect(classMethodFingerprints(source('getDamage ( ) {\n  return 1;\n}'))).toEqual(base);
+    expect(classMethodFingerprints(source('getDamage() {return 2}')).getDamage).not.toBe(base.getDamage);
+  });
+
+  it('encontra métodos em classes aninhadas em objetos e ignora nomes computados', () => {
+    const found = classMethodFingerprints('module.exports = {A: class { run() {} [x]() {} }};');
+    expect(Object.keys(found)).toEqual(['run']);
+  });
+});
+
 describe('artefatos versionados do catálogo', () => {
   const supported = new Set(Object.keys(catalog.abilities).filter((key) => key.startsWith('cobblemon:')));
 
@@ -280,6 +324,12 @@ describe('artefatos versionados do catálogo', () => {
     expect(catalog.moves).toEqual(deriveMovesCatalog(manifest.moves));
     const digest = crypto.createHash('sha256').update(canonicalJson(manifest.moves)).digest('hex');
     expect(catalog.ruleset.sourceSha256.moveRecords).toBe(digest);
+  });
+
+  it('o catálogo de itens é exatamente o derivado do manifesto e a impressão digital confere', () => {
+    expect(catalog.items).toEqual(deriveItemsCatalog(manifest.items));
+    const digest = crypto.createHash('sha256').update(canonicalJson(manifest.items)).digest('hex');
+    expect(catalog.ruleset.sourceSha256.itemRecords).toBe(digest);
   });
 
   it('a lista-base revisada nunca perde golpes e os derivados esperados entram', () => {
@@ -316,7 +366,7 @@ describe('artefatos versionados do catálogo', () => {
 
   it('nenhuma diferença do Showdown de outro provedor fica sem revisão registrada', () => {
     const unreviewed = [];
-    for (const kind of ['moves', 'abilities']) {
+    for (const kind of ['moves', 'abilities', 'battle-actions']) {
       for (const provider of manifest.showdown[kind]) {
         for (const id of provider.different) {
           if (kind === 'moves' && !Object.hasOwn(baseMoves, id)) continue;

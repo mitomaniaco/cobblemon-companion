@@ -325,9 +325,10 @@ export function TrainerApp() {
     setFocusRequest('collection');
   }
 
-  function navigateToDamage(candidateMoveId?: string) {
+  function navigateToDamage(candidateMoveId?: string, slotIndex?: number) {
     if (workspace !== 'damage') setDamageReturnWorkspace(workspace);
     if (candidateMoveId) damageController.selectCandidate(candidateMoveId);
+    if (slotIndex !== undefined) damageController.selectSlot(slotIndex);
     setWorkspace('damage');
   }
 

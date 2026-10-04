@@ -1,16 +1,16 @@
 import {useEffect, useId, useState} from 'react';
 import {ArrowRight} from '@phosphor-icons/react';
+import {moveLabel} from '../../domain/catalog-labels';
 import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
 import type {PlayerIndividual} from '../../platform/api';
 import {Button, Checkbox, Select, type SelectOption} from '../../ui';
-import {importedLabel} from './model';
 import styles from './MovePreparation.module.css';
 
 export interface MovePreparationProps {
   individual: PlayerIndividual;
   plan: MoveSwapPlan;
   onPlanChange(patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>): void;
-  onOpenDamage(candidateMoveId: string): void;
+  onOpenDamage(candidateMoveId: string, slotIndex: number): void;
 }
 
 export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: MovePreparationProps) {
@@ -27,10 +27,10 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
 
   const slotOptions: SelectOption[] =
     view.status === 'ready'
-      ? view.equippedMoves.map((move, index) => ({key: String(index), label: `Slot ${index + 1} · ${importedLabel(move.id)}`}))
+      ? view.equippedMoves.map((move, index) => ({key: String(index), label: `Slot ${index + 1} · ${moveLabel(move.id)}`}))
       : [];
   const candidateOptions: SelectOption[] =
-    view.status === 'ready' ? view.candidates.map((move) => ({key: move.id, label: importedLabel(move.id)})) : [];
+    view.status === 'ready' ? view.candidates.map((move) => ({key: move.id, label: moveLabel(move.id)})) : [];
   const isPreviewConfirmed = previewKey !== null && confirmedPreviewKey === previewKey;
 
   return (
@@ -82,19 +82,15 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
             <output className={styles.preview} aria-label="Prévia da troca planejada">
               <div>
                 <span>Antes · slot {preview.slotIndex + 1}</span>
-                <strong>{importedLabel(preview.beforeMoveId)}</strong>
+                <strong>{moveLabel(preview.beforeMoveId)}</strong>
               </div>
               <ArrowRight className={styles.arrow} aria-hidden="true" weight="bold" />
               <div>
                 <span>Depois · proposta</span>
-                <strong>{importedLabel(preview.afterMoveId)}</strong>
+                <strong>{moveLabel(preview.afterMoveId)}</strong>
               </div>
               <p>Observado como aprendido neste indivíduo; nenhum dado do save é alterado.</p>
-              <p className={preview.slotIndex === 0 ? styles.calculationNote : styles.calculationNoteWarning}>
-                {preview.slotIndex === 0
-                  ? 'O cálculo real compara o primeiro slot equipado.'
-                  : `Esta prévia usa o slot ${preview.slotIndex + 1}; o cálculo real continua comparando o primeiro slot equipado.`}
-              </p>
+              <p className={styles.calculationNote}>O cálculo de dano compara o slot {preview.slotIndex + 1} com o candidato.</p>
             </output>
           ) : (
             <p className={styles.emptyPreview}>Escolha um slot e um candidato para conferir o antes e depois.</p>
@@ -113,7 +109,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
                 variant="primary"
                 className={styles.openDamage}
                 isDisabled={!isPreviewConfirmed}
-                onPress={() => onOpenDamage(preview.afterMoveId)}
+                onPress={() => onOpenDamage(preview.afterMoveId, preview.slotIndex)}
               >
                 Abrir cálculo de dano <ArrowRight aria-hidden="true" weight="bold" />
               </Button>

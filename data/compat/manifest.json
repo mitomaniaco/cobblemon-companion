@@ -34,6 +34,7 @@
         "speciesAdditions": 98,
         "showdown": [
           "abilities",
+          "items",
           "moves"
         ]
       },
@@ -38871,10 +38872,2625 @@
       "reason": "nonstandard"
     }
   },
+  "items": {
+    "abilityshield": {
+      "name": "Ability Shield",
+      "status": "derived"
+    },
+    "abomasite": {
+      "name": "Abomasite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "absolite": {
+      "name": "Absolite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "absorbbulb": {
+      "name": "Absorb Bulb",
+      "status": "derived"
+    },
+    "adamantcrystal": {
+      "name": "Adamant Crystal",
+      "status": "derived"
+    },
+    "adamantorb": {
+      "name": "Adamant Orb",
+      "status": "derived"
+    },
+    "adrenalineorb": {
+      "name": "Adrenaline Orb",
+      "status": "derived"
+    },
+    "aerodactylite": {
+      "name": "Aerodactylite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "aggronite": {
+      "name": "Aggronite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "aguavberry": {
+      "name": "Aguav Berry",
+      "status": "derived"
+    },
+    "airballoon": {
+      "name": "Air Balloon",
+      "status": "derived"
+    },
+    "alakazite": {
+      "name": "Alakazite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "aloraichiumz": {
+      "name": "Aloraichium Z",
+      "status": "derived"
+    },
+    "altarianite": {
+      "name": "Altarianite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "ampharosite": {
+      "name": "Ampharosite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "apicotberry": {
+      "name": "Apicot Berry",
+      "status": "derived"
+    },
+    "armorfossil": {
+      "name": "Armor Fossil",
+      "status": "derived"
+    },
+    "aspearberry": {
+      "name": "Aspear Berry",
+      "status": "derived"
+    },
+    "assaultvest": {
+      "name": "Assault Vest",
+      "status": "derived"
+    },
+    "audinite": {
+      "name": "Audinite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "auspiciousarmor": {
+      "name": "Auspicious Armor",
+      "status": "derived"
+    },
+    "babiriberry": {
+      "name": "Babiri Berry",
+      "status": "derived"
+    },
+    "banettite": {
+      "name": "Banettite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "beastball": {
+      "name": "Beast Ball",
+      "status": "derived"
+    },
+    "beedrillite": {
+      "name": "Beedrillite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "belueberry": {
+      "name": "Belue Berry",
+      "status": "derived"
+    },
+    "berry": {
+      "name": "Berry",
+      "status": "derived"
+    },
+    "berryjuice": {
+      "name": "Berry Juice",
+      "status": "derived"
+    },
+    "berrysweet": {
+      "name": "Berry Sweet",
+      "status": "derived"
+    },
+    "berserkgene": {
+      "name": "Berserk Gene",
+      "status": "derived"
+    },
+    "bignugget": {
+      "name": "Big Nugget",
+      "status": "derived"
+    },
+    "bigroot": {
+      "name": "Big Root",
+      "status": "derived"
+    },
+    "bindingband": {
+      "name": "Binding Band",
+      "status": "derived"
+    },
+    "bitterberry": {
+      "name": "Bitter Berry",
+      "status": "derived"
+    },
+    "blackbelt": {
+      "name": "Black Belt",
+      "status": "derived"
+    },
+    "blackglasses": {
+      "name": "Black Glasses",
+      "status": "derived"
+    },
+    "blacksludge": {
+      "name": "Black Sludge",
+      "status": "derived"
+    },
+    "blastoisinite": {
+      "name": "Blastoisinite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "blazikenite": {
+      "name": "Blazikenite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "blueorb": {
+      "name": "Blue Orb",
+      "status": "derived"
+    },
+    "blukberry": {
+      "name": "Bluk Berry",
+      "status": "derived"
+    },
+    "blunderpolicy": {
+      "name": "Blunder Policy",
+      "status": "derived"
+    },
+    "boosterenergy": {
+      "name": "Booster Energy",
+      "status": "derived"
+    },
+    "bottlecap": {
+      "name": "Bottle Cap",
+      "status": "derived"
+    },
+    "brightpowder": {
+      "name": "Bright Powder",
+      "status": "derived"
+    },
+    "buggem": {
+      "name": "Bug Gem",
+      "status": "derived"
+    },
+    "buginiumz": {
+      "name": "Buginium Z",
+      "status": "derived"
+    },
+    "bugmemory": {
+      "name": "Bug Memory",
+      "status": "derived"
+    },
+    "burndrive": {
+      "name": "Burn Drive",
+      "status": "derived"
+    },
+    "burntberry": {
+      "name": "Burnt Berry",
+      "status": "derived"
+    },
+    "cameruptite": {
+      "name": "Cameruptite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "cellbattery": {
+      "name": "Cell Battery",
+      "status": "derived"
+    },
+    "charcoal": {
+      "name": "Charcoal",
+      "status": "derived"
+    },
+    "charizarditex": {
+      "name": "Charizardite X",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "charizarditey": {
+      "name": "Charizardite Y",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "chartiberry": {
+      "name": "Charti Berry",
+      "status": "derived"
+    },
+    "cheriberry": {
+      "name": "Cheri Berry",
+      "status": "derived"
+    },
+    "cherishball": {
+      "name": "Cherish Ball",
+      "status": "derived"
+    },
+    "chestoberry": {
+      "name": "Chesto Berry",
+      "status": "derived"
+    },
+    "chilanberry": {
+      "name": "Chilan Berry",
+      "status": "derived"
+    },
+    "chilldrive": {
+      "name": "Chill Drive",
+      "status": "derived"
+    },
+    "chippedpot": {
+      "name": "Chipped Pot",
+      "status": "derived"
+    },
+    "choiceband": {
+      "name": "Choice Band",
+      "status": "derived"
+    },
+    "choicescarf": {
+      "name": "Choice Scarf",
+      "status": "derived"
+    },
+    "choicespecs": {
+      "name": "Choice Specs",
+      "status": "derived"
+    },
+    "chopleberry": {
+      "name": "Chople Berry",
+      "status": "derived"
+    },
+    "clawfossil": {
+      "name": "Claw Fossil",
+      "status": "derived"
+    },
+    "clearamulet": {
+      "name": "Clear Amulet",
+      "status": "derived"
+    },
+    "cloversweet": {
+      "name": "Clover Sweet",
+      "status": "derived"
+    },
+    "cobaberry": {
+      "name": "Coba Berry",
+      "status": "derived"
+    },
+    "colburberry": {
+      "name": "Colbur Berry",
+      "status": "derived"
+    },
+    "cornerstonemask": {
+      "name": "Cornerstone Mask",
+      "status": "derived"
+    },
+    "cornnberry": {
+      "name": "Cornn Berry",
+      "status": "derived"
+    },
+    "coverfossil": {
+      "name": "Cover Fossil",
+      "status": "derived"
+    },
+    "covertcloak": {
+      "name": "Covert Cloak",
+      "status": "derived"
+    },
+    "crackedpot": {
+      "name": "Cracked Pot",
+      "status": "derived"
+    },
+    "crucibellite": {
+      "name": "Crucibellite",
+      "status": "derived"
+    },
+    "custapberry": {
+      "name": "Custap Berry",
+      "status": "derived"
+    },
+    "damprock": {
+      "name": "Damp Rock",
+      "status": "derived"
+    },
+    "darkgem": {
+      "name": "Dark Gem",
+      "status": "derived"
+    },
+    "darkiniumz": {
+      "name": "Darkinium Z",
+      "status": "derived"
+    },
+    "darkmemory": {
+      "name": "Dark Memory",
+      "status": "derived"
+    },
+    "dawnstone": {
+      "name": "Dawn Stone",
+      "status": "derived"
+    },
+    "decidiumz": {
+      "name": "Decidium Z",
+      "status": "derived"
+    },
+    "deepseascale": {
+      "name": "Deep Sea Scale",
+      "status": "derived"
+    },
+    "deepseatooth": {
+      "name": "Deep Sea Tooth",
+      "status": "derived"
+    },
+    "destinyknot": {
+      "name": "Destiny Knot",
+      "status": "derived"
+    },
+    "diancite": {
+      "name": "Diancite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "diveball": {
+      "name": "Dive Ball",
+      "status": "derived"
+    },
+    "domefossil": {
+      "name": "Dome Fossil",
+      "status": "derived"
+    },
+    "dousedrive": {
+      "name": "Douse Drive",
+      "status": "derived"
+    },
+    "dracoplate": {
+      "name": "Draco Plate",
+      "status": "derived"
+    },
+    "dragonfang": {
+      "name": "Dragon Fang",
+      "status": "derived"
+    },
+    "dragongem": {
+      "name": "Dragon Gem",
+      "status": "derived"
+    },
+    "dragoniumz": {
+      "name": "Dragonium Z",
+      "status": "derived"
+    },
+    "dragonmemory": {
+      "name": "Dragon Memory",
+      "status": "derived"
+    },
+    "dragonscale": {
+      "name": "Dragon Scale",
+      "status": "derived"
+    },
+    "dreadplate": {
+      "name": "Dread Plate",
+      "status": "derived"
+    },
+    "dreamball": {
+      "name": "Dream Ball",
+      "status": "derived"
+    },
+    "dubiousdisc": {
+      "name": "Dubious Disc",
+      "status": "derived"
+    },
+    "durinberry": {
+      "name": "Durin Berry",
+      "status": "derived"
+    },
+    "duskball": {
+      "name": "Dusk Ball",
+      "status": "derived"
+    },
+    "duskstone": {
+      "name": "Dusk Stone",
+      "status": "derived"
+    },
+    "earthplate": {
+      "name": "Earth Plate",
+      "status": "derived"
+    },
+    "eeviumz": {
+      "name": "Eevium Z",
+      "status": "derived"
+    },
+    "ejectbutton": {
+      "name": "Eject Button",
+      "status": "derived"
+    },
+    "ejectpack": {
+      "name": "Eject Pack",
+      "status": "derived"
+    },
+    "electirizer": {
+      "name": "Electirizer",
+      "status": "derived"
+    },
+    "electricgem": {
+      "name": "Electric Gem",
+      "status": "derived"
+    },
+    "electricmemory": {
+      "name": "Electric Memory",
+      "status": "derived"
+    },
+    "electricseed": {
+      "name": "Electric Seed",
+      "status": "derived"
+    },
+    "electriumz": {
+      "name": "Electrium Z",
+      "status": "derived"
+    },
+    "enigmaberry": {
+      "name": "Enigma Berry",
+      "status": "derived"
+    },
+    "eviolite": {
+      "name": "Eviolite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "expertbelt": {
+      "name": "Expert Belt",
+      "status": "derived"
+    },
+    "fairiumz": {
+      "name": "Fairium Z",
+      "status": "derived"
+    },
+    "fairyfeather": {
+      "name": "Fairy Feather",
+      "status": "derived"
+    },
+    "fairygem": {
+      "name": "Fairy Gem",
+      "status": "derived"
+    },
+    "fairymemory": {
+      "name": "Fairy Memory",
+      "status": "derived"
+    },
+    "fastball": {
+      "name": "Fast Ball",
+      "status": "derived"
+    },
+    "fightinggem": {
+      "name": "Fighting Gem",
+      "status": "derived"
+    },
+    "fightingmemory": {
+      "name": "Fighting Memory",
+      "status": "derived"
+    },
+    "fightiniumz": {
+      "name": "Fightinium Z",
+      "status": "derived"
+    },
+    "figyberry": {
+      "name": "Figy Berry",
+      "status": "derived"
+    },
+    "firegem": {
+      "name": "Fire Gem",
+      "status": "derived"
+    },
+    "firememory": {
+      "name": "Fire Memory",
+      "status": "derived"
+    },
+    "firestone": {
+      "name": "Fire Stone",
+      "status": "derived"
+    },
+    "firiumz": {
+      "name": "Firium Z",
+      "status": "derived"
+    },
+    "fistplate": {
+      "name": "Fist Plate",
+      "status": "derived"
+    },
+    "flameorb": {
+      "name": "Flame Orb",
+      "status": "derived"
+    },
+    "flameplate": {
+      "name": "Flame Plate",
+      "status": "derived"
+    },
+    "floatstone": {
+      "name": "Float Stone",
+      "status": "derived"
+    },
+    "flowersweet": {
+      "name": "Flower Sweet",
+      "status": "derived"
+    },
+    "flyinggem": {
+      "name": "Flying Gem",
+      "status": "derived"
+    },
+    "flyingmemory": {
+      "name": "Flying Memory",
+      "status": "derived"
+    },
+    "flyiniumz": {
+      "name": "Flyinium Z",
+      "status": "derived"
+    },
+    "focusband": {
+      "name": "Focus Band",
+      "status": "derived"
+    },
+    "focussash": {
+      "name": "Focus Sash",
+      "status": "derived"
+    },
+    "fossilizedbird": {
+      "name": "Fossilized Bird",
+      "status": "derived"
+    },
+    "fossilizeddino": {
+      "name": "Fossilized Dino",
+      "status": "derived"
+    },
+    "fossilizeddrake": {
+      "name": "Fossilized Drake",
+      "status": "derived"
+    },
+    "fossilizedfish": {
+      "name": "Fossilized Fish",
+      "status": "derived"
+    },
+    "friendball": {
+      "name": "Friend Ball",
+      "status": "derived"
+    },
+    "fullincense": {
+      "name": "Full Incense",
+      "status": "derived"
+    },
+    "galaricacuff": {
+      "name": "Galarica Cuff",
+      "status": "derived"
+    },
+    "galaricawreath": {
+      "name": "Galarica Wreath",
+      "status": "derived"
+    },
+    "galladite": {
+      "name": "Galladite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "ganlonberry": {
+      "name": "Ganlon Berry",
+      "status": "derived"
+    },
+    "garchompite": {
+      "name": "Garchompite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "gardevoirite": {
+      "name": "Gardevoirite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "gengarite": {
+      "name": "Gengarite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "ghostgem": {
+      "name": "Ghost Gem",
+      "status": "derived"
+    },
+    "ghostiumz": {
+      "name": "Ghostium Z",
+      "status": "derived"
+    },
+    "ghostmemory": {
+      "name": "Ghost Memory",
+      "status": "derived"
+    },
+    "glalitite": {
+      "name": "Glalitite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "goldberry": {
+      "name": "Gold Berry",
+      "status": "derived"
+    },
+    "goldbottlecap": {
+      "name": "Gold Bottle Cap",
+      "status": "derived"
+    },
+    "grassgem": {
+      "name": "Grass Gem",
+      "status": "derived"
+    },
+    "grassiumz": {
+      "name": "Grassium Z",
+      "status": "derived"
+    },
+    "grassmemory": {
+      "name": "Grass Memory",
+      "status": "derived"
+    },
+    "grassyseed": {
+      "name": "Grassy Seed",
+      "status": "derived"
+    },
+    "greatball": {
+      "name": "Great Ball",
+      "status": "derived"
+    },
+    "grepaberry": {
+      "name": "Grepa Berry",
+      "status": "derived"
+    },
+    "gripclaw": {
+      "name": "Grip Claw",
+      "status": "derived"
+    },
+    "griseouscore": {
+      "name": "Griseous Core",
+      "status": "derived"
+    },
+    "griseousorb": {
+      "name": "Griseous Orb",
+      "status": "derived"
+    },
+    "groundgem": {
+      "name": "Ground Gem",
+      "status": "derived"
+    },
+    "groundiumz": {
+      "name": "Groundium Z",
+      "status": "derived"
+    },
+    "groundmemory": {
+      "name": "Ground Memory",
+      "status": "derived"
+    },
+    "gyaradosite": {
+      "name": "Gyaradosite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "habanberry": {
+      "name": "Haban Berry",
+      "status": "derived"
+    },
+    "hardstone": {
+      "name": "Hard Stone",
+      "status": "derived"
+    },
+    "healball": {
+      "name": "Heal Ball",
+      "status": "derived"
+    },
+    "hearthflamemask": {
+      "name": "Hearthflame Mask",
+      "status": "derived"
+    },
+    "heatrock": {
+      "name": "Heat Rock",
+      "status": "derived"
+    },
+    "heavyball": {
+      "name": "Heavy Ball",
+      "status": "derived"
+    },
+    "heavydutyboots": {
+      "name": "Heavy-Duty Boots",
+      "status": "derived"
+    },
+    "helixfossil": {
+      "name": "Helix Fossil",
+      "status": "derived"
+    },
+    "heracronite": {
+      "name": "Heracronite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "hondewberry": {
+      "name": "Hondew Berry",
+      "status": "derived"
+    },
+    "houndoominite": {
+      "name": "Houndoominite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "iapapaberry": {
+      "name": "Iapapa Berry",
+      "status": "derived"
+    },
+    "iceberry": {
+      "name": "Ice Berry",
+      "status": "derived"
+    },
+    "icegem": {
+      "name": "Ice Gem",
+      "status": "derived"
+    },
+    "icememory": {
+      "name": "Ice Memory",
+      "status": "derived"
+    },
+    "icestone": {
+      "name": "Ice Stone",
+      "status": "derived"
+    },
+    "icicleplate": {
+      "name": "Icicle Plate",
+      "status": "derived"
+    },
+    "iciumz": {
+      "name": "Icium Z",
+      "status": "derived"
+    },
+    "icyrock": {
+      "name": "Icy Rock",
+      "status": "derived"
+    },
+    "inciniumz": {
+      "name": "Incinium Z",
+      "status": "derived"
+    },
+    "insectplate": {
+      "name": "Insect Plate",
+      "status": "derived"
+    },
+    "ironball": {
+      "name": "Iron Ball",
+      "status": "derived"
+    },
+    "ironplate": {
+      "name": "Iron Plate",
+      "status": "derived"
+    },
+    "jabocaberry": {
+      "name": "Jaboca Berry",
+      "status": "derived"
+    },
+    "jawfossil": {
+      "name": "Jaw Fossil",
+      "status": "derived"
+    },
+    "kangaskhanite": {
+      "name": "Kangaskhanite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "kasibberry": {
+      "name": "Kasib Berry",
+      "status": "derived"
+    },
+    "kebiaberry": {
+      "name": "Kebia Berry",
+      "status": "derived"
+    },
+    "keeberry": {
+      "name": "Kee Berry",
+      "status": "derived"
+    },
+    "kelpsyberry": {
+      "name": "Kelpsy Berry",
+      "status": "derived"
+    },
+    "kingsrock": {
+      "name": "King's Rock",
+      "status": "derived"
+    },
+    "kommoniumz": {
+      "name": "Kommonium Z",
+      "status": "derived"
+    },
+    "laggingtail": {
+      "name": "Lagging Tail",
+      "status": "derived"
+    },
+    "lansatberry": {
+      "name": "Lansat Berry",
+      "status": "derived"
+    },
+    "latiasite": {
+      "name": "Latiasite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "latiosite": {
+      "name": "Latiosite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "laxincense": {
+      "name": "Lax Incense",
+      "status": "derived"
+    },
+    "leafstone": {
+      "name": "Leaf Stone",
+      "status": "derived"
+    },
+    "leek": {
+      "name": "Leek",
+      "status": "derived"
+    },
+    "leftovers": {
+      "name": "Leftovers",
+      "status": "derived"
+    },
+    "leppaberry": {
+      "name": "Leppa Berry",
+      "status": "derived"
+    },
+    "levelball": {
+      "name": "Level Ball",
+      "status": "derived"
+    },
+    "liechiberry": {
+      "name": "Liechi Berry",
+      "status": "derived"
+    },
+    "lifeorb": {
+      "name": "Life Orb",
+      "status": "derived"
+    },
+    "lightball": {
+      "name": "Light Ball",
+      "status": "derived"
+    },
+    "lightclay": {
+      "name": "Light Clay",
+      "status": "derived"
+    },
+    "loadeddice": {
+      "name": "Loaded Dice",
+      "status": "derived"
+    },
+    "lopunnite": {
+      "name": "Lopunnite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "loveball": {
+      "name": "Love Ball",
+      "status": "derived"
+    },
+    "lovesweet": {
+      "name": "Love Sweet",
+      "status": "derived"
+    },
+    "lucarionite": {
+      "name": "Lucarionite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "luckypunch": {
+      "name": "Lucky Punch",
+      "status": "derived"
+    },
+    "lumberry": {
+      "name": "Lum Berry",
+      "status": "derived"
+    },
+    "luminousmoss": {
+      "name": "Luminous Moss",
+      "status": "derived"
+    },
+    "lunaliumz": {
+      "name": "Lunalium Z",
+      "status": "derived"
+    },
+    "lureball": {
+      "name": "Lure Ball",
+      "status": "derived"
+    },
+    "lustrousglobe": {
+      "name": "Lustrous Globe",
+      "status": "derived"
+    },
+    "lustrousorb": {
+      "name": "Lustrous Orb",
+      "status": "derived"
+    },
+    "luxuryball": {
+      "name": "Luxury Ball",
+      "status": "derived"
+    },
+    "lycaniumz": {
+      "name": "Lycanium Z",
+      "status": "derived"
+    },
+    "machobrace": {
+      "name": "Macho Brace",
+      "status": "derived"
+    },
+    "magmarizer": {
+      "name": "Magmarizer",
+      "status": "derived"
+    },
+    "magnet": {
+      "name": "Magnet",
+      "status": "derived"
+    },
+    "magoberry": {
+      "name": "Mago Berry",
+      "status": "derived"
+    },
+    "magostberry": {
+      "name": "Magost Berry",
+      "status": "derived"
+    },
+    "mail": {
+      "name": "Mail",
+      "status": "derived"
+    },
+    "maliciousarmor": {
+      "name": "Malicious Armor",
+      "status": "derived"
+    },
+    "manectite": {
+      "name": "Manectite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "marangaberry": {
+      "name": "Maranga Berry",
+      "status": "derived"
+    },
+    "marshadiumz": {
+      "name": "Marshadium Z",
+      "status": "derived"
+    },
+    "masterball": {
+      "name": "Master Ball",
+      "status": "derived"
+    },
+    "masterpieceteacup": {
+      "name": "Masterpiece Teacup",
+      "status": "derived"
+    },
+    "mawilite": {
+      "name": "Mawilite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "meadowplate": {
+      "name": "Meadow Plate",
+      "status": "derived"
+    },
+    "medichamite": {
+      "name": "Medichamite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "mentalherb": {
+      "name": "Mental Herb",
+      "status": "derived"
+    },
+    "metagrossite": {
+      "name": "Metagrossite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "metalalloy": {
+      "name": "Metal Alloy",
+      "status": "derived"
+    },
+    "metalcoat": {
+      "name": "Metal Coat",
+      "status": "derived"
+    },
+    "metalpowder": {
+      "name": "Metal Powder",
+      "status": "derived"
+    },
+    "metronome": {
+      "name": "Metronome",
+      "status": "derived"
+    },
+    "mewniumz": {
+      "name": "Mewnium Z",
+      "status": "derived"
+    },
+    "mewtwonitex": {
+      "name": "Mewtwonite X",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "mewtwonitey": {
+      "name": "Mewtwonite Y",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "micleberry": {
+      "name": "Micle Berry",
+      "status": "derived"
+    },
+    "mimikiumz": {
+      "name": "Mimikium Z",
+      "status": "derived"
+    },
+    "mindplate": {
+      "name": "Mind Plate",
+      "status": "derived"
+    },
+    "mintberry": {
+      "name": "Mint Berry",
+      "status": "derived"
+    },
+    "miracleberry": {
+      "name": "Miracle Berry",
+      "status": "derived"
+    },
+    "miracleseed": {
+      "name": "Miracle Seed",
+      "status": "derived"
+    },
+    "mirrorherb": {
+      "name": "Mirror Herb",
+      "status": "derived"
+    },
+    "mistyseed": {
+      "name": "Misty Seed",
+      "status": "derived"
+    },
+    "moonball": {
+      "name": "Moon Ball",
+      "status": "derived"
+    },
+    "moonstone": {
+      "name": "Moon Stone",
+      "status": "derived"
+    },
+    "muscleband": {
+      "name": "Muscle Band",
+      "status": "derived"
+    },
+    "mysteryberry": {
+      "name": "Mystery Berry",
+      "status": "derived"
+    },
+    "mysticwater": {
+      "name": "Mystic Water",
+      "status": "derived"
+    },
+    "nanabberry": {
+      "name": "Nanab Berry",
+      "status": "derived"
+    },
+    "nestball": {
+      "name": "Nest Ball",
+      "status": "derived"
+    },
+    "netball": {
+      "name": "Net Ball",
+      "status": "derived"
+    },
+    "nevermeltice": {
+      "name": "Never-Melt Ice",
+      "status": "derived"
+    },
+    "nomelberry": {
+      "name": "Nomel Berry",
+      "status": "derived"
+    },
+    "normalgem": {
+      "name": "Normal Gem",
+      "status": "derived"
+    },
+    "normaliumz": {
+      "name": "Normalium Z",
+      "status": "derived"
+    },
+    "occaberry": {
+      "name": "Occa Berry",
+      "status": "derived"
+    },
+    "oddincense": {
+      "name": "Odd Incense",
+      "status": "derived"
+    },
+    "oldamber": {
+      "name": "Old Amber",
+      "status": "derived"
+    },
+    "oranberry": {
+      "name": "Oran Berry",
+      "status": "derived"
+    },
+    "ovalstone": {
+      "name": "Oval Stone",
+      "status": "derived"
+    },
+    "pamtreberry": {
+      "name": "Pamtre Berry",
+      "status": "derived"
+    },
+    "parkball": {
+      "name": "Park Ball",
+      "status": "derived"
+    },
+    "passhoberry": {
+      "name": "Passho Berry",
+      "status": "derived"
+    },
+    "payapaberry": {
+      "name": "Payapa Berry",
+      "status": "derived"
+    },
+    "pechaberry": {
+      "name": "Pecha Berry",
+      "status": "derived"
+    },
+    "persimberry": {
+      "name": "Persim Berry",
+      "status": "derived"
+    },
+    "petayaberry": {
+      "name": "Petaya Berry",
+      "status": "derived"
+    },
+    "pidgeotite": {
+      "name": "Pidgeotite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "pikaniumz": {
+      "name": "Pikanium Z",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "pikashuniumz": {
+      "name": "Pikashunium Z",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "pinapberry": {
+      "name": "Pinap Berry",
+      "status": "derived"
+    },
+    "pinkbow": {
+      "name": "Pink Bow",
+      "status": "derived"
+    },
+    "pinsirite": {
+      "name": "Pinsirite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "pixieplate": {
+      "name": "Pixie Plate",
+      "status": "derived"
+    },
+    "plumefossil": {
+      "name": "Plume Fossil",
+      "status": "derived"
+    },
+    "poisonbarb": {
+      "name": "Poison Barb",
+      "status": "derived"
+    },
+    "poisongem": {
+      "name": "Poison Gem",
+      "status": "derived"
+    },
+    "poisoniumz": {
+      "name": "Poisonium Z",
+      "status": "derived"
+    },
+    "poisonmemory": {
+      "name": "Poison Memory",
+      "status": "derived"
+    },
+    "pokeball": {
+      "name": "Poke Ball",
+      "status": "derived"
+    },
+    "polkadotbow": {
+      "name": "Polkadot Bow",
+      "status": "derived"
+    },
+    "pomegberry": {
+      "name": "Pomeg Berry",
+      "status": "derived"
+    },
+    "poweranklet": {
+      "name": "Power Anklet",
+      "status": "derived"
+    },
+    "powerband": {
+      "name": "Power Band",
+      "status": "derived"
+    },
+    "powerbelt": {
+      "name": "Power Belt",
+      "status": "derived"
+    },
+    "powerbracer": {
+      "name": "Power Bracer",
+      "status": "derived"
+    },
+    "powerherb": {
+      "name": "Power Herb",
+      "status": "derived"
+    },
+    "powerlens": {
+      "name": "Power Lens",
+      "status": "derived"
+    },
+    "powerweight": {
+      "name": "Power Weight",
+      "status": "derived"
+    },
+    "premierball": {
+      "name": "Premier Ball",
+      "status": "derived"
+    },
+    "primariumz": {
+      "name": "Primarium Z",
+      "status": "derived"
+    },
+    "prismscale": {
+      "name": "Prism Scale",
+      "status": "derived"
+    },
+    "protectivepads": {
+      "name": "Protective Pads",
+      "status": "derived"
+    },
+    "protector": {
+      "name": "Protector",
+      "status": "derived"
+    },
+    "przcureberry": {
+      "name": "PRZ Cure Berry",
+      "status": "derived"
+    },
+    "psncureberry": {
+      "name": "PSN Cure Berry",
+      "status": "derived"
+    },
+    "psychicgem": {
+      "name": "Psychic Gem",
+      "status": "derived"
+    },
+    "psychicmemory": {
+      "name": "Psychic Memory",
+      "status": "derived"
+    },
+    "psychicseed": {
+      "name": "Psychic Seed",
+      "status": "derived"
+    },
+    "psychiumz": {
+      "name": "Psychium Z",
+      "status": "derived"
+    },
+    "punchingglove": {
+      "name": "Punching Glove",
+      "status": "derived"
+    },
+    "qualotberry": {
+      "name": "Qualot Berry",
+      "status": "derived"
+    },
+    "quickball": {
+      "name": "Quick Ball",
+      "status": "derived"
+    },
+    "quickclaw": {
+      "name": "Quick Claw",
+      "status": "derived"
+    },
+    "quickpowder": {
+      "name": "Quick Powder",
+      "status": "derived"
+    },
+    "rabutaberry": {
+      "name": "Rabuta Berry",
+      "status": "derived"
+    },
+    "rarebone": {
+      "name": "Rare Bone",
+      "status": "derived"
+    },
+    "rawstberry": {
+      "name": "Rawst Berry",
+      "status": "derived"
+    },
+    "razorclaw": {
+      "name": "Razor Claw",
+      "status": "derived"
+    },
+    "razorfang": {
+      "name": "Razor Fang",
+      "status": "derived"
+    },
+    "razzberry": {
+      "name": "Razz Berry",
+      "status": "derived"
+    },
+    "reapercloth": {
+      "name": "Reaper Cloth",
+      "status": "derived"
+    },
+    "redcard": {
+      "name": "Red Card",
+      "status": "derived"
+    },
+    "redorb": {
+      "name": "Red Orb",
+      "status": "derived"
+    },
+    "repeatball": {
+      "name": "Repeat Ball",
+      "status": "derived"
+    },
+    "ribbonsweet": {
+      "name": "Ribbon Sweet",
+      "status": "derived"
+    },
+    "rindoberry": {
+      "name": "Rindo Berry",
+      "status": "derived"
+    },
+    "ringtarget": {
+      "name": "Ring Target",
+      "status": "derived"
+    },
+    "rockgem": {
+      "name": "Rock Gem",
+      "status": "derived"
+    },
+    "rockincense": {
+      "name": "Rock Incense",
+      "status": "derived"
+    },
+    "rockiumz": {
+      "name": "Rockium Z",
+      "status": "derived"
+    },
+    "rockmemory": {
+      "name": "Rock Memory",
+      "status": "derived"
+    },
+    "rockyhelmet": {
+      "name": "Rocky Helmet",
+      "status": "derived"
+    },
+    "roomservice": {
+      "name": "Room Service",
+      "status": "derived"
+    },
+    "rootfossil": {
+      "name": "Root Fossil",
+      "status": "derived"
+    },
+    "roseincense": {
+      "name": "Rose Incense",
+      "status": "derived"
+    },
+    "roseliberry": {
+      "name": "Roseli Berry",
+      "status": "derived"
+    },
+    "rowapberry": {
+      "name": "Rowap Berry",
+      "status": "derived"
+    },
+    "rustedshield": {
+      "name": "Rusted Shield",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "rustedsword": {
+      "name": "Rusted Sword",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "sablenite": {
+      "name": "Sablenite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "sachet": {
+      "name": "Sachet",
+      "status": "derived"
+    },
+    "safariball": {
+      "name": "Safari Ball",
+      "status": "derived"
+    },
+    "safetygoggles": {
+      "name": "Safety Goggles",
+      "status": "derived"
+    },
+    "sailfossil": {
+      "name": "Sail Fossil",
+      "status": "derived"
+    },
+    "salacberry": {
+      "name": "Salac Berry",
+      "status": "derived"
+    },
+    "salamencite": {
+      "name": "Salamencite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "sceptilite": {
+      "name": "Sceptilite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "scizorite": {
+      "name": "Scizorite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "scopelens": {
+      "name": "Scope Lens",
+      "status": "derived"
+    },
+    "seaincense": {
+      "name": "Sea Incense",
+      "status": "derived"
+    },
+    "sharpbeak": {
+      "name": "Sharp Beak",
+      "status": "derived"
+    },
+    "sharpedonite": {
+      "name": "Sharpedonite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "shedshell": {
+      "name": "Shed Shell",
+      "status": "derived"
+    },
+    "shellbell": {
+      "name": "Shell Bell",
+      "status": "derived"
+    },
+    "shinystone": {
+      "name": "Shiny Stone",
+      "status": "derived"
+    },
+    "shockdrive": {
+      "name": "Shock Drive",
+      "status": "derived"
+    },
+    "shucaberry": {
+      "name": "Shuca Berry",
+      "status": "derived"
+    },
+    "silkscarf": {
+      "name": "Silk Scarf",
+      "status": "derived"
+    },
+    "silverpowder": {
+      "name": "Silver Powder",
+      "status": "derived"
+    },
+    "sitrusberry": {
+      "name": "Sitrus Berry",
+      "status": "derived"
+    },
+    "skullfossil": {
+      "name": "Skull Fossil",
+      "status": "derived"
+    },
+    "skyplate": {
+      "name": "Sky Plate",
+      "status": "derived"
+    },
+    "slowbronite": {
+      "name": "Slowbronite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "smoothrock": {
+      "name": "Smooth Rock",
+      "status": "derived"
+    },
+    "snorliumz": {
+      "name": "Snorlium Z",
+      "status": "derived"
+    },
+    "snowball": {
+      "name": "Snowball",
+      "status": "derived"
+    },
+    "softsand": {
+      "name": "Soft Sand",
+      "status": "derived"
+    },
+    "solganiumz": {
+      "name": "Solganium Z",
+      "status": "derived"
+    },
+    "souldew": {
+      "name": "Soul Dew",
+      "status": "derived"
+    },
+    "spelltag": {
+      "name": "Spell Tag",
+      "status": "derived"
+    },
+    "spelonberry": {
+      "name": "Spelon Berry",
+      "status": "derived"
+    },
+    "splashplate": {
+      "name": "Splash Plate",
+      "status": "derived"
+    },
+    "spookyplate": {
+      "name": "Spooky Plate",
+      "status": "derived"
+    },
+    "sportball": {
+      "name": "Sport Ball",
+      "status": "derived"
+    },
+    "starfberry": {
+      "name": "Starf Berry",
+      "status": "derived"
+    },
+    "starsweet": {
+      "name": "Star Sweet",
+      "status": "derived"
+    },
+    "steelgem": {
+      "name": "Steel Gem",
+      "status": "derived"
+    },
+    "steeliumz": {
+      "name": "Steelium Z",
+      "status": "derived"
+    },
+    "steelixite": {
+      "name": "Steelixite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "steelmemory": {
+      "name": "Steel Memory",
+      "status": "derived"
+    },
+    "stick": {
+      "name": "Stick",
+      "status": "derived"
+    },
+    "stickybarb": {
+      "name": "Sticky Barb",
+      "status": "derived"
+    },
+    "stoneplate": {
+      "name": "Stone Plate",
+      "status": "derived"
+    },
+    "strangeball": {
+      "name": "Strange Ball",
+      "status": "derived"
+    },
+    "strawberrysweet": {
+      "name": "Strawberry Sweet",
+      "status": "derived"
+    },
+    "sunstone": {
+      "name": "Sun Stone",
+      "status": "derived"
+    },
+    "swampertite": {
+      "name": "Swampertite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "sweetapple": {
+      "name": "Sweet Apple",
+      "status": "derived"
+    },
+    "syrupyapple": {
+      "name": "Syrupy Apple",
+      "status": "derived"
+    },
+    "tamatoberry": {
+      "name": "Tamato Berry",
+      "status": "derived"
+    },
+    "tangaberry": {
+      "name": "Tanga Berry",
+      "status": "derived"
+    },
+    "tapuniumz": {
+      "name": "Tapunium Z",
+      "status": "derived"
+    },
+    "tartapple": {
+      "name": "Tart Apple",
+      "status": "derived"
+    },
+    "terrainextender": {
+      "name": "Terrain Extender",
+      "status": "derived"
+    },
+    "thickclub": {
+      "name": "Thick Club",
+      "status": "derived"
+    },
+    "throatspray": {
+      "name": "Throat Spray",
+      "status": "derived"
+    },
+    "thunderstone": {
+      "name": "Thunder Stone",
+      "status": "derived"
+    },
+    "timerball": {
+      "name": "Timer Ball",
+      "status": "derived"
+    },
+    "toxicorb": {
+      "name": "Toxic Orb",
+      "status": "derived"
+    },
+    "toxicplate": {
+      "name": "Toxic Plate",
+      "status": "derived"
+    },
+    "tr00": {
+      "name": "TR00",
+      "status": "derived"
+    },
+    "tr01": {
+      "name": "TR01",
+      "status": "derived"
+    },
+    "tr02": {
+      "name": "TR02",
+      "status": "derived"
+    },
+    "tr03": {
+      "name": "TR03",
+      "status": "derived"
+    },
+    "tr04": {
+      "name": "TR04",
+      "status": "derived"
+    },
+    "tr05": {
+      "name": "TR05",
+      "status": "derived"
+    },
+    "tr06": {
+      "name": "TR06",
+      "status": "derived"
+    },
+    "tr07": {
+      "name": "TR07",
+      "status": "derived"
+    },
+    "tr08": {
+      "name": "TR08",
+      "status": "derived"
+    },
+    "tr09": {
+      "name": "TR09",
+      "status": "derived"
+    },
+    "tr10": {
+      "name": "TR10",
+      "status": "derived"
+    },
+    "tr11": {
+      "name": "TR11",
+      "status": "derived"
+    },
+    "tr12": {
+      "name": "TR12",
+      "status": "derived"
+    },
+    "tr13": {
+      "name": "TR13",
+      "status": "derived"
+    },
+    "tr14": {
+      "name": "TR14",
+      "status": "derived"
+    },
+    "tr15": {
+      "name": "TR15",
+      "status": "derived"
+    },
+    "tr16": {
+      "name": "TR16",
+      "status": "derived"
+    },
+    "tr17": {
+      "name": "TR17",
+      "status": "derived"
+    },
+    "tr18": {
+      "name": "TR18",
+      "status": "derived"
+    },
+    "tr19": {
+      "name": "TR19",
+      "status": "derived"
+    },
+    "tr20": {
+      "name": "TR20",
+      "status": "derived"
+    },
+    "tr21": {
+      "name": "TR21",
+      "status": "derived"
+    },
+    "tr22": {
+      "name": "TR22",
+      "status": "derived"
+    },
+    "tr23": {
+      "name": "TR23",
+      "status": "derived"
+    },
+    "tr24": {
+      "name": "TR24",
+      "status": "derived"
+    },
+    "tr25": {
+      "name": "TR25",
+      "status": "derived"
+    },
+    "tr26": {
+      "name": "TR26",
+      "status": "derived"
+    },
+    "tr27": {
+      "name": "TR27",
+      "status": "derived"
+    },
+    "tr28": {
+      "name": "TR28",
+      "status": "derived"
+    },
+    "tr29": {
+      "name": "TR29",
+      "status": "derived"
+    },
+    "tr30": {
+      "name": "TR30",
+      "status": "derived"
+    },
+    "tr31": {
+      "name": "TR31",
+      "status": "derived"
+    },
+    "tr32": {
+      "name": "TR32",
+      "status": "derived"
+    },
+    "tr33": {
+      "name": "TR33",
+      "status": "derived"
+    },
+    "tr34": {
+      "name": "TR34",
+      "status": "derived"
+    },
+    "tr35": {
+      "name": "TR35",
+      "status": "derived"
+    },
+    "tr36": {
+      "name": "TR36",
+      "status": "derived"
+    },
+    "tr37": {
+      "name": "TR37",
+      "status": "derived"
+    },
+    "tr38": {
+      "name": "TR38",
+      "status": "derived"
+    },
+    "tr39": {
+      "name": "TR39",
+      "status": "derived"
+    },
+    "tr40": {
+      "name": "TR40",
+      "status": "derived"
+    },
+    "tr41": {
+      "name": "TR41",
+      "status": "derived"
+    },
+    "tr42": {
+      "name": "TR42",
+      "status": "derived"
+    },
+    "tr43": {
+      "name": "TR43",
+      "status": "derived"
+    },
+    "tr44": {
+      "name": "TR44",
+      "status": "derived"
+    },
+    "tr45": {
+      "name": "TR45",
+      "status": "derived"
+    },
+    "tr46": {
+      "name": "TR46",
+      "status": "derived"
+    },
+    "tr47": {
+      "name": "TR47",
+      "status": "derived"
+    },
+    "tr48": {
+      "name": "TR48",
+      "status": "derived"
+    },
+    "tr49": {
+      "name": "TR49",
+      "status": "derived"
+    },
+    "tr50": {
+      "name": "TR50",
+      "status": "derived"
+    },
+    "tr51": {
+      "name": "TR51",
+      "status": "derived"
+    },
+    "tr52": {
+      "name": "TR52",
+      "status": "derived"
+    },
+    "tr53": {
+      "name": "TR53",
+      "status": "derived"
+    },
+    "tr54": {
+      "name": "TR54",
+      "status": "derived"
+    },
+    "tr55": {
+      "name": "TR55",
+      "status": "derived"
+    },
+    "tr56": {
+      "name": "TR56",
+      "status": "derived"
+    },
+    "tr57": {
+      "name": "TR57",
+      "status": "derived"
+    },
+    "tr58": {
+      "name": "TR58",
+      "status": "derived"
+    },
+    "tr59": {
+      "name": "TR59",
+      "status": "derived"
+    },
+    "tr60": {
+      "name": "TR60",
+      "status": "derived"
+    },
+    "tr61": {
+      "name": "TR61",
+      "status": "derived"
+    },
+    "tr62": {
+      "name": "TR62",
+      "status": "derived"
+    },
+    "tr63": {
+      "name": "TR63",
+      "status": "derived"
+    },
+    "tr64": {
+      "name": "TR64",
+      "status": "derived"
+    },
+    "tr65": {
+      "name": "TR65",
+      "status": "derived"
+    },
+    "tr66": {
+      "name": "TR66",
+      "status": "derived"
+    },
+    "tr67": {
+      "name": "TR67",
+      "status": "derived"
+    },
+    "tr68": {
+      "name": "TR68",
+      "status": "derived"
+    },
+    "tr69": {
+      "name": "TR69",
+      "status": "derived"
+    },
+    "tr70": {
+      "name": "TR70",
+      "status": "derived"
+    },
+    "tr71": {
+      "name": "TR71",
+      "status": "derived"
+    },
+    "tr72": {
+      "name": "TR72",
+      "status": "derived"
+    },
+    "tr73": {
+      "name": "TR73",
+      "status": "derived"
+    },
+    "tr74": {
+      "name": "TR74",
+      "status": "derived"
+    },
+    "tr75": {
+      "name": "TR75",
+      "status": "derived"
+    },
+    "tr76": {
+      "name": "TR76",
+      "status": "derived"
+    },
+    "tr77": {
+      "name": "TR77",
+      "status": "derived"
+    },
+    "tr78": {
+      "name": "TR78",
+      "status": "derived"
+    },
+    "tr79": {
+      "name": "TR79",
+      "status": "derived"
+    },
+    "tr80": {
+      "name": "TR80",
+      "status": "derived"
+    },
+    "tr81": {
+      "name": "TR81",
+      "status": "derived"
+    },
+    "tr82": {
+      "name": "TR82",
+      "status": "derived"
+    },
+    "tr83": {
+      "name": "TR83",
+      "status": "derived"
+    },
+    "tr84": {
+      "name": "TR84",
+      "status": "derived"
+    },
+    "tr85": {
+      "name": "TR85",
+      "status": "derived"
+    },
+    "tr86": {
+      "name": "TR86",
+      "status": "derived"
+    },
+    "tr87": {
+      "name": "TR87",
+      "status": "derived"
+    },
+    "tr88": {
+      "name": "TR88",
+      "status": "derived"
+    },
+    "tr89": {
+      "name": "TR89",
+      "status": "derived"
+    },
+    "tr90": {
+      "name": "TR90",
+      "status": "derived"
+    },
+    "tr91": {
+      "name": "TR91",
+      "status": "derived"
+    },
+    "tr92": {
+      "name": "TR92",
+      "status": "derived"
+    },
+    "tr93": {
+      "name": "TR93",
+      "status": "derived"
+    },
+    "tr94": {
+      "name": "TR94",
+      "status": "derived"
+    },
+    "tr95": {
+      "name": "TR95",
+      "status": "derived"
+    },
+    "tr96": {
+      "name": "TR96",
+      "status": "derived"
+    },
+    "tr97": {
+      "name": "TR97",
+      "status": "derived"
+    },
+    "tr98": {
+      "name": "TR98",
+      "status": "derived"
+    },
+    "tr99": {
+      "name": "TR99",
+      "status": "derived"
+    },
+    "twistedspoon": {
+      "name": "Twisted Spoon",
+      "status": "derived"
+    },
+    "tyranitarite": {
+      "name": "Tyranitarite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "ultraball": {
+      "name": "Ultra Ball",
+      "status": "derived"
+    },
+    "ultranecroziumz": {
+      "name": "Ultranecrozium Z",
+      "status": "derived"
+    },
+    "unremarkableteacup": {
+      "name": "Unremarkable Teacup",
+      "status": "derived"
+    },
+    "upgrade": {
+      "name": "Up-Grade",
+      "status": "derived"
+    },
+    "utilityumbrella": {
+      "name": "Utility Umbrella",
+      "status": "derived"
+    },
+    "venusaurite": {
+      "name": "Venusaurite",
+      "status": "excluded",
+      "reason": "pack-override"
+    },
+    "vilevial": {
+      "name": "Vile Vial",
+      "status": "derived"
+    },
+    "wacanberry": {
+      "name": "Wacan Berry",
+      "status": "derived"
+    },
+    "watergem": {
+      "name": "Water Gem",
+      "status": "derived"
+    },
+    "wateriumz": {
+      "name": "Waterium Z",
+      "status": "derived"
+    },
+    "watermemory": {
+      "name": "Water Memory",
+      "status": "derived"
+    },
+    "waterstone": {
+      "name": "Water Stone",
+      "status": "derived"
+    },
+    "watmelberry": {
+      "name": "Watmel Berry",
+      "status": "derived"
+    },
+    "waveincense": {
+      "name": "Wave Incense",
+      "status": "derived"
+    },
+    "weaknesspolicy": {
+      "name": "Weakness Policy",
+      "status": "derived"
+    },
+    "wellspringmask": {
+      "name": "Wellspring Mask",
+      "status": "derived"
+    },
+    "wepearberry": {
+      "name": "Wepear Berry",
+      "status": "derived"
+    },
+    "whippeddream": {
+      "name": "Whipped Dream",
+      "status": "derived"
+    },
+    "whiteherb": {
+      "name": "White Herb",
+      "status": "derived"
+    },
+    "widelens": {
+      "name": "Wide Lens",
+      "status": "derived"
+    },
+    "wikiberry": {
+      "name": "Wiki Berry",
+      "status": "derived"
+    },
+    "wiseglasses": {
+      "name": "Wise Glasses",
+      "status": "derived"
+    },
+    "yacheberry": {
+      "name": "Yache Berry",
+      "status": "derived"
+    },
+    "zapplate": {
+      "name": "Zap Plate",
+      "status": "derived"
+    },
+    "zoomlens": {
+      "name": "Zoom Lens",
+      "status": "derived"
+    }
+  },
   "showdown": {
     "moves": [
       {
         "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+        "file": "assets/mega_showdown/showdown/mods/moves.js",
+        "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
+        "compared": 401,
+        "identical": 0,
+        "different": [],
+        "missing": [
+          "absorb",
+          "accelerock",
+          "acid",
+          "acidspray",
+          "aerialace",
+          "aeroblast",
+          "aircutter",
+          "airslash",
+          "alluringvoice",
+          "anchorshot",
+          "ancientpower",
+          "appleacid",
+          "aquacutter",
+          "aquajet",
+          "aquastep",
+          "aquatail",
+          "armorcannon",
+          "astonish",
+          "astralbarrage",
+          "attackorder",
+          "aurasphere",
+          "aurawheel",
+          "aurorabeam",
+          "axekick",
+          "beakblast",
+          "behemothbash",
+          "behemothblade",
+          "bind",
+          "bite",
+          "bitterblade",
+          "bittermalice",
+          "blastburn",
+          "blazekick",
+          "blazingtorque",
+          "bloodmoon",
+          "blueflare",
+          "bodypress",
+          "bodyslam",
+          "boltstrike",
+          "boneclub",
+          "boomburst",
+          "branchpoke",
+          "bravebird",
+          "breakingswipe",
+          "brickbreak",
+          "brutalswing",
+          "bubble",
+          "bubblebeam",
+          "bugbite",
+          "bugbuzz",
+          "bulldoze",
+          "bulletpunch",
+          "burningjealousy",
+          "ceaselessedge",
+          "chargebeam",
+          "chatter",
+          "chillingwater",
+          "chipaway",
+          "chloroblast",
+          "circlethrow",
+          "clamp",
+          "clangingscales",
+          "clearsmog",
+          "closecombat",
+          "combattorque",
+          "confusion",
+          "constrict",
+          "covet",
+          "crabhammer",
+          "crosschop",
+          "crosspoison",
+          "crunch",
+          "crushclaw",
+          "cut",
+          "darkestlariat",
+          "darkpulse",
+          "dazzlinggleam",
+          "diamondstorm",
+          "direclaw",
+          "disarmingvoice",
+          "discharge",
+          "dizzypunch",
+          "doomdesire",
+          "doubleedge",
+          "dracometeor",
+          "dragonascent",
+          "dragonbreath",
+          "dragonclaw",
+          "dragonhammer",
+          "dragonpulse",
+          "dragonrush",
+          "dragontail",
+          "drainingkiss",
+          "drainpunch",
+          "drillpeck",
+          "drillrun",
+          "drumbeating",
+          "dynamaxcannon",
+          "dynamicpunch",
+          "earthpower",
+          "earthquake",
+          "eeriespell",
+          "eggbomb",
+          "electroweb",
+          "ember",
+          "energyball",
+          "esperwing",
+          "eternabeam",
+          "extrasensory",
+          "extremespeed",
+          "fairywind",
+          "falsesurrender",
+          "feint",
+          "feintattack",
+          "fellstinger",
+          "fierydance",
+          "fierywrath",
+          "fireblast",
+          "firefang",
+          "firelash",
+          "firepunch",
+          "firespin",
+          "flameburst",
+          "flamecharge",
+          "flamethrower",
+          "flamewheel",
+          "flareblitz",
+          "flashcannon",
+          "fleurcannon",
+          "flipturn",
+          "focusblast",
+          "forcepalm",
+          "foulplay",
+          "freezedry",
+          "freezingglare",
+          "frenzyplant",
+          "futuresight",
+          "gigadrain",
+          "gigaimpact",
+          "gigatonhammer",
+          "glaciallance",
+          "glaciate",
+          "glaiverush",
+          "gunkshot",
+          "gust",
+          "hammerarm",
+          "headbutt",
+          "headcharge",
+          "headlongrush",
+          "headsmash",
+          "heartstamp",
+          "heatwave",
+          "hiddenpower",
+          "hiddenpowerbug",
+          "hiddenpowerdark",
+          "hiddenpowerdragon",
+          "hiddenpowerelectric",
+          "hiddenpowerfighting",
+          "hiddenpowerfire",
+          "hiddenpowerflying",
+          "hiddenpowerghost",
+          "hiddenpowergrass",
+          "hiddenpowerground",
+          "hiddenpowerice",
+          "hiddenpowerpoison",
+          "hiddenpowerpsychic",
+          "hiddenpowerrock",
+          "hiddenpowersteel",
+          "hiddenpowerwater",
+          "highhorsepower",
+          "highjumpkick",
+          "hornattack",
+          "hornleech",
+          "hydrocannon",
+          "hydropump",
+          "hydrosteam",
+          "hyperbeam",
+          "hyperdrill",
+          "hyperfang",
+          "hyperspacefury",
+          "hyperspacehole",
+          "hypervoice",
+          "icebeam",
+          "icefang",
+          "icehammer",
+          "icepunch",
+          "iceshard",
+          "icespinner",
+          "iciclecrash",
+          "icywind",
+          "inferno",
+          "infestation",
+          "ironhead",
+          "irontail",
+          "jawlock",
+          "jetpunch",
+          "judgment",
+          "jumpkick",
+          "karatechop",
+          "kowtowcleave",
+          "landswrath",
+          "lavaplume",
+          "leafage",
+          "leafblade",
+          "leafstorm",
+          "leaftornado",
+          "leechlife",
+          "lick",
+          "lightofruin",
+          "liquidation",
+          "lowsweep",
+          "luminacrash",
+          "lunge",
+          "lusterpurge",
+          "machpunch",
+          "magicalleaf",
+          "magicaltorque",
+          "magmastorm",
+          "magnetbomb",
+          "makeitrain",
+          "malignantchain",
+          "matchagotcha",
+          "megadrain",
+          "megahorn",
+          "megakick",
+          "megapunch",
+          "metalclaw",
+          "meteorassault",
+          "meteormash",
+          "mightycleave",
+          "mirrorshot",
+          "mistball",
+          "moonblast",
+          "moongeistbeam",
+          "mountaingale",
+          "mudbomb",
+          "muddywater",
+          "mudshot",
+          "mudslap",
+          "multiattack",
+          "mysticalfire",
+          "mysticalpower",
+          "needlearm",
+          "nightdaze",
+          "nightslash",
+          "noxioustorque",
+          "nuzzle",
+          "oblivionwing",
+          "octazooka",
+          "ominouswind",
+          "orderup",
+          "originpulse",
+          "overdrive",
+          "overheat",
+          "paleowave",
+          "paraboliccharge",
+          "payday",
+          "peck",
+          "petalblizzard",
+          "photongeyser",
+          "plasmafists",
+          "playrough",
+          "poisonfang",
+          "poisonjab",
+          "poisonsting",
+          "poisontail",
+          "pollenpuff",
+          "pounce",
+          "pound",
+          "powdersnow",
+          "powergem",
+          "poweruppunch",
+          "powerwhip",
+          "precipiceblades",
+          "prismaticlaser",
+          "psybeam",
+          "psychic",
+          "psychicfangs",
+          "psychicnoise",
+          "psychoboost",
+          "psychocut",
+          "psyshieldbash",
+          "psyshock",
+          "psystrike",
+          "pyroball",
+          "quickattack",
+          "rage",
+          "rapidspin",
+          "razorleaf",
+          "razorshell",
+          "revelationdance",
+          "roaroftime",
+          "rockclimb",
+          "rockslide",
+          "rocksmash",
+          "rockthrow",
+          "rocktomb",
+          "rockwrecker",
+          "rollingkick",
+          "sacredfire",
+          "sacredsword",
+          "saltcure",
+          "sandtomb",
+          "scald",
+          "scorchingsands",
+          "scratch",
+          "searingshot",
+          "secretpower",
+          "secretsword",
+          "seedbomb",
+          "seedflare",
+          "shadowball",
+          "shadowbone",
+          "shadowclaw",
+          "shadowpunch",
+          "shadowsneak",
+          "shadowstrike",
+          "shellsidearm",
+          "shockwave",
+          "signalbeam",
+          "silverwind",
+          "skittersmack",
+          "skyuppercut",
+          "slam",
+          "slash",
+          "sludge",
+          "sludgebomb",
+          "sludgewave",
+          "smackdown",
+          "smartstrike",
+          "smog",
+          "snaptrap",
+          "snarl",
+          "snipeshot",
+          "spacialrend",
+          "spark",
+          "spectralthief",
+          "spinout",
+          "spiritbreak",
+          "spiritshackle",
+          "springtidestorm",
+          "steameruption",
+          "steamroller",
+          "steelbeam",
+          "steelroller",
+          "steelwing",
+          "stomp",
+          "stoneaxe",
+          "stoneedge",
+          "strangesteam",
+          "strength",
+          "strugglebug",
+          "submission",
+          "sunsteelstrike",
+          "supercellslam",
+          "superpower",
+          "surf",
+          "swift",
+          "syrupbomb",
+          "tackle",
+          "takedown",
+          "technoblast",
+          "terrainpulse",
+          "thief",
+          "throatchop",
+          "thunder",
+          "thunderbolt",
+          "thundercage",
+          "thunderfang",
+          "thunderouskick",
+          "thunderpunch",
+          "thundershock",
+          "torchsong",
+          "trailblaze",
+          "triattack",
+          "triplearrows",
+          "tropkick",
+          "twister",
+          "uturn",
+          "vacuumwave",
+          "vcreate",
+          "vinewhip",
+          "visegrip",
+          "vitalthrow",
+          "voltswitch",
+          "volttackle",
+          "waterfall",
+          "watergun",
+          "waterpulse",
+          "wavecrash",
+          "weatherball",
+          "whirlpool",
+          "wickedtorque",
+          "wildcharge",
+          "wingattack",
+          "woodhammer",
+          "wrap",
+          "xscissor",
+          "zapcannon",
+          "zenheadbutt",
+          "zingzap"
+        ],
+        "reviewed": []
+      },
+      {
+        "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+        "file": "assets/mega_showdown/showdown/moves.js",
         "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
         "compared": 401,
         "identical": 401,
@@ -38886,6 +41502,7 @@
     "abilities": [
       {
         "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+        "file": "assets/mega_showdown/showdown/abilities.js",
         "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
         "compared": 285,
         "identical": 277,
@@ -38909,6 +41526,868 @@
           "neutralizinggas",
           "serenegrace",
           "zenmode"
+        ]
+      },
+      {
+        "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+        "file": "assets/mega_showdown/showdown/mods/abilities.js",
+        "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
+        "compared": 285,
+        "identical": 0,
+        "different": [],
+        "missing": [
+          "adaptability",
+          "aerilate",
+          "aftermath",
+          "airlock",
+          "angerpoint",
+          "angershell",
+          "anticipation",
+          "arenatrap",
+          "armortail",
+          "aromaveil",
+          "asoneglastrier",
+          "asonespectrier",
+          "aurabreak",
+          "baddreams",
+          "ballfetch",
+          "battery",
+          "battlearmor",
+          "beadsofruin",
+          "beastboost",
+          "berserk",
+          "bigpecks",
+          "blaze",
+          "bulletproof",
+          "cheekpouch",
+          "chillingneigh",
+          "chlorophyll",
+          "clearbody",
+          "cloudnine",
+          "commander",
+          "competitive",
+          "compoundeyes",
+          "contrary",
+          "corrosion",
+          "costar",
+          "cottondown",
+          "cudchew",
+          "curiousmedicine",
+          "cursedbody",
+          "cutecharm",
+          "damp",
+          "dancer",
+          "darkaura",
+          "dazzling",
+          "defeatist",
+          "defiant",
+          "deltastream",
+          "desolateland",
+          "dragonsmaw",
+          "drizzle",
+          "drought",
+          "dryskin",
+          "earlybird",
+          "eartheater",
+          "effectspore",
+          "electricsurge",
+          "electromorphosis",
+          "emergencyexit",
+          "fairyaura",
+          "filter",
+          "flamebody",
+          "flareboost",
+          "flashfire",
+          "flowergift",
+          "flowerveil",
+          "fluffy",
+          "forecast",
+          "forewarn",
+          "friendguard",
+          "frisk",
+          "fullmetalbody",
+          "furcoat",
+          "galewings",
+          "galvanize",
+          "gluttony",
+          "goodasgold",
+          "gooey",
+          "gorillatactics",
+          "grasspelt",
+          "grassysurge",
+          "grimneigh",
+          "guarddog",
+          "gulpmissile",
+          "guts",
+          "hadronengine",
+          "harvest",
+          "healer",
+          "heatproof",
+          "heavymetal",
+          "honeygather",
+          "hospitality",
+          "hugepower",
+          "hustle",
+          "hydration",
+          "hypercutter",
+          "icebody",
+          "icescales",
+          "illuminate",
+          "illusion",
+          "immunity",
+          "infiltrator",
+          "innardsout",
+          "innerfocus",
+          "insomnia",
+          "intimidate",
+          "ironbarbs",
+          "ironfist",
+          "justified",
+          "keeneye",
+          "klutz",
+          "leafguard",
+          "levitate",
+          "lightmetal",
+          "lightningrod",
+          "limber",
+          "lingeringaroma",
+          "liquidooze",
+          "liquidvoice",
+          "longreach",
+          "magicbounce",
+          "magicguard",
+          "magician",
+          "magmaarmor",
+          "magnetpull",
+          "marvelscale",
+          "megalauncher",
+          "merciless",
+          "mimicry",
+          "mindseye",
+          "minus",
+          "mirrorarmor",
+          "mistysurge",
+          "moldbreaker",
+          "moody",
+          "motordrive",
+          "mountaineer",
+          "moxie",
+          "multiscale",
+          "multitype",
+          "mummy",
+          "myceliummight",
+          "naturalcure",
+          "neuroforce",
+          "neutralizinggas",
+          "noguard",
+          "normalize",
+          "oblivious",
+          "opportunist",
+          "orichalcumpulse",
+          "overcoat",
+          "overgrow",
+          "owntempo",
+          "pastelveil",
+          "perishbody",
+          "persistent",
+          "pickpocket",
+          "pickup",
+          "pixilate",
+          "plus",
+          "poisonheal",
+          "poisonpoint",
+          "poisonpuppeteer",
+          "poisontouch",
+          "powerconstruct",
+          "powerspot",
+          "prankster",
+          "pressure",
+          "primordialsea",
+          "prismarmor",
+          "propellertail",
+          "protosynthesis",
+          "psychicsurge",
+          "punkrock",
+          "purepower",
+          "purifyingsalt",
+          "quarkdrive",
+          "queenlymajesty",
+          "quickdraw",
+          "quickfeet",
+          "raindish",
+          "rattled",
+          "rebound",
+          "reckless",
+          "refrigerate",
+          "regenerator",
+          "ripen",
+          "rkssystem",
+          "rockhead",
+          "rockypayload",
+          "roughskin",
+          "runaway",
+          "sandforce",
+          "sandrush",
+          "sandspit",
+          "sandstream",
+          "sandveil",
+          "sapsipper",
+          "scrappy",
+          "screencleaner",
+          "seedsower",
+          "serenegrace",
+          "shadowshield",
+          "shadowtag",
+          "sharpness",
+          "shedskin",
+          "sheerforce",
+          "shellarmor",
+          "shielddust",
+          "simple",
+          "skilllink",
+          "slowstart",
+          "slushrush",
+          "sniper",
+          "snowcloak",
+          "snowwarning",
+          "solarpower",
+          "solidrock",
+          "soulheart",
+          "soundproof",
+          "speedboost",
+          "stakeout",
+          "stall",
+          "stalwart",
+          "stamina",
+          "static",
+          "steadfast",
+          "steamengine",
+          "steelworker",
+          "steelyspirit",
+          "stench",
+          "stickyhold",
+          "stormdrain",
+          "strongjaw",
+          "sturdy",
+          "suctioncups",
+          "superluck",
+          "supersweetsyrup",
+          "surgesurfer",
+          "swarm",
+          "sweetveil",
+          "swiftswim",
+          "swordofruin",
+          "symbiosis",
+          "synchronize",
+          "tabletsofruin",
+          "tangledfeet",
+          "tanglinghair",
+          "technician",
+          "telepathy",
+          "teraformzero",
+          "terashell",
+          "teravolt",
+          "thermalexchange",
+          "thickfat",
+          "tintedlens",
+          "torrent",
+          "toughclaws",
+          "toxicboost",
+          "toxicchain",
+          "toxicdebris",
+          "transistor",
+          "triage",
+          "truant",
+          "turboblaze",
+          "unaware",
+          "unburden",
+          "unnerve",
+          "unseenfist",
+          "vesselofruin",
+          "victorystar",
+          "vitalspirit",
+          "voltabsorb",
+          "wanderingspirit",
+          "waterabsorb",
+          "waterbubble",
+          "watercompaction",
+          "waterveil",
+          "weakarmor",
+          "wellbakedbody",
+          "whitesmoke",
+          "wimpout",
+          "windpower",
+          "windrider",
+          "wonderguard",
+          "wonderskin",
+          "zenmode"
+        ],
+        "reviewed": []
+      }
+    ],
+    "items": [
+      {
+        "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+        "file": "assets/mega_showdown/showdown/mods/items.js",
+        "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
+        "compared": 537,
+        "identical": 0,
+        "different": [],
+        "missing": [
+          "abilityshield",
+          "abomasite",
+          "absolite",
+          "absorbbulb",
+          "adamantcrystal",
+          "adamantorb",
+          "adrenalineorb",
+          "aerodactylite",
+          "aggronite",
+          "aguavberry",
+          "airballoon",
+          "alakazite",
+          "aloraichiumz",
+          "altarianite",
+          "ampharosite",
+          "apicotberry",
+          "armorfossil",
+          "aspearberry",
+          "assaultvest",
+          "audinite",
+          "auspiciousarmor",
+          "babiriberry",
+          "banettite",
+          "beastball",
+          "beedrillite",
+          "belueberry",
+          "berry",
+          "berryjuice",
+          "berrysweet",
+          "berserkgene",
+          "bignugget",
+          "bigroot",
+          "bindingband",
+          "bitterberry",
+          "blackbelt",
+          "blackglasses",
+          "blacksludge",
+          "blastoisinite",
+          "blazikenite",
+          "blueorb",
+          "blukberry",
+          "blunderpolicy",
+          "boosterenergy",
+          "bottlecap",
+          "brightpowder",
+          "buggem",
+          "buginiumz",
+          "bugmemory",
+          "burndrive",
+          "burntberry",
+          "cameruptite",
+          "cellbattery",
+          "charcoal",
+          "charizarditex",
+          "charizarditey",
+          "chartiberry",
+          "cheriberry",
+          "cherishball",
+          "chestoberry",
+          "chilanberry",
+          "chilldrive",
+          "chippedpot",
+          "choiceband",
+          "choicescarf",
+          "choicespecs",
+          "chopleberry",
+          "clawfossil",
+          "clearamulet",
+          "cloversweet",
+          "cobaberry",
+          "colburberry",
+          "cornerstonemask",
+          "cornnberry",
+          "coverfossil",
+          "covertcloak",
+          "crackedpot",
+          "crucibellite",
+          "custapberry",
+          "damprock",
+          "darkgem",
+          "darkiniumz",
+          "darkmemory",
+          "dawnstone",
+          "decidiumz",
+          "deepseascale",
+          "deepseatooth",
+          "destinyknot",
+          "diancite",
+          "diveball",
+          "domefossil",
+          "dousedrive",
+          "dracoplate",
+          "dragonfang",
+          "dragongem",
+          "dragoniumz",
+          "dragonmemory",
+          "dragonscale",
+          "dreadplate",
+          "dreamball",
+          "dubiousdisc",
+          "durinberry",
+          "duskball",
+          "duskstone",
+          "earthplate",
+          "eeviumz",
+          "ejectbutton",
+          "ejectpack",
+          "electirizer",
+          "electricgem",
+          "electricmemory",
+          "electricseed",
+          "electriumz",
+          "enigmaberry",
+          "eviolite",
+          "expertbelt",
+          "fairiumz",
+          "fairyfeather",
+          "fairygem",
+          "fairymemory",
+          "fastball",
+          "fightinggem",
+          "fightingmemory",
+          "fightiniumz",
+          "figyberry",
+          "firegem",
+          "firememory",
+          "firestone",
+          "firiumz",
+          "fistplate",
+          "flameorb",
+          "flameplate",
+          "floatstone",
+          "flowersweet",
+          "flyinggem",
+          "flyingmemory",
+          "flyiniumz",
+          "focusband",
+          "focussash",
+          "fossilizedbird",
+          "fossilizeddino",
+          "fossilizeddrake",
+          "fossilizedfish",
+          "friendball",
+          "fullincense",
+          "galaricacuff",
+          "galaricawreath",
+          "galladite",
+          "ganlonberry",
+          "garchompite",
+          "gardevoirite",
+          "gengarite",
+          "ghostgem",
+          "ghostiumz",
+          "ghostmemory",
+          "glalitite",
+          "goldberry",
+          "goldbottlecap",
+          "grassgem",
+          "grassiumz",
+          "grassmemory",
+          "grassyseed",
+          "greatball",
+          "grepaberry",
+          "gripclaw",
+          "griseouscore",
+          "griseousorb",
+          "groundgem",
+          "groundiumz",
+          "groundmemory",
+          "gyaradosite",
+          "habanberry",
+          "hardstone",
+          "healball",
+          "hearthflamemask",
+          "heatrock",
+          "heavyball",
+          "heavydutyboots",
+          "helixfossil",
+          "heracronite",
+          "hondewberry",
+          "houndoominite",
+          "iapapaberry",
+          "iceberry",
+          "icegem",
+          "icememory",
+          "icestone",
+          "icicleplate",
+          "iciumz",
+          "icyrock",
+          "inciniumz",
+          "insectplate",
+          "ironball",
+          "ironplate",
+          "jabocaberry",
+          "jawfossil",
+          "kangaskhanite",
+          "kasibberry",
+          "kebiaberry",
+          "keeberry",
+          "kelpsyberry",
+          "kingsrock",
+          "kommoniumz",
+          "laggingtail",
+          "lansatberry",
+          "latiasite",
+          "latiosite",
+          "laxincense",
+          "leafstone",
+          "leek",
+          "leftovers",
+          "leppaberry",
+          "levelball",
+          "liechiberry",
+          "lifeorb",
+          "lightball",
+          "lightclay",
+          "loadeddice",
+          "lopunnite",
+          "loveball",
+          "lovesweet",
+          "lucarionite",
+          "luckypunch",
+          "lumberry",
+          "luminousmoss",
+          "lunaliumz",
+          "lureball",
+          "lustrousglobe",
+          "lustrousorb",
+          "luxuryball",
+          "lycaniumz",
+          "machobrace",
+          "magmarizer",
+          "magnet",
+          "magoberry",
+          "magostberry",
+          "mail",
+          "maliciousarmor",
+          "manectite",
+          "marangaberry",
+          "marshadiumz",
+          "masterball",
+          "masterpieceteacup",
+          "mawilite",
+          "meadowplate",
+          "medichamite",
+          "mentalherb",
+          "metagrossite",
+          "metalalloy",
+          "metalcoat",
+          "metalpowder",
+          "metronome",
+          "mewniumz",
+          "mewtwonitex",
+          "mewtwonitey",
+          "micleberry",
+          "mimikiumz",
+          "mindplate",
+          "mintberry",
+          "miracleberry",
+          "miracleseed",
+          "mirrorherb",
+          "mistyseed",
+          "moonball",
+          "moonstone",
+          "muscleband",
+          "mysteryberry",
+          "mysticwater",
+          "nanabberry",
+          "nestball",
+          "netball",
+          "nevermeltice",
+          "nomelberry",
+          "normalgem",
+          "normaliumz",
+          "occaberry",
+          "oddincense",
+          "oldamber",
+          "oranberry",
+          "ovalstone",
+          "pamtreberry",
+          "parkball",
+          "passhoberry",
+          "payapaberry",
+          "pechaberry",
+          "persimberry",
+          "petayaberry",
+          "pidgeotite",
+          "pikaniumz",
+          "pikashuniumz",
+          "pinapberry",
+          "pinkbow",
+          "pinsirite",
+          "pixieplate",
+          "plumefossil",
+          "poisonbarb",
+          "poisongem",
+          "poisoniumz",
+          "poisonmemory",
+          "pokeball",
+          "polkadotbow",
+          "pomegberry",
+          "poweranklet",
+          "powerband",
+          "powerbelt",
+          "powerbracer",
+          "powerherb",
+          "powerlens",
+          "powerweight",
+          "premierball",
+          "primariumz",
+          "prismscale",
+          "protectivepads",
+          "protector",
+          "przcureberry",
+          "psncureberry",
+          "psychicgem",
+          "psychicmemory",
+          "psychicseed",
+          "psychiumz",
+          "punchingglove",
+          "qualotberry",
+          "quickball",
+          "quickclaw",
+          "quickpowder",
+          "rabutaberry",
+          "rarebone",
+          "rawstberry",
+          "razorclaw",
+          "razorfang",
+          "razzberry",
+          "reapercloth",
+          "redcard",
+          "redorb",
+          "repeatball",
+          "ribbonsweet",
+          "rindoberry",
+          "ringtarget",
+          "rockgem",
+          "rockincense",
+          "rockiumz",
+          "rockmemory",
+          "rockyhelmet",
+          "roomservice",
+          "rootfossil",
+          "roseincense",
+          "roseliberry",
+          "rowapberry",
+          "rustedshield",
+          "rustedsword",
+          "sablenite",
+          "sachet",
+          "safariball",
+          "safetygoggles",
+          "sailfossil",
+          "salacberry",
+          "salamencite",
+          "sceptilite",
+          "scizorite",
+          "scopelens",
+          "seaincense",
+          "sharpbeak",
+          "sharpedonite",
+          "shedshell",
+          "shellbell",
+          "shinystone",
+          "shockdrive",
+          "shucaberry",
+          "silkscarf",
+          "silverpowder",
+          "sitrusberry",
+          "skullfossil",
+          "skyplate",
+          "slowbronite",
+          "smoothrock",
+          "snorliumz",
+          "snowball",
+          "softsand",
+          "solganiumz",
+          "souldew",
+          "spelltag",
+          "spelonberry",
+          "splashplate",
+          "spookyplate",
+          "sportball",
+          "starfberry",
+          "starsweet",
+          "steelgem",
+          "steeliumz",
+          "steelixite",
+          "steelmemory",
+          "stick",
+          "stickybarb",
+          "stoneplate",
+          "strangeball",
+          "strawberrysweet",
+          "sunstone",
+          "swampertite",
+          "sweetapple",
+          "syrupyapple",
+          "tamatoberry",
+          "tangaberry",
+          "tapuniumz",
+          "tartapple",
+          "terrainextender",
+          "thickclub",
+          "throatspray",
+          "thunderstone",
+          "timerball",
+          "toxicorb",
+          "toxicplate",
+          "tr00",
+          "tr01",
+          "tr02",
+          "tr03",
+          "tr04",
+          "tr05",
+          "tr06",
+          "tr07",
+          "tr08",
+          "tr09",
+          "tr10",
+          "tr11",
+          "tr12",
+          "tr13",
+          "tr14",
+          "tr15",
+          "tr16",
+          "tr17",
+          "tr18",
+          "tr19",
+          "tr20",
+          "tr21",
+          "tr22",
+          "tr23",
+          "tr24",
+          "tr25",
+          "tr26",
+          "tr27",
+          "tr28",
+          "tr29",
+          "tr30",
+          "tr31",
+          "tr32",
+          "tr33",
+          "tr34",
+          "tr35",
+          "tr36",
+          "tr37",
+          "tr38",
+          "tr39",
+          "tr40",
+          "tr41",
+          "tr42",
+          "tr43",
+          "tr44",
+          "tr45",
+          "tr46",
+          "tr47",
+          "tr48",
+          "tr49",
+          "tr50",
+          "tr51",
+          "tr52",
+          "tr53",
+          "tr54",
+          "tr55",
+          "tr56",
+          "tr57",
+          "tr58",
+          "tr59",
+          "tr60",
+          "tr61",
+          "tr62",
+          "tr63",
+          "tr64",
+          "tr65",
+          "tr66",
+          "tr67",
+          "tr68",
+          "tr69",
+          "tr70",
+          "tr71",
+          "tr72",
+          "tr73",
+          "tr74",
+          "tr75",
+          "tr76",
+          "tr77",
+          "tr78",
+          "tr79",
+          "tr80",
+          "tr81",
+          "tr82",
+          "tr83",
+          "tr84",
+          "tr85",
+          "tr86",
+          "tr87",
+          "tr88",
+          "tr89",
+          "tr90",
+          "tr91",
+          "tr92",
+          "tr93",
+          "tr94",
+          "tr95",
+          "tr96",
+          "tr97",
+          "tr98",
+          "tr99",
+          "twistedspoon",
+          "tyranitarite",
+          "ultraball",
+          "ultranecroziumz",
+          "unremarkableteacup",
+          "upgrade",
+          "utilityumbrella",
+          "venusaurite",
+          "vilevial",
+          "wacanberry",
+          "watergem",
+          "wateriumz",
+          "watermemory",
+          "waterstone",
+          "watmelberry",
+          "waveincense",
+          "weaknesspolicy",
+          "wellspringmask",
+          "wepearberry",
+          "whippeddream",
+          "whiteherb",
+          "widelens",
+          "wikiberry",
+          "wiseglasses",
+          "yacheberry",
+          "zapplate",
+          "zoomlens"
+        ],
+        "reviewed": []
+      }
+    ],
+    "battle-actions": [
+      {
+        "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+        "file": "battle-actions.js",
+        "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
+        "compared": 4,
+        "identical": 3,
+        "different": [
+          "modifyDamage"
+        ],
+        "missing": [],
+        "reviewed": [
+          "modifyDamage"
         ]
       }
     ]

@@ -1,6 +1,6 @@
 {
   "reviewedOn": "2026-10-03",
-  "note": "Diferenças entre o Showdown embutido no Cobblemon e o do Mega Showdown 1.9.3 nas habilidades do catálogo, comparadas por AST. Cada item foi lido e só altera troca de forma de batalha ou o agrupamento de uma condição; nenhum altera o cálculo de dano de uma forma normal. Qualquer diferença nova bloqueia o gerador até ser revisada aqui.",
+  "note": "Diferenças entre o Showdown embutido no Cobblemon e o do Mega Showdown 1.9.3 nas habilidades do catálogo e nos métodos de dano do battle-actions.js, comparadas por AST. Cada item foi lido e só altera troca de forma de batalha, o agrupamento de uma condição ou o STAB com Terastal; nenhum altera o cálculo de dano de uma forma normal. Qualquer diferença nova bloqueia o gerador até ser revisada aqui.",
   "overrides": [
     {
       "kind": "abilities",
@@ -49,6 +49,12 @@
       "id": "zenmode",
       "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
       "reason": "Só ajusta a troca de forma de Darmanitan (incluindo Galar); exige HP cheio, que já é uma confirmação do cenário."
+    },
+    {
+      "kind": "battle-actions",
+      "id": "modifyDamage",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só muda o STAB quando pokemon.terastallized é verdadeiro (Tera e Stellar); sem Terastal o cálculo é idêntico ao Showdown base, e a confirmação de campo já exclui Terastallization."
     }
   ]
 }

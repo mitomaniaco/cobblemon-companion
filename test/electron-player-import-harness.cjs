@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {app, BrowserWindow} = require('electron');
 const {readPlayerSnapshotFromConfig} = require('../electron/player-import.cjs');
+const COMPATIBILITY = require('../electron/lib/combat-compatibility.json');
 
 if (process.env.COMPANION_REQUIRE_MEDIUM === '1') {
   try {
@@ -114,6 +115,10 @@ function importedLabel(id) {
     .replace(/^[^:]+:/, '')
     .replace(/[_-]+/g, ' ')
     .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+}
+
+function moveLabel(id) {
+  return COMPATIBILITY.moves[id]?.name ?? importedLabel(id);
 }
 
 function moveKey(id) {
@@ -653,8 +658,8 @@ async function run() {
       before && !before.preview && before.slot === 'Escolha um slot' && before.candidate === 'Escolha um golpe aprendido',
       'A prévia apareceu antes da seleção de slot e candidato.',
     );
-    const slotOptions = individual.equippedMoves.map((move, index) => `Slot ${index + 1} · ${importedLabel(move.id)}`);
-    const candidateOptions = candidates.map(importedLabel);
+    const slotOptions = individual.equippedMoves.map((move, index) => `Slot ${index + 1} · ${moveLabel(move.id)}`);
+    const candidateOptions = candidates.map(moveLabel);
     await selectAccessibleOption(
       contents,
       'Slot equipado para a prévia',
@@ -678,9 +683,9 @@ async function run() {
     const candidateId = candidates[0];
     check(
       preview.beforeLabel === 'Antes · slot 1' &&
-        preview.beforeMove === importedLabel(individual.equippedMoves[0].id) &&
+        preview.beforeMove === moveLabel(individual.equippedMoves[0].id) &&
         preview.afterLabel === 'Depois · proposta' &&
-        preview.afterMove === importedLabel(candidateId) &&
+        preview.afterMove === moveLabel(candidateId) &&
         preview.slot === slotOptions[0] &&
         preview.candidate === candidateOptions[0],
       'A prévia não corresponde ao slot e candidato selecionados para o UUID.',

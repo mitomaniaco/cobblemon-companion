@@ -123,6 +123,20 @@ function propertyName(property) {
   return null;
 }
 
+/** Propriedades do objeto literal `var|const|let <exportName> = {...}` de um arquivo do Showdown compilado. */
+function exportedObjectProperties(source, exportName) {
+  const ast = parse(source.replace(/\r\n/g, '\n'), {ecmaVersion: 'latest', sourceType: 'script'});
+  for (const statement of ast.body) {
+    if (statement.type !== 'VariableDeclaration') continue;
+    for (const declaration of statement.declarations) {
+      if (declaration.id.type !== 'Identifier' || declaration.id.name !== exportName) continue;
+      if (declaration.init?.type !== 'ObjectExpression') continue;
+      return declaration.init.properties;
+    }
+  }
+  throw new Error(`Objeto ${exportName} não encontrado no arquivo do Showdown`);
+}
+
 /**
  * Lê um arquivo de dados do Showdown já compilado (esbuild) e devolve, para cada entrada do objeto
  * principal (`Moves`, `Abilities`...), uma impressão digital da AST. Parênteses redundantes,
@@ -130,22 +144,48 @@ function propertyName(property) {
  * O código nunca é executado.
  */
 export function showdownEntryFingerprints(source, exportName) {
-  const ast = parse(source.replace(/\r\n/g, '\n'), {ecmaVersion: 'latest', sourceType: 'script'});
-  for (const statement of ast.body) {
-    if (statement.type !== 'VariableDeclaration') continue;
-    for (const declaration of statement.declarations) {
-      if (declaration.id.type !== 'Identifier' || declaration.id.name !== exportName) continue;
-      if (declaration.init?.type !== 'ObjectExpression') continue;
-      const entries = {};
-      for (const property of declaration.init.properties) {
-        if (property.type !== 'Property') continue;
-        const name = propertyName(property);
-        if (name !== null) entries[name.toLowerCase()] = astFingerprint(property.value);
-      }
-      return entries;
-    }
+  const entries = {};
+  for (const property of exportedObjectProperties(source, exportName)) {
+    if (property.type !== 'Property') continue;
+    const name = propertyName(property);
+    if (name !== null) entries[name.toLowerCase()] = astFingerprint(property.value);
   }
-  throw new Error(`Objeto ${exportName} não encontrado no arquivo do Showdown`);
+  return entries;
+}
+
+/** Nome (`name`) literal de cada entrada do objeto principal; `null` quando ausente ou não literal. */
+export function showdownEntryNames(source, exportName) {
+  const names = {};
+  for (const property of exportedObjectProperties(source, exportName)) {
+    if (property.type !== 'Property' || property.value.type !== 'ObjectExpression') continue;
+    const name = propertyName(property);
+    if (name === null) continue;
+    const nameProperty = property.value.properties.find((item) => item.type === 'Property' && propertyName(item) === 'name');
+    const literal = nameProperty?.value;
+    names[name.toLowerCase()] = literal?.type === 'Literal' && typeof literal.value === 'string' ? literal.value : null;
+  }
+  return names;
+}
+
+/**
+ * Impressão da AST de cada método de classe (`getDamage() {...}`) do arquivo. Percorre a árvore sem executar o código.
+ */
+export function classMethodFingerprints(source) {
+  const ast = parse(source.replace(/\r\n/g, '\n'), {ecmaVersion: 'latest', sourceType: 'script'});
+  const methods = {};
+  const visit = (node) => {
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+      return;
+    }
+    if (node === null || typeof node !== 'object') return;
+    if (node.type === 'MethodDefinition' && node.key.type === 'Identifier' && !node.computed) {
+      methods[node.key.name] = astFingerprint(node.value);
+    }
+    for (const value of Object.values(node)) visit(value);
+  };
+  visit(ast);
+  return methods;
 }
 
 function scalarValue(node) {
@@ -231,6 +271,27 @@ export function deriveMovesCatalog(manifestMoves) {
     if (entry.status !== 'base' && entry.status !== 'derived') continue;
     output[`cobblemon:${id}`] = {name: entry.name};
     output[id] = {name: entry.name};
+  }
+  return output;
+}
+
+/**
+ * Regra do catálogo de itens segurados. Um item entra somente se tem nome literal, o @smogon/calc o conhece
+ * e nenhum outro pacote (Showdown ou held_items do Mega Showdown) o redefine.
+ */
+export function itemStatus({name, calcHasItem, packDiffers}) {
+  const exclude = (reason) => ({status: 'excluded', reason});
+  if (name === null) return exclude('no-name');
+  if (!calcHasItem) return exclude('calc-missing');
+  if (packDiffers) return exclude('pack-override');
+  return {status: 'derived'};
+}
+
+/** Mapa `items` do catálogo (chave = id do Showdown, sem namespace), ordenado pelo id. */
+export function deriveItemsCatalog(manifestItems) {
+  const output = {};
+  for (const id of Object.keys(manifestItems).sort()) {
+    if (manifestItems[id].status === 'derived') output[id] = {name: manifestItems[id].name};
   }
   return output;
 }

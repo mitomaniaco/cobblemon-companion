@@ -8,6 +8,7 @@ import {
   DAMAGE_STATS,
   damageCandidateMoves,
   damageActorBlocker,
+  damageSwapBlocker,
   damagePlannerReducer,
   getDamagePlannerView,
   parseDamageInteger,
@@ -322,7 +323,7 @@ describe('modelo do planejador de dano real', () => {
         ...individual(),
         observed: {...individual().observed, heldItem: 'cobblemon:assault-vest'},
       };
-      expect(damageActorBlocker(hasItem)).toContain('item segurado');
+      expect(damageActorBlocker(hasItem)).toContain('não está no catálogo compatível');
     });
 
     it('bloqueia quando hyperTrainedIvs é undefined', () => {
@@ -392,7 +393,7 @@ describe('modelo do planejador de dano real', () => {
 
     it('bloqueia quando primeiro slot de golpe está vazio', () => {
       const noCurrentMove: PlayerIndividual = {...individual(), equippedMoves: []};
-      expect(damageActorBlocker(noCurrentMove)).toContain('golpe do primeiro slot');
+      expect(damageActorBlocker(noCurrentMove)).toContain('nenhum golpe equipado');
     });
 
     it('bloqueia quando primeiro golpe não está no catálogo', () => {
@@ -400,7 +401,7 @@ describe('modelo do planejador de dano real', () => {
         ...individual(),
         equippedMoves: [{id: 'cobblemon:unknown-move', pp: 20, ppUps: 0}],
       };
-      expect(damageActorBlocker(badMove)).toContain('golpe do primeiro slot');
+      expect(damageActorBlocker(badMove)).toContain('nenhum golpe equipado');
     });
 
     it('bloqueia quando não há golpes candidatos disponíveis', () => {
@@ -415,6 +416,34 @@ describe('modelo do planejador de dano real', () => {
     it('retorna null quando todos os bloqueadores são satisfeitos', () => {
       const valid = individual();
       expect(damageActorBlocker(valid)).toBeNull();
+    });
+
+    it('aceita item segurado do catálogo, como Focus Sash', () => {
+      const withSash: PlayerIndividual = {...individual(), observed: {...individual().observed, heldItem: 'cobblemon:focus_sash'}};
+      expect(damageActorBlocker(withSash)).toBeNull();
+    });
+  });
+
+  describe('damageSwapBlocker', () => {
+    it('devolve null para slot e candidato compatíveis', () => {
+      expect(damageSwapBlocker(individual(), 0, 'cobblemon:seedbomb')).toBeNull();
+    });
+
+    it('nomeia o slot cujo golpe está fora do catálogo', () => {
+      const actor: PlayerIndividual = {
+        ...individual(),
+        equippedMoves: [
+          {id: 'cobblemon:tackle', pp: 20, ppUps: 0},
+          {id: 'cobblemon:unknown-move', pp: 20, ppUps: 0},
+        ],
+      };
+      expect(damageSwapBlocker(actor, 1, 'cobblemon:seedbomb')).toBe('o golpe do slot 2 não pertence ao subconjunto direto compatível');
+    });
+
+    it('recusa candidato fora da lista compatível e propaga o bloqueio do indivíduo', () => {
+      expect(damageSwapBlocker(individual(), 0, 'cobblemon:unknown-move')).toContain('golpe candidato');
+      const hasItem: PlayerIndividual = {...individual(), observed: {...individual().observed, heldItem: 'cobblemon:assault-vest'}};
+      expect(damageSwapBlocker(hasItem, 0, 'cobblemon:seedbomb')).toContain('não está no catálogo compatível');
     });
   });
 
@@ -727,6 +756,23 @@ describe('modelo do planejador de dano real', () => {
       const request = buildRealDamageRequest(actor, snapshot(actor), state);
 
       expect(request?.candidateMoveId).toBe('cobblemon:seedbomb');
+    });
+
+    it('leva o slot escolhido para o pedido e bloqueia slot com golpe fora do catálogo', () => {
+      const actor: PlayerIndividual = {
+        ...individual(),
+        equippedMoves: [
+          {id: 'cobblemon:tackle', pp: 20, ppUps: 0},
+          {id: 'cobblemon:unknown-move', pp: 20, ppUps: 0},
+        ],
+      };
+      const identity = {individualUuid: actor.uuid, revision: 1};
+      const ready = readyState(identity);
+      const chosen = damagePlannerReducer(ready, {type: 'slot-selected', identity, slotIndex: 0});
+      expect(buildRealDamageRequest(actor, snapshot(actor), chosen)?.currentSlotIndex).toBe(0);
+      const unsupported = damagePlannerReducer(ready, {type: 'slot-selected', identity, slotIndex: 1});
+      expect(getDamagePlannerView(actor, unsupported).profileBlocker).toBe('escolha um slot equipado com golpe compatível');
+      expect(buildRealDamageRequest(actor, snapshot(actor), unsupported)).toBeNull();
     });
 
     it('mapeia formId como "normal"', () => {
