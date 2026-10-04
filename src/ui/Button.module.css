@@ -23,26 +23,22 @@
 }
 
 .primary {
-  border-color: var(--color-accent);
-  color: var(--color-text-on-accent);
   background: var(--color-accent);
+  color: var(--color-text-on-accent);
 }
 
 .secondary {
+  background: var(--color-raised);
   border-color: var(--color-control-border);
-  color: var(--color-text);
-  background: var(--color-surface);
 }
 
 .quiet {
-  border-color: transparent;
-  color: var(--color-muted);
   background: transparent;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .primary:not([data-disabled]):hover {
-    background: color-mix(in srgb, var(--color-accent) 94%, black);
+    background: color-mix(in oklab, var(--color-accent) 88%, white);
   }
 
   .secondary:not([data-disabled]):hover {
@@ -57,7 +53,7 @@
 }
 
 .button[data-pressed] {
-  background: var(--color-raised);
+  transform: scale(0.98);
 }
 
 .primary[data-pressed] {
@@ -67,9 +63,7 @@
 
 .button[data-disabled],
 .button:disabled {
-  border-color: var(--color-border);
-  color: var(--color-muted);
-  background: var(--color-raised);
+  opacity: 0.45;
   cursor: not-allowed;
 }
 

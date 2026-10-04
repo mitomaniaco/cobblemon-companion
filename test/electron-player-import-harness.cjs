@@ -513,7 +513,7 @@ async function run() {
       contents,
       `!document.querySelector('[data-testid="collection"]')
     && !document.querySelector('[data-testid="individual-details"]')
-    && document.querySelector('main')?.innerText.includes('Nenhuma captura nesta sessão')`,
+    && document.querySelector('main')?.innerText.includes('Nenhuma captura ainda')`,
     ),
     'A sessão não começou sem importação do save.',
   );

@@ -1,4 +1,4 @@
-@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/rubik";
 @import "./tokens.css";
 
 :root {
@@ -23,19 +23,23 @@
 html,
 body,
 #root {
-  min-height: 100vh;
+  height: 100%;
+  overflow: clip;
 }
 
 html {
   background: var(--color-canvas);
-  scrollbar-color: var(--color-border) var(--color-canvas);
+  scrollbar-color: var(--color-border) transparent;
   scrollbar-width: thin;
 }
 
 body {
   margin: 0;
   color: var(--color-text);
-  background: var(--color-canvas);
+  background:
+    radial-gradient(60% 50% at 0% 0%, rgb(217 52 43 / 0.07), transparent 70%),
+    radial-gradient(50% 60% at 100% 100%, rgb(41 128 239 / 0.06), transparent 70%), var(--color-canvas);
+  background-attachment: fixed;
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--line-body);
@@ -61,8 +65,8 @@ textarea {
 }
 
 ::selection {
-  color: var(--color-text-on-accent);
-  background: var(--color-accent);
+  color: var(--color-text);
+  background: color-mix(in oklab, var(--color-accent) 45%, transparent);
 }
 
 *::-webkit-scrollbar {
@@ -71,17 +75,19 @@ textarea {
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--color-canvas);
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-  border: 2px solid var(--color-canvas);
+  border: 2px solid transparent;
   border-radius: 8px;
   background: var(--color-border);
+  background-clip: padding-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
   background: var(--color-control-border);
+  background-clip: padding-box;
 }
 
 @media (forced-colors: active) {
