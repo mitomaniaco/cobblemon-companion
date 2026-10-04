@@ -3,7 +3,8 @@ import {ArrowRight} from '@phosphor-icons/react';
 import {moveLabel} from '../../domain/catalog-labels';
 import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
 import type {PlayerIndividual} from '../../platform/api';
-import {Button, Checkbox, Select, type SelectOption} from '../../ui';
+import {Button, Checkbox, Select, StatusMessage, type SelectOption} from '../../ui';
+import {damageSwapBlocker} from './model';
 import styles from './MovePreparation.module.css';
 
 export interface MovePreparationProps {
@@ -20,6 +21,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
   const selectedPlan = plan.individualUuid === individual.uuid;
   const preview = view.status === 'ready' ? view.preview : null;
   const previewKey = preview ? `${individual.uuid}:${preview.slotIndex}:${preview.afterMoveId}` : null;
+  const damageBlocker = preview ? damageSwapBlocker(individual, preview.slotIndex, preview.afterMoveId) : null;
   // biome-ignore lint/correctness/useExhaustiveDependencies: dependencies are intentional triggers to reset preview confirmation when individual or preview changes
   useEffect(() => {
     setConfirmedPreviewKey(null);
@@ -96,25 +98,30 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
             <p className={styles.emptyPreview}>Escolha um slot e um candidato para conferir o antes e depois.</p>
           )}
 
-          {preview && (
-            <>
-              <Checkbox
-                className={styles.confirmation}
-                isSelected={isPreviewConfirmed}
-                onChange={(checked) => setConfirmedPreviewKey(checked ? previewKey : null)}
-              >
-                Confirmo que esta é apenas uma proposta local; nada será equipado nem ensinado.
-              </Checkbox>
-              <Button
-                variant="primary"
-                className={styles.openDamage}
-                isDisabled={!isPreviewConfirmed}
-                onPress={() => onOpenDamage(preview.afterMoveId, preview.slotIndex)}
-              >
-                Abrir cálculo de dano <ArrowRight aria-hidden="true" weight="bold" />
-              </Button>
-            </>
-          )}
+          {preview &&
+            (damageBlocker !== null ? (
+              <StatusMessage tone="info" title="Cálculo de dano indisponível">
+                {damageBlocker}.
+              </StatusMessage>
+            ) : (
+              <>
+                <Checkbox
+                  className={styles.confirmation}
+                  isSelected={isPreviewConfirmed}
+                  onChange={(checked) => setConfirmedPreviewKey(checked ? previewKey : null)}
+                >
+                  Confirmo que esta é apenas uma proposta local; nada será equipado nem ensinado.
+                </Checkbox>
+                <Button
+                  variant="primary"
+                  className={styles.openDamage}
+                  isDisabled={!isPreviewConfirmed}
+                  onPress={() => onOpenDamage(preview.afterMoveId, preview.slotIndex)}
+                >
+                  Abrir cálculo de dano <ArrowRight aria-hidden="true" weight="bold" />
+                </Button>
+              </>
+            ))}
         </>
       )}
     </section>

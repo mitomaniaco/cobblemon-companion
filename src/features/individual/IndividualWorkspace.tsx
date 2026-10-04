@@ -1,4 +1,5 @@
 import {useId, useState} from 'react';
+import {itemLabel, moveLabel, titleCaseId} from '../../domain/catalog-labels';
 import type {MoveSwapPlan} from '../../domain/move-swap';
 import {MovePreparation} from '../damage/MovePreparation';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from '../../platform/api';
@@ -31,13 +32,6 @@ const STAT_ROWS: ReadonlyArray<{key: PlayerStat; label: string}> = [
 
 type MoveEntry = {id: string; pp?: number | null; ppUps: number | null};
 type NumericFact = PlayerStatFact<number> | PlayerStatFact<number | null>;
-
-function displayId(id: string) {
-  return id
-    .replace(/^[^:]+:/, '')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
-}
 
 function locationLabel(location: PlayerIndividual['location']) {
   if (location.container === 'party') return `Equipe · posição ${location.slot}`;
@@ -75,7 +69,7 @@ function MoveGroup({title, known, moves, kind}: {title: string; known: boolean; 
           {moves.map((move, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: a lista capturada pode repetir golpes; o índice evita chaves duplicadas e a lista é somente leitura
             <li className={styles.moveItem} key={`${index}-${move.id}`}>
-              <span className={styles.moveName}>{displayId(move.id)}</span>
+              <span className={styles.moveName}>{moveLabel(move.id)}</span>
               <span className={styles.moveFacts}>
                 {kind === 'equipped' && <span>PP {move.pp == null ? 'Não capturado' : move.pp}</span>}
                 <span>PP Ups {move.ppUps === null ? 'Não capturado' : move.ppUps}</span>
@@ -262,8 +256,8 @@ export function IndividualWorkspace({
   const [captureDataExpanded, setCaptureDataExpanded] = useState(false);
   const titleId = useId();
   const panelIds = useId();
-  const formLabel = individual.formId === 'unknown' ? 'Desconhecida' : displayId(individual.formId);
-  const displayName = displayId(individual.speciesId);
+  const formLabel = individual.formId === 'unknown' ? 'Desconhecida' : titleCaseId(individual.formId);
+  const displayName = titleCaseId(individual.speciesId);
 
   return (
     <aside className={styles.workspace} data-testid="individual-details" aria-labelledby={titleId}>
@@ -317,15 +311,15 @@ export function IndividualWorkspace({
                 </div>
                 <div>
                   <dt>Natureza</dt>
-                  <dd>{individual.observed.nature === null ? 'Não capturado' : displayId(individual.observed.nature)}</dd>
+                  <dd>{individual.observed.nature === null ? 'Não capturado' : titleCaseId(individual.observed.nature)}</dd>
                 </div>
                 <div>
                   <dt>Habilidade</dt>
-                  <dd>{individual.observed.ability === null ? 'Não capturado' : displayId(individual.observed.ability)}</dd>
+                  <dd>{individual.observed.ability === null ? 'Não capturado' : titleCaseId(individual.observed.ability)}</dd>
                 </div>
                 <div>
                   <dt>Item</dt>
-                  <dd>{individual.observed.heldItem === null ? 'Não capturado' : displayId(individual.observed.heldItem)}</dd>
+                  <dd>{individual.observed.heldItem === null ? 'Não capturado' : itemLabel(individual.observed.heldItem)}</dd>
                 </div>
               </dl>
             </section>
