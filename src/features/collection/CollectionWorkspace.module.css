@@ -26,8 +26,8 @@
   flex: 0 0 auto;
   margin: 0;
   color: var(--color-muted);
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .controls {
@@ -61,7 +61,7 @@
 .pcList {
   display: grid;
   min-width: 0;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
 }
 
@@ -87,7 +87,7 @@
   gap: var(--space-3);
   padding: var(--space-3);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-collection);
+  border-radius: var(--radius-card);
   color: var(--color-text);
   background: var(--color-surface);
   text-align: left;
@@ -98,8 +98,8 @@
 }
 
 .teamUnit {
-  height: 164px;
-  min-height: 156px;
+  height: auto;
+  min-height: 104px;
 }
 
 .pcUnit {
@@ -142,22 +142,22 @@
 .level {
   min-width: 0;
   color: var(--color-muted);
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
   overflow-wrap: anywhere;
 }
 
 .emptyPosition {
   display: grid;
   min-width: 0;
-  height: 164px;
-  min-height: 156px;
+  height: 104px;
+  min-height: 104px;
   align-content: center;
   justify-items: center;
   gap: var(--space-1);
   padding: var(--space-3);
   border: 1px dashed var(--color-border);
-  border-radius: var(--radius-collection);
+  border-radius: var(--radius-card);
   color: var(--color-muted);
   background: var(--color-canvas);
   text-align: center;
@@ -169,8 +169,8 @@
 }
 
 .emptyPositionIndex {
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .emptyPosition[data-slot="0"],
@@ -207,7 +207,7 @@
   margin: 0;
   padding: var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-collection);
+  border-radius: var(--radius-card);
   color: var(--color-muted);
   background: var(--color-surface);
 }

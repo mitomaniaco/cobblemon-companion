@@ -1,15 +1,17 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {Archive, ChartBar, Lightning, Question, UsersThree} from '@phosphor-icons/react';
+import {lazy, Suspense, useCallback, useEffect, useRef, useState} from 'react';
+import {Archive, ArrowClockwise, Flask, Info, Lifebuoy, LockSimple, Sword, UsersThree} from '@phosphor-icons/react';
 import {DemoWorkspace} from '../features/demo/DemoWorkspace';
-import {DamageWorkspace} from '../features/damage/DamageWorkspace';
 import {useDamagePlanner} from '../features/damage/controller';
 import {CollectionWorkspace} from '../features/collection/CollectionWorkspace';
 import {IndividualWorkspace} from '../features/individual/IndividualWorkspace';
 import type {IndividualWorkspaceTab} from '../features/individual/IndividualWorkspace';
 import {getCompanionApi, type PlayerSnapshot} from '../platform/api';
 import {useTrainerSession} from './useTrainerSession';
-import {Button, Disclosure, StatusMessage} from '../ui';
+import {Button, Dialog, PokeBallMark, StatusMessage} from '../ui';
 import styles from './TrainerApp.module.css';
+
+const DamageWorkspace = lazy(() => import('../features/damage/DamageWorkspace').then((module) => ({default: module.DamageWorkspace})));
+const HelpWorkspace = lazy(() => import('./HelpWorkspace'));
 
 type Workspace = 'team' | 'pc' | 'help' | 'damage' | 'demo';
 type CompactPanel = 'collection' | 'detail';
@@ -27,21 +29,33 @@ const INITIAL_COLLECTION_STATE: Record<CollectionView, CollectionState> = {
   pc: {search: '', boxFilter: null},
 };
 
-const NAVIGATION: Array<{
+type NavigationItem = {
   id: Workspace;
   label: string;
   Icon: typeof UsersThree;
-}> = [
+};
+
+const PRIMARY_NAVIGATION: NavigationItem[] = [
   {id: 'team', label: 'Equipe', Icon: UsersThree},
   {id: 'pc', label: 'PC', Icon: Archive},
-  {id: 'damage', label: 'Dano', Icon: ChartBar},
-  {id: 'demo', label: 'Demonstração', Icon: Lightning},
-  {id: 'help', label: 'Ajuda e diagnóstico', Icon: Question},
+  {id: 'damage', label: 'Dano', Icon: Sword},
 ];
+
+const SECONDARY_NAVIGATION: NavigationItem[] = [
+  {id: 'demo', label: 'Demonstração', Icon: Flask},
+  {id: 'help', label: 'Ajuda e diagnóstico', Icon: Lifebuoy},
+];
+
+const captureChipFormat = new Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'});
 
 function formatCaptureTime(value: string) {
   const timestamp = Date.parse(value);
   return Number.isFinite(timestamp) ? new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'}).format(timestamp) : value;
+}
+
+function formatCaptureChip(value: string) {
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? `Captura de ${captureChipFormat.format(timestamp)}` : value;
 }
 
 function workspaceTitle(workspace: Workspace) {
@@ -53,74 +67,66 @@ function workspaceTitle(workspace: Workspace) {
 }
 
 function CaptureDetails({snapshot}: {snapshot: PlayerSnapshot}) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const warningCount = snapshot.warnings?.length;
 
   return (
-    <Disclosure
-      className={styles.captureDisclosure}
-      title={warningCount === undefined ? 'Detalhes da captura · avisos não capturados' : `Detalhes da captura · ${warningCount} avisos`}
-      isExpanded={isExpanded}
-      onExpandedChange={setIsExpanded}
-    >
-      <div className={styles.captureDetails}>
-        <dl className={styles.captureFacts}>
-          <div>
-            <dt>Capturada em</dt>
-            <dd>{formatCaptureTime(snapshot.capturedAt)}</dd>
-          </div>
-          <div>
-            <dt>Mundo</dt>
-            <dd>{snapshot.worldName}</dd>
-          </div>
-          <div>
-            <dt>Consistência</dt>
-            <dd>Melhor esforço (best-effort)</dd>
-          </div>
-          <div>
-            <dt>Avisos</dt>
-            <dd>{warningCount === undefined ? 'Não capturados' : `${warningCount}`}</dd>
-          </div>
-        </dl>
+    <div className={styles.captureDetails}>
+      <dl className={styles.captureFacts}>
+        <div>
+          <dt>Capturada em</dt>
+          <dd>{formatCaptureTime(snapshot.capturedAt)}</dd>
+        </div>
+        <div>
+          <dt>Mundo</dt>
+          <dd>{snapshot.worldName}</dd>
+        </div>
+        <div>
+          <dt>Consistência</dt>
+          <dd>Melhor esforço (best-effort)</dd>
+        </div>
+        <div>
+          <dt>Avisos</dt>
+          <dd>{warningCount === undefined ? 'Não capturados' : `${warningCount}`}</dd>
+        </div>
+      </dl>
 
-        <section aria-labelledby="capture-sources-title">
-          <h2 id="capture-sources-title" className={styles.detailsHeading}>
-            Arquivos de origem
-          </h2>
-          {snapshot.sources.length === 0 ? (
-            <p className={styles.detailsEmpty}>Nenhum arquivo de origem registrado.</p>
-          ) : (
-            <ul className={styles.sourceList}>
-              {snapshot.sources.map((source) => (
-                <li key={source.kind}>
-                  <span>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
-                  <span>Modificado em {formatCaptureTime(source.modifiedAt)}</span>
-                  <span className={styles.visuallyHidden}>SHA-256 do arquivo {source.kind === 'party' ? 'da equipe' : 'do PC'}</span>
-                  <code>{source.sha256}</code>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+      <section aria-labelledby="capture-sources-title">
+        <h3 id="capture-sources-title" className={styles.detailsHeading}>
+          Arquivos de origem
+        </h3>
+        {snapshot.sources.length === 0 ? (
+          <p className={styles.detailsEmpty}>Nenhum arquivo de origem registrado.</p>
+        ) : (
+          <ul className={styles.sourceList}>
+            {snapshot.sources.map((source) => (
+              <li key={source.kind}>
+                <span>{source.kind === 'party' ? 'Equipe' : 'PC'}</span>
+                <span>Modificado em {formatCaptureTime(source.modifiedAt)}</span>
+                <span className={styles.visuallyHidden}>SHA-256 do arquivo {source.kind === 'party' ? 'da equipe' : 'do PC'}</span>
+                <code>{source.sha256}</code>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
-        <section aria-labelledby="capture-warnings-title">
-          <h2 id="capture-warnings-title" className={styles.detailsHeading}>
-            Avisos completos
-          </h2>
-          {snapshot.warnings === undefined ? (
-            <p className={styles.detailsEmpty}>Os avisos não foram capturados.</p>
-          ) : snapshot.warnings.length === 0 ? (
-            <p className={styles.detailsEmpty}>Nenhum aviso registrado.</p>
-          ) : (
-            <ul className={styles.warningList}>
-              {snapshot.warnings.map((warning) => (
-                <li key={warning}>{warning}</li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </div>
-    </Disclosure>
+      <section aria-labelledby="capture-warnings-title">
+        <h3 id="capture-warnings-title" className={styles.detailsHeading}>
+          Avisos completos
+        </h3>
+        {snapshot.warnings === undefined ? (
+          <p className={styles.detailsEmpty}>Os avisos não foram capturados.</p>
+        ) : snapshot.warnings.length === 0 ? (
+          <p className={styles.detailsEmpty}>Nenhum aviso registrado.</p>
+        ) : (
+          <ul className={styles.warningList}>
+            {snapshot.warnings.map((warning) => (
+              <li key={warning}>{warning}</li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
   );
 }
 
@@ -128,17 +134,17 @@ function NoSnapshotState({
   phase,
   error,
   onRefresh,
+  onOpenHelp,
 }: {
   phase: 'idle' | 'loading' | 'loaded' | 'error';
   error: string | null;
   onRefresh(): void;
+  onOpenHelp(): void;
 }) {
   if (phase === 'loading') {
     return (
       <section className={styles.loadingState} aria-busy="true" aria-live="polite">
-        <StatusMessage tone="info" title="Atualizando do save">
-          A captura anterior foi removida. A leitura local está em andamento.
-        </StatusMessage>
+        <h2>Lendo o save…</h2>
         <div className={styles.loadingSlots} aria-hidden="true">
           {Array.from({length: 6}, (_, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static loading skeleton with fixed count of 6, never reorders
@@ -155,7 +161,6 @@ function NoSnapshotState({
         <StatusMessage tone="error" title="A leitura não foi concluída">
           {error || 'A ponte local não conseguiu ler a captura.'}
         </StatusMessage>
-        <p>Confirme a configuração local e tente uma nova leitura. Nenhuma captura anterior foi mantida.</p>
         <Button variant="primary" onPress={onRefresh}>
           Tentar novamente
         </Button>
@@ -165,78 +170,49 @@ function NoSnapshotState({
 
   return (
     <section className={styles.emptyWorkspace}>
-      <StatusMessage tone="info" title="Nenhuma captura nesta sessão">
-        Configure <code>config.json</code> usando <code>config.example.json</code>. O Companion não lê o save automaticamente.
-      </StatusMessage>
-      <p>Quando estiver pronto, inicie uma leitura local. Os dados ficam apenas nesta sessão e não são gravados no jogo.</p>
-      <Button variant="primary" onPress={onRefresh}>
-        Atualizar do save
-      </Button>
+      <PokeBallMark className={styles.idleMark} />
+      <h2>Nenhuma captura ainda</h2>
+      <p>Leia a equipe e o PC do seu save. Nada é gravado no jogo.</p>
+      <div className={styles.emptyActions}>
+        <Button variant="primary" onPress={onRefresh}>
+          Atualizar do save
+        </Button>
+        <Button variant="quiet" onPress={onOpenHelp}>
+          Primeira vez? Abrir ajuda
+        </Button>
+      </div>
     </section>
   );
 }
 
-function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
+function RouteFallback({blocks}: {blocks: number}) {
   return (
-    <section className={styles.helpWorkspace} aria-labelledby="help-title">
-      <h2 id="help-title">Ajuda e diagnóstico</h2>
-      <p className={styles.helpLead}>O Companion lê uma captura local quando você inicia a operação. A equipe e o PC não são alterados.</p>
-      <section className={styles.demoHelp} aria-labelledby="demo-help-title">
-        <div>
-          <h3 id="demo-help-title">Explore uma comparação sem dados do save</h3>
-          <p>Veja o recorte offline Pikachu → Floatzel sem depender da captura, da equipe selecionada ou do plano de golpes.</p>
-        </div>
-        <Button variant="primary" onPress={onOpenDemo}>
-          Abrir demonstração
-        </Button>
-      </section>
-
-      <section className={styles.helpSection} aria-labelledby="local-reading-title">
-        <h3 id="local-reading-title">Leitura local</h3>
-        <p>
-          Configure <code>config.json</code> com <code>serverRoot</code> e <code>playerUuid</code>, usando <code>config.example.json</code>{' '}
-          como referência. A leitura só começa ao acionar “Atualizar do save”.
-        </p>
-        <p>
-          Party e PC são lidos em modo somente leitura. A captura e os rascunhos existem apenas na memória desta sessão; nenhum snapshot é
-          enviado ou gravado no save.
-        </p>
-      </section>
-
-      <section className={styles.helpSection} aria-labelledby="limits-title">
-        <h3 id="limits-title">Limites</h3>
-        <ul>
-          <li>Não edita o save, move Pokémon, equipa golpes nem salva alterações no jogo.</li>
-          <li>Aparência, tipos, apelidos, HP atual e stats totais que não foram capturados não são inventados.</li>
-          <li>
-            O cálculo real compara somente o primeiro golpe equipado e depende de compatibilidade e condições confirmadas manualmente.
-          </li>
-          <li>A ilustração representa a espécie normal, não a forma, o aspecto ou a aparência individual capturada.</li>
-        </ul>
-      </section>
-
-      <section className={styles.helpSection} aria-labelledby="artwork-credit-title">
-        <h3 id="artwork-credit-title">Créditos e direitos das ilustrações</h3>
-        <p>
-          As imagens locais de espécies vêm de PokéAPI/sprites, revisão <code>1aa1b0ca273d0e096469a9846155484920b11b45</code>. O CSV de
-          espécies usa PokéAPI, revisão <code>bc92d3b6029ef1abe9e7ad424c400b338f3c11fe</code>.
-        </p>
-        <p>
-          As imagens são © The Pokémon Company. A declaração CC0 do repositório não concede direitos sobre obras de terceiros. Preparar
-          artwork localmente não autoriza sua distribuição; qualquer publicação exige decisão de direitos específica.
-        </p>
-        <p>
-          Sem artwork local preparado, ou para uma forma alternativa/desconhecida, a interface informa “Imagem indisponível”. O app não
-          busca imagens pela rede durante o uso.
-        </p>
-      </section>
-    </section>
+    <div className={styles.routeFallback} aria-busy="true" aria-hidden="true">
+      {Array.from({length: blocks}, (_, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton with fixed count, never reorders
+        <div className={styles.routeFallbackBlock} key={index} />
+      ))}
+    </div>
   );
 }
 
 function CaptureStatus({snapshot}: {snapshot: PlayerSnapshot | null}) {
-  if (!snapshot) return <span className={styles.captureTime}>Nenhuma captura nesta sessão</span>;
-  return <span className={styles.captureTime}>Capturada em {formatCaptureTime(snapshot.capturedAt)}</span>;
+  return <span className={styles.captureChip}>{snapshot ? formatCaptureChip(snapshot.capturedAt) : 'Sem captura'}</span>;
+}
+
+function NavigationGroup({items, workspace, onNavigate}: {items: NavigationItem[]; workspace: Workspace; onNavigate(id: Workspace): void}) {
+  return items.map(({id, label, Icon}) => (
+    <Button
+      key={id}
+      className={`${styles.navButton}${workspace === id ? ` ${styles.navButtonActive}` : ''}`}
+      variant="quiet"
+      aria-current={workspace === id ? 'page' : undefined}
+      onPress={() => onNavigate(id)}
+    >
+      <Icon className={styles.navIcon} aria-hidden="true" weight={workspace === id ? 'fill' : 'regular'} />
+      <span>{label}</span>
+    </Button>
+  ));
 }
 
 export function TrainerApp() {
@@ -250,6 +226,7 @@ export function TrainerApp() {
   const [snapshotRevision, setSnapshotRevision] = useState(0);
   const [isWideLayout, setIsWideLayout] = useState(() => window.matchMedia('(min-width: 1100px)').matches);
   const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null);
+  const [isCaptureDialogOpen, setIsCaptureDialogOpen] = useState(false);
   const previousSelectionRef = useRef<string | null>(session.selectedUuid);
 
   useEffect(() => {
@@ -295,7 +272,8 @@ export function TrainerApp() {
         : null;
     const target =
       focusRequest === 'collection' ? (selectedItem ?? panel?.querySelector<HTMLElement>('h2')) : panel?.querySelector<HTMLElement>('h2');
-    target?.focus();
+    target?.focus({preventScroll: true});
+    if (focusRequest === 'collection' && selectedItem) selectedItem.scrollIntoView({block: 'nearest'});
     setFocusRequest(null);
   }, [compactPanel, focusRequest, isWideLayout, session.selectedUuid, workspace]);
 
@@ -304,6 +282,7 @@ export function TrainerApp() {
   const isCollectionWorkspace = workspace === 'team' || workspace === 'pc';
   const collectionView: CollectionView = workspace === 'pc' ? 'pc' : 'team';
   const title = workspaceTitle(workspace);
+  const warningCount = session.snapshot?.warnings?.length ?? 0;
 
   async function refreshSnapshot() {
     damageController.invalidateCalculation();
@@ -351,45 +330,58 @@ export function TrainerApp() {
     <div className={styles.appShell}>
       <aside className={styles.sidebar} aria-label="Navegação principal">
         <div className={styles.brand}>
-          <span className={styles.brandName}>Companion</span>
-          <span className={styles.brandDescription}>Central de treinador</span>
+          <PokeBallMark className={styles.brandMark} variant="filled" />
+          <div className={styles.brandText}>
+            <span className={styles.brandName}>Companion</span>
+            <span className={styles.brandDescription}>Central de treinador</span>
+          </div>
         </div>
         <nav className={styles.navigation} aria-label="Vistas">
-          {NAVIGATION.map(({id, label, Icon}) => (
-            <Button
-              key={id}
-              className={`${styles.navButton}${workspace === id ? ` ${styles.navButtonActive}` : ''}`}
-              variant="quiet"
-              aria-current={workspace === id ? 'page' : undefined}
-              onPress={() => navigateWorkspace(id)}
-            >
-              <Icon className={styles.navIcon} aria-hidden="true" weight="regular" />
-              <span>{label}</span>
-            </Button>
-          ))}
+          <NavigationGroup items={PRIMARY_NAVIGATION} workspace={workspace} onNavigate={navigateWorkspace} />
+          <div className={styles.navDivider} aria-hidden="true" />
+          <NavigationGroup items={SECONDARY_NAVIGATION} workspace={workspace} onNavigate={navigateWorkspace} />
         </nav>
+        <p className={styles.sidebarFooter}>
+          <LockSimple aria-hidden="true" weight="bold" />
+          <span>Somente leitura · nada é gravado no save</span>
+        </p>
       </aside>
 
       <div className={styles.mainColumn}>
         <header className={styles.header}>
-          <div className={styles.headerTitle}>
-            <h1>{title}</h1>
-            {workspace !== 'demo' && <CaptureStatus snapshot={session.snapshot} />}
-          </div>
+          <h1 className={styles.visuallyHidden}>{title}</h1>
           {workspace !== 'demo' && (
-            <div className={styles.headerActions}>
-              <span className={styles.readOnlyStatus}>Leitura local · somente leitura</span>
-              <Button
-                data-testid="refresh-snapshot"
-                className={styles.refreshButton}
-                variant="primary"
-                isDisabled={session.phase === 'loading'}
-                onPress={() => void refreshSnapshot()}
-              >
-                {session.phase === 'loading' ? 'Atualizando…' : 'Atualizar do save'}
-              </Button>
-              {session.snapshot && <CaptureDetails snapshot={session.snapshot} />}
-            </div>
+            <>
+              <CaptureStatus snapshot={session.snapshot} />
+              <div className={styles.headerActions}>
+                {session.snapshot && (
+                  <Button
+                    className={styles.captureButton}
+                    variant="secondary"
+                    aria-label="Detalhes da captura"
+                    onPress={() => setIsCaptureDialogOpen(true)}
+                  >
+                    <Info aria-hidden="true" weight="bold" />
+                    <span aria-hidden="true">Captura</span>
+                    {warningCount > 0 && (
+                      <span className={styles.warningBadge} aria-hidden="true">
+                        {warningCount}
+                      </span>
+                    )}
+                  </Button>
+                )}
+                <Button
+                  data-testid="refresh-snapshot"
+                  className={styles.refreshButton}
+                  variant="primary"
+                  isDisabled={session.phase === 'loading'}
+                  onPress={() => void refreshSnapshot()}
+                >
+                  <ArrowClockwise aria-hidden="true" weight="bold" />
+                  <span>{session.phase === 'loading' ? 'Atualizando…' : 'Atualizar do save'}</span>
+                </Button>
+              </div>
+            </>
           )}
         </header>
 
@@ -411,26 +403,35 @@ export function TrainerApp() {
 
           {workspace !== 'demo' &&
             (isCollectionWorkspace && noSnapshot ? (
-              <NoSnapshotState phase={session.phase} error={session.error} onRefresh={() => void refreshSnapshot()} />
-            ) : workspace === 'help' ? (
-              <HelpWorkspace onOpenDemo={() => setWorkspace('demo')} />
-            ) : workspace === 'damage' ? (
-              <DamageWorkspace
-                individual={selectedIndividual}
-                snapshot={session.snapshot}
-                controller={damageController}
+              <NoSnapshotState
                 phase={session.phase}
                 error={session.error}
-                returnButtonLabel={
-                  damageReturnWorkspace === 'team'
-                    ? 'Voltar à equipe'
-                    : damageReturnWorkspace === 'pc'
-                      ? 'Voltar ao PC'
-                      : 'Voltar à ajuda e diagnóstico'
-                }
-                onBack={returnFromDamage}
                 onRefresh={() => void refreshSnapshot()}
+                onOpenHelp={() => setWorkspace('help')}
               />
+            ) : workspace === 'help' ? (
+              <Suspense fallback={<RouteFallback blocks={3} />}>
+                <HelpWorkspace onOpenDemo={() => setWorkspace('demo')} />
+              </Suspense>
+            ) : workspace === 'damage' ? (
+              <Suspense fallback={<RouteFallback blocks={2} />}>
+                <DamageWorkspace
+                  individual={selectedIndividual}
+                  snapshot={session.snapshot}
+                  controller={damageController}
+                  phase={session.phase}
+                  error={session.error}
+                  returnButtonLabel={
+                    damageReturnWorkspace === 'team'
+                      ? 'Voltar à equipe'
+                      : damageReturnWorkspace === 'pc'
+                        ? 'Voltar ao PC'
+                        : 'Voltar à ajuda e diagnóstico'
+                  }
+                  onBack={returnFromDamage}
+                  onRefresh={() => void refreshSnapshot()}
+                />
+              </Suspense>
             ) : session.snapshot ? (
               <div className={styles.workspaceGrid} data-wide={isWideLayout ? 'true' : 'false'} data-panel={compactPanel}>
                 <section className={styles.collectionPane} aria-label={collectionView === 'team' ? 'Equipe' : 'PC'}>
@@ -478,7 +479,8 @@ export function TrainerApp() {
                     />
                   ) : (
                     <div className={styles.emptyDetail}>
-                      <p>Selecione um Pokémon para consultar os dados capturados.</p>
+                      <PokeBallMark className={styles.emptyDetailMark} />
+                      <p>Selecione um Pokémon</p>
                     </div>
                   )}
                 </section>
@@ -486,6 +488,12 @@ export function TrainerApp() {
             ) : null)}
         </main>
       </div>
+
+      {session.snapshot && (
+        <Dialog isOpen={isCaptureDialogOpen} onOpenChange={setIsCaptureDialogOpen} title="Detalhes da captura">
+          <CaptureDetails snapshot={session.snapshot} />
+        </Dialog>
+      )}
     </div>
   );
 }

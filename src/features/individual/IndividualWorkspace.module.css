@@ -1,14 +1,10 @@
 .workspace {
   display: flex;
   width: 100%;
-  max-width: 440px;
   min-width: 0;
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-collection);
-  background: var(--color-surface);
   color: var(--color-text);
 }
 
@@ -33,9 +29,9 @@
 
 .name {
   margin: 0 0 var(--space-3);
-  font-size: var(--text-individual);
+  font-size: var(--text-display);
   font-weight: 700;
-  line-height: var(--line-individual);
+  line-height: var(--line-display);
   overflow-wrap: anywhere;
 }
 
@@ -64,8 +60,8 @@
 .captureFacts dt,
 .provenanceList dt {
   color: var(--color-muted);
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .identityFacts dd,
@@ -163,8 +159,8 @@
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-3);
   color: var(--color-muted);
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .attributeTableScroll {
@@ -178,8 +174,8 @@
   width: 100%;
   min-width: 360px;
   border-collapse: collapse;
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
   font-variant-numeric: tabular-nums;
   text-align: left;
 }
@@ -225,7 +221,7 @@
 .sourceList code,
 .rawMoveGroup code {
   font-family: var(--font-mono);
-  font-size: var(--text-secondary);
+  font-size: var(--text-caption);
   overflow-wrap: anywhere;
 }
 
@@ -249,8 +245,8 @@
   min-width: 0;
   gap: var(--space-1);
   color: var(--color-muted);
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .sourceTitle {
@@ -270,8 +266,8 @@
   display: grid;
   gap: var(--space-1);
   color: var(--color-muted);
-  font-size: var(--text-secondary);
-  line-height: var(--line-secondary);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .provenanceList code {
@@ -290,9 +286,9 @@
 
 .rawMoveGroup h4 {
   margin: 0 0 var(--space-1);
-  font-size: var(--text-secondary);
+  font-size: var(--text-caption);
   font-weight: 700;
-  line-height: var(--line-secondary);
+  line-height: var(--line-caption);
 }
 
 .rawMoveGroup li + li {

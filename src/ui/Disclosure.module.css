@@ -1,6 +1,6 @@
 .root {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-collection);
+  border-radius: var(--radius-card);
   background: var(--color-surface);
   color: var(--color-text);
 }
@@ -39,7 +39,7 @@
   height: 16px;
   flex: 0 0 auto;
   color: var(--color-muted);
-  transition: transform var(--duration-overlay-enter) var(--ease-out);
+  transition: transform var(--duration-hover) var(--ease-out);
 }
 
 .root[data-expanded] .indicator {

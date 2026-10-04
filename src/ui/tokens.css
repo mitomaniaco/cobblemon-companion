@@ -1,49 +1,119 @@
+@property --hero-a {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #212842;
+}
+
+@property --hero-b {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #212842;
+}
+
 :root {
   color-scheme: dark;
 
-  --color-canvas: #111318;
-  --color-navigation: #151820;
-  --color-surface: #1b1f28;
-  --color-raised: #252b36;
-  --color-border: #343d4b;
-  --color-control-border: #778397;
+  --color-canvas: #0e1220;
+  --color-navigation: #121729;
+  --color-surface: #181e33;
+  --color-raised: #212842;
+  --color-sunken: #0b0f1a;
+  --color-border: #2c3554;
+  --color-control-border: #5d6a91;
 
-  --color-text: #f4f6fa;
-  --color-muted: #b2bdcd;
-  --color-accent: #ff806c;
-  --color-text-on-accent: #17191f;
-  --color-focus: #f5c264;
+  --color-text: #f3f5fb;
+  --color-muted: #a9b3cf;
+  --color-accent: #d9342b;
+  --color-text-on-accent: #ffffff;
+  --color-accent-bright: #ff6b5e;
+  --color-highlight: #ffcb05;
+  --color-focus: #ffcb05;
   --color-success: #7dd8aa;
   --color-warning: #f5c264;
-  --color-error: #ff9a9f;
+  --color-error: #ff8a8f;
 
-  --font-sans: "Manrope Variable", "Segoe UI", sans-serif;
+  --hp-high: #3fd47a;
+  --hp-mid: #f5c542;
+  --hp-low: #f0544f;
+
+  --type-normal: #9fa19f;
+  --type-normal-ink: #11141c;
+  --type-fire: #d8322e;
+  --type-fire-ink: #ffffff;
+  --type-water: #2980ef;
+  --type-water-ink: #11141c;
+  --type-electric: #fac000;
+  --type-electric-ink: #11141c;
+  --type-grass: #3fa129;
+  --type-grass-ink: #11141c;
+  --type-ice: #3dcef3;
+  --type-ice-ink: #11141c;
+  --type-fighting: #ff8000;
+  --type-fighting-ink: #11141c;
+  --type-poison: #9141cb;
+  --type-poison-ink: #ffffff;
+  --type-ground: #915121;
+  --type-ground-ink: #ffffff;
+  --type-flying: #81b9ef;
+  --type-flying-ink: #11141c;
+  --type-psychic: #ef4179;
+  --type-psychic-ink: #11141c;
+  --type-bug: #91a119;
+  --type-bug-ink: #11141c;
+  --type-rock: #afa981;
+  --type-rock-ink: #11141c;
+  --type-ghost: #704170;
+  --type-ghost-ink: #ffffff;
+  --type-dragon: #5060e1;
+  --type-dragon-ink: #ffffff;
+  --type-dark: #624d4e;
+  --type-dark-ink: #ffffff;
+  --type-steel: #60a1b8;
+  --type-steel-ink: #11141c;
+  --type-fairy: #ef70ef;
+  --type-fairy-ink: #11141c;
+
+  --font-sans: "Rubik Variable", "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
 
+  --text-caption: 12px;
+  --line-caption: 16px;
+  --text-label: 13px;
+  --line-label: 18px;
   --text-body: 14px;
   --line-body: 20px;
-  --text-secondary: 12px;
-  --line-secondary: 18px;
-  --text-section: 20px;
+  --text-title: 18px;
+  --line-title: 24px;
+  --text-section: 22px;
   --line-section: 28px;
-  --text-individual: 28px;
-  --line-individual: 34px;
+  --text-display: 30px;
+  --line-display: 36px;
 
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-10: 40px;
 
   --size-control: 40px;
   --size-navigation-target: 44px;
-  --radius-control: 8px;
-  --radius-collection: 12px;
-  --radius-dialog: 16px;
+  --radius-control: 10px;
+  --radius-card: 14px;
+  --radius-panel: 20px;
+  --radius-pill: 999px;
+
+  --shadow-raised: 0 8px 24px -12px rgb(4 6 14 / 0.7);
+  --shadow-pop: 0 18px 48px -16px rgb(4 6 14 / 0.8);
 
   --duration-hover: 120ms;
+  --duration-enter: 220ms;
+  --duration-exit: 140ms;
   --duration-overlay-enter: 160ms;
   --duration-overlay-exit: 100ms;
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-hero: 480ms;
+  --duration-hp: 700ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }

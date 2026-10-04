@@ -10,6 +10,8 @@ export {Disclosure} from './Disclosure';
 export type {DisclosureProps} from './Disclosure';
 export {PokemonArtwork} from './PokemonArtwork';
 export type {PokemonArtworkProps, PokemonArtworkVariant} from './PokemonArtwork';
+export {PokeBallMark} from './PokeBallMark';
+export type {PokeBallMarkProps} from './PokeBallMark';
 export {SearchField} from './SearchField';
 export type {SearchFieldProps} from './SearchField';
 export {Select} from './Select';
