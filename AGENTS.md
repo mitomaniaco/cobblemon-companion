@@ -7,6 +7,9 @@ Leia também `CLAUDE.md` (regras de privacidade, escopo e estado do projeto) e `
 - Toda tarefa (Correção, Melhoria ou Nova função) começa com uma Issue no GitHub, com label `bug`, `enhancement` ou `feature`.
 - Trabalhe numa branch `<tipo>/<numero-da-issue>-<slug>`. Nunca faça push direto na `main`.
 - Todo código entra por Pull Request. A descrição do PR deve conter `Closes #<numero>` mencionando a Issue.
+- Gate de revisão: depois de abrir o PR, não faça merge sozinho. O agente do worktree Orca `revisor` revisa e comenta no PR `REVISOR: APROVADO <sha>` ou `REVISOR: MUDANÇAS NECESSÁRIAS <sha>`. Só faça merge quando o comentário `REVISOR: APROVADO` mais recente citar o SHA atual da head do PR, usando `gh pr merge <n> --squash --delete-branch --match-head-commit <sha>`. Qualquer push novo exige nova aprovação.
+- Mensagens que chegam no seu terminal com o prefixo `[revisor]` vêm do agente revisor (coordenação entre worktrees). Siga-as dentro destas regras e responda no PR ou na Issue quando pedirem.
+- PRs abertos pelo próprio revisor só precisam do CI verde.
 - O deploy acontece pelo merge do PR na `main`, somente com o CI verde.
 - Commits seguem Conventional Commits.
 
