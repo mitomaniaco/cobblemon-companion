@@ -365,7 +365,7 @@ function assertRenderedMoves(rendered, individual) {
     } else {
       check(
         rendered[index].state === null &&
-          JSON.stringify(rendered[index].moves) === JSON.stringify(group.moves.map((move) => importedLabel(move.id))),
+          JSON.stringify(rendered[index].moves) === JSON.stringify(group.moves.map((move) => moveLabel(move.id))),
         'Os golpes exibidos divergem dos dados do UUID selecionado.',
       );
     }
