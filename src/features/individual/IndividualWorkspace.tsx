@@ -17,7 +17,7 @@ export interface IndividualWorkspaceProps {
   showReturnButton?: boolean;
   moveSwapPlan: MoveSwapPlan;
   onMoveSwapPlanChange(patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>): void;
-  onOpenDamage(candidateMoveId: string): void;
+  onOpenDamage(candidateMoveId: string, slotIndex: number): void;
 }
 
 const STAT_ROWS: ReadonlyArray<{key: PlayerStat; label: string}> = [

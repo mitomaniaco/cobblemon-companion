@@ -13,6 +13,7 @@ import {
 
 export type DamagePlannerController = {
   state: DamagePlannerState;
+  selectSlot(slotIndex: number): void;
   selectCandidate(moveId: string): void;
   updateTarget(patch: Partial<DamageTargetDraft>): void;
   updateStat(group: 'ivs' | 'evs', stat: PlayerStat, value: string): void;
@@ -41,6 +42,10 @@ export function useDamagePlanner(
   const state = sameDamageIdentity(storedState.identity, identity)
     ? storedState
     : damagePlannerReducer(storedState, {type: 'identity-changed', identity});
+
+  const selectSlot = useCallback((slotIndex: number) => {
+    dispatch({type: 'slot-selected', identity: latestIdentityRef.current, slotIndex});
+  }, []);
 
   const selectCandidate = useCallback((moveId: string) => {
     dispatch({type: 'candidate-selected', identity: latestIdentityRef.current, candidateMoveId: moveId});
@@ -87,6 +92,7 @@ export function useDamagePlanner(
 
   return {
     state,
+    selectSlot,
     selectCandidate,
     updateTarget,
     updateStat,

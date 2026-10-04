@@ -1,4 +1,5 @@
 import {useId, type FormEvent} from 'react';
+import {itemLabel, moveLabel} from '../../domain/catalog-labels';
 import type {PlayerIndividual} from '../../platform/api';
 import {Button, Checkbox, Select, StatusMessage, type SelectOption} from '../../ui';
 import type {DamagePlannerController} from './controller';
@@ -9,8 +10,8 @@ import {
   DAMAGE_SPECIES_OPTIONS,
   DAMAGE_STATS,
   DAMAGE_STAT_LABELS,
+  damageMoveSupported,
   getDamagePlannerView,
-  importedLabel,
 } from './model';
 import styles from './DamagePlannerForm.module.css';
 
@@ -24,11 +25,16 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   const view = getDamagePlannerView(individual, state);
   const ids = useId();
   const levelId = `${ids}-level`;
-  const moveOptions: SelectOption[] = view.candidateMoves.map((move) => ({key: move.id, label: importedLabel(move.id)}));
+  const moveOptions: SelectOption[] = view.candidateMoves.map((move) => ({key: move.id, label: moveLabel(move.id)}));
+  const slotOptions: SelectOption[] = individual.equippedMoves.map((move, index) => ({
+    key: String(index),
+    label: `Slot ${index + 1} · ${moveLabel(move.id)}`,
+    isDisabled: !damageMoveSupported(move.id),
+  }));
   if (state.candidateMoveId && !view.candidateMoves.some((move) => move.id === state.candidateMoveId)) {
     moveOptions.unshift({
       key: state.candidateMoveId,
-      label: `${importedLabel(state.candidateMoveId)} · fora do subconjunto compatível`,
+      label: `${moveLabel(state.candidateMoveId)} · fora do subconjunto compatível`,
       isDisabled: true,
     });
   }
@@ -36,7 +42,6 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   const natureOptions: SelectOption[] = DAMAGE_NATURE_OPTIONS.map((nature) => ({key: nature.id, label: nature.name}));
   const abilityOptions: SelectOption[] = view.abilities.map((ability) => ({key: ability.id, label: ability.name}));
   const selectedSpeciesAvailable = DAMAGE_SPECIES_OPTIONS.some((species) => species.id === state.target.speciesId);
-  const currentMove = individual.equippedMoves[0];
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,7 +52,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
     <section className={`${styles.planner} real-damage-planner`} aria-labelledby={`${ids}-title`} aria-busy={state.phase === 'calculating'}>
       <h3 id={`${ids}-title`}>Calcular dano com este indivíduo</h3>
       <p className={`${styles.intro} real-damage-intro`}>
-        O primeiro golpe equipado é comparado a um golpe aprendido deste UUID. O perfil do alvo é manual e não recebe valores presumidos.
+        O golpe do slot escolhido é comparado a um golpe aprendido deste UUID. O perfil do alvo é manual e não recebe valores presumidos.
       </p>
       {view.blocker ? (
         <StatusMessage tone="info" title="Cálculo indisponível" className={`${styles.blocker} real-damage-blocker`}>
@@ -61,6 +66,14 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               <div className={`${styles.moveField} real-damage-move-field`}>
                 <Select
                   className={styles.formField}
+                  label="Slot comparado"
+                  options={slotOptions}
+                  value={String(state.currentSlotIndex)}
+                  onChange={(value) => controller.selectSlot(Number(value ?? 0))}
+                  isDisabled={state.phase === 'calculating'}
+                />
+                <Select
+                  className={styles.formField}
                   label="Golpe aprendido para comparar"
                   options={moveOptions}
                   value={state.candidateMoveId || null}
@@ -69,7 +82,9 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   isDisabled={state.phase === 'calculating'}
                 />
                 <p className={`${styles.fieldHelp} field-help`}>
-                  Atual: {currentMove ? importedLabel(currentMove.id) : 'não capturado'} · somente o primeiro slot muda.
+                  Item segurado:{' '}
+                  {individual.observed.heldItem === null ? 'nenhum registrado no save' : itemLabel(individual.observed.heldItem)} · entra no
+                  cálculo.
                 </p>
               </div>
 
@@ -219,7 +234,9 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               </div>
               <div className={`${styles.ranges} real-damage-ranges`}>
                 <div>
-                  <span>Atual · {importedLabel(state.result.current.moveId)}</span>
+                  <span>
+                    Slot {state.result.actor.currentSlotIndex + 1} · {moveLabel(state.result.current.moveId)}
+                  </span>
                   <strong>
                     {state.result.current.min}–{state.result.current.max}
                     <small> HP</small>
@@ -227,7 +244,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   <p>Alvo com {state.result.current.targetHP} HP máximos</p>
                 </div>
                 <div>
-                  <span>Candidato · {importedLabel(state.result.candidate.moveId)}</span>
+                  <span>Candidato · {moveLabel(state.result.candidate.moveId)}</span>
                   <strong>
                     {state.result.candidate.min}–{state.result.candidate.max}
                     <small> HP</small>

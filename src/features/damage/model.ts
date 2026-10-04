@@ -1,4 +1,5 @@
 import catalogJson from '../../../electron/lib/combat-compatibility.json';
+import {heldItemCatalogName, titleCaseId} from '../../domain/catalog-labels';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, RealDamageRequest, RealDamageResult} from '../../platform/api';
 
 export type DamageTargetDraft = {
@@ -20,6 +21,7 @@ export type DamageWorkspaceIdentity = {
 
 export type DamagePlannerState = {
   identity: DamageWorkspaceIdentity;
+  currentSlotIndex: number;
   candidateMoveId: string;
   target: DamageTargetDraft;
   confirmations: DamageConfirmations;
@@ -32,6 +34,7 @@ export type DamagePlannerState = {
 export type DamagePlannerAction =
   | {type: 'identity-changed'; identity: DamageWorkspaceIdentity}
   | {type: 'candidate-selected'; identity: DamageWorkspaceIdentity; candidateMoveId: string}
+  | {type: 'slot-selected'; identity: DamageWorkspaceIdentity; slotIndex: number}
   | {type: 'target-updated'; identity: DamageWorkspaceIdentity; patch: Partial<DamageTargetDraft>}
   | {type: 'stat-updated'; identity: DamageWorkspaceIdentity; group: 'ivs' | 'evs'; stat: PlayerStat; value: string}
   | {type: 'confirmation-updated'; identity: DamageWorkspaceIdentity; key: DamageConfirmationKey; checked: boolean}
@@ -44,6 +47,7 @@ type CompatibilityCatalog = {
   ruleset: {id: string; cobblemonVersion: string; showdownVersion: string; calcVersion: string};
   species: Record<string, {name: string; abilities: string[]}>;
   moves: Record<string, {name: string}>;
+  items: Record<string, {name: string}>;
   abilities: Record<string, string>;
   natures: Record<string, string>;
 };
@@ -71,7 +75,8 @@ export const DAMAGE_CONFIRMATION_KEYS = [
 
 export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, string> = {
   rulesetMatchesActiveWorld: `O mundo ativo usa o conjunto declarado: Cobblemon ${catalog.ruleset.cobblemonVersion}, Showdown ${catalog.ruleset.showdownVersion}. O app não detecta a versão do servidor.`,
-  actorBaselineConfirmed: 'O indivíduo selecionado não tem item, status ou aspecto que altere sua forma de batalha.',
+  actorBaselineConfirmed:
+    'O indivíduo selecionado não tem status nem aspecto que altere sua forma de batalha. O item usado é o registrado no save; sem item quando o save não registra nenhum.',
   actorFullHpConfirmed: 'O indivíduo selecionado começa com HP cheio; isso é necessário para habilidades ou golpes dependentes do HP.',
   targetBaselineConfirmed: 'O alvo usa forma normal, sem aspectos, item ou status, e começa com HP cheio.',
   fieldBaselineConfirmed:
@@ -87,13 +92,6 @@ export const DAMAGE_NATURE_OPTIONS = Object.entries(catalog.natures)
   .filter(([id]) => !id.includes(':'))
   .map(([id, name]) => ({id: `cobblemon:${id}`, name}))
   .sort((left, right) => left.name.localeCompare(right.name));
-
-export function importedLabel(id: string): string {
-  return id
-    .replace(/^[^:]+:/, '')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
-}
 
 export function parseDamageInteger(value: string, minimum: number, maximum: number): number | null {
   if (value.trim() === '') return null;
@@ -125,6 +123,7 @@ export function createDamageConfirmations(): DamageConfirmations {
 export function createDamagePlannerState(identity: DamageWorkspaceIdentity): DamagePlannerState {
   return {
     identity,
+    currentSlotIndex: 0,
     candidateMoveId: '',
     target: createDamageTargetDraft(),
     confirmations: createDamageConfirmations(),
@@ -155,6 +154,7 @@ export function damagePlannerReducer(state: DamagePlannerState, action: DamagePl
     return {
       ...state,
       identity: action.identity,
+      currentSlotIndex: 0,
       candidateMoveId: '',
       confirmations: createDamageConfirmations(),
       phase: 'idle',
@@ -169,6 +169,8 @@ export function damagePlannerReducer(state: DamagePlannerState, action: DamagePl
   switch (action.type) {
     case 'candidate-selected':
       return {...clearCalculation(state), candidateMoveId: action.candidateMoveId};
+    case 'slot-selected':
+      return {...clearCalculation(state), currentSlotIndex: action.slotIndex};
     case 'target-updated':
       return {
         ...clearCalculation(state),
@@ -213,15 +215,9 @@ export function damagePlannerReducer(state: DamagePlannerState, action: DamagePl
 export type DamageCandidateMove = PlayerIndividual['learnedMoves'][number];
 
 export function damageCandidateMoves(individual: PlayerIndividual): DamageCandidateMove[] {
-  const currentMoveId = individual.equippedMoves[0]?.id ?? '';
   const seenMoves = new Set<string>();
   return individual.learnedMoves.filter((move) => {
-    if (
-      move.id === currentMoveId ||
-      individual.equippedMoves.some((equipped) => equipped.id === move.id) ||
-      !catalog.moves[move.id] ||
-      seenMoves.has(move.id)
-    )
+    if (individual.equippedMoves.some((equipped) => equipped.id === move.id) || !catalog.moves[move.id] || seenMoves.has(move.id))
       return false;
     seenMoves.add(move.id);
     return true;
@@ -241,7 +237,8 @@ export function damageActorBlocker(individual: PlayerIndividual): string | null 
     ? individual.observed.ability
     : `cobblemon:${individual.observed.ability}`;
   if (!species.abilities.includes(abilityId)) return 'habilidade observada não pertence ao mapeamento da espécie';
-  if (individual.observed.heldItem !== null) return 'o save observou um item segurado, que este recorte não modela';
+  if (individual.observed.heldItem !== null && heldItemCatalogName(individual.observed.heldItem) === null)
+    return `o item segurado ${titleCaseId(individual.observed.heldItem)} não está no catálogo compatível`;
   if (individual.battleStats.hyperTrainedIvs === undefined) return 'IVs Hyper Trained não foram capturados';
   for (const stat of DAMAGE_STATS) {
     const override = individual.battleStats.hyperTrainedIvs[stat];
@@ -251,10 +248,24 @@ export function damageActorBlocker(individual: PlayerIndividual): string | null 
   }
   if (individual.equippedMovesKnown !== true || individual.learnedMovesKnown !== true)
     return 'listas de golpes equipados/aprendidos não foram capturadas';
-  const currentMove = individual.equippedMoves[0]?.id;
-  if (!currentMove || !catalog.moves[currentMove]) return 'o golpe do primeiro slot não pertence ao subconjunto direto compatível';
-  if (damageCandidateMoves(individual).length === 0) return 'não há golpe aprendido compatível para comparar com o primeiro slot';
+  if (!individual.equippedMoves.some((move) => damageMoveSupported(move.id)))
+    return 'nenhum golpe equipado pertence ao subconjunto direto compatível';
+  if (damageCandidateMoves(individual).length === 0) return 'não há golpe aprendido compatível para comparar';
   return null;
+}
+
+export function damageSwapBlocker(individual: PlayerIndividual, slotIndex: number, candidateMoveId: string): string | null {
+  const actorBlocker = damageActorBlocker(individual);
+  if (actorBlocker) return actorBlocker;
+  if (!damageMoveSupported(individual.equippedMoves[slotIndex]?.id ?? ''))
+    return `o golpe do slot ${slotIndex + 1} não pertence ao subconjunto direto compatível`;
+  if (!damageCandidateMoves(individual).some((move) => move.id === candidateMoveId))
+    return 'o golpe candidato não pertence ao subconjunto direto compatível';
+  return null;
+}
+
+export function damageMoveSupported(moveId: string): boolean {
+  return Boolean(catalog.moves[moveId]);
 }
 
 export type DamagePlannerView = {
@@ -279,7 +290,9 @@ export function getDamagePlannerView(individual: PlayerIndividual | null, state:
     selectedSpecies?.abilities.filter((id) => Boolean(catalog.abilities[id])).map((id) => ({id, name: catalog.abilities[id]})) ?? [];
 
   let profileBlocker: string | null = null;
-  if (!state.candidateMoveId || !candidateMoves.some((move) => move.id === state.candidateMoveId))
+  if (!damageMoveSupported(individual?.equippedMoves[state.currentSlotIndex]?.id ?? ''))
+    profileBlocker = 'escolha um slot equipado com golpe compatível';
+  else if (!state.candidateMoveId || !candidateMoves.some((move) => move.id === state.candidateMoveId))
     profileBlocker = 'escolha um golpe aprendido compatível';
   else if (!selectedSpecies) profileBlocker = 'escolha uma espécie do catálogo compatível';
   else if (parseDamageInteger(state.target.level, 1, 100) === null) profileBlocker = 'informe um nível entre 1 e 100';
@@ -320,6 +333,7 @@ export function buildRealDamageRequest(
   return {
     sources: snapshot.sources.map((source) => ({kind: source.kind, sha256: source.sha256})),
     individualUuid: individual.uuid,
+    currentSlotIndex: state.currentSlotIndex,
     candidateMoveId: state.candidateMoveId,
     target: {
       speciesId: state.target.speciesId,

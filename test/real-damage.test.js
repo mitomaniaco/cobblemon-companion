@@ -45,6 +45,7 @@ function makeRequest(patch = {}) {
   return {
     sources: sourceHashes,
     individualUuid: '00000000-0000-4000-8000-000000000001',
+    currentSlotIndex: 0,
     candidateMoveId: 'cobblemon:seedbomb',
     target: {
       speciesId: 'cobblemon:abra',
@@ -95,8 +96,8 @@ describe('versioned real damage adapter', () => {
       abilities: ['cobblemon:synchronize', 'cobblemon:telepathy'],
     });
     for (const result of results) {
-      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12');
-      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v10');
+      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v13');
+      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v11');
       expect(result.actor.speciesId).toBe('cobblemon:gardevoir');
       expect(result.current.rollCount).toBe(16);
       expect(result.candidate.rollCount).toBe(16);
@@ -180,8 +181,41 @@ describe('versioned real damage adapter', () => {
     expect(() => calculateRealDamage(makeSnapshot(unknownEv), makeRequest())).toThrow(/evs\.spe.*desconhecido/);
 
     const heldItem = makeIndividual();
-    heldItem.observed.heldItem = 'cobblemon:oran_berry';
-    expect(() => calculateRealDamage(makeSnapshot(heldItem), makeRequest())).toThrow(/item observado/);
+    heldItem.observed.heldItem = 'cobblemon:item_inexistente';
+    expect(() => calculateRealDamage(makeSnapshot(heldItem), makeRequest())).toThrow(/heldItem.*fora do subconjunto/);
+  });
+
+  it('inclui o item segurado do catálogo no cálculo e recusa namespace sem mapeamento', () => {
+    const withItem = (heldItem) => {
+      const individual = makeIndividual();
+      individual.observed.heldItem = heldItem;
+      return calculateRealDamage(makeSnapshot(individual), makeRequest());
+    };
+    const bare = withItem(null);
+    const sash = withItem('cobblemon:focus_sash');
+    expect(sash.current).toEqual(bare.current);
+    expect(sash.candidate).toEqual(bare.candidate);
+    expect(sash.actor.heldItem).toBe('Focus Sash');
+    expect(sash.inputDigest).not.toBe(bare.inputDigest);
+    // Tackle é Normal: o Silk Scarf aumenta o dano.
+    expect(withItem('cobblemon:silk_scarf').current.max).toBeGreaterThan(bare.current.max);
+    expect(() => withItem('mega_showdown:venusaurite')).toThrow('Cálculo real: actor.observed.heldItem usa um namespace sem mapeamento');
+  });
+
+  it('compara o slot escolhido e recusa slot inválido', () => {
+    const individual = makeIndividual();
+    individual.equippedMoves.push({id: 'cobblemon:vinewhip', pp: 25, ppUps: 0});
+    const snapshot = makeSnapshot(individual);
+    const first = calculateRealDamage(snapshot, makeRequest());
+    const second = calculateRealDamage(snapshot, makeRequest({currentSlotIndex: 1}));
+    expect(second.current.moveId).toBe('cobblemon:vinewhip');
+    expect(second.actor.currentSlotIndex).toBe(1);
+    expect(second.inputDigest).not.toBe(first.inputDigest);
+    for (const invalid of [2, -1, 0.5]) {
+      expect(() => calculateRealDamage(snapshot, makeRequest({currentSlotIndex: invalid}))).toThrow(
+        'Cálculo real: request.currentSlotIndex',
+      );
+    }
   });
 
   it('blocks unsupported species, forms, abilities, moves, and incomplete scenario attestations', () => {
@@ -521,7 +555,7 @@ describe('versioned real damage adapter', () => {
   it('requires non-empty equipped moves list', () => {
     const noEquipped = makeIndividual();
     noEquipped.equippedMoves = [];
-    expect(() => calculateRealDamage(makeSnapshot(noEquipped), makeRequest())).toThrow(/equippedMoves.*primeiro slot/);
+    expect(() => calculateRealDamage(makeSnapshot(noEquipped), makeRequest())).toThrow(/equippedMoves.*não há golpe equipado/);
   });
 
   it('requires learnedMoves to be an array', () => {
@@ -739,7 +773,7 @@ describe('versioned real damage adapter', () => {
     expect(result.ruleset.cobblemonVersion).toBe(COMPATIBILITY.ruleset.cobblemonVersion);
     expect(result.ruleset.showdownVersion).toBe(COMPATIBILITY.ruleset.showdownVersion);
     expect(result.ruleset.calcVersion).toBe('0.11.0');
-    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v10');
+    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v11');
   });
 
   it('accepts bare ability IDs without cobblemon: prefix', () => {
@@ -932,7 +966,9 @@ describe('perfil do indivíduo que ataca', () => {
     expect(() => run((a) => (a.observed.nature = 'cobblemon:inexistente'))).toThrow('Cálculo real: actor.observed.nature');
     expect(() => run((a) => (a.observed.ability = ''))).toThrow('Cálculo real: actor.observed.ability');
     expect(() => run((a) => (a.observed.ability = 'cobblemon:blaze'))).toThrow('Cálculo real: actor.observed.ability não está mapeada');
-    expect(() => run((a) => (a.observed.heldItem = 'cobblemon:leftovers'))).toThrow('Cálculo real: actor.observed.heldItem');
+    expect(() => run((a) => (a.observed.heldItem = 'cobblemon:item_inexistente'))).toThrow(
+      'Cálculo real: actor.observed.heldItem está fora do subconjunto',
+    );
   });
 
   it('aceita nível 1 e 100 do indivíduo', () => {
@@ -1122,7 +1158,7 @@ describe('motor de dano e saída', () => {
       cobblemonVersion: COMPATIBILITY.ruleset.cobblemonVersion,
       showdownVersion: COMPATIBILITY.ruleset.showdownVersion,
       calcVersion: '0.11.0',
-      adapterVersion: 'real-damage-adapter-v10',
+      adapterVersion: 'real-damage-adapter-v11',
       sourceSha256: COMPATIBILITY.ruleset.sourceSha256,
     });
     expect(result.ruleset.sourceSha256).not.toBe(COMPATIBILITY.ruleset.sourceSha256);
@@ -1132,7 +1168,7 @@ describe('motor de dano e saída', () => {
       sources: snapshot.sources.map(({kind, sha256, modifiedAt}) => ({kind, sha256, modifiedAt})),
     });
     expect(result.individualUuid).toBe(request.individualUuid);
-    expect(result.actor).toEqual({speciesId: 'cobblemon:bulbasaur', level: 30});
+    expect(result.actor).toEqual({speciesId: 'cobblemon:bulbasaur', level: 30, heldItem: null, currentSlotIndex: 0});
     expect(result.target).toEqual({speciesId: 'cobblemon:abra', formId: 'normal', level: 25});
     expect(result.scope).toEqual({
       generation: 9,
@@ -1202,6 +1238,6 @@ describe('guardas de carga do adaptador', () => {
   });
 
   it('carrega normalmente com os arquivos reais', () => {
-    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v10');
+    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v11');
   });
 });

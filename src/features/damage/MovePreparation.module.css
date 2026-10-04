@@ -82,10 +82,6 @@
 .calculationNote {
   color: var(--color-muted);
 }
-.preview > .calculationNoteWarning {
-  color: var(--color-warning);
-  font-weight: 700;
-}
 
 .confirmation {
   align-items: flex-start;

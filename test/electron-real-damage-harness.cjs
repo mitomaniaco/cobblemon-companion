@@ -52,6 +52,7 @@ function makeRequest(snapshot, individual, candidateMoveId) {
   return {
     sources: snapshot.sources.map((source) => ({kind: source.kind, sha256: source.sha256})),
     individualUuid: individual.uuid,
+    currentSlotIndex: 0,
     candidateMoveId,
     target: {
       speciesId: 'cobblemon:abra',
@@ -77,7 +78,9 @@ function findRunnable(snapshot) {
     const species = COMPATIBILITY.species[individual.speciesId];
     const nature = individual.observed.nature;
     const abilityId = individual.observed.ability;
-    if (!species || individual.formId !== 'normal' || individual.observed.heldItem !== null) continue;
+    if (!species || individual.formId !== 'normal') continue;
+    const heldItem = individual.observed.heldItem;
+    if (heldItem !== null && !COMPATIBILITY.items[heldItem.replace(/^cobblemon:/, '').replace(/_/g, '')]) continue;
     if (!nature || !COMPATIBILITY.natures[nature] || !abilityId || !COMPATIBILITY.abilities[abilityId]) continue;
     const canonicalAbility = abilityId.startsWith('cobblemon:') ? abilityId : `cobblemon:${abilityId}`;
     if (!species.abilities.includes(canonicalAbility)) continue;
@@ -172,13 +175,6 @@ async function setLabeledNumber(contents, label, value, statGroup = null) {
   })()`);
 }
 
-function displayMoveLabel(id) {
-  return id
-    .replace(/^[^:]+:/, '')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
-}
-
 async function run() {
   const window = await waitForWindow();
   window.setSize(1280, 1700);
@@ -237,7 +233,7 @@ async function run() {
   })()`);
   check(initialGate, 'O perfil manual e as cinco confirmações precisam iniciar bloqueados, sem valores presumidos.');
 
-  await chooseReactAriaOption(webContents, 'Golpe aprendido para comparar', displayMoveLabel(probe.candidateMoveId));
+  await chooseReactAriaOption(webContents, 'Golpe aprendido para comparar', COMPATIBILITY.moves[probe.candidateMoveId].name);
   const targetSpecies = COMPATIBILITY.species['cobblemon:abra'];
   const targetNature = COMPATIBILITY.natures['cobblemon:modest'];
   const targetAbility = COMPATIBILITY.abilities['cobblemon:synchronize'];

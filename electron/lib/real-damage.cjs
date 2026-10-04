@@ -6,7 +6,7 @@ const calcPackage = require('@smogon/calc/package.json');
 const compatibility = require('./combat-compatibility.json');
 
 const CALC_VERSION = '0.11.0';
-const ADAPTER_VERSION = 'real-damage-adapter-v10';
+const ADAPTER_VERSION = 'real-damage-adapter-v11';
 const STATS = Object.freeze(['hp', 'atk', 'def', 'spa', 'spd', 'spe']);
 const SOURCE_KINDS = Object.freeze(['party', 'pc']);
 const ASSUMPTION_KEYS = Object.freeze([
@@ -20,7 +20,7 @@ const ASSUMPTION_KEYS = Object.freeze([
 if (calcPackage.version !== CALC_VERSION || compatibility.ruleset.calcVersion !== CALC_VERSION) {
   throw new Error(`Real damage requires @smogon/calc ${CALC_VERSION} and its matching compatibility catalog`);
 }
-if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12') {
+if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v13') {
   throw new Error('Real damage compatibility catalog is not a reviewed version');
 }
 
@@ -183,6 +183,16 @@ function validateAssumptions(raw) {
   };
 }
 
+// O id do Cobblemon (`cobblemon:focus_sash`) vira o id do Showdown (`focussash`) sem namespace nem `_`.
+// Ids que não mapeiam dessa forma ficam bloqueados: falha segura, sem tabela manual de exceções.
+function heldItemName(id, pathName) {
+  text(id, pathName);
+  if (!id.startsWith('cobblemon:')) fail(pathName, 'usa um namespace sem mapeamento');
+  const name = compatibility.items?.[id.slice('cobblemon:'.length).replace(/_/g, '')]?.name;
+  if (typeof name !== 'string' || name.length === 0) fail(pathName, 'está fora do subconjunto compatível versionado');
+  return name;
+}
+
 function actorProfile(actor) {
   if (actor?.formId !== 'normal') fail('actor.formId', 'somente forma normal é compatível');
   const species = supportedSpecies(actor.speciesId, 'actor.speciesId');
@@ -193,12 +203,13 @@ function actorProfile(actor) {
   const abilityId = text(actor.observed.ability, 'actor.observed.ability');
   const nature = supportedNature(natureId, 'actor.observed.nature');
   const ability = supportedAbility(species, abilityId, 'actor.observed.ability');
-  if (actor.observed.heldItem !== null) fail('actor.observed.heldItem', 'um item observado não é suportado');
+  const item = actor.observed.heldItem === null ? null : heldItemName(actor.observed.heldItem, 'actor.observed.heldItem');
+  // O estado de batalha do item (gema consumida, Berry, etc.) fica coberto pela confirmação de cenário do usuário.
   // Snapshot v2 null is unknown; the required manual baseline attestation supplies this scenario fact.
   const ivs = effectiveIvs(actor.battleStats);
   const evs = statValues(actor.battleStats.evs, 'actor.battleStats.evs', 0, 252);
   if (STATS.reduce((sum, stat) => sum + evs[stat], 0) > 510) fail('actor.battleStats.evs', 'a soma excede 510');
-  return {species, level: actor.level, nature, ability, ivs, evs};
+  return {species, level: actor.level, nature, ability, ivs, evs, item};
 }
 
 // The actor and target HP assumptions are explicit in validateAssumptions;
@@ -209,7 +220,7 @@ function pokemon(spec, pathName) {
       level: spec.level,
       nature: spec.nature,
       ability: spec.ability,
-      item: '',
+      item: spec.item ?? '',
       status: '',
       boosts: Object.fromEntries(STATS.map((stat) => [stat, 0])),
       ivs: spec.ivs,
@@ -255,7 +266,7 @@ function stable(value) {
 }
 
 function calculateRealDamage(snapshot, rawRequest) {
-  exactKeys(rawRequest, ['sources', 'individualUuid', 'candidateMoveId', 'target', 'assumptions'], 'request');
+  exactKeys(rawRequest, ['sources', 'individualUuid', 'currentSlotIndex', 'candidateMoveId', 'target', 'assumptions'], 'request');
   if (snapshot?.schemaVersion !== 2 || snapshot?.consistency !== 'best-effort' || !Array.isArray(snapshot?.individuals)) {
     fail('snapshot', 'não corresponde ao snapshot local v2');
   }
@@ -268,20 +279,21 @@ function calculateRealDamage(snapshot, rawRequest) {
   const profile = actorProfile(actor);
   if (actor.equippedMovesKnown !== true || actor.learnedMovesKnown !== true)
     fail('actor.moves', 'as listas equipadas e aprendidas precisam ser conhecidas');
-  if (!Array.isArray(actor.equippedMoves) || actor.equippedMoves.length === 0)
-    fail('actor.equippedMoves', 'não há golpe equipado no primeiro slot');
+  if (!Array.isArray(actor.equippedMoves) || actor.equippedMoves.length === 0) fail('actor.equippedMoves', 'não há golpe equipado');
   if (!Array.isArray(actor.learnedMoves)) fail('actor.learnedMoves', 'a lista aprendida não foi capturada');
-  const currentMoveId = text(actor.equippedMoves[0].id, 'actor.equippedMoves[0].id');
+  const currentSlotIndex = integer(rawRequest.currentSlotIndex, 'request.currentSlotIndex', 0, actor.equippedMoves.length - 1);
+  const currentPath = `actor.equippedMoves[${currentSlotIndex}].id`;
+  const currentMoveId = text(actor.equippedMoves[currentSlotIndex].id, currentPath);
   const candidateMoveId = text(rawRequest.candidateMoveId, 'request.candidateMoveId');
   if (candidateMoveId === currentMoveId || actor.equippedMoves.some((move) => move.id === candidateMoveId)) {
     fail('request.candidateMoveId', 'precisa ser um golpe aprendido ainda não equipado');
   }
   if (!actor.learnedMoves.some((move) => move.id === candidateMoveId))
     fail('request.candidateMoveId', 'não foi observado como aprendido neste indivíduo');
-  mappedMoveName(currentMoveId, 'actor.equippedMoves[0].id');
+  mappedMoveName(currentMoveId, currentPath);
   mappedMoveName(candidateMoveId, 'request.candidateMoveId');
   const target = validateTarget(rawRequest.target);
-  const current = damage(pokemon(profile, 'actor.current'), pokemon(target, 'target.current'), currentMoveId, 'actor.equippedMoves[0].id');
+  const current = damage(pokemon(profile, 'actor.current'), pokemon(target, 'target.current'), currentMoveId, currentPath);
   const candidate = damage(
     pokemon(profile, 'actor.candidate'),
     pokemon(target, 'target.candidate'),
@@ -300,6 +312,8 @@ function calculateRealDamage(snapshot, rawRequest) {
       abilityId: actor.observed.ability,
       ivs: profile.ivs,
       evs: profile.evs,
+      heldItemId: actor.observed.heldItem,
+      currentSlotIndex,
       currentMoveId,
       candidateMoveId,
     },
@@ -321,7 +335,7 @@ function calculateRealDamage(snapshot, rawRequest) {
       sources: snapshot.sources.map((source) => ({kind: source.kind, sha256: source.sha256, modifiedAt: source.modifiedAt})),
     },
     individualUuid,
-    actor: {speciesId: actor.speciesId, level: actor.level},
+    actor: {speciesId: actor.speciesId, level: actor.level, heldItem: profile.item, currentSlotIndex},
     target: {
       speciesId: rawRequest.target.speciesId,
       formId: rawRequest.target.formId,

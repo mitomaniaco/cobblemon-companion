@@ -398,7 +398,7 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   check((await selectedUuid(contents)) === damageIndividual.uuid, 'A espécie repetida selecionou outro indivíduo pelo UUID.');
   await clickTab(contents, 'Golpes');
   await chooseSelect(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
-  await chooseSelect(contents, 'Golpe aprendido para a proposta', 'Seedbomb');
+  await chooseSelect(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
   await waitFor(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))', 'prévia de troca antes/depois');
   const preview = await evaluate(
     contents,
@@ -408,7 +408,7 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   })()`,
   );
   check(
-    preview.values.length === 2 && preview.values[0] === 'Tackle' && preview.values[1] === 'Seedbomb',
+    preview.values.length === 2 && preview.values[0] === 'Tackle' && preview.values[1] === 'Seed Bomb',
     'A prévia não corresponde aos golpes do UUID escolhido.',
   );
   await capture(window, screenshotPaths.preview, '[aria-label="Prévia da troca planejada"]');
@@ -808,7 +808,7 @@ async function exerciseResponsiveLayout(window, snapshot) {
   await selectIndividual(contents, damageIndividual.uuid);
   await clickTab(contents, 'Golpes');
   await chooseSelect(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
-  await chooseSelect(contents, 'Golpe aprendido para a proposta', 'Seedbomb');
+  await chooseSelect(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
   await waitFor(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))', 'prévia responsiva');
 
   const trainerLayouts = [

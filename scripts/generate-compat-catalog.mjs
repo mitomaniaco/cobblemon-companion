@@ -15,12 +15,16 @@ import {
   additionBattleKeys,
   battleDifferences,
   canonicalJson,
+  classMethodFingerprints,
   compareShowdownEntries,
   compareWithCalc,
+  deriveItemsCatalog,
   deriveMovesCatalog,
   deriveSpeciesCatalog,
+  itemStatus,
   moveStatus,
   showdownEntryFingerprints,
+  showdownEntryNames,
   showdownMoveFacts,
   speciesFacts,
   speciesSlug,
@@ -88,21 +92,34 @@ function collectJarProvider(file) {
     (name) =>
       /^data\/cobblemon\/species\/.+\.json$/.test(name) ||
       /^data\/cobblemon\/species_additions\/.+\.json$/.test(name) ||
-      /\/showdown\/(moves|abilities)\.js$/.test(name),
+      /\/showdown\/(?:mods\/)?(moves|abilities|items)\.js$/.test(name) ||
+      /\/showdown\/battle-actions\.js$/.test(name) ||
+      /\/showdown\/held_items\/.+\.js$/.test(name),
   );
   return {entries};
 }
 
 function classifyProviderEntries(provider, label) {
-  const result = {label, species: {}, additions: [], showdown: {}};
+  const result = {label, species: {}, additions: [], showdown: {}, battleActions: null, heldItemOverrides: []};
   for (const [name, bytes] of Object.entries(provider.entries)) {
+    const showdownKind = name.match(/\/showdown\/(?:mods\/)?(moves|abilities|items)\.js$/)?.[1];
     if (/^data\/cobblemon\/species\/.+\.json$/.test(name)) result.species[speciesSlug(name)] = parseJsonBytes(bytes, `${label}:${name}`);
     else if (/^data\/cobblemon\/species_additions\/.+\.json$/.test(name)) {
       const json = parseJsonBytes(bytes, `${label}:${name}`);
       const target = typeof json.target === 'string' ? json.target : `cobblemon:${speciesSlug(name)}`;
       result.additions.push({target: target.replace(/^cobblemon:/, ''), json});
-    } else if (/\/showdown\/moves\.js$/.test(name)) result.showdown.moves = strFromU8(bytes);
-    else if (/\/showdown\/abilities\.js$/.test(name)) result.showdown.abilities = strFromU8(bytes);
+    } else if (showdownKind) {
+      // O Mega Showdown traz `showdown/moves.js` e `showdown/mods/moves.js`: guardar todos, sem sobrescrever.
+      result.showdown[showdownKind] = [...(result.showdown[showdownKind] ?? []), {file: name, source: strFromU8(bytes)}];
+    } else if (/\/showdown\/battle-actions\.js$/.test(name)) result.battleActions = strFromU8(bytes);
+    else if (/\/showdown\/held_items\/.+\.js$/.test(name)) {
+      result.heldItemOverrides.push(
+        path
+          .basename(name, '.js')
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, ''),
+      );
+    }
   }
   return result;
 }
@@ -157,7 +174,9 @@ function main() {
   );
   const showdownZip = base['data/cobblemon/showdown.zip'];
   if (!showdownZip || sha256(showdownZip) !== pins.showdownZip) fail('o showdown.zip embutido não corresponde ao fixado no catálogo');
-  const showdownFiles = unzipSync(showdownZip, {filter: (entry) => entry.name === 'data/moves.js' || entry.name === 'data/abilities.js'});
+  const showdownFiles = unzipSync(showdownZip, {
+    filter: (entry) => ['data/moves.js', 'data/abilities.js', 'data/items.js', 'sim/battle-actions.js'].includes(entry.name),
+  });
 
   const baseSpeciesJson = {};
   for (const [name, bytes] of Object.entries(base)) {
@@ -168,7 +187,12 @@ function main() {
   const providers = [];
   for (const jar of jars.filter((name) => name !== cobblemonJars[0]).sort()) {
     const provider = classifyProviderEntries(collectJarProvider(path.join(modsDirectory, jar)), jar);
-    if (Object.keys(provider.species).length + provider.additions.length > 0 || provider.showdown.moves || provider.showdown.abilities) {
+    if (
+      Object.keys(provider.species).length + provider.additions.length > 0 ||
+      Object.keys(provider.showdown).length > 0 ||
+      provider.battleActions !== null ||
+      provider.heldItemOverrides.length > 0
+    ) {
       provider.sha256 = sha256(fs.readFileSync(path.join(modsDirectory, jar)));
       providers.push(provider);
     }
@@ -210,44 +234,95 @@ function main() {
   const packDiffersMoves = new Set();
   const showdown = {};
   const unreviewed = [];
-  for (const kind of ['moves', 'abilities']) {
-    const exportName = kind === 'moves' ? 'Moves' : 'Abilities';
-    const ids =
-      kind === 'moves'
-        ? [...baseMoveIds, ...candidateMoveIds].sort()
-        : Object.keys(catalog[kind])
-            .filter((key) => key.startsWith('cobblemon:'))
-            .map((key) => key.slice('cobblemon:'.length))
-            .sort();
+  const packDiffersItems = new Set();
+  const DAMAGE_METHODS = ['getDamage', 'modifyDamage', 'getSpreadDamage', 'hitStepTypeImmunity'];
+  const SHOWDOWN_EXPORTS = {moves: 'Moves', abilities: 'Abilities', items: 'Items'};
+  const recordComparison = (kind, provider, file, result, reviewedIds, compared) =>
+    showdown[kind].push({
+      provider: provider.label,
+      file,
+      sha256: provider.sha256 ?? null,
+      compared,
+      identical: result.identical.length,
+      different: result.different,
+      missing: result.missing,
+      reviewed: reviewedIds,
+    });
+  for (const kind of ['moves', 'abilities', 'items']) {
+    const exportName = SHOWDOWN_EXPORTS[kind];
     const baseEntries = showdownEntryFingerprints(strFromU8(showdownFiles[`data/${kind}.js`]), exportName);
+    let ids;
+    if (kind === 'moves') ids = [...baseMoveIds, ...candidateMoveIds].sort();
+    else if (kind === 'items') ids = Object.keys(baseEntries).sort();
+    else
+      ids = Object.keys(catalog[kind])
+        .filter((key) => key.startsWith('cobblemon:'))
+        .map((key) => key.slice('cobblemon:'.length))
+        .sort();
     showdown[kind] = [];
-    for (const provider of providers.filter((candidate) => candidate.showdown[kind])) {
-      const result = compareShowdownEntries(baseEntries, showdownEntryFingerprints(provider.showdown[kind], exportName), ids);
-      const reviewedIds = [];
-      for (const id of result.different) {
-        if (kind === 'moves' && !baseMoveIds.has(id)) {
-          packDiffersMoves.add(id);
-          continue;
+    for (const provider of providers) {
+      for (const entry of provider.showdown[kind] ?? []) {
+        let otherEntries;
+        try {
+          otherEntries = showdownEntryFingerprints(entry.source, exportName);
+        } catch (error) {
+          fail(`${provider.label}:${entry.file} não declara ${exportName} (${error.message})`);
         }
-        const decision = reviewed.overrides.find((item) => item.kind === kind && item.id === id && item.provider === provider.label);
-        if (decision) reviewedIds.push(id);
-        else unreviewed.push(`${kind}:${id} (${provider.label})`);
+        const result = compareShowdownEntries(baseEntries, otherEntries, ids);
+        const reviewedIds = [];
+        for (const id of result.different) {
+          if (kind === 'items') {
+            packDiffersItems.add(id);
+            continue;
+          }
+          if (kind === 'moves' && !baseMoveIds.has(id)) {
+            packDiffersMoves.add(id);
+            continue;
+          }
+          const decision = reviewed.overrides.find((item) => item.kind === kind && item.id === id && item.provider === provider.label);
+          if (decision) reviewedIds.push(id);
+          else unreviewed.push(`${kind}:${id} (${provider.label})`);
+        }
+        recordComparison(kind, provider, entry.file, result, reviewedIds, ids.length);
       }
-      showdown[kind].push({
-        provider: provider.label,
-        sha256: provider.sha256 ?? null,
-        compared: ids.length,
-        identical: result.identical.length,
-        different: result.different,
-        missing: result.missing,
-        reviewed: reviewedIds,
-      });
     }
+  }
+
+  // Trava: outro provedor não pode alterar, sem revisão, os métodos do Showdown que calculam o dano.
+  const baseMethods = classMethodFingerprints(strFromU8(showdownFiles['sim/battle-actions.js']));
+  showdown['battle-actions'] = [];
+  for (const provider of providers.filter((candidate) => candidate.battleActions !== null)) {
+    const result = compareShowdownEntries(baseMethods, classMethodFingerprints(provider.battleActions), DAMAGE_METHODS);
+    const reviewedIds = [];
+    for (const id of result.different) {
+      const decision = reviewed.overrides.find(
+        (item) => item.kind === 'battle-actions' && item.id === id && item.provider === provider.label,
+      );
+      if (decision) reviewedIds.push(id);
+      else unreviewed.push(`battle-actions:${id} (${provider.label})`);
+    }
+    recordComparison('battle-actions', provider, 'battle-actions.js', result, reviewedIds, DAMAGE_METHODS.length);
   }
   if (unreviewed.length > 0) {
     fail(
       `outro provedor altera regras do Showdown do catálogo sem revisão registrada em data/compat/reviewed-overrides.json:\n  ${unreviewed.join('\n  ')}`,
     );
+  }
+
+  // Itens segurados: nome do Showdown base, conhecido pelo calc e sem redefinição por outro pacote.
+  const itemNames = showdownEntryNames(strFromU8(showdownFiles['data/items.js']), 'Items');
+  const heldOverrides = new Set(providers.flatMap((provider) => provider.heldItemOverrides));
+  const items = {};
+  const itemReasons = {};
+  for (const id of Object.keys(itemNames).sort()) {
+    const name = itemNames[id];
+    const verdict = itemStatus({
+      name,
+      calcHasItem: Boolean(name && generation.items.get(calc.toID(name))),
+      packDiffers: packDiffersItems.has(id) || heldOverrides.has(id),
+    });
+    items[id] = {name, ...verdict};
+    if (verdict.status === 'excluded') itemReasons[verdict.reason] = (itemReasons[verdict.reason] ?? 0) + 1;
   }
 
   const moves = {};
@@ -261,11 +336,6 @@ function main() {
     });
     moves[id] = {...facts, ...verdict};
     if (verdict.status === 'excluded') moveReasons[verdict.reason] = (moveReasons[verdict.reason] ?? 0) + 1;
-  }
-  if (unreviewed.length > 0) {
-    fail(
-      `outro provedor altera regras do Showdown do catálogo sem revisão registrada em data/compat/reviewed-overrides.json:\n  ${unreviewed.join('\n  ')}`,
-    );
   }
 
   const manifest = {
@@ -284,6 +354,7 @@ function main() {
     },
     species,
     moves,
+    items,
     showdown,
   };
 
@@ -295,6 +366,8 @@ function main() {
   nextCatalog.ruleset.sourceSha256.speciesRecords = sha256(canonicalJson(species));
   nextCatalog.moves = deriveMovesCatalog(moves);
   nextCatalog.ruleset.sourceSha256.moveRecords = sha256(canonicalJson(moves));
+  nextCatalog.items = deriveItemsCatalog(items);
+  nextCatalog.ruleset.sourceSha256.itemRecords = sha256(canonicalJson(items));
   if (options.rulesetId) nextCatalog.ruleset.id = options.rulesetId;
 
   const previous = new Set(Object.keys(catalog.species));
@@ -313,6 +386,8 @@ function main() {
         golpesBase: baseMoveIds.size,
         golpesDerivados: Object.values(moves).filter((entry) => entry.status === 'derived').length,
         motivosDeExclusaoDeGolpes: moveReasons,
+        itensDerivados: Object.values(items).filter((entry) => entry.status === 'derived').length,
+        motivosDeExclusaoDeItens: itemReasons,
         catalogoAnterior: previous.size,
         catalogoNovo: next.size,
         adicionadas: added.length,
