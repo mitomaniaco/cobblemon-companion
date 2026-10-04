@@ -1,5 +1,5 @@
 import {createRequire} from 'node:module';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 
 const require = createRequire(import.meta.url);
 const {COMPATIBILITY, assertFreshSources, calculateRealDamage} = require('../electron/lib/real-damage.cjs');
@@ -783,5 +783,425 @@ describe('golpes derivados e imunidade', () => {
     expect(result.candidate.max).toBe(0);
     expect(result.candidate.rollCount).toBe(16);
     expect(result.current.max).toBeGreaterThan(0);
+  });
+});
+
+describe('validação do pedido de cálculo real', () => {
+  const run = (patch, individual = makeIndividual()) => calculateRealDamage(makeSnapshot(individual), makeRequest(patch));
+  const withTarget = (patch) => ({target: {...makeRequest().target, ...patch}});
+
+  it('recusa pedido que não é objeto', () => {
+    expect(() => calculateRealDamage(makeSnapshot(), null)).toThrow('Cálculo real: request precisa ser um objeto');
+    expect(() => calculateRealDamage(makeSnapshot(), [])).toThrow('Cálculo real: request precisa ser um objeto');
+  });
+
+  it('recusa chave desconhecida no pedido e no alvo', () => {
+    expect(() => run({extra: 1})).toThrow('Cálculo real: request.extra');
+    expect(() => run(withTarget({extra: 1}))).toThrow('Cálculo real: request.target.extra');
+  });
+
+  it('recusa snapshot que não é o v2 best-effort com lista de indivíduos', () => {
+    const base = makeSnapshot();
+    for (const snapshot of [{...base, schemaVersion: 1}, {...base, consistency: 'strict'}, {...base, individuals: null}, null]) {
+      expect(() => calculateRealDamage(snapshot, makeRequest())).toThrow('Cálculo real: snapshot não corresponde');
+    }
+  });
+
+  it('recusa UUID em branco, repetido ou ausente do snapshot', () => {
+    expect(() => run({individualUuid: '   '})).toThrow('Cálculo real: request.individualUuid');
+    expect(() => run({individualUuid: 5})).toThrow('Cálculo real: request.individualUuid');
+    expect(() => run({individualUuid: '00000000-0000-4000-8000-0000000000ff'})).toThrow('Cálculo real: request.individualUuid');
+    const first = makeIndividual();
+    const snapshot = {...makeSnapshot(first), individuals: [first, {...first}]};
+    expect(() => calculateRealDamage(snapshot, makeRequest())).toThrow('Cálculo real: request.individualUuid');
+  });
+
+  it.each([0, 101, 1.5, -1, '25', null, Number.NaN])('recusa nível do alvo %j', (level) => {
+    expect(() => run(withTarget({level}))).toThrow('Cálculo real: request.target.level');
+  });
+
+  it.each([1, 100])('aceita nível do alvo nos limites (%i)', (level) => {
+    expect(run(withTarget({level})).target.level).toBe(level);
+  });
+
+  it('aplica os limites de IV (0–31), EV (0–252) e soma de EVs (até 510) do alvo', () => {
+    const target = makeRequest().target;
+    expect(() => run(withTarget({ivs: {...target.ivs, hp: 32}}))).toThrow('Cálculo real: request.target.ivs.hp');
+    expect(() => run(withTarget({ivs: {...target.ivs, hp: -1}}))).toThrow('Cálculo real: request.target.ivs.hp');
+    expect(() => run(withTarget({evs: {...target.evs, spe: 253}}))).toThrow('Cálculo real: request.target.evs.spe');
+    expect(() => run(withTarget({evs: {...target.evs, spe: -1}}))).toThrow('Cálculo real: request.target.evs.spe');
+    expect(() => run(withTarget({evs: {...target.evs, hp: 252, atk: 252, def: 7}}))).toThrow(
+      'Cálculo real: request.target.evs a soma excede 510',
+    );
+    expect(() => run(withTarget({ivs: {...target.ivs, extra: 1}}))).toThrow('Cálculo real: request.target.ivs.extra');
+    expect(run(withTarget({evs: {...target.evs, hp: 252, atk: 252, def: 6}})).candidate.max).toBeGreaterThan(0);
+    expect(run(withTarget({ivs: {...target.ivs, hp: 0}, evs: {...target.evs, hp: 252}})).candidate.max).toBeGreaterThan(0);
+  });
+
+  it('recusa forma não normal, espécie, natureza e habilidade fora do catálogo', () => {
+    expect(() => run(withTarget({formId: 'alola'}))).toThrow('Cálculo real: request.target.formId');
+    expect(() => run(withTarget({speciesId: 'cobblemon:inexistente'}))).toThrow('Cálculo real: request.target.speciesId');
+    expect(() => run(withTarget({speciesId: ''}))).toThrow('Cálculo real: request.target.speciesId');
+    expect(() => run(withTarget({nature: 'cobblemon:inexistente'}))).toThrow('Cálculo real: request.target.nature');
+    expect(() => run(withTarget({ability: 'outro:synchronize'}))).toThrow(
+      'Cálculo real: request.target.ability usa um namespace sem mapeamento',
+    );
+    expect(() => run(withTarget({ability: 'cobblemon:overgrow'}))).toThrow('Cálculo real: request.target.ability não está mapeada');
+    expect(() => run(withTarget({ability: ''}))).toThrow('Cálculo real: request.target.ability');
+  });
+
+  it('aceita ID sem namespace com o mesmo resultado do ID com namespace', () => {
+    const plain = run(withTarget({ability: 'synchronize', nature: 'modest'}));
+    const namespaced = run(withTarget({ability: 'cobblemon:synchronize', nature: 'cobblemon:modest'}));
+    expect(plain.candidate).toEqual(namespaced.candidate);
+    expect(plain.current).toEqual(namespaced.current);
+  });
+
+  it('exige cada confirmação de cenário e recusa chave extra', () => {
+    for (const key of Object.keys(makeRequest().assumptions)) {
+      const assumptions = {...makeRequest().assumptions, [key]: false};
+      expect(() => run({assumptions})).toThrow(`Cálculo real: request.assumptions.${key}`);
+    }
+    expect(() => run({assumptions: {...makeRequest().assumptions, extra: true}})).toThrow('Cálculo real: request.assumptions.extra');
+  });
+});
+
+describe('fontes e frescor do snapshot', () => {
+  const run = (sources, snapshot = makeSnapshot()) => calculateRealDamage(snapshot, makeRequest({sources}));
+  const [party, pc] = sourceHashes;
+
+  it('exige exatamente party e PC, sem repetição, tipo desconhecido ou chave extra', () => {
+    expect(() => run([party])).toThrow('Cálculo real: request.sources');
+    expect(() => run([party, pc, pc])).toThrow('Cálculo real: request.sources');
+    expect(() => run('x')).toThrow('Cálculo real: request.sources');
+    expect(() => run(null)).toThrow('Cálculo real: request.sources');
+    expect(() => run([party, {...pc, kind: 'outro'}])).toThrow('Cálculo real: request.sources[1].kind');
+    expect(() => run([party, {...party}])).toThrow('Cálculo real: request.sources[1].kind');
+    expect(() => run([party, {...pc, extra: 1}])).toThrow('Cálculo real: request.sources[1].extra');
+  });
+
+  it.each([
+    ['63 caracteres', 'a'.repeat(63)],
+    ['caractere fora de hexadecimal', 'g'.repeat(64)],
+    ['65 caracteres', `${'a'.repeat(64)}b`],
+    ['prefixo extra', `x${'a'.repeat(64)}`],
+    ['maiúsculas', 'A'.repeat(64)],
+    ['não texto', 5],
+  ])('recusa SHA-256 com %s', (_label, sha256) => {
+    expect(() => run([{...party, sha256}, pc])).toThrow('Cálculo real: request.sources[0].sha256');
+  });
+
+  it('aceita as fontes em qualquer ordem e responde na ordem party, PC', () => {
+    const result = run([pc, party]);
+    expect(result.snapshot.sources.map((source) => source.kind)).toEqual(['party', 'pc']);
+  });
+
+  it('recusa snapshot sem fontes, com fontes incompletas ou com hash diferente', () => {
+    const snapshot = makeSnapshot();
+    expect(() => run(sourceHashes, {...snapshot, sources: null})).toThrow('Cálculo real: snapshot.sources');
+    expect(() => run(sourceHashes, {...snapshot, sources: snapshot.sources.slice(0, 1)})).toThrow('Cálculo real: snapshot.sources');
+    const changed = {...snapshot, sources: [{...snapshot.sources[0], sha256: 'c'.repeat(64)}, snapshot.sources[1]]};
+    expect(() => run(sourceHashes, changed)).toThrow('Cálculo real: snapshot mudou');
+    const changedPc = {...snapshot, sources: [snapshot.sources[0], {...snapshot.sources[1], sha256: 'c'.repeat(64)}]};
+    expect(() => run(sourceHashes, changedPc)).toThrow('Cálculo real: snapshot mudou');
+  });
+
+  it('assertFreshSources devolve as fontes na ordem party, PC', () => {
+    expect(assertFreshSources([pc, party], [pc, party])).toEqual([party, pc]);
+  });
+});
+
+describe('perfil do indivíduo que ataca', () => {
+  const run = (mutate, patch = {}) => {
+    const individual = makeIndividual();
+    mutate(individual);
+    return calculateRealDamage(makeSnapshot(individual), makeRequest(patch));
+  };
+  const known = (value) => fact(value);
+
+  it('recusa forma, nível e observações ausentes ou inválidos', () => {
+    expect(() => run((a) => (a.formId = 'alola'))).toThrow('Cálculo real: actor.formId');
+    expect(() => run((a) => delete a.formId)).toThrow('Cálculo real: actor.formId');
+    expect(() => run((a) => (a.speciesId = 'cobblemon:inexistente'))).toThrow('Cálculo real: actor.speciesId');
+    expect(() => run((a) => (a.level = null))).toThrow('Cálculo real: actor.level não foi capturado');
+    expect(() => run((a) => (a.level = 1.5))).toThrow('Cálculo real: actor.level');
+    expect(() => run((a) => (a.level = 0))).toThrow('Cálculo real: actor.level precisa ser inteiro entre 1 e 100');
+    expect(() => run((a) => (a.level = 101))).toThrow('Cálculo real: actor.level precisa ser inteiro entre 1 e 100');
+    expect(() => run((a) => (a.observed = null))).toThrow('Cálculo real: actor.observed não foi capturado');
+    expect(() => run((a) => (a.observed.nature = ''))).toThrow('Cálculo real: actor.observed.nature');
+    expect(() => run((a) => (a.observed.nature = 'cobblemon:inexistente'))).toThrow('Cálculo real: actor.observed.nature');
+    expect(() => run((a) => (a.observed.ability = ''))).toThrow('Cálculo real: actor.observed.ability');
+    expect(() => run((a) => (a.observed.ability = 'cobblemon:blaze'))).toThrow('Cálculo real: actor.observed.ability não está mapeada');
+    expect(() => run((a) => (a.observed.heldItem = 'cobblemon:leftovers'))).toThrow('Cálculo real: actor.observed.heldItem');
+  });
+
+  it('aceita nível 1 e 100 do indivíduo', () => {
+    expect(run((a) => (a.level = 1)).actor.level).toBe(1);
+    expect(run((a) => (a.level = 100)).actor.level).toBe(100);
+  });
+
+  it('recusa Hyper Training desconhecido e IV desconhecido sem Hyper Training', () => {
+    expect(() => run((a) => (a.battleStats.hyperTrainedIvs.hp = {state: 'unknown'}))).toThrow(
+      'Cálculo real: actor.battleStats.hyperTrainedIvs.hp é desconhecido',
+    );
+    expect(() => run((a) => delete a.battleStats.hyperTrainedIvs)).toThrow('Cálculo real: actor.battleStats.hyperTrainedIvs.hp');
+    expect(() => run((a) => (a.battleStats.ivs.hp = {state: 'unknown'}))).toThrow('Cálculo real: actor.battleStats.ivs.hp é desconhecido');
+    expect(() => run((a) => delete a.battleStats.ivs.hp)).toThrow('Cálculo real: actor.battleStats.ivs.hp');
+    expect(() => run((a) => (a.battleStats.ivs.hp = known(32)))).toThrow('Cálculo real: actor.battleStats.effectiveIvs.hp');
+    expect(() => run((a) => (a.battleStats = null))).toThrow('Cálculo real: actor.battleStats');
+  });
+
+  it('o IV de Hyper Training vence o IV base quando conhecido', () => {
+    const baseline = run(() => {});
+    const overrideWins = run((a) => {
+      a.battleStats.ivs.atk = known(0);
+      a.battleStats.hyperTrainedIvs.atk = known(31);
+    });
+    const lowered = run((a) => {
+      a.battleStats.hyperTrainedIvs.atk = known(0);
+    });
+    expect(overrideWins.candidate).toEqual(baseline.candidate);
+    expect(lowered.candidate.max).toBeLessThan(baseline.candidate.max);
+    expect(run((a) => (a.battleStats.ivs.atk = known(0))).candidate.max).toBeLessThan(baseline.candidate.max);
+  });
+
+  it('exige EVs conhecidos, até 252 cada e soma até 510', () => {
+    expect(() => run((a) => delete a.battleStats.evs.spe)).toThrow('Cálculo real: actor.battleStats.evs.spe não foi capturado');
+    expect(() => run((a) => (a.battleStats.evs.spe = {state: 'unknown'}))).toThrow(
+      'Cálculo real: actor.battleStats.evs.spe é desconhecido',
+    );
+    expect(() => run((a) => (a.battleStats.evs.spe = known(253)))).toThrow('Cálculo real: actor.battleStats.evs.spe');
+    expect(() => run((a) => (a.battleStats.evs.spe = known(-1)))).toThrow('Cálculo real: actor.battleStats.evs.spe');
+    expect(() => run((a) => (a.battleStats.evs = null))).toThrow('Cálculo real: actor.battleStats.evs');
+    const evs = (a, list) => {
+      for (const [index, stat] of ['hp', 'atk', 'def', 'spa', 'spd', 'spe'].entries()) a.battleStats.evs[stat] = known(list[index]);
+    };
+    expect(() => run((a) => evs(a, [252, 252, 7, 0, 0, 0]))).toThrow('Cálculo real: actor.battleStats.evs a soma excede 510');
+    expect(run((a) => evs(a, [252, 252, 6, 0, 0, 0])).candidate.max).toBeGreaterThan(0);
+  });
+
+  it('exige listas de golpes conhecidas e um golpe equipado', () => {
+    expect(() => run((a) => (a.equippedMovesKnown = false))).toThrow('Cálculo real: actor.moves');
+    expect(() => run((a) => (a.learnedMovesKnown = false))).toThrow('Cálculo real: actor.moves');
+    expect(() => run((a) => (a.equippedMoves = []))).toThrow('Cálculo real: actor.equippedMoves');
+    expect(() => run((a) => (a.equippedMoves = null))).toThrow('Cálculo real: actor.equippedMoves');
+    expect(() => run((a) => (a.learnedMoves = null))).toThrow('Cálculo real: actor.learnedMoves');
+    expect(() => run((a) => (a.equippedMoves = [{id: ''}]))).toThrow('Cálculo real: actor.equippedMoves[0].id');
+  });
+
+  it('o golpe candidato precisa ser aprendido, não equipado e estar no catálogo', () => {
+    const learnsTackle = (a) => (a.learnedMoves = [{id: 'cobblemon:tackle', ppUps: 0}]);
+    expect(() => run(learnsTackle, {candidateMoveId: 'cobblemon:tackle'})).toThrow('precisa ser um golpe aprendido ainda não equipado');
+    expect(() =>
+      run((a) => {
+        a.equippedMoves = [...a.equippedMoves, {id: 'cobblemon:seedbomb', pp: 10, ppUps: 0}];
+      }),
+    ).toThrow('precisa ser um golpe aprendido ainda não equipado');
+    expect(() => run(() => {}, {candidateMoveId: 'cobblemon:earthquake'})).toThrow('não foi observado como aprendido');
+    expect(() => run((a) => (a.learnedMoves = [{id: 'cobblemon:fakeout', ppUps: 0}]), {candidateMoveId: 'cobblemon:fakeout'})).toThrow(
+      'Cálculo real: request.candidateMoveId está fora do subconjunto',
+    );
+    expect(() => run((a) => (a.equippedMoves = [{id: 'cobblemon:fakeout', pp: 10, ppUps: 0}]))).toThrow(
+      'Cálculo real: actor.equippedMoves[0].id está fora do subconjunto',
+    );
+    expect(() => run(() => {}, {candidateMoveId: ''})).toThrow('Cálculo real: request.candidateMoveId');
+  });
+});
+
+describe('motor de dano e saída', () => {
+  const calcModule = require('@smogon/calc');
+  const request = makeRequest();
+  const roll16 = Array.from({length: 16}, (_, index) => index + 1);
+  const withSpy = (implementation, body) => {
+    const spy = vi.spyOn(calcModule, 'calculate').mockImplementation(implementation);
+    try {
+      return body(spy);
+    } finally {
+      spy.mockRestore();
+    }
+  };
+
+  it('resume os 16 rolls pelo mínimo, máximo e HP do alvo', () => {
+    withSpy(
+      () => ({damage: roll16}),
+      (spy) => {
+        const result = calculateRealDamage(makeSnapshot(), request);
+        const abra = new calcModule.Pokemon(9, 'Abra', {
+          level: 25,
+          nature: 'Modest',
+          ivs: {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31},
+          evs: {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0},
+        });
+        for (const side of [result.current, result.candidate]) {
+          expect(side.min).toBe(1);
+          expect(side.max).toBe(16);
+          expect(side.rollCount).toBe(16);
+          expect(side.targetHP).toBe(abra.stats.hp);
+        }
+        expect(spy).toHaveBeenCalledTimes(2);
+        expect(spy.mock.calls[0][0]).toBe(9);
+        expect(spy.mock.calls[0][3].name).toBe('Tackle');
+        expect(spy.mock.calls[1][3].name).toBe('Seed Bomb');
+      },
+    );
+  });
+
+  it('trata dano exatamente 0 como imunidade e recusa qualquer outro formato', () => {
+    withSpy(
+      () => ({damage: 0}),
+      () => {
+        const result = calculateRealDamage(makeSnapshot(), request);
+        expect(result.current).toMatchObject({min: 0, max: 0, rollCount: 16});
+        expect(result.candidate).toMatchObject({min: 0, max: 0, rollCount: 16});
+      },
+    );
+    const invalid = [
+      roll16.slice(0, 15),
+      [...roll16.slice(0, 15), -1],
+      [...roll16.slice(0, 15), 1.5],
+      [...roll16, 17],
+      7,
+      [],
+      null,
+      undefined,
+      '0',
+    ];
+    for (const damage of invalid) {
+      withSpy(
+        () => ({damage}),
+        () =>
+          expect(() => calculateRealDamage(makeSnapshot(), request)).toThrow(
+            'Cálculo real: actor.equippedMoves[0].id o motor não retornou os 16 rolls',
+          ),
+      );
+    }
+  });
+
+  it('embrulha recusas do motor e preserva erros do próprio adaptador', () => {
+    withSpy(
+      () => {
+        throw new Error('x');
+      },
+      () => expect(() => calculateRealDamage(makeSnapshot(), request)).toThrow('o motor revisado recusou a entrada (x)'),
+    );
+    withSpy(
+      () => {
+        throw new TypeError('y');
+      },
+      () => expect(() => calculateRealDamage(makeSnapshot(), request)).toThrow('o motor revisado recusou a entrada (y)'),
+    );
+    withSpy(
+      () => {
+        throw new Error('Cálculo real: falso');
+      },
+      () => expect(() => calculateRealDamage(makeSnapshot(), request)).toThrow('o motor revisado recusou a entrada (Cálculo real: falso)'),
+    );
+    withSpy(
+      () => {
+        throw new TypeError('Cálculo real: original');
+      },
+      () => expect(() => calculateRealDamage(makeSnapshot(), request)).toThrow(/^Cálculo real: original$/),
+    );
+  });
+
+  it('imunidade real: golpe Normal contra Fantasma dá 0–0 e o outro golpe continua calculando', () => {
+    const result = calculateRealDamage(
+      makeSnapshot(),
+      makeRequest({target: {...request.target, speciesId: 'cobblemon:gengar', ability: 'cobblemon:cursedbody'}}),
+    );
+    expect(result.current).toMatchObject({min: 0, max: 0, rollCount: 16});
+    expect(result.candidate.max).toBeGreaterThan(0);
+    expect(result.candidate.min).toBeLessThanOrEqual(result.candidate.max);
+  });
+
+  it('devolve ruleset, fontes, escopo e identificação completos sem compartilhar referências', () => {
+    const snapshot = makeSnapshot();
+    const result = calculateRealDamage(snapshot, request);
+    expect(result.ruleset).toEqual({
+      id: COMPATIBILITY.ruleset.id,
+      cobblemonVersion: COMPATIBILITY.ruleset.cobblemonVersion,
+      showdownVersion: COMPATIBILITY.ruleset.showdownVersion,
+      calcVersion: '0.11.0',
+      adapterVersion: 'real-damage-adapter-v10',
+      sourceSha256: COMPATIBILITY.ruleset.sourceSha256,
+    });
+    expect(result.ruleset.sourceSha256).not.toBe(COMPATIBILITY.ruleset.sourceSha256);
+    expect(result.snapshot).toEqual({
+      capturedAt: snapshot.capturedAt,
+      worldName: snapshot.worldName,
+      sources: snapshot.sources.map(({kind, sha256, modifiedAt}) => ({kind, sha256, modifiedAt})),
+    });
+    expect(result.individualUuid).toBe(request.individualUuid);
+    expect(result.actor).toEqual({speciesId: 'cobblemon:bulbasaur', level: 30});
+    expect(result.target).toEqual({speciesId: 'cobblemon:abra', formId: 'normal', level: 25});
+    expect(result.scope).toEqual({
+      generation: 9,
+      format: 'singles',
+      actions: 1,
+      damageOnSuccessfulHitOnly: true,
+      rolls: 16,
+      rollSummary: 'minimum-and-maximum',
+      assumptions: {
+        rulesetMatchesActiveWorld: true,
+        actorBaselineConfirmed: true,
+        actorFullHpConfirmed: true,
+        targetBaselineConfirmed: true,
+        fieldBaselineConfirmed: true,
+      },
+    });
+  });
+
+  it('a impressão digital independe da ordem das chaves e muda com qualquer dado do alvo', () => {
+    const baseline = calculateRealDamage(makeSnapshot(), request).inputDigest;
+    const t = request.target;
+    const reordered = {
+      evs: {spe: 0, spd: 0, spa: 0, def: 0, atk: 0, hp: 0},
+      ivs: {spe: 31, spd: 31, spa: 31, def: 31, atk: 31, hp: 31},
+      ability: t.ability,
+      nature: t.nature,
+      level: t.level,
+      formId: t.formId,
+      speciesId: t.speciesId,
+    };
+    expect(calculateRealDamage(makeSnapshot(), makeRequest({target: reordered})).inputDigest).toBe(baseline);
+    const evChanged = makeRequest({target: {...t, evs: {...t.evs, hp: 4}}});
+    expect(calculateRealDamage(makeSnapshot(), evChanged).inputDigest).not.toBe(baseline);
+    const levelChanged = makeRequest({target: {...t, level: 26}});
+    expect(calculateRealDamage(makeSnapshot(), levelChanged).inputDigest).not.toBe(baseline);
+  });
+});
+
+describe('guardas de carga do adaptador', () => {
+  const adapterPath = require.resolve('../electron/lib/real-damage.cjs');
+  const catalogPath = require.resolve('../electron/lib/combat-compatibility.json');
+  const calcPackagePath = require.resolve('@smogon/calc/package.json');
+
+  function loadWith(path, exports) {
+    const saved = new Map([adapterPath, path].map((entry) => [entry, require.cache[entry]]));
+    try {
+      delete require.cache[adapterPath];
+      require.cache[path] = {id: path, filename: path, loaded: true, exports, children: [], paths: []};
+      return require(adapterPath);
+    } finally {
+      for (const [entry, cached] of saved) {
+        if (cached) require.cache[entry] = cached;
+        else delete require.cache[entry];
+      }
+    }
+  }
+  const catalogWith = (patch) => ({...COMPATIBILITY, ...patch, ruleset: {...COMPATIBILITY.ruleset, ...(patch.ruleset ?? {})}});
+
+  it('recusa catálogo com outro ruleset ou outro schema', () => {
+    expect(() => loadWith(catalogPath, catalogWith({ruleset: {id: 'outro'}}))).toThrow(/not a reviewed version/);
+    expect(() => loadWith(catalogPath, catalogWith({schemaVersion: 1}))).toThrow(/not a reviewed version/);
+  });
+
+  it('recusa versão do @smogon/calc ou do catálogo diferente da fixada', () => {
+    expect(() => loadWith(catalogPath, catalogWith({ruleset: {calcVersion: '0.0.0'}}))).toThrow(/requires @smogon\/calc/);
+    expect(() => loadWith(calcPackagePath, {version: '0.0.0'})).toThrow(/requires @smogon\/calc/);
+  });
+
+  it('carrega normalmente com os arquivos reais', () => {
+    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v10');
   });
 });
