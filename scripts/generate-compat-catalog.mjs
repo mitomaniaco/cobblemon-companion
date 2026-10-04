@@ -17,11 +17,14 @@ import {
   canonicalJson,
   compareShowdownEntries,
   compareWithCalc,
+  deriveMovesCatalog,
   deriveSpeciesCatalog,
+  moveStatus,
+  showdownEntryFingerprints,
+  showdownMoveFacts,
   speciesFacts,
   speciesSlug,
   speciesStatus,
-  showdownEntryFingerprints,
 } from './lib/compat-catalog.mjs';
 
 const require = createRequire(import.meta.url);
@@ -30,6 +33,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CATALOG_PATH = path.join(ROOT, 'electron/lib/combat-compatibility.json');
 const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
 const REVIEWED_PATH = path.join(ROOT, 'data/compat/reviewed-overrides.json');
+const BASE_MOVES_PATH = path.join(ROOT, 'data/compat/base-moves.json');
 const DATA_DIRECTORIES = ['kubejs/data', 'global_packs', 'datapacks', 'world/datapacks', 'config/openloader/data'];
 
 function fail(message) {
@@ -134,6 +138,8 @@ function main() {
 
   const catalog = readJson(CATALOG_PATH);
   const reviewed = fs.existsSync(REVIEWED_PATH) ? readJson(REVIEWED_PATH) : {overrides: []};
+  if (!fs.existsSync(BASE_MOVES_PATH)) fail('data/compat/base-moves.json ausente');
+  const baseMoveIds = new Set(Object.keys(readJson(BASE_MOVES_PATH).moves));
   const pins = catalog.ruleset.sourceSha256;
   const generation = calc.Generations.get(9);
 
@@ -190,21 +196,39 @@ function main() {
     species[slug] = {facts, calcMatches: compareWithCalc(facts, calcSpecies).matches, conflicts: conflicts[slug] ?? []};
   }
 
-  // Regras do Showdown (golpes e habilidades do catálogo) comparadas entre provedores.
+  // Regras do Showdown (golpes e habilidades) comparadas entre provedores. Golpes: lista-base revisada + candidatos derivados.
+  const moveFacts = showdownMoveFacts(strFromU8(showdownFiles['data/moves.js']));
+  const calcHasMove = (facts) => Boolean(facts.name && generation.moves.get(calc.toID(facts.name)));
+  for (const id of baseMoveIds) {
+    if (!moveFacts[id] || !calcHasMove(moveFacts[id])) fail(`golpe-base ausente no calc: ${id}`);
+  }
+  const candidateMoveIds = Object.keys(moveFacts).filter(
+    (id) =>
+      !baseMoveIds.has(id) &&
+      moveStatus(moveFacts[id], {isBase: false, calcHasMove: calcHasMove(moveFacts[id]), packDiffers: false}).status === 'derived',
+  );
+  const packDiffersMoves = new Set();
   const showdown = {};
   const unreviewed = [];
   for (const kind of ['moves', 'abilities']) {
     const exportName = kind === 'moves' ? 'Moves' : 'Abilities';
-    const ids = Object.keys(catalog[kind])
-      .filter((key) => key.startsWith('cobblemon:'))
-      .map((key) => key.slice('cobblemon:'.length))
-      .sort();
+    const ids =
+      kind === 'moves'
+        ? [...baseMoveIds, ...candidateMoveIds].sort()
+        : Object.keys(catalog[kind])
+            .filter((key) => key.startsWith('cobblemon:'))
+            .map((key) => key.slice('cobblemon:'.length))
+            .sort();
     const baseEntries = showdownEntryFingerprints(strFromU8(showdownFiles[`data/${kind}.js`]), exportName);
     showdown[kind] = [];
     for (const provider of providers.filter((candidate) => candidate.showdown[kind])) {
       const result = compareShowdownEntries(baseEntries, showdownEntryFingerprints(provider.showdown[kind], exportName), ids);
       const reviewedIds = [];
       for (const id of result.different) {
+        if (kind === 'moves' && !baseMoveIds.has(id)) {
+          packDiffersMoves.add(id);
+          continue;
+        }
         const decision = reviewed.overrides.find((item) => item.kind === kind && item.id === id && item.provider === provider.label);
         if (decision) reviewedIds.push(id);
         else unreviewed.push(`${kind}:${id} (${provider.label})`);
@@ -219,6 +243,24 @@ function main() {
         reviewed: reviewedIds,
       });
     }
+  }
+  if (unreviewed.length > 0) {
+    fail(
+      `outro provedor altera regras do Showdown do catálogo sem revisão registrada em data/compat/reviewed-overrides.json:\n  ${unreviewed.join('\n  ')}`,
+    );
+  }
+
+  const moves = {};
+  const moveReasons = {};
+  for (const [id, facts] of Object.entries(moveFacts)) {
+    if (facts.category !== 'Physical' && facts.category !== 'Special') continue;
+    const verdict = moveStatus(facts, {
+      isBase: baseMoveIds.has(id),
+      calcHasMove: calcHasMove(facts),
+      packDiffers: packDiffersMoves.has(id),
+    });
+    moves[id] = {...facts, ...verdict};
+    if (verdict.status === 'excluded') moveReasons[verdict.reason] = (moveReasons[verdict.reason] ?? 0) + 1;
   }
   if (unreviewed.length > 0) {
     fail(
@@ -241,6 +283,7 @@ function main() {
       })),
     },
     species,
+    moves,
     showdown,
   };
 
@@ -250,6 +293,8 @@ function main() {
   const nextCatalog = structuredClone(catalog);
   nextCatalog.species = derivedSpecies;
   nextCatalog.ruleset.sourceSha256.speciesRecords = sha256(canonicalJson(species));
+  nextCatalog.moves = deriveMovesCatalog(moves);
+  nextCatalog.ruleset.sourceSha256.moveRecords = sha256(canonicalJson(moves));
   if (options.rulesetId) nextCatalog.ruleset.id = options.rulesetId;
 
   const previous = new Set(Object.keys(catalog.species));
@@ -265,6 +310,9 @@ function main() {
     JSON.stringify(
       {
         especiesNoJar: Object.keys(species).length,
+        golpesBase: baseMoveIds.size,
+        golpesDerivados: Object.values(moves).filter((entry) => entry.status === 'derived').length,
+        motivosDeExclusaoDeGolpes: moveReasons,
         catalogoAnterior: previous.size,
         catalogoNovo: next.size,
         adicionadas: added.length,
