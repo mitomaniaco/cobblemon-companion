@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {afterAll, test} from 'vitest';
+import {afterAll, test, vi} from 'vitest';
 import {createRequire} from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -190,4 +190,244 @@ test('readStableSource returned size matches actual buffer length', () => {
   assert.equal(result.source.size, testData.length);
   assert.equal(result.bytes.length, testData.length);
   assert.equal(result.source.size, result.bytes.length);
+});
+
+// ============================================================================
+// Targeted tests for specific survivors in readStableSource
+// ============================================================================
+
+test('readStableSource rejects negative file size', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test content'));
+
+  let callCount = 0;
+  const originalFstat = fs.fstatSync;
+
+  vi.spyOn(fs, 'fstatSync').mockImplementation((fd) => {
+    callCount++;
+    if (callCount === 1) {
+      // First call (checking initial file state)
+      return {
+        isFile: () => true,
+        size: -1, // Negative size - should be rejected
+        mtimeMs: Date.now(),
+        ctimeMs: Date.now(),
+        ino: 12345,
+        mtime: new Date(),
+      };
+    }
+    return originalFstat(fd);
+  });
+
+  try {
+    assert.throws(
+      () => readStableSource(filePath, 'party', 1000),
+      (err) => err.code === 'ERR_IMPORT_SOURCE_SIZE',
+    );
+  } finally {
+    vi.restoreAllMocks();
+  }
+});
+
+test('readStableSource detects size change between before and after fstat', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test'));
+
+  let callCount = 0;
+
+  vi.spyOn(fs, 'fstatSync').mockImplementation(() => {
+    callCount++;
+    if (callCount === 1) {
+      return {
+        isFile: () => true,
+        size: 4,
+        mtimeMs: 1000,
+        ctimeMs: 1000,
+        ino: 12345,
+        mtime: new Date(),
+      };
+    }
+    // Second call: different size
+    return {
+      isFile: () => true,
+      size: 5,
+      mtimeMs: 1000,
+      ctimeMs: 1000,
+      ino: 12345,
+      mtime: new Date(),
+    };
+  });
+
+  try {
+    assert.throws(
+      () => readStableSource(filePath, 'party', 1000),
+      (err) => err.code === 'ERR_IMPORT_CHANGED',
+    );
+  } finally {
+    vi.restoreAllMocks();
+  }
+});
+
+test('readStableSource detects mtimeMs change', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test'));
+
+  let callCount = 0;
+
+  vi.spyOn(fs, 'fstatSync').mockImplementation(() => {
+    callCount++;
+    if (callCount === 1) {
+      return {
+        isFile: () => true,
+        size: 4,
+        mtimeMs: 1000,
+        ctimeMs: 1000,
+        ino: 12345,
+        mtime: new Date(),
+      };
+    }
+    // Second call: different mtimeMs
+    return {
+      isFile: () => true,
+      size: 4,
+      mtimeMs: 2000,
+      ctimeMs: 1000,
+      ino: 12345,
+      mtime: new Date(),
+    };
+  });
+
+  try {
+    assert.throws(
+      () => readStableSource(filePath, 'party', 1000),
+      (err) => err.code === 'ERR_IMPORT_CHANGED',
+    );
+  } finally {
+    vi.restoreAllMocks();
+  }
+});
+
+test('readStableSource detects ctimeMs change', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test'));
+
+  let callCount = 0;
+
+  vi.spyOn(fs, 'fstatSync').mockImplementation(() => {
+    callCount++;
+    if (callCount === 1) {
+      return {
+        isFile: () => true,
+        size: 4,
+        mtimeMs: 1000,
+        ctimeMs: 1000,
+        ino: 12345,
+        mtime: new Date(),
+      };
+    }
+    // Second call: different ctimeMs
+    return {
+      isFile: () => true,
+      size: 4,
+      mtimeMs: 1000,
+      ctimeMs: 2000,
+      ino: 12345,
+      mtime: new Date(),
+    };
+  });
+
+  try {
+    assert.throws(
+      () => readStableSource(filePath, 'party', 1000),
+      (err) => err.code === 'ERR_IMPORT_CHANGED',
+    );
+  } finally {
+    vi.restoreAllMocks();
+  }
+});
+
+test('readStableSource detects ino change', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test'));
+
+  let callCount = 0;
+
+  vi.spyOn(fs, 'fstatSync').mockImplementation(() => {
+    callCount++;
+    if (callCount === 1) {
+      return {
+        isFile: () => true,
+        size: 4,
+        mtimeMs: 1000,
+        ctimeMs: 1000,
+        ino: 12345,
+        mtime: new Date(),
+      };
+    }
+    // Second call: different ino
+    return {
+      isFile: () => true,
+      size: 4,
+      mtimeMs: 1000,
+      ctimeMs: 1000,
+      ino: 99999,
+      mtime: new Date(),
+    };
+  });
+
+  try {
+    assert.throws(
+      () => readStableSource(filePath, 'party', 1000),
+      (err) => err.code === 'ERR_IMPORT_CHANGED',
+    );
+  } finally {
+    vi.restoreAllMocks();
+  }
+});
+
+test('readStableSource handles readSync returning 0 (incomplete read)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test'));
+
+  vi.spyOn(fs, 'readSync').mockReturnValue(0);
+
+  try {
+    assert.throws(
+      () => readStableSource(filePath, 'party', 1000),
+      (err) => err.code === 'ERR_IMPORT_CHANGED',
+    );
+  } finally {
+    vi.restoreAllMocks();
+  }
+});
+
+test('readStableSource ignores closeSync errors', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  fs.writeFileSync(filePath, Buffer.from('test content'));
+
+  vi.spyOn(fs, 'closeSync').mockImplementation(() => {
+    throw new Error('closeSync mock error');
+  });
+
+  try {
+    // Should succeed despite closeSync throwing
+    const source = readStableSource(filePath, 'party', 1000);
+    assert.equal(source.source.size, 12);
+  } finally {
+    vi.restoreAllMocks();
+  }
 });

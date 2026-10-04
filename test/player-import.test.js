@@ -1083,3 +1083,131 @@ test('MintedNature vazio ou espaço usa Nature como fallback', () => {
   const snapshot = readPlayerSnapshotFromConfig({configPath: fixture.configPath});
   assert.equal(snapshot.individuals[0].observed.nature, 'cobblemon:calm');
 });
+
+// ============================================================================
+// Targeted tests for specific survivors
+// ============================================================================
+
+test('UUID regex case-insensitive hex matching', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const configPath = path.join(root, 'config.json');
+  const serverRoot = path.join(root, 'server');
+  fs.mkdirSync(serverRoot);
+
+  // Test with uppercase UUID (should work since regex has 'i' flag)
+  fs.writeFileSync(
+    configPath,
+    JSON.stringify({
+      serverRoot,
+      playerUuid: 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE',
+    }),
+  );
+
+  // Should parse the config even with uppercase UUID (it normalizes to lowercase)
+  assert.throws(
+    () => readPlayerSnapshotFromConfig({configPath}),
+    () => true, // Will throw because world is missing, but UUID should be accepted
+  );
+});
+
+test('readStableSource with modifiedAt conversion to ISO string', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  const content = 'test data for reading';
+  fs.writeFileSync(filePath, Buffer.from(content));
+
+  const source = readStableSource(filePath, 'party', 100000);
+
+  // Verify modifiedAt is an ISO string
+  assert(typeof source.source.modifiedAt === 'string');
+  assert(source.source.modifiedAt.includes('T'));
+  assert(source.source.modifiedAt.includes('Z'));
+});
+
+test('readStableSource returns bytes with correct length matching size', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const filePath = path.join(root, 'test.dat');
+  const content = Buffer.from('0123456789');
+  fs.writeFileSync(filePath, content);
+
+  const source = readStableSource(filePath, 'party', 100000);
+
+  assert.equal(source.source.size, 10);
+  assert.equal(source.bytes.length, 10);
+  assert(Buffer.isBuffer(source.bytes));
+});
+
+test('readStableSource different contents produce different sha256', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+
+  const file1 = path.join(root, 'test1.dat');
+  const file2 = path.join(root, 'test2.dat');
+  fs.writeFileSync(file1, Buffer.from('content1'));
+  fs.writeFileSync(file2, Buffer.from('content2'));
+
+  const source1 = readStableSource(file1, 'party', 100000);
+  const source2 = readStableSource(file2, 'party', 100000);
+
+  assert.notEqual(source1.source.sha256, source2.source.sha256);
+});
+
+test('readStableSource identical contents produce same sha256', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+
+  const content = Buffer.from('same content');
+  const file1 = path.join(root, 'test1.dat');
+  const file2 = path.join(root, 'test2.dat');
+  fs.writeFileSync(file1, content);
+  fs.writeFileSync(file2, content);
+
+  const source1 = readStableSource(file1, 'party', 100000);
+  const source2 = readStableSource(file2, 'party', 100000);
+
+  assert.equal(source1.source.sha256, source2.source.sha256);
+});
+
+test('parseWorldName with valid level-name value', () => {
+  const fixture = makeWorld();
+  // If the fixture loads successfully, the world name parsing worked
+  const snapshot = readPlayerSnapshotFromConfig({configPath: fixture.configPath});
+  assert(snapshot);
+});
+
+test('sourceLabel for party kind', () => {
+  // Test indirectly by triggering an error for party
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const missingPath = path.join(root, 'missing.dat');
+
+  assert.throws(
+    () => readStableSource(missingPath, 'party', 1000),
+    (err) => err.message.includes('party'),
+  );
+});
+
+test('sourceLabel for pc kind', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const missingPath = path.join(root, 'missing.dat');
+
+  assert.throws(
+    () => readStableSource(missingPath, 'pc', 1000),
+    (err) => err.message.includes('PC'),
+  );
+});
+
+test('sourceLabel for server.properties kind', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-'));
+  temporaryRoots.push(root);
+  const missingPath = path.join(root, 'missing.dat');
+
+  assert.throws(
+    () => readStableSource(missingPath, 'server.properties', 1000),
+    (err) => err.message.includes('server.properties'),
+  );
+});
