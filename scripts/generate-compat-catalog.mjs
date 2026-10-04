@@ -1,0 +1,298 @@
+// Gera data/compat/manifest.json e o mapa `species` de electron/lib/combat-compatibility.json
+// a partir dos arquivos efetivamente instalados (somente leitura; nada é executado nem enviado).
+//
+//   node scripts/generate-compat-catalog.mjs --instance <pasta com mods/> [--write] [--ruleset-id <id>]
+//
+// Sem --write, apenas compara com os arquivos versionados e sai com código 1 se houver diferença.
+// Use --instance com a pasta do cliente OU do servidor para conferir se os dois têm o mesmo pacote.
+import crypto from 'node:crypto';
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {strFromU8, unzipSync} from 'fflate';
+import {
+  additionBattleKeys,
+  battleDifferences,
+  canonicalJson,
+  compareShowdownEntries,
+  compareWithCalc,
+  deriveSpeciesCatalog,
+  speciesFacts,
+  speciesSlug,
+  speciesStatus,
+  showdownEntryFingerprints,
+} from './lib/compat-catalog.mjs';
+
+const require = createRequire(import.meta.url);
+const calc = require('@smogon/calc');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const CATALOG_PATH = path.join(ROOT, 'electron/lib/combat-compatibility.json');
+const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
+const REVIEWED_PATH = path.join(ROOT, 'data/compat/reviewed-overrides.json');
+const DATA_DIRECTORIES = ['kubejs/data', 'global_packs', 'datapacks', 'world/datapacks', 'config/openloader/data'];
+
+function fail(message) {
+  console.error(`ERRO: ${message}`);
+  process.exit(1);
+}
+
+function parseArguments(argv) {
+  const options = {write: false, instance: null, rulesetId: null};
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (argument === '--write') options.write = true;
+    else if (argument === '--instance') options.instance = argv[++index];
+    else if (argument === '--ruleset-id') options.rulesetId = argv[++index];
+    else fail(`argumento desconhecido: ${argument}`);
+  }
+  if (!options.instance) fail('informe --instance <pasta que contém mods/>');
+  return options;
+}
+
+const sha256 = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
+const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
+const jsonText = (value) => `${JSON.stringify(value, null, 2)}\n`;
+
+function unzipSelected(file, predicate) {
+  return unzipSync(new Uint8Array(fs.readFileSync(file)), {filter: (entry) => predicate(entry.name)});
+}
+
+function parseJsonBytes(bytes, label) {
+  try {
+    return JSON.parse(strFromU8(bytes));
+  } catch {
+    fail(`JSON inválido em ${label}`);
+    return null;
+  }
+}
+
+function walkFiles(directory) {
+  const files = [];
+  for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...walkFiles(full));
+    else files.push(full);
+  }
+  return files;
+}
+
+/** Coleta, de um provedor (jar ou pasta), os arquivos que podem alterar espécies ou regras do Showdown. */
+function collectJarProvider(file) {
+  const entries = unzipSelected(
+    file,
+    (name) =>
+      /^data\/cobblemon\/species\/.+\.json$/.test(name) ||
+      /^data\/cobblemon\/species_additions\/.+\.json$/.test(name) ||
+      /\/showdown\/(moves|abilities)\.js$/.test(name),
+  );
+  return {entries};
+}
+
+function classifyProviderEntries(provider, label) {
+  const result = {label, species: {}, additions: [], showdown: {}};
+  for (const [name, bytes] of Object.entries(provider.entries)) {
+    if (/^data\/cobblemon\/species\/.+\.json$/.test(name)) result.species[speciesSlug(name)] = parseJsonBytes(bytes, `${label}:${name}`);
+    else if (/^data\/cobblemon\/species_additions\/.+\.json$/.test(name)) {
+      const json = parseJsonBytes(bytes, `${label}:${name}`);
+      const target = typeof json.target === 'string' ? json.target : `cobblemon:${speciesSlug(name)}`;
+      result.additions.push({target: target.replace(/^cobblemon:/, ''), json});
+    } else if (/\/showdown\/moves\.js$/.test(name)) result.showdown.moves = strFromU8(bytes);
+    else if (/\/showdown\/abilities\.js$/.test(name)) result.showdown.abilities = strFromU8(bytes);
+  }
+  return result;
+}
+
+function collectDirectoryProviders(instance) {
+  const providers = [];
+  for (const relative of DATA_DIRECTORIES) {
+    const directory = path.join(instance, relative);
+    if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) continue;
+    const entries = {};
+    for (const file of walkFiles(directory)) {
+      const normalized = file.split(path.sep).join('/');
+      const speciesMatch = normalized.match(/\/data\/cobblemon\/species\/.+\.json$/) || normalized.match(/\/cobblemon\/species\/.+\.json$/);
+      const additionMatch = normalized.match(/\/cobblemon\/species_additions\/.+\.json$/);
+      if (speciesMatch) entries[`data/cobblemon/species/${path.basename(file)}`] = fs.readFileSync(file);
+      else if (additionMatch) entries[`data/cobblemon/species_additions/${path.basename(file)}`] = fs.readFileSync(file);
+    }
+    if (Object.keys(entries).length > 0) providers.push(classifyProviderEntries({entries}, relative));
+  }
+  return providers;
+}
+
+function addConflict(conflicts, slug, conflict) {
+  if (!Object.hasOwn(conflicts, slug)) conflicts[slug] = [];
+  conflicts[slug].push(conflict);
+}
+
+function main() {
+  const options = parseArguments(process.argv.slice(2));
+  const instance = path.resolve(options.instance);
+  const modsDirectory = path.join(instance, 'mods');
+  if (!fs.existsSync(modsDirectory)) fail(`pasta mods/ não encontrada em ${instance}`);
+
+  const catalog = readJson(CATALOG_PATH);
+  const reviewed = fs.existsSync(REVIEWED_PATH) ? readJson(REVIEWED_PATH) : {overrides: []};
+  const pins = catalog.ruleset.sourceSha256;
+  const generation = calc.Generations.get(9);
+
+  const jars = fs.readdirSync(modsDirectory).filter((name) => name.endsWith('.jar'));
+  const cobblemonJars = jars.filter((name) => /^Cobblemon-neoforge-.+\.jar$/.test(name));
+  if (cobblemonJars.length !== 1) fail(`esperado exatamente um JAR do Cobblemon, encontrado ${cobblemonJars.length}`);
+  const cobblemonFile = path.join(modsDirectory, cobblemonJars[0]);
+  const cobblemonSha = sha256(fs.readFileSync(cobblemonFile));
+  if (cobblemonSha !== pins.cobblemonJar)
+    fail(`o JAR do Cobblemon (${cobblemonSha}) não é o versão fixada no catálogo (${pins.cobblemonJar})`);
+
+  const base = unzipSelected(
+    cobblemonFile,
+    (name) => name === 'data/cobblemon/showdown.zip' || /^data\/cobblemon\/species\/.+\.json$/.test(name),
+  );
+  const showdownZip = base['data/cobblemon/showdown.zip'];
+  if (!showdownZip || sha256(showdownZip) !== pins.showdownZip) fail('o showdown.zip embutido não corresponde ao fixado no catálogo');
+  const showdownFiles = unzipSync(showdownZip, {filter: (entry) => entry.name === 'data/moves.js' || entry.name === 'data/abilities.js'});
+
+  const baseSpeciesJson = {};
+  for (const [name, bytes] of Object.entries(base)) {
+    if (name.startsWith('data/cobblemon/species/')) baseSpeciesJson[speciesSlug(name)] = parseJsonBytes(bytes, name);
+  }
+
+  // Outros provedores de dados.
+  const providers = [];
+  for (const jar of jars.filter((name) => name !== cobblemonJars[0]).sort()) {
+    const provider = classifyProviderEntries(collectJarProvider(path.join(modsDirectory, jar)), jar);
+    if (Object.keys(provider.species).length + provider.additions.length > 0 || provider.showdown.moves || provider.showdown.abilities) {
+      provider.sha256 = sha256(fs.readFileSync(path.join(modsDirectory, jar)));
+      providers.push(provider);
+    }
+  }
+  providers.push(...collectDirectoryProviders(instance));
+
+  // Espécies.
+  const conflicts = {};
+  for (const provider of providers) {
+    for (const [slug, json] of Object.entries(provider.species)) {
+      if (!Object.hasOwn(baseSpeciesJson, slug)) continue;
+      const fields = battleDifferences(baseSpeciesJson[slug], json);
+      if (fields.length > 0) addConflict(conflicts, slug, {provider: provider.label, kind: 'species-file', fields});
+    }
+    for (const addition of provider.additions) {
+      if (!Object.hasOwn(baseSpeciesJson, addition.target)) continue;
+      const fields = additionBattleKeys(addition.json);
+      if (fields.length > 0) addConflict(conflicts, addition.target, {provider: provider.label, kind: 'species-addition', fields});
+    }
+  }
+  const species = {};
+  for (const slug of Object.keys(baseSpeciesJson).sort()) {
+    const facts = speciesFacts(baseSpeciesJson[slug]);
+    const calcSpecies = facts.name ? generation.species.get(calc.toID(facts.name)) : undefined;
+    species[slug] = {facts, calcMatches: compareWithCalc(facts, calcSpecies).matches, conflicts: conflicts[slug] ?? []};
+  }
+
+  // Regras do Showdown (golpes e habilidades do catálogo) comparadas entre provedores.
+  const showdown = {};
+  const unreviewed = [];
+  for (const kind of ['moves', 'abilities']) {
+    const exportName = kind === 'moves' ? 'Moves' : 'Abilities';
+    const ids = Object.keys(catalog[kind])
+      .filter((key) => key.startsWith('cobblemon:'))
+      .map((key) => key.slice('cobblemon:'.length))
+      .sort();
+    const baseEntries = showdownEntryFingerprints(strFromU8(showdownFiles[`data/${kind}.js`]), exportName);
+    showdown[kind] = [];
+    for (const provider of providers.filter((candidate) => candidate.showdown[kind])) {
+      const result = compareShowdownEntries(baseEntries, showdownEntryFingerprints(provider.showdown[kind], exportName), ids);
+      const reviewedIds = [];
+      for (const id of result.different) {
+        const decision = reviewed.overrides.find((item) => item.kind === kind && item.id === id && item.provider === provider.label);
+        if (decision) reviewedIds.push(id);
+        else unreviewed.push(`${kind}:${id} (${provider.label})`);
+      }
+      showdown[kind].push({
+        provider: provider.label,
+        sha256: provider.sha256 ?? null,
+        compared: ids.length,
+        identical: result.identical.length,
+        different: result.different,
+        missing: result.missing,
+        reviewed: reviewedIds,
+      });
+    }
+  }
+  if (unreviewed.length > 0) {
+    fail(
+      `outro provedor altera regras do Showdown do catálogo sem revisão registrada em data/compat/reviewed-overrides.json:\n  ${unreviewed.join('\n  ')}`,
+    );
+  }
+
+  const manifest = {
+    schemaVersion: 1,
+    sources: {
+      cobblemonJar: {file: cobblemonJars[0], sha256: cobblemonSha},
+      showdownZip: {sha256: pins.showdownZip},
+      calc: {version: catalog.ruleset.calcVersion, generation: 9},
+      providers: providers.map((provider) => ({
+        provider: provider.label,
+        sha256: provider.sha256 ?? null,
+        speciesFiles: Object.keys(provider.species).length,
+        speciesAdditions: provider.additions.length,
+        showdown: Object.keys(provider.showdown),
+      })),
+    },
+    species,
+    showdown,
+  };
+
+  // Catálogo derivado.
+  const supportedAbilityIds = new Set(Object.keys(catalog.abilities).filter((key) => key.startsWith('cobblemon:')));
+  const derivedSpecies = deriveSpeciesCatalog(species, supportedAbilityIds);
+  const nextCatalog = structuredClone(catalog);
+  nextCatalog.species = derivedSpecies;
+  nextCatalog.ruleset.sourceSha256.speciesRecords = sha256(canonicalJson(species));
+  if (options.rulesetId) nextCatalog.ruleset.id = options.rulesetId;
+
+  const previous = new Set(Object.keys(catalog.species));
+  const next = new Set(Object.keys(derivedSpecies));
+  const added = [...next].filter((id) => !previous.has(id));
+  const removed = [...previous].filter((id) => !next.has(id));
+  const reasons = {};
+  for (const entry of Object.values(species)) {
+    const verdict = speciesStatus(entry, supportedAbilityIds);
+    if (verdict.status === 'excluded') reasons[verdict.reason] = (reasons[verdict.reason] ?? 0) + 1;
+  }
+  console.log(
+    JSON.stringify(
+      {
+        especiesNoJar: Object.keys(species).length,
+        catalogoAnterior: previous.size,
+        catalogoNovo: next.size,
+        adicionadas: added.length,
+        removidas: removed,
+        motivosDeExclusao: reasons,
+        provedoresRelevantes: providers.map((provider) => provider.label),
+        conflitosDeEspecie: Object.keys(conflicts),
+      },
+      null,
+      2,
+    ),
+  );
+
+  const outputs = [
+    [MANIFEST_PATH, jsonText(manifest)],
+    [CATALOG_PATH, jsonText(nextCatalog)],
+  ];
+  if (options.write) {
+    fs.mkdirSync(path.dirname(MANIFEST_PATH), {recursive: true});
+    for (const [file, text] of outputs) fs.writeFileSync(file, text);
+    console.log('Arquivos gravados.');
+    return;
+  }
+  const stale = outputs
+    .filter(([file, text]) => !fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== text)
+    .map(([file]) => path.relative(ROOT, file));
+  if (stale.length > 0) fail(`arquivos versionados diferem do gerado: ${stale.join(', ')} (rode com --write)`);
+  console.log('Arquivos versionados coincidem com a geração.');
+}
+
+main();

@@ -1,0 +1,54 @@
+{
+  "reviewedOn": "2026-10-03",
+  "note": "Diferenças entre o Showdown embutido no Cobblemon e o do Mega Showdown 1.9.3 nas habilidades do catálogo, comparadas por AST. Cada item foi lido e só altera troca de forma de batalha ou o agrupamento de uma condição; nenhum altera o cálculo de dano de uma forma normal. Qualquer diferença nova bloqueia o gerador até ser revisada aqui.",
+  "overrides": [
+    {
+      "kind": "abilities",
+      "id": "angershell",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só remove um par de parênteses em uma cadeia de && (agrupamento diferente, lógica idêntica)."
+    },
+    {
+      "kind": "abilities",
+      "id": "berserk",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só remove um par de parênteses em uma cadeia de && (agrupamento diferente, lógica idêntica)."
+    },
+    {
+      "kind": "abilities",
+      "id": "fairyaura",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Adiciona a troca de forma de Xerneas (xerneasactive) ao iniciar; o bônus de dano de Fairy Aura não muda."
+    },
+    {
+      "kind": "abilities",
+      "id": "flowergift",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só troca o parâmetro de permanência de formeChange de Cherrim; clima já é excluído pelas confirmações do cenário."
+    },
+    {
+      "kind": "abilities",
+      "id": "forecast",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só troca o parâmetro de permanência de formeChange de Castform; clima já é excluído pelas confirmações do cenário."
+    },
+    {
+      "kind": "abilities",
+      "id": "neutralizinggas",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só adiciona a troca de forma de Xerneas (xerneasactive); a supressão de habilidades não muda."
+    },
+    {
+      "kind": "abilities",
+      "id": "serenegrace",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só adiciona o retorno de forma de Meloetta (Pirouette) ao sair; a chance dobrada de efeitos secundários não entra no dano."
+    },
+    {
+      "kind": "abilities",
+      "id": "zenmode",
+      "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
+      "reason": "Só ajusta a troca de forma de Darmanitan (incluindo Galar); exige HP cheio, que já é uma confirmação do cenário."
+    }
+  ]
+}

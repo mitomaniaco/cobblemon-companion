@@ -58,7 +58,7 @@ Referências dentro do pacote: [entrada](./src/main.tsx), [shell](./src/app/Trai
 
 ## Cálculo real e limites
 
-O adaptador `real-damage-adapter-v9` usa `@smogon/calc` 0.11.0 / Gen 9 e o catálogo Cobblemon 1.7.3+1.21.1 / Showdown 16. A lista atual contém 673 espécies, 320 golpes diretos, 285 habilidades e 25 naturezas; fingerprints, exclusões, entradas obrigatórias, assumptions e limites estão registrados em [Importação party/PC](docs/preflight/IMPORTACAO-PARTY.md).
+O adaptador `real-damage-adapter-v9` usa `@smogon/calc` 0.11.0 / Gen 9 e o catálogo Cobblemon 1.7.3+1.21.1 / Showdown 16. A lista atual contém 841 espécies (derivadas por `npm run catalog:generate`; veja o contrato), 320 golpes diretos, 285 habilidades e 25 naturezas; fingerprints, exclusões, entradas obrigatórias, assumptions e limites estão registrados em [Importação party/PC](docs/preflight/IMPORTACAO-PARTY.md).
 
 A rota recalcula somente quando o snapshot atual, os hashes de party/PC, o UUID e todos os campos obrigatórios são válidos. Alvo sem perfil explícito, espécies/formas/golpes/habilidades não mapeados, IV/EV desconhecido, item observado, fonte alterada e qualquer confirmação ausente bloqueiam sem dano numérico. O mundo ativo e o estado de batalha não são detectados; a interface exige que a pessoa confirme o ruleset e o cenário sem item/status/boosts/campo/efeitos de troca ou habilidade não modelados.
 

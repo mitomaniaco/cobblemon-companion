@@ -19,7 +19,8 @@
     "prepare": "lefthook install",
     "test:coverage": "vitest run --coverage",
     "test:mutation": "stryker run",
-    "test:mutation:cjs": "stryker run stryker.cjs.config.json"
+    "test:mutation:cjs": "stryker run stryker.cjs.config.json",
+    "catalog:generate": "node scripts/generate-compat-catalog.mjs"
   },
   "engines": {
     "node": ">=22"
@@ -42,8 +43,10 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "5.0.4",
     "@vitest/coverage-v8": "3.2.4",
+    "acorn": "8.18.0",
     "dependency-cruiser": "18.5.0",
     "electron": "44.4.3",
+    "fflate": "0.8.3",
     "knip": "6.39.0",
     "lefthook": "2.1.16",
     "typescript": "5.9.2",
