@@ -64,7 +64,7 @@ A tela “Calcular dano com este indivíduo” usa uma rota Electron própria (`
 
 ### Subconjunto compatível versionado
 
-O catálogo exige correspondência entre Cobblemon **1.7.3+1.21.1**, os dados Showdown **16** empacotados no JAR instalado e `@smogon/calc` **0.11.0** / Gen 9. A revisão ativa é `cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v11`; os fingerprints SHA-256 fixados são:
+O catálogo exige correspondência entre Cobblemon **1.7.3+1.21.1**, os dados Showdown **16** empacotados no JAR instalado e `@smogon/calc` **0.11.0** / Gen 9. A revisão ativa é `cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12`; os fingerprints SHA-256 fixados são:
 
 | Fonte | SHA-256 |
 | --- | --- |

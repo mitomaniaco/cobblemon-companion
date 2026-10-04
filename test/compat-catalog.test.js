@@ -8,8 +8,11 @@ import {
   canonicalJson,
   compareShowdownEntries,
   compareWithCalc,
+  deriveMovesCatalog,
   deriveSpeciesCatalog,
+  moveStatus,
   showdownEntryFingerprints,
+  showdownMoveFacts,
   speciesFacts,
   speciesSlug,
   speciesStatus,
@@ -20,6 +23,7 @@ const calc = require('@smogon/calc');
 const catalog = require('../electron/lib/combat-compatibility.json');
 const manifest = JSON.parse(fs.readFileSync(new URL('../data/compat/manifest.json', import.meta.url), 'utf8'));
 const reviewed = JSON.parse(fs.readFileSync(new URL('../data/compat/reviewed-overrides.json', import.meta.url), 'utf8'));
+const baseMoves = JSON.parse(fs.readFileSync(new URL('../data/compat/base-moves.json', import.meta.url), 'utf8')).moves;
 const generation = calc.Generations.get(9);
 
 function gardevoirJson(overrides = {}) {
@@ -189,6 +193,77 @@ describe('impressão digital das regras do Showdown', () => {
   });
 });
 
+describe('fatos e regras dos golpes do Showdown', () => {
+  const source = `var Moves = {
+    earthquake: {name: "Earthquake", category: "Physical", target: "allAdjacent", basePower: 100},
+    dig: {name: "Dig", category: "Physical", target: "normal", basePower: 80, onTryMove() {}, condition: {onInvulnerability: function () {}}},
+    "doubleslap": {name: "Double Slap", category: "Physical", target: "normal", multihit: [2, 5]},
+    zmove: {name: "Z", category: "Physical", target: "normal", isZ: "firiumz"},
+    minus: {name: "Minus", category: "Special", target: "normal", basePower: -1},
+  };`;
+
+  it('lê categoria, alvo, mecânicas e callbacks sem executar o código', () => {
+    const facts = showdownMoveFacts(source);
+    expect(facts.earthquake).toMatchObject({
+      name: 'Earthquake',
+      category: 'Physical',
+      target: 'allAdjacent',
+      basePower: 100,
+      callbacks: [],
+    });
+    expect(facts.dig.callbacks).toEqual(['onTryMove']);
+    expect(facts.doubleslap.multihit).toBe(true);
+    expect(facts.zmove.isZ).toBe(true);
+    expect(facts.earthquake.isZ).toBe(false);
+    expect(facts.minus.basePower).toBe(-1);
+    expect(() => showdownMoveFacts('var Other = {};')).toThrow(/Moves/);
+  });
+
+  const valid = {category: 'Physical', target: 'normal', callbacks: [], critRatio: 2};
+  const ok = {isBase: false, calcHasMove: true, packDiffers: false};
+
+  it('golpe da lista-base sempre fica, mesmo com mecânica especial', () => {
+    expect(moveStatus({...valid, multihit: true}, {...ok, isBase: true})).toEqual({status: 'base'});
+  });
+
+  it('deriva golpe estruturalmente simples, inclusive com taxa de crítico alta', () => {
+    expect(moveStatus(valid, ok)).toEqual({status: 'derived'});
+  });
+
+  it.each([
+    ['not-damaging', {category: 'Status'}, ok],
+    ['nonstandard', {isZ: true}, ok],
+    ['nonstandard', {isMax: true}, ok],
+    ['nonstandard', {isNonstandard: 'LGPE'}, ok],
+    ['nonstandard', {isNonstandard: 'Gigantamax'}, ok],
+    ['target', {target: 'self'}, ok],
+    ['mechanics', {multihit: true}, ok],
+    ['mechanics', {damage: true}, ok],
+    ['mechanics', {ohko: true}, ok],
+    ['mechanics', {selfdestruct: true}, ok],
+    ['mechanics', {willCrit: true}, ok],
+    ['callbacks', {callbacks: ['onHit']}, ok],
+    ['calc-missing', {}, {...ok, calcHasMove: false}],
+    ['pack-override', {}, {...ok, packDiffers: true}],
+  ])('exclui por %s', (reason, overrides, context) => {
+    expect(moveStatus({...valid, ...overrides}, context)).toEqual({status: 'excluded', reason});
+  });
+
+  it('Past continua permitido; só LGPE e Gigantamax são não padrão excluídos', () => {
+    expect(moveStatus({...valid, isNonstandard: 'Past'}, ok).status).toBe('derived');
+  });
+
+  it('o mapa derivado tem chave com namespace e alias, ordenado, e só base e derivados', () => {
+    const derived = deriveMovesCatalog({
+      zeta: {name: 'Zeta', status: 'derived'},
+      alfa: {name: 'Alfa', status: 'base'},
+      out: {name: 'Out', status: 'excluded', reason: 'target'},
+    });
+    expect(Object.keys(derived)).toEqual(['cobblemon:alfa', 'alfa', 'cobblemon:zeta', 'zeta']);
+    expect(derived.zeta).toEqual({name: 'Zeta'});
+  });
+});
+
 describe('artefatos versionados do catálogo', () => {
   const supported = new Set(Object.keys(catalog.abilities).filter((key) => key.startsWith('cobblemon:')));
 
@@ -199,6 +274,18 @@ describe('artefatos versionados do catálogo', () => {
   it('a impressão digital dos registros de espécie é a do manifesto', () => {
     const digest = crypto.createHash('sha256').update(canonicalJson(manifest.species)).digest('hex');
     expect(catalog.ruleset.sourceSha256.speciesRecords).toBe(digest);
+  });
+
+  it('o catálogo de golpes é exatamente o derivado do manifesto e a impressão digital confere', () => {
+    expect(catalog.moves).toEqual(deriveMovesCatalog(manifest.moves));
+    const digest = crypto.createHash('sha256').update(canonicalJson(manifest.moves)).digest('hex');
+    expect(catalog.ruleset.sourceSha256.moveRecords).toBe(digest);
+  });
+
+  it('a lista-base revisada nunca perde golpes e os derivados esperados entram', () => {
+    for (const id of Object.keys(baseMoves)) expect(catalog.moves[`cobblemon:${id}`], id).toBeDefined();
+    for (const id of ['earthquake', 'slash', 'airslash']) expect(catalog.moves[`cobblemon:${id}`], id).toBeDefined();
+    for (const id of ['dig', 'fakeout', 'bulletseed', 'seismictoss']) expect(catalog.moves[`cobblemon:${id}`], id).toBeUndefined();
   });
 
   it('o resultado de coincidência com o calc registrado no manifesto é reproduzível com o calc fixado', () => {
@@ -232,6 +319,7 @@ describe('artefatos versionados do catálogo', () => {
     for (const kind of ['moves', 'abilities']) {
       for (const provider of manifest.showdown[kind]) {
         for (const id of provider.different) {
+          if (kind === 'moves' && !Object.hasOwn(baseMoves, id)) continue;
           const decision = reviewed.overrides.find((item) => item.kind === kind && item.id === id && item.provider === provider.provider);
           if (!decision || !provider.reviewed.includes(id)) unreviewed.push(`${kind}:${id}`);
         }

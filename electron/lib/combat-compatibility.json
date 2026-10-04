@@ -1,14 +1,15 @@
 {
   "schemaVersion": 2,
   "ruleset": {
-    "id": "cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v11",
+    "id": "cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12",
     "cobblemonVersion": "1.7.3+1.21.1",
     "showdownVersion": "16",
     "calcVersion": "0.11.0",
     "sourceSha256": {
       "cobblemonJar": "962d75df4fb649d94863a7a7d130d4d2b3de4da9b3cae4c44b1ce90f37ec0ed5",
       "showdownZip": "1c398031f28fefcb2ce6b44a5ca289061ed4c5d0dccefaae0f7c070b3f7e8d10",
-      "speciesRecords": "5e4ccaf2ba1230fc9d3906692feacd8ae17fdc4daeaf54f85187501ebfba1d27"
+      "speciesRecords": "5e4ccaf2ba1230fc9d3906692feacd8ae17fdc4daeaf54f85187501ebfba1d27",
+      "moveRecords": "8745508dd7864eca7e49f10160907ce7f207271acad59e9d8636ff075593f4be"
     }
   },
   "species": {
@@ -6294,11 +6295,41 @@
     "accelerock": {
       "name": "Accelerock"
     },
+    "cobblemon:acid": {
+      "name": "Acid"
+    },
+    "acid": {
+      "name": "Acid"
+    },
     "cobblemon:acidspray": {
       "name": "Acid Spray"
     },
     "acidspray": {
       "name": "Acid Spray"
+    },
+    "cobblemon:aerialace": {
+      "name": "Aerial Ace"
+    },
+    "aerialace": {
+      "name": "Aerial Ace"
+    },
+    "cobblemon:aeroblast": {
+      "name": "Aeroblast"
+    },
+    "aeroblast": {
+      "name": "Aeroblast"
+    },
+    "cobblemon:aircutter": {
+      "name": "Air Cutter"
+    },
+    "aircutter": {
+      "name": "Air Cutter"
+    },
+    "cobblemon:airslash": {
+      "name": "Air Slash"
+    },
+    "airslash": {
+      "name": "Air Slash"
     },
     "cobblemon:alluringvoice": {
       "name": "Alluring Voice"
@@ -6323,6 +6354,12 @@
     },
     "appleacid": {
       "name": "Apple Acid"
+    },
+    "cobblemon:aquacutter": {
+      "name": "Aqua Cutter"
+    },
+    "aquacutter": {
+      "name": "Aqua Cutter"
     },
     "cobblemon:aquajet": {
       "name": "Aqua Jet"
@@ -6353,6 +6390,24 @@
     },
     "astonish": {
       "name": "Astonish"
+    },
+    "cobblemon:astralbarrage": {
+      "name": "Astral Barrage"
+    },
+    "astralbarrage": {
+      "name": "Astral Barrage"
+    },
+    "cobblemon:attackorder": {
+      "name": "Attack Order"
+    },
+    "attackorder": {
+      "name": "Attack Order"
+    },
+    "cobblemon:aurasphere": {
+      "name": "Aura Sphere"
+    },
+    "aurasphere": {
+      "name": "Aura Sphere"
     },
     "cobblemon:aurawheel": {
       "name": "Aura Wheel"
@@ -6420,6 +6475,12 @@
     "blastburn": {
       "name": "Blast Burn"
     },
+    "cobblemon:blazekick": {
+      "name": "Blaze Kick"
+    },
+    "blazekick": {
+      "name": "Blaze Kick"
+    },
     "cobblemon:blazingtorque": {
       "name": "Blazing Torque"
     },
@@ -6462,17 +6523,47 @@
     "boneclub": {
       "name": "Bone Club"
     },
+    "cobblemon:boomburst": {
+      "name": "Boomburst"
+    },
+    "boomburst": {
+      "name": "Boomburst"
+    },
     "cobblemon:branchpoke": {
       "name": "Branch Poke"
     },
     "branchpoke": {
       "name": "Branch Poke"
     },
+    "cobblemon:bravebird": {
+      "name": "Brave Bird"
+    },
+    "bravebird": {
+      "name": "Brave Bird"
+    },
+    "cobblemon:breakingswipe": {
+      "name": "Breaking Swipe"
+    },
+    "breakingswipe": {
+      "name": "Breaking Swipe"
+    },
     "cobblemon:brickbreak": {
       "name": "Brick Break"
     },
     "brickbreak": {
       "name": "Brick Break"
+    },
+    "cobblemon:brutalswing": {
+      "name": "Brutal Swing"
+    },
+    "brutalswing": {
+      "name": "Brutal Swing"
+    },
+    "cobblemon:bubble": {
+      "name": "Bubble"
+    },
+    "bubble": {
+      "name": "Bubble"
     },
     "cobblemon:bubblebeam": {
       "name": "Bubble Beam"
@@ -6492,11 +6583,23 @@
     "bugbuzz": {
       "name": "Bug Buzz"
     },
+    "cobblemon:bulldoze": {
+      "name": "Bulldoze"
+    },
+    "bulldoze": {
+      "name": "Bulldoze"
+    },
     "cobblemon:bulletpunch": {
       "name": "Bullet Punch"
     },
     "bulletpunch": {
       "name": "Bullet Punch"
+    },
+    "cobblemon:burningjealousy": {
+      "name": "Burning Jealousy"
+    },
+    "burningjealousy": {
+      "name": "Burning Jealousy"
     },
     "cobblemon:ceaselessedge": {
       "name": "Ceaseless Edge"
@@ -6509,6 +6612,12 @@
     },
     "chargebeam": {
       "name": "Charge Beam"
+    },
+    "cobblemon:chatter": {
+      "name": "Chatter"
+    },
+    "chatter": {
+      "name": "Chatter"
     },
     "cobblemon:chillingwater": {
       "name": "Chilling Water"
@@ -6528,11 +6637,23 @@
     "chloroblast": {
       "name": "Chloroblast"
     },
+    "cobblemon:circlethrow": {
+      "name": "Circle Throw"
+    },
+    "circlethrow": {
+      "name": "Circle Throw"
+    },
     "cobblemon:clamp": {
       "name": "Clamp"
     },
     "clamp": {
       "name": "Clamp"
+    },
+    "cobblemon:clangingscales": {
+      "name": "Clanging Scales"
+    },
+    "clangingscales": {
+      "name": "Clanging Scales"
     },
     "cobblemon:clearsmog": {
       "name": "Clear Smog"
@@ -6570,6 +6691,24 @@
     "covet": {
       "name": "Covet"
     },
+    "cobblemon:crabhammer": {
+      "name": "Crabhammer"
+    },
+    "crabhammer": {
+      "name": "Crabhammer"
+    },
+    "cobblemon:crosschop": {
+      "name": "Cross Chop"
+    },
+    "crosschop": {
+      "name": "Cross Chop"
+    },
+    "cobblemon:crosspoison": {
+      "name": "Cross Poison"
+    },
+    "crosspoison": {
+      "name": "Cross Poison"
+    },
     "cobblemon:crunch": {
       "name": "Crunch"
     },
@@ -6594,11 +6733,41 @@
     "darkestlariat": {
       "name": "Darkest Lariat"
     },
+    "cobblemon:darkpulse": {
+      "name": "Dark Pulse"
+    },
+    "darkpulse": {
+      "name": "Dark Pulse"
+    },
+    "cobblemon:dazzlinggleam": {
+      "name": "Dazzling Gleam"
+    },
+    "dazzlinggleam": {
+      "name": "Dazzling Gleam"
+    },
+    "cobblemon:diamondstorm": {
+      "name": "Diamond Storm"
+    },
+    "diamondstorm": {
+      "name": "Diamond Storm"
+    },
     "cobblemon:direclaw": {
       "name": "Dire Claw"
     },
     "direclaw": {
       "name": "Dire Claw"
+    },
+    "cobblemon:disarmingvoice": {
+      "name": "Disarming Voice"
+    },
+    "disarmingvoice": {
+      "name": "Disarming Voice"
+    },
+    "cobblemon:discharge": {
+      "name": "Discharge"
+    },
+    "discharge": {
+      "name": "Discharge"
     },
     "cobblemon:dizzypunch": {
       "name": "Dizzy Punch"
@@ -6624,6 +6793,12 @@
     "dracometeor": {
       "name": "Draco Meteor"
     },
+    "cobblemon:dragonascent": {
+      "name": "Dragon Ascent"
+    },
+    "dragonascent": {
+      "name": "Dragon Ascent"
+    },
     "cobblemon:dragonbreath": {
       "name": "Dragon Breath"
     },
@@ -6642,11 +6817,23 @@
     "dragonhammer": {
       "name": "Dragon Hammer"
     },
+    "cobblemon:dragonpulse": {
+      "name": "Dragon Pulse"
+    },
+    "dragonpulse": {
+      "name": "Dragon Pulse"
+    },
     "cobblemon:dragonrush": {
       "name": "Dragon Rush"
     },
     "dragonrush": {
       "name": "Dragon Rush"
+    },
+    "cobblemon:dragontail": {
+      "name": "Dragon Tail"
+    },
+    "dragontail": {
+      "name": "Dragon Tail"
     },
     "cobblemon:drainingkiss": {
       "name": "Draining Kiss"
@@ -6659,6 +6846,18 @@
     },
     "drainpunch": {
       "name": "Drain Punch"
+    },
+    "cobblemon:drillpeck": {
+      "name": "Drill Peck"
+    },
+    "drillpeck": {
+      "name": "Drill Peck"
+    },
+    "cobblemon:drillrun": {
+      "name": "Drill Run"
+    },
+    "drillrun": {
+      "name": "Drill Run"
     },
     "cobblemon:drumbeating": {
       "name": "Drum Beating"
@@ -6684,6 +6883,12 @@
     "earthpower": {
       "name": "Earth Power"
     },
+    "cobblemon:earthquake": {
+      "name": "Earthquake"
+    },
+    "earthquake": {
+      "name": "Earthquake"
+    },
     "cobblemon:eeriespell": {
       "name": "Eerie Spell"
     },
@@ -6696,6 +6901,12 @@
     "eggbomb": {
       "name": "Egg Bomb"
     },
+    "cobblemon:electroweb": {
+      "name": "Electroweb"
+    },
+    "electroweb": {
+      "name": "Electroweb"
+    },
     "cobblemon:ember": {
       "name": "Ember"
     },
@@ -6707,6 +6918,12 @@
     },
     "energyball": {
       "name": "Energy Ball"
+    },
+    "cobblemon:esperwing": {
+      "name": "Esper Wing"
+    },
+    "esperwing": {
+      "name": "Esper Wing"
     },
     "cobblemon:eternabeam": {
       "name": "Eternabeam"
@@ -6762,6 +6979,12 @@
     "fierydance": {
       "name": "Fiery Dance"
     },
+    "cobblemon:fierywrath": {
+      "name": "Fiery Wrath"
+    },
+    "fierywrath": {
+      "name": "Fiery Wrath"
+    },
     "cobblemon:fireblast": {
       "name": "Fire Blast"
     },
@@ -6804,17 +7027,17 @@
     "flamecharge": {
       "name": "Flame Charge"
     },
-    "cobblemon:flamewheel": {
-      "name": "Flame Wheel"
-    },
-    "flamewheel": {
-      "name": "Flame Wheel"
-    },
     "cobblemon:flamethrower": {
       "name": "Flamethrower"
     },
     "flamethrower": {
       "name": "Flamethrower"
+    },
+    "cobblemon:flamewheel": {
+      "name": "Flame Wheel"
+    },
+    "flamewheel": {
+      "name": "Flame Wheel"
     },
     "cobblemon:flareblitz": {
       "name": "Flare Blitz"
@@ -6900,6 +7123,18 @@
     "gigatonhammer": {
       "name": "Gigaton Hammer"
     },
+    "cobblemon:glaciallance": {
+      "name": "Glacial Lance"
+    },
+    "glaciallance": {
+      "name": "Glacial Lance"
+    },
+    "cobblemon:glaciate": {
+      "name": "Glaciate"
+    },
+    "glaciate": {
+      "name": "Glaciate"
+    },
     "cobblemon:glaiverush": {
       "name": "Glaive Rush"
     },
@@ -6911,6 +7146,12 @@
     },
     "gunkshot": {
       "name": "Gunk Shot"
+    },
+    "cobblemon:gust": {
+      "name": "Gust"
+    },
+    "gust": {
+      "name": "Gust"
     },
     "cobblemon:hammerarm": {
       "name": "Hammer Arm"
@@ -6947,6 +7188,12 @@
     },
     "heartstamp": {
       "name": "Heart Stamp"
+    },
+    "cobblemon:heatwave": {
+      "name": "Heat Wave"
+    },
+    "heatwave": {
+      "name": "Heat Wave"
     },
     "cobblemon:hiddenpower": {
       "name": "Hidden Power"
@@ -7122,6 +7369,12 @@
     "hyperspacehole": {
       "name": "Hyperspace Hole"
     },
+    "cobblemon:hypervoice": {
+      "name": "Hyper Voice"
+    },
+    "hypervoice": {
+      "name": "Hyper Voice"
+    },
     "cobblemon:icebeam": {
       "name": "Ice Beam"
     },
@@ -7163,6 +7416,12 @@
     },
     "iciclecrash": {
       "name": "Icicle Crash"
+    },
+    "cobblemon:icywind": {
+      "name": "Icy Wind"
+    },
+    "icywind": {
+      "name": "Icy Wind"
     },
     "cobblemon:inferno": {
       "name": "Inferno"
@@ -7212,17 +7471,41 @@
     "jumpkick": {
       "name": "Jump Kick"
     },
+    "cobblemon:karatechop": {
+      "name": "Karate Chop"
+    },
+    "karatechop": {
+      "name": "Karate Chop"
+    },
     "cobblemon:kowtowcleave": {
       "name": "Kowtow Cleave"
     },
     "kowtowcleave": {
       "name": "Kowtow Cleave"
     },
+    "cobblemon:landswrath": {
+      "name": "Land's Wrath"
+    },
+    "landswrath": {
+      "name": "Land's Wrath"
+    },
+    "cobblemon:lavaplume": {
+      "name": "Lava Plume"
+    },
+    "lavaplume": {
+      "name": "Lava Plume"
+    },
     "cobblemon:leafage": {
       "name": "Leafage"
     },
     "leafage": {
       "name": "Leafage"
+    },
+    "cobblemon:leafblade": {
+      "name": "Leaf Blade"
+    },
+    "leafblade": {
+      "name": "Leaf Blade"
     },
     "cobblemon:leafstorm": {
       "name": "Leaf Storm"
@@ -7278,6 +7561,12 @@
     "lunge": {
       "name": "Lunge"
     },
+    "cobblemon:lusterpurge": {
+      "name": "Luster Purge"
+    },
+    "lusterpurge": {
+      "name": "Luster Purge"
+    },
     "cobblemon:machpunch": {
       "name": "Mach Punch"
     },
@@ -7308,11 +7597,23 @@
     "magnetbomb": {
       "name": "Magnet Bomb"
     },
+    "cobblemon:makeitrain": {
+      "name": "Make It Rain"
+    },
+    "makeitrain": {
+      "name": "Make It Rain"
+    },
     "cobblemon:malignantchain": {
       "name": "Malignant Chain"
     },
     "malignantchain": {
       "name": "Malignant Chain"
+    },
+    "cobblemon:matchagotcha": {
+      "name": "Matcha Gotcha"
+    },
+    "matchagotcha": {
+      "name": "Matcha Gotcha"
     },
     "cobblemon:megadrain": {
       "name": "Mega Drain"
@@ -7368,6 +7669,12 @@
     "mirrorshot": {
       "name": "Mirror Shot"
     },
+    "cobblemon:mistball": {
+      "name": "Mist Ball"
+    },
+    "mistball": {
+      "name": "Mist Ball"
+    },
     "cobblemon:moonblast": {
       "name": "Moonblast"
     },
@@ -7391,6 +7698,12 @@
     },
     "mudbomb": {
       "name": "Mud Bomb"
+    },
+    "cobblemon:muddywater": {
+      "name": "Muddy Water"
+    },
+    "muddywater": {
+      "name": "Muddy Water"
     },
     "cobblemon:mudshot": {
       "name": "Mud Shot"
@@ -7434,6 +7747,12 @@
     "nightdaze": {
       "name": "Night Daze"
     },
+    "cobblemon:nightslash": {
+      "name": "Night Slash"
+    },
+    "nightslash": {
+      "name": "Night Slash"
+    },
     "cobblemon:noxioustorque": {
       "name": "Noxious Torque"
     },
@@ -7445,6 +7764,12 @@
     },
     "nuzzle": {
       "name": "Nuzzle"
+    },
+    "cobblemon:oblivionwing": {
+      "name": "Oblivion Wing"
+    },
+    "oblivionwing": {
+      "name": "Oblivion Wing"
     },
     "cobblemon:octazooka": {
       "name": "Octazooka"
@@ -7464,6 +7789,18 @@
     "orderup": {
       "name": "Order Up"
     },
+    "cobblemon:originpulse": {
+      "name": "Origin Pulse"
+    },
+    "originpulse": {
+      "name": "Origin Pulse"
+    },
+    "cobblemon:overdrive": {
+      "name": "Overdrive"
+    },
+    "overdrive": {
+      "name": "Overdrive"
+    },
     "cobblemon:overheat": {
       "name": "Overheat"
     },
@@ -7476,11 +7813,29 @@
     "paleowave": {
       "name": "Paleo Wave"
     },
+    "cobblemon:paraboliccharge": {
+      "name": "Parabolic Charge"
+    },
+    "paraboliccharge": {
+      "name": "Parabolic Charge"
+    },
     "cobblemon:payday": {
       "name": "Pay Day"
     },
     "payday": {
       "name": "Pay Day"
+    },
+    "cobblemon:peck": {
+      "name": "Peck"
+    },
+    "peck": {
+      "name": "Peck"
+    },
+    "cobblemon:petalblizzard": {
+      "name": "Petal Blizzard"
+    },
+    "petalblizzard": {
+      "name": "Petal Blizzard"
     },
     "cobblemon:photongeyser": {
       "name": "Photon Geyser"
@@ -7518,6 +7873,12 @@
     "poisonsting": {
       "name": "Poison Sting"
     },
+    "cobblemon:poisontail": {
+      "name": "Poison Tail"
+    },
+    "poisontail": {
+      "name": "Poison Tail"
+    },
     "cobblemon:pollenpuff": {
       "name": "Pollen Puff"
     },
@@ -7536,6 +7897,12 @@
     "pound": {
       "name": "Pound"
     },
+    "cobblemon:powdersnow": {
+      "name": "Powder Snow"
+    },
+    "powdersnow": {
+      "name": "Powder Snow"
+    },
     "cobblemon:powergem": {
       "name": "Power Gem"
     },
@@ -7553,6 +7920,12 @@
     },
     "powerwhip": {
       "name": "Power Whip"
+    },
+    "cobblemon:precipiceblades": {
+      "name": "Precipice Blades"
+    },
+    "precipiceblades": {
+      "name": "Precipice Blades"
     },
     "cobblemon:prismaticlaser": {
       "name": "Prismatic Laser"
@@ -7589,6 +7962,12 @@
     },
     "psychoboost": {
       "name": "Psycho Boost"
+    },
+    "cobblemon:psychocut": {
+      "name": "Psycho Cut"
+    },
+    "psychocut": {
+      "name": "Psycho Cut"
     },
     "cobblemon:psyshieldbash": {
       "name": "Psyshield Bash"
@@ -7632,6 +8011,12 @@
     "rapidspin": {
       "name": "Rapid Spin"
     },
+    "cobblemon:razorleaf": {
+      "name": "Razor Leaf"
+    },
+    "razorleaf": {
+      "name": "Razor Leaf"
+    },
     "cobblemon:razorshell": {
       "name": "Razor Shell"
     },
@@ -7655,6 +8040,12 @@
     },
     "rockclimb": {
       "name": "Rock Climb"
+    },
+    "cobblemon:rockslide": {
+      "name": "Rock Slide"
+    },
+    "rockslide": {
+      "name": "Rock Slide"
     },
     "cobblemon:rocksmash": {
       "name": "Rock Smash"
@@ -7728,6 +8119,12 @@
     "scratch": {
       "name": "Scratch"
     },
+    "cobblemon:searingshot": {
+      "name": "Searing Shot"
+    },
+    "searingshot": {
+      "name": "Searing Shot"
+    },
     "cobblemon:secretpower": {
       "name": "Secret Power"
     },
@@ -7763,6 +8160,12 @@
     },
     "shadowbone": {
       "name": "Shadow Bone"
+    },
+    "cobblemon:shadowclaw": {
+      "name": "Shadow Claw"
+    },
+    "shadowclaw": {
+      "name": "Shadow Claw"
     },
     "cobblemon:shadowpunch": {
       "name": "Shadow Punch"
@@ -7824,6 +8227,12 @@
     "slam": {
       "name": "Slam"
     },
+    "cobblemon:slash": {
+      "name": "Slash"
+    },
+    "slash": {
+      "name": "Slash"
+    },
     "cobblemon:sludge": {
       "name": "Sludge"
     },
@@ -7835,6 +8244,12 @@
     },
     "sludgebomb": {
       "name": "Sludge Bomb"
+    },
+    "cobblemon:sludgewave": {
+      "name": "Sludge Wave"
+    },
+    "sludgewave": {
+      "name": "Sludge Wave"
     },
     "cobblemon:smackdown": {
       "name": "Smack Down"
@@ -7859,6 +8274,24 @@
     },
     "snaptrap": {
       "name": "Snap Trap"
+    },
+    "cobblemon:snarl": {
+      "name": "Snarl"
+    },
+    "snarl": {
+      "name": "Snarl"
+    },
+    "cobblemon:snipeshot": {
+      "name": "Snipe Shot"
+    },
+    "snipeshot": {
+      "name": "Snipe Shot"
+    },
+    "cobblemon:spacialrend": {
+      "name": "Spacial Rend"
+    },
+    "spacialrend": {
+      "name": "Spacial Rend"
     },
     "cobblemon:spark": {
       "name": "Spark"
@@ -7889,6 +8322,12 @@
     },
     "spiritshackle": {
       "name": "Spirit Shackle"
+    },
+    "cobblemon:springtidestorm": {
+      "name": "Springtide Storm"
+    },
+    "springtidestorm": {
+      "name": "Springtide Storm"
     },
     "cobblemon:steameruption": {
       "name": "Steam Eruption"
@@ -7932,6 +8371,12 @@
     "stoneaxe": {
       "name": "Stone Axe"
     },
+    "cobblemon:stoneedge": {
+      "name": "Stone Edge"
+    },
+    "stoneedge": {
+      "name": "Stone Edge"
+    },
     "cobblemon:strangesteam": {
       "name": "Strange Steam"
     },
@@ -7943,6 +8388,12 @@
     },
     "strength": {
       "name": "Strength"
+    },
+    "cobblemon:strugglebug": {
+      "name": "Struggle Bug"
+    },
+    "strugglebug": {
+      "name": "Struggle Bug"
     },
     "cobblemon:submission": {
       "name": "Submission"
@@ -7967,6 +8418,18 @@
     },
     "superpower": {
       "name": "Superpower"
+    },
+    "cobblemon:surf": {
+      "name": "Surf"
+    },
+    "surf": {
+      "name": "Surf"
+    },
+    "cobblemon:swift": {
+      "name": "Swift"
+    },
+    "swift": {
+      "name": "Swift"
     },
     "cobblemon:syrupbomb": {
       "name": "Syrup Bomb"
@@ -8070,11 +8533,23 @@
     "triattack": {
       "name": "Tri Attack"
     },
+    "cobblemon:triplearrows": {
+      "name": "Triple Arrows"
+    },
+    "triplearrows": {
+      "name": "Triple Arrows"
+    },
     "cobblemon:tropkick": {
       "name": "Trop Kick"
     },
     "tropkick": {
       "name": "Trop Kick"
+    },
+    "cobblemon:twister": {
+      "name": "Twister"
+    },
+    "twister": {
+      "name": "Twister"
     },
     "cobblemon:uturn": {
       "name": "U-turn"
@@ -8136,6 +8611,12 @@
     "watergun": {
       "name": "Water Gun"
     },
+    "cobblemon:waterpulse": {
+      "name": "Water Pulse"
+    },
+    "waterpulse": {
+      "name": "Water Pulse"
+    },
     "cobblemon:wavecrash": {
       "name": "Wave Crash"
     },
@@ -8165,6 +8646,12 @@
     },
     "wildcharge": {
       "name": "Wild Charge"
+    },
+    "cobblemon:wingattack": {
+      "name": "Wing Attack"
+    },
+    "wingattack": {
+      "name": "Wing Attack"
     },
     "cobblemon:woodhammer": {
       "name": "Wood Hammer"

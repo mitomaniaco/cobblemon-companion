@@ -95,8 +95,8 @@ describe('versioned real damage adapter', () => {
       abilities: ['cobblemon:synchronize', 'cobblemon:telepathy'],
     });
     for (const result of results) {
-      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v11');
-      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v9');
+      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12');
+      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v10');
       expect(result.actor.speciesId).toBe('cobblemon:gardevoir');
       expect(result.current.rollCount).toBe(16);
       expect(result.candidate.rollCount).toBe(16);
@@ -739,7 +739,7 @@ describe('versioned real damage adapter', () => {
     expect(result.ruleset.cobblemonVersion).toBe(COMPATIBILITY.ruleset.cobblemonVersion);
     expect(result.ruleset.showdownVersion).toBe(COMPATIBILITY.ruleset.showdownVersion);
     expect(result.ruleset.calcVersion).toBe('0.11.0');
-    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v9');
+    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v10');
   });
 
   it('accepts bare ability IDs without cobblemon: prefix', () => {
@@ -754,5 +754,34 @@ describe('versioned real damage adapter', () => {
     bareNature.observed.nature = 'adamant';
     const result = calculateRealDamage(makeSnapshot(bareNature), makeRequest());
     expect(result.ruleset.id).toBeDefined();
+  });
+});
+
+describe('golpes derivados e imunidade', () => {
+  const learnsEarthquake = () => {
+    const individual = makeIndividual();
+    individual.learnedMoves = [{id: 'cobblemon:earthquake', ppUps: 0}];
+    return individual;
+  };
+
+  it('calcula um golpe derivado do gerador contra um alvo comum', () => {
+    const result = calculateRealDamage(makeSnapshot(learnsEarthquake()), makeRequest({candidateMoveId: 'cobblemon:earthquake'}));
+
+    expect(result.candidate.moveId).toBe('cobblemon:earthquake');
+    expect(result.candidate.max).toBeGreaterThan(0);
+    expect(result.candidate.rollCount).toBe(16);
+  });
+
+  it('mostra 0–0 em vez de bloquear quando o alvo é imune ao tipo do golpe', () => {
+    const request = makeRequest({
+      candidateMoveId: 'cobblemon:earthquake',
+      target: {...makeRequest().target, speciesId: 'cobblemon:charizard', ability: 'cobblemon:blaze'},
+    });
+    const result = calculateRealDamage(makeSnapshot(learnsEarthquake()), request);
+
+    expect(result.candidate.min).toBe(0);
+    expect(result.candidate.max).toBe(0);
+    expect(result.candidate.rollCount).toBe(16);
+    expect(result.current.max).toBeGreaterThan(0);
   });
 });

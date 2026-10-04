@@ -6,7 +6,7 @@ const calcPackage = require('@smogon/calc/package.json');
 const compatibility = require('./combat-compatibility.json');
 
 const CALC_VERSION = '0.11.0';
-const ADAPTER_VERSION = 'real-damage-adapter-v9';
+const ADAPTER_VERSION = 'real-damage-adapter-v10';
 const STATS = Object.freeze(['hp', 'atk', 'def', 'spa', 'spd', 'spe']);
 const SOURCE_KINDS = Object.freeze(['party', 'pc']);
 const ASSUMPTION_KEYS = Object.freeze([
@@ -20,7 +20,7 @@ const ASSUMPTION_KEYS = Object.freeze([
 if (calcPackage.version !== CALC_VERSION || compatibility.ruleset.calcVersion !== CALC_VERSION) {
   throw new Error(`Real damage requires @smogon/calc ${CALC_VERSION} and its matching compatibility catalog`);
 }
-if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v11') {
+if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12') {
   throw new Error('Real damage compatibility catalog is not a reviewed version');
 }
 
@@ -224,19 +224,17 @@ function damage(attacker, defender, moveId, pathName) {
   const moveName = mappedMoveName(moveId, pathName);
   try {
     const result = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), new calc.Field());
-    if (
-      !Array.isArray(result.damage) ||
-      result.damage.length !== 16 ||
-      !result.damage.every((value) => Number.isSafeInteger(value) && value >= 0)
-    ) {
+    // O calc devolve o número 0 (não os 16 rolls) quando o alvo é imune ao tipo; mostramos 0–0 em vez de bloquear.
+    const rolls = result.damage === 0 ? new Array(16).fill(0) : result.damage;
+    if (!Array.isArray(rolls) || rolls.length !== 16 || !rolls.every((value) => Number.isSafeInteger(value) && value >= 0)) {
       fail(pathName, 'o motor não retornou os 16 rolls inteiros esperados');
     }
     return {
       moveId,
-      min: Math.min(...result.damage),
-      max: Math.max(...result.damage),
+      min: Math.min(...rolls),
+      max: Math.max(...rolls),
       targetHP: defender.stats.hp,
-      rollCount: result.damage.length,
+      rollCount: rolls.length,
     };
   } catch (error) {
     if (error instanceof TypeError && error.message.startsWith('Cálculo real:')) throw error;

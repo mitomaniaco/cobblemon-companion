@@ -148,6 +148,93 @@ export function showdownEntryFingerprints(source, exportName) {
   throw new Error(`Objeto ${exportName} não encontrado no arquivo do Showdown`);
 }
 
+function scalarValue(node) {
+  if (node.type === 'Literal') return node.value;
+  if (node.type === 'UnaryExpression' && node.operator === '-' && node.argument.type === 'Literal') return -node.argument.value;
+  return null;
+}
+
+const MOVE_FACT_KEYS = ['name', 'category', 'target', 'basePower', 'critRatio', 'isNonstandard'];
+const MOVE_FLAG_KEYS = ['isZ', 'isMax'];
+const MOVE_PRESENCE_KEYS = ['multihit', 'damage', 'ohko', 'selfdestruct', 'willCrit'];
+
+/**
+ * Lê `var Moves = {...}` do Showdown já compilado e devolve os fatos estruturais de cada golpe
+ * (categoria, alvo, mecânicas especiais e callbacks). Chaves ausentes ficam `null`. O código nunca é executado.
+ */
+export function showdownMoveFacts(source) {
+  const ast = parse(source.replace(/\r\n/g, '\n'), {ecmaVersion: 'latest', sourceType: 'script'});
+  for (const statement of ast.body) {
+    if (statement.type !== 'VariableDeclaration') continue;
+    for (const declaration of statement.declarations) {
+      if (declaration.id.type !== 'Identifier' || declaration.id.name !== 'Moves') continue;
+      if (declaration.init?.type !== 'ObjectExpression') continue;
+      const moves = {};
+      for (const property of declaration.init.properties) {
+        if (property.type !== 'Property' || property.value.type !== 'ObjectExpression') continue;
+        const id = propertyName(property);
+        if (id === null) continue;
+        const facts = {};
+        for (const key of [...MOVE_FACT_KEYS, ...MOVE_FLAG_KEYS, ...MOVE_PRESENCE_KEYS]) facts[key] = null;
+        for (const key of [...MOVE_FLAG_KEYS, ...MOVE_PRESENCE_KEYS]) facts[key] = false;
+        facts.callbacks = [];
+        for (const inner of property.value.properties) {
+          if (inner.type !== 'Property') continue;
+          const name = propertyName(inner);
+          if (name === null) continue;
+          if (inner.method || inner.value.type === 'FunctionExpression' || inner.value.type === 'ArrowFunctionExpression') {
+            facts.callbacks.push(name);
+          } else if (MOVE_FACT_KEYS.includes(name)) {
+            facts[name] = scalarValue(inner.value);
+          } else if (MOVE_FLAG_KEYS.includes(name)) {
+            // `isZ` e `isMax` trazem o nome do cristal/espécie (string) ou `true`: qualquer valor diferente de false marca o golpe.
+            const flag = scalarValue(inner.value);
+            facts[name] = flag !== null && flag !== false;
+          } else if (MOVE_PRESENCE_KEYS.includes(name)) {
+            facts[name] = true;
+          }
+        }
+        moves[id.toLowerCase()] = facts;
+      }
+      return moves;
+    }
+  }
+  throw new Error('Objeto Moves não encontrado no arquivo do Showdown');
+}
+
+const DERIVABLE_TARGETS = new Set(['normal', 'any', 'allAdjacent', 'allAdjacentFoes', 'adjacentFoe']);
+const EXCLUDED_NONSTANDARD = new Set(['LGPE', 'Gigantamax']);
+
+/**
+ * Decide se um golpe entra no catálogo. Golpes da lista-base revisada ficam sempre; os demais só entram se o
+ * dano depender só de poder base, tipo, categoria e alvo simples, e se o @smogon/calc e os outros pacotes concordarem.
+ * `critRatio` não exclui: o app não pede crítico ao calc.
+ */
+export function moveStatus(facts, {isBase, calcHasMove, packDiffers}) {
+  if (isBase) return {status: 'base'};
+  const exclude = (reason) => ({status: 'excluded', reason});
+  if (facts.category !== 'Physical' && facts.category !== 'Special') return exclude('not-damaging');
+  if (facts.isZ || facts.isMax || EXCLUDED_NONSTANDARD.has(facts.isNonstandard)) return exclude('nonstandard');
+  if (!DERIVABLE_TARGETS.has(facts.target)) return exclude('target');
+  if (facts.multihit || facts.damage || facts.ohko || facts.selfdestruct || facts.willCrit) return exclude('mechanics');
+  if (facts.callbacks.length > 0) return exclude('callbacks');
+  if (!calcHasMove) return exclude('calc-missing');
+  if (packDiffers) return exclude('pack-override');
+  return {status: 'derived'};
+}
+
+/** Mapa `moves` do catálogo (chave com namespace e alias sem), ordenado pelo id. */
+export function deriveMovesCatalog(manifestMoves) {
+  const output = {};
+  for (const id of Object.keys(manifestMoves).sort()) {
+    const entry = manifestMoves[id];
+    if (entry.status !== 'base' && entry.status !== 'derived') continue;
+    output[`cobblemon:${id}`] = {name: entry.name};
+    output[id] = {name: entry.name};
+  }
+  return output;
+}
+
 /** Classifica ids do catálogo comparando as impressões do provedor-base com as de outro provedor. */
 export function compareShowdownEntries(baseEntries, otherEntries, ids) {
   const identical = [];
