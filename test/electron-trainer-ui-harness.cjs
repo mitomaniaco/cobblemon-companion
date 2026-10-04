@@ -993,6 +993,28 @@ async function exerciseRendererCrash(window) {
   console.log('PASS queda do renderer registrada em diagnostics.log');
 }
 
+async function exerciseDetailContainment(window, snapshot) {
+  const contents = window.webContents;
+  const member = snapshot.individuals.find((individual) => individual.location.container === 'party');
+  check(member, 'A fixture não tem indivíduo na equipe para a contenção da ficha.');
+  window.setContentSize(1186, 852);
+  await waitFor(contents, 'window.innerWidth === 1186', 'viewport 1186×852 para contenção da ficha');
+  await navigate(contents, 'Equipe');
+  await selectIndividual(contents, member.uuid);
+  await clickTab(contents, 'Golpes');
+  const box = await evaluate(
+    contents,
+    `(() => {
+    const aside = document.querySelector('[data-testid="individual-details"]');
+    return {scroll: aside.scrollHeight, client: aside.clientHeight};
+  })()`,
+  );
+  check(box.scroll <= box.client + 1, 'A ficha do indivíduo transbordou a própria borda.');
+  window.setContentSize(1440, 1000);
+  await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport desktop');
+  console.log('PASS ficha do indivíduo contém a lista de golpes em 1186×852');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1012,6 +1034,7 @@ async function run() {
     'A ponte retornou outro snapshot em vez da fixture sintética.',
   );
   await exerciseCollectionAndDamage(window, snapshot);
+  await exerciseDetailContainment(window, snapshot);
   await exerciseDemo(contents);
   await exerciseRealDamage(contents);
   await exerciseRefreshInvalidation(window, snapshot);
