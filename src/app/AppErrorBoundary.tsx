@@ -24,10 +24,12 @@ export class AppErrorBoundary extends Component<Props, State> {
 
   componentDidMount() {
     window.addEventListener('error', this.handleWindowError);
+    window.addEventListener('unhandledrejection', this.handleUnhandledRejection);
   }
 
   componentWillUnmount() {
     window.removeEventListener('error', this.handleWindowError);
+    window.removeEventListener('unhandledrejection', this.handleUnhandledRejection);
   }
 
   componentDidCatch(_error: unknown, info: ErrorInfo) {
@@ -38,6 +40,11 @@ export class AppErrorBoundary extends Component<Props, State> {
   private handleWindowError = (event: ErrorEvent) => {
     if (event.error === undefined || event.error === null) return;
     this.setState((current) => (current.hasError ? null : {error: event.error, hasError: true}));
+  };
+
+  private handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+    if (event.reason === undefined || event.reason === null) return;
+    this.setState((current) => (current.hasError ? null : {error: event.reason, hasError: true}));
   };
 
   private copyReport = async (report: string) => {
