@@ -962,6 +962,37 @@ async function exerciseErrorScreen(window) {
   console.log('PASS tela de erro diagnóstica sanitizada e screenshot em diagnostics');
 }
 
+const SHELL_READY = 'Boolean(document.querySelector(\'nav[aria-label="Vistas"]\') && window.cobblemonCompanion?.readPlayerSnapshot)';
+
+async function exerciseUnhandledRejection(window) {
+  const contents = window.webContents;
+  contents.reload();
+  await waitFor(contents, SHELL_READY, 'TrainerApp após recarregar');
+  await evaluate(contents, "setTimeout(() => Promise.reject(new Error('Rejeição sintética em D:\\\\Dev\\\\x')), 0)");
+  await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="app-error"]\'))', 'tela de erro para rejeição não tratada');
+  const report = await evaluate(contents, "document.querySelector('[data-testid=\"app-error\"] textarea')?.value || ''");
+  check(report.includes('Rejeição sintética') && !/Dev/.test(report), 'A rejeição não tratada não gerou diagnóstico sanitizado.');
+  console.log('PASS rejeição não tratada vira tela de erro sanitizada');
+}
+
+async function exerciseRendererCrash(window) {
+  const contents = window.webContents;
+  contents.reload();
+  await waitFor(contents, SHELL_READY, 'TrainerApp antes da queda');
+  const logPath = path.join(profileDirectory, 'diagnostics.log');
+  contents.forcefullyCrashRenderer();
+  const deadline = Date.now() + 5000;
+  let logged = false;
+  while (Date.now() < deadline && !logged) {
+    logged = fs.existsSync(logPath) && /render-process-gone reason=(crashed|killed)/.test(fs.readFileSync(logPath, 'utf8'));
+    if (!logged) await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  check(logged, 'A queda do renderer não foi registrada em diagnostics.log.');
+  contents.reload();
+  await waitFor(contents, SHELL_READY, 'TrainerApp após a queda');
+  console.log('PASS queda do renderer registrada em diagnostics.log');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -986,6 +1017,8 @@ async function run() {
   await exerciseRefreshInvalidation(window, snapshot);
   await exerciseResponsiveLayout(window, snapshot);
   await exerciseErrorScreen(window);
+  await exerciseUnhandledRejection(window);
+  await exerciseRendererCrash(window);
   console.log('PASS todos os fluxos determinísticos do TrainerApp');
 }
 

@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const {app, BrowserWindow, ipcMain, protocol, utilityProcess} = require('electron');
+const {app, BrowserWindow, dialog, ipcMain, protocol, utilityProcess} = require('electron');
 
 const ROOT = path.resolve(__dirname, '../..');
 const RENDERER_DIR = path.resolve(__dirname, '../dist/renderer');
@@ -261,6 +261,37 @@ async function installProtocol() {
     }
   });
 }
+const DIAGNOSTICS_LOG_MAX_BYTES = 256 * 1024;
+// Só `reason` (enum) e `exitCode` (número) entram no log: nenhum caminho, UUID ou dado do jogador.
+function appendDiagnosticLine(line) {
+  try {
+    const file = path.join(app.getPath('userData'), 'diagnostics.log');
+    if (fs.existsSync(file) && fs.statSync(file).size > DIAGNOSTICS_LOG_MAX_BYTES) fs.writeFileSync(file, line);
+    else fs.appendFileSync(file, line);
+  } catch {
+    // Falha de log nunca pode derrubar o processo principal.
+  }
+}
+function handleRendererGone(details) {
+  if (details.reason === 'clean-exit') return;
+  appendDiagnosticLine(`${new Date().toISOString()} render-process-gone reason=${details.reason} exitCode=${details.exitCode}\n`);
+  if (TRAINER_UI_TEST_MODE || !windowRef || windowRef.isDestroyed()) return;
+  void dialog
+    .showMessageBox(windowRef, {
+      type: 'error',
+      title: 'Companion',
+      message: 'A interface parou de funcionar.',
+      detail: `Motivo: ${details.reason} (código ${details.exitCode}). Nada foi gravado no save. Um registro foi salvo em diagnostics.log, na pasta de dados do app.`,
+      buttons: ['Recarregar', 'Fechar'],
+      defaultId: 0,
+      cancelId: 1,
+    })
+    .then(({response}) => {
+      if (!windowRef || windowRef.isDestroyed()) return;
+      if (response === 0) windowRef.webContents.reload();
+      else windowRef.close();
+    });
+}
 function createWindow() {
   windowRef = new BrowserWindow({
     width: 1200,
@@ -271,6 +302,10 @@ function createWindow() {
     webPreferences: {preload: PRELOAD_PATH, nodeIntegration: false, contextIsolation: true, sandbox: true},
   });
   windowRef.webContents.setWindowOpenHandler(() => ({action: 'deny'}));
+  windowRef.webContents.on('render-process-gone', (_event, details) => handleRendererGone(details));
+  windowRef.webContents.on('did-fail-load', (_event, errorCode, _errorDescription, _url, isMainFrame) => {
+    if (isMainFrame) handleRendererGone({reason: 'did-fail-load', exitCode: errorCode});
+  });
   void windowRef.loadURL(`${ORIGIN}/${RUNTIME_TEST_MODE ? '?runtime-test' : ''}`);
   windowRef.on('closed', () => {
     windowRef = undefined;
