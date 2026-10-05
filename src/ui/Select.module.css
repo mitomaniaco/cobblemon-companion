@@ -52,7 +52,9 @@
 }
 
 .value {
+  display: block;
   min-width: 0;
+  line-height: var(--line-body);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

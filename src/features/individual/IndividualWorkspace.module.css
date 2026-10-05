@@ -77,7 +77,8 @@
   gap: var(--space-2);
 }
 
-.chip {
+.chip,
+.formChip {
   padding: 0 var(--space-3);
   border-radius: var(--radius-pill);
   background: color-mix(in oklab, var(--color-sunken) 70%, transparent);
@@ -320,6 +321,32 @@
   gap: var(--space-4);
 }
 
+.captureFacts,
+.provenanceList {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+}
+
+.captureFacts > div,
+.provenanceList > div {
+  min-width: 0;
+}
+
+.captureFacts dt,
+.provenanceList dt {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
+}
+
+.captureFacts dd,
+.provenanceList dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
 .captureFacts {
   gap: var(--space-3);
 }
@@ -436,6 +463,10 @@
 }
 
 @container ficha (min-width: 420px) {
+  .captureFacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .summaryFacts,
   .tileList {
     grid-template-columns: repeat(2, minmax(0, 1fr));

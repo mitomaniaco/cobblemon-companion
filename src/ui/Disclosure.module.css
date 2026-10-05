@@ -66,6 +66,10 @@
     transform var(--duration-overlay-enter) var(--ease-out);
 }
 
+.root:not([data-expanded]) > .panel {
+  padding-block: 0;
+}
+
 .root[data-disabled] .trigger {
   color: var(--color-muted);
   cursor: not-allowed;

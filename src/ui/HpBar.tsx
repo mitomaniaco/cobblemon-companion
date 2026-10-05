@@ -11,15 +11,24 @@ export interface HpBarProps {
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 /**
- * Barra de HP do alvo: trecho sólido = HP restante após o dano máximo; trecho hachurado = faixa entre o
- * dano mínimo e o máximo. A cor segue o HP restante no roll mínimo (≥50% alto, ≥20% médio, senão baixo).
+ * Segmentos da barra: trecho sólido = HP restante após o dano máximo; trecho hachurado = faixa entre o
+ * dano mínimo e o máximo, limitada ao HP. A cor segue o HP restante no roll mínimo (≥50% alto, ≥20% médio, senão baixo).
  */
+export function hpBarSegments(
+  total: number,
+  minDamage: number,
+  maxDamage: number,
+): {solid: number; range: number; level: 'high' | 'mid' | 'low'} {
+  if (total <= 0) return {solid: 0, range: 0, level: 'low'};
+  const solid = clamp01((total - maxDamage) / total);
+  const atMin = clamp01((total - minDamage) / total);
+  return {solid, range: Math.max(0, atMin - solid), level: atMin >= 0.5 ? 'high' : atMin >= 0.2 ? 'mid' : 'low'};
+}
+
+/** Barra de HP do alvo; veja `hpBarSegments` para a matemática. */
 export function HpBar({total, minDamage, maxDamage, label}: HpBarProps) {
   const hasTotal = total > 0;
-  const solid = hasTotal ? clamp01((total - maxDamage) / total) : 0;
-  const range = hasTotal ? Math.min(clamp01((maxDamage - minDamage) / total), 1 - solid) : 0;
-  const remainingAtMin = hasTotal ? clamp01((total - minDamage) / total) : 0;
-  const level = remainingAtMin >= 0.5 ? 'high' : remainingAtMin >= 0.2 ? 'mid' : 'low';
+  const {solid, range, level} = hpBarSegments(total, minDamage, maxDamage);
   const style = {'--hp-solid': solid, '--hp-range': range} as CSSProperties;
 
   return (
