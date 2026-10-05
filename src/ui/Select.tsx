@@ -62,7 +62,9 @@ export function Select({
     >
       <Label className={styles.label}>{label}</Label>
       <AriaButton className={styles.trigger}>
-        <SelectValue className={styles.value} />
+        <SelectValue className={styles.value}>
+          {({isPlaceholder, defaultChildren, selectedText}) => (isPlaceholder ? defaultChildren : selectedText)}
+        </SelectValue>
         <CaretDown className={styles.triggerIcon} aria-hidden="true" weight="bold" />
       </AriaButton>
       {description && (

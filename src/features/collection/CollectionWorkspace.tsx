@@ -152,6 +152,9 @@ function TeamCard({
           {display.types.map((type) => (
             <TypeBadge key={type} type={type} size="sm" />
           ))}
+          {individual.formId !== 'normal' && (
+            <span className={styles.formChip}>{individual.formId === 'unknown' ? 'Forma desconhecida' : 'Forma alternativa'}</span>
+          )}
         </span>
       </span>
     </ListBoxItem>
@@ -241,6 +244,7 @@ function BoxSection({
                 data-individual-id={individual.uuid}
                 data-name={display.name}
                 data-col={fixedSlots ? slot % BOX_COLUMNS : undefined}
+                data-form={individual.formId === 'normal' ? undefined : 'alternate'}
                 className={styles.boxItem}
                 style={style}
               >

@@ -58,7 +58,7 @@ export function PokemonArtwork({speciesId, formId, variant, loading, className}:
           />
         )}
       </div>
-      {variant === 'detail' && <figcaption className={styles.caption}>{detailCaption}</figcaption>}
+      {variant === 'detail' && !unavailable && <figcaption className={styles.caption}>{detailCaption}</figcaption>}
     </figure>
   );
 }

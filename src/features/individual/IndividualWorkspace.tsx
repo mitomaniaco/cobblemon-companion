@@ -376,6 +376,9 @@ export function IndividualWorkspace({
           <div className={styles.identityChips}>
             <span className={styles.chip}>{individual.level === null ? 'Nv. ?' : `Nv. ${individual.level}`}</span>
             <span className={styles.chip}>{locationLabel(individual.location)}</span>
+            {individual.formId !== 'normal' && (
+              <span className={styles.formChip}>{individual.formId === 'unknown' ? 'Forma desconhecida' : 'Forma alternativa'}</span>
+            )}
           </div>
         </div>
       </header>
