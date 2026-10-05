@@ -10,7 +10,12 @@ let deliver;
 process.parentPort = {on: (_event, listener) => (deliver = listener), postMessage: (message) => sent.push(message)};
 // O worker carrega os dados pelo módulo CommonJS; os fixtures sintéticos entram no lugar dos arquivos grandes.
 const dataModulePath = require.resolve('../electron/lib/guide/data.cjs');
-require.cache[dataModulePath] = {id: dataModulePath, filename: dataModulePath, loaded: true, exports: {loadGuideData: () => data}};
+require.cache[dataModulePath] = {
+  id: dataModulePath,
+  filename: dataModulePath,
+  loaded: true,
+  exports: {...require(dataModulePath), loadGuideData: () => data},
+};
 require('../electron/guide-worker.cjs');
 
 afterAll(() => {
@@ -78,6 +83,20 @@ describe('guide-worker', () => {
     const message = sent.find((candidate) => candidate.jobId === 'job-evo');
     expect(message.type).toBe('result');
     expect(message.result.members[0]).toMatchObject({uuid: 'u-1', status: 'sem-evolução'});
+  });
+
+  it('task capture-plan devolve o plano de capturas (dados de spawn reais)', async () => {
+    const request = {
+      sources: [],
+      goal: {kind: 'trainer', trainerId: 'synthetic:fire'},
+      teamUuids: [],
+      gapOpponentIds: ['synthetic:fire#0'],
+    };
+    deliver({data: {type: 'run', task: 'capture-plan', jobId: 'job-capture', snapshot, request}});
+    await waitFor(() => sent.some((message) => message.jobId === 'job-capture'));
+    const message = sent.find((candidate) => candidate.jobId === 'job-capture');
+    expect(message.type).toBe('result');
+    expect(message.result.gaps).toHaveLength(1);
   });
 
   it('cancel durante a montagem responde cancelled e não devolve resultado', async () => {

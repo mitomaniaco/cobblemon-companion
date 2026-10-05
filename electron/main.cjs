@@ -33,6 +33,7 @@ const IPC_READ_PLAYER_SNAPSHOT = 'companion:read-player-snapshot';
 const IPC_GUIDE_BUILD = 'companion:guide-build';
 const IPC_BATTLE_PLAN_BUILD = 'companion:battle-plan-build';
 const IPC_EVOLUTION_PLAN_BUILD = 'companion:evolution-plan-build';
+const IPC_CAPTURE_PLAN_BUILD = 'companion:capture-plan-build';
 const IPC_GUIDE_TRAINERS = 'companion:guide-trainers';
 const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
 const IPC_AUTO_REFRESH = 'companion:auto-refresh';
@@ -350,6 +351,31 @@ function handleEvolutionPlanBuild(event, request) {
   if (TRAINER_UI_TEST_MODE) return structuredClone({...TRAINER_UI_GUIDE.evolutionPlan, levelCap: plan.levelCap});
   return runGuideJob(jobId, {type: 'run', task: 'evolution-plan', jobId, snapshot, request: {sources: request.sources, ...plan}});
 }
+function validateCapturePlanRequest(request) {
+  exactKeys(request, ['sources', 'goal', 'teamUuids', 'gapOpponentIds', 'jobId'], 'request');
+  const {goal} = validateGuideRequest({sources: request.sources, goal: request.goal, jobId: request.jobId});
+  const uuids = (value, name, max) => {
+    if (
+      !Array.isArray(value) ||
+      value.length > max ||
+      value.some((item) => typeof item !== 'string' || item.length === 0 || item.length > 200)
+    )
+      throw new TypeError(`request.${name} precisa ser uma lista de até ${max} textos`);
+    return [...value];
+  };
+  const teamUuids = uuids(request.teamUuids, 'teamUuids', 6);
+  const gapOpponentIds = uuids(request.gapOpponentIds, 'gapOpponentIds', 30);
+  const jobId = request.jobId ?? `capture-${Date.now()}-${++guideSequence}`;
+  return {jobId, plan: {goal, teamUuids, gapOpponentIds}};
+}
+function handleCapturePlanBuild(event, request) {
+  requireSender(event);
+  const {jobId, plan} = validateCapturePlanRequest(request);
+  const snapshot = readSnapshotForRenderer();
+  assertFreshSources(request.sources, snapshot.sources);
+  if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.capturePlan);
+  return runGuideJob(jobId, {type: 'run', task: 'capture-plan', jobId, snapshot, request: {sources: request.sources, ...plan}});
+}
 function runGuideJob(jobId, message) {
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(GUIDE_WORKER_PATH, [], {cwd: ROOT, stdio: 'ignore', serviceName: 'Cobblemon Companion guide'});
@@ -540,6 +566,7 @@ function installIpc() {
   ipcMain.handle(IPC_GUIDE_BUILD, handleGuideBuild);
   ipcMain.handle(IPC_BATTLE_PLAN_BUILD, handleBattlePlanBuild);
   ipcMain.handle(IPC_EVOLUTION_PLAN_BUILD, handleEvolutionPlanBuild);
+  ipcMain.handle(IPC_CAPTURE_PLAN_BUILD, handleCapturePlanBuild);
   ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
   ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
   if (TRAINER_UI_TEST_MODE) ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);

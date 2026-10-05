@@ -249,5 +249,65 @@
     "limits": [
       "Amizade, item de evolução, horário, bioma e troca não vêm do save: aparecem como não verificados."
     ]
+  },
+  "capturePlan": {
+    "firstPartyLevel": 30,
+    "gaps": [
+      {
+        "opponentId": "synthetic:trainer#0",
+        "speciesId": "cobblemon:floatzel",
+        "level": 30,
+        "owned": [
+          {
+            "uuid": "00000000-0000-4000-8000-000000000002",
+            "speciesId": "cobblemon:blastoise",
+            "level": 32,
+            "container": "pc",
+            "reason": "Blastoise (PC, nível 32) derruba Floatzel em 2 turno(s) com Surf, contra 4 do adversário; age depois."
+          }
+        ],
+        "candidates": [
+          {
+            "speciesId": "cobblemon:swampert",
+            "reason": "Swampert (Water/Ground) no nível 30 derruba Floatzel em 2 turno(s) com Surf, contra 3 do adversário; age primeiro.",
+            "spawns": [
+              {
+                "biomes": [
+                  "River"
+                ],
+                "conditions": [
+                  "com chuva"
+                ],
+                "levelMin": 25,
+                "levelMax": 30,
+                "bucket": "uncommon",
+                "position": "grounded"
+              }
+            ],
+            "catchable": "liberada",
+            "catchableReason": "Spawns de nível 25 a 30; limite de captura 30 (nível do primeiro Pokémon da party, supondo que não esteja desmaiado). Poké Ball de captura garantida ignora o limite.",
+            "requirements": [
+              {
+                "kind": "nível",
+                "text": "alvo até o nível 30 (nível do primeiro Pokémon da party, supondo que não esteja desmaiado)",
+                "status": "cumprido"
+              },
+              {
+                "kind": "pika-star",
+                "text": "advancement Pika Star de paldea (allthemons:<região>_pika_star)",
+                "status": "não verificado"
+              }
+            ]
+          }
+        ],
+        "note": null
+      }
+    ],
+    "assumptions": [
+      "O app não vê quem está desmaiado: o limite usa o nível do primeiro Pokémon da party."
+    ],
+    "limits": [
+      "O app não lê inventário (Poké Balls) nem o advancement Pika Star do save: esses requisitos ficam como não verificados."
+    ]
   }
 }
