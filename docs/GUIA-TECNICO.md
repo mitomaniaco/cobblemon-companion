@@ -99,7 +99,7 @@ A coleção mantém seleção por UUID. A ficha individual separa resumo, golpes
 
 ### Dano real
 
-O indivíduo selecionado é o atacante; o cálculo compara seu primeiro slot equipado com um golpe aprendido compatível ainda não equipado. Stats/natureza/habilidade vêm da captura; IV desconhecido, EV desconhecido, item observado ou campos inválidos bloqueiam. O alvo é um perfil manual completo, não é lido da batalha. O formulário exige cinco confirmações porque versão e estado do combate não são detectados automaticamente.
+O indivíduo selecionado é o atacante; o cálculo compara o golpe do slot escolhido com um golpe aprendido compatível ainda não equipado. Stats/natureza/habilidade vêm da captura; IV desconhecido, EV desconhecido, item fora do catálogo compatível ou campos inválidos bloqueiam; um item segurado do catálogo entra no cálculo. `heldItem: null` é hoje tratado como sem item sem confirmação própria (lacuna aberta na Issue #75). O alvo é um perfil manual completo, não é lido da batalha. O formulário exige cinco confirmações porque versão e estado do combate não são detectados automaticamente.
 
 O adaptador valida novamente, em processo confiável, fontes, UUID, IDs, nível, natureza, habilidade, IV/EV, EV total e premissas. O resultado mostra dois ranges mínimo–máximo dos **16 rolls** por golpe se acertar. Ele não estima precisão, crítico, efeitos secundários, nocaute, adversário, turnos futuros, ranking ou recomendação.
 
@@ -109,7 +109,7 @@ A demonstração é uma fixture fixa Pikachu/Floatzel, Spark/Thunderbolt, um alv
 
 ## 7. Catálogo e limites de compatibilidade
 
-Revisão ativa: `cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v12`. O adaptador é `real-damage-adapter-v10`, com `@smogon/calc` 0.11.0/Gen 9 e fingerprints documentados em `docs/preflight/IMPORTACAO-PARTY.md`.
+Revisão ativa: `cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v13`. O adaptador é `real-damage-adapter-v11`, com `@smogon/calc` 0.11.0/Gen 9 e fingerprints documentados em `docs/preflight/IMPORTACAO-PARTY.md`.
 
 O catálogo atualmente tem **841 espécies, 401 golpes diretos (320 da lista-base revisada em `data/compat/base-moves.json` + 81 derivados pelo gerador), 285 habilidades e 25 naturezas**. IDs aceitos são explícitos; só forma normal é liberada, mesmo para espécies com formas alternativas. As espécies são derivadas por `npm run catalog:generate -- --instance <pasta com mods/> [--write]` (scripts/generate-compat-catalog.mjs, regras puras em scripts/lib/compat-catalog.mjs) e registradas em `data/compat/manifest.json`; um teste garante que o catálogo é exatamente o derivado do manifesto. Gardevoir normal está incluído: `Synchronize` e `Telepathy` são aceitas; `Trace` permanece bloqueada porque copiar a habilidade do alvo não faz parte do estado modelado.
 No JSON, golpes, habilidades e naturezas têm uma chave `cobblemon:` e outra sem namespace para cada entrada canônica; a contagem bruta de chaves é 802/570/50, mas a cobertura é de 401/285/25 entradas, respectivamente.
@@ -144,10 +144,10 @@ Antes de executar qualquer outro arquivo `electron-*-harness.cjs`, confira se o 
 
 ### Evidência disponível
 
-- A documentação da instalação registra `npm run check` com typecheck, **46 testes** e build Vite aprovado após a inclusão de Gardevoir. Essa execução é anterior às alterações documentais e à extensão final do harness descrita abaixo; não é uma execução feita durante a redação deste guia.
+- `npm run check` passa com 565 testes e build Vite na `main` (a7eac29, 05/10/2026). Quando este guia foi escrito, eram 46 testes.
 - Nesta continuação, `node_modules/electron/dist/electron.exe test/electron-trainer-ui-harness.cjs` passou todos os fluxos sintéticos do `TrainerApp`: prévia de troca, demo isolada, cálculo de Gardevoir normal/Synchronize, invalidação por refresh e layouts 1440/1200/800 CSS px e 200% de zoom.
 - O mesmo harness agora verifica 1186×852 CSS px: depois de marcar a primeira confirmação do dano, o formulário continua visível e o cálculo completa. Capturas sintéticas locais foram inspecionadas em `.runtime/diagnostics/trainer-ui-DCFyK0/`, incluindo `damage-default-viewport.png` e `gardevoir-damage-result.png`. O diretório é ignorado e não deve ser tratado como artefato portátil.
-- Nenhum `config.json` nem save real foi lido nesta continuação. Não há aprovação Medium. Uma execução anterior de Vite registrou aviso de bundle principal acima de 500 KB (~686.51 KB), sem falhar o build.
+- Nenhum `config.json` nem save real foi lido nesta continuação. Não há aprovação Medium. O bundle principal do renderer tem ~844 KB (aviso do Vite acima de 500 KB, sem falhar o build; Issue #76).
 
 ### Bloqueios atuais solicitados pelo usuário
 
