@@ -30,7 +30,7 @@ const BOX_CAPACITY = 30;
 
 function locationSearchText(individual: PlayerIndividual) {
   const {location} = individual;
-  const common = `${locationLabel(location)} slot posição ${location.slot + 1}`;
+  const common = `${locationLabel(location)} posição`;
   if (location.container === 'party') return `${common} party equipe`;
   return `${common} pc box caixa ${location.box} ${location.boxName ?? ''}`;
 }
