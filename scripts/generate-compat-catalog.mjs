@@ -5,7 +5,6 @@
 //
 // Sem --write, apenas compara com os arquivos versionados e sai com código 1 se houver diferença.
 // Use --instance com a pasta do cliente OU do servidor para conferir se os dois têm o mesmo pacote.
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import {createRequire} from 'node:module';
 import path from 'node:path';
@@ -30,6 +29,7 @@ import {
   speciesSlug,
   speciesStatus,
 } from './lib/compat-catalog.mjs';
+import {classifyProviderEntries, collectDirectoryProviders, collectJarProvider, parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
 
 const require = createRequire(import.meta.url);
 const calc = require('@smogon/calc');
@@ -38,7 +38,6 @@ const CATALOG_PATH = path.join(ROOT, 'electron/lib/combat-compatibility.json');
 const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
 const REVIEWED_PATH = path.join(ROOT, 'data/compat/reviewed-overrides.json');
 const BASE_MOVES_PATH = path.join(ROOT, 'data/compat/base-moves.json');
-const DATA_DIRECTORIES = ['kubejs/data', 'global_packs', 'datapacks', 'world/datapacks', 'config/openloader/data'];
 
 function fail(message) {
   console.error(`ERRO: ${message}`);
@@ -58,89 +57,8 @@ function parseArguments(argv) {
   return options;
 }
 
-const sha256 = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
 const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const jsonText = (value) => `${JSON.stringify(value, null, 2)}\n`;
-
-function unzipSelected(file, predicate) {
-  return unzipSync(new Uint8Array(fs.readFileSync(file)), {filter: (entry) => predicate(entry.name)});
-}
-
-function parseJsonBytes(bytes, label) {
-  try {
-    return JSON.parse(strFromU8(bytes));
-  } catch {
-    fail(`JSON inválido em ${label}`);
-    return null;
-  }
-}
-
-function walkFiles(directory) {
-  const files = [];
-  for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
-    const full = path.join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...walkFiles(full));
-    else files.push(full);
-  }
-  return files;
-}
-
-/** Coleta, de um provedor (jar ou pasta), os arquivos que podem alterar espécies ou regras do Showdown. */
-function collectJarProvider(file) {
-  const entries = unzipSelected(
-    file,
-    (name) =>
-      /^data\/cobblemon\/species\/.+\.json$/.test(name) ||
-      /^data\/cobblemon\/species_additions\/.+\.json$/.test(name) ||
-      /\/showdown\/(?:mods\/)?(moves|abilities|items)\.js$/.test(name) ||
-      /\/showdown\/battle-actions\.js$/.test(name) ||
-      /\/showdown\/held_items\/.+\.js$/.test(name),
-  );
-  return {entries};
-}
-
-function classifyProviderEntries(provider, label) {
-  const result = {label, species: {}, additions: [], showdown: {}, battleActions: null, heldItemOverrides: []};
-  for (const [name, bytes] of Object.entries(provider.entries)) {
-    const showdownKind = name.match(/\/showdown\/(?:mods\/)?(moves|abilities|items)\.js$/)?.[1];
-    if (/^data\/cobblemon\/species\/.+\.json$/.test(name)) result.species[speciesSlug(name)] = parseJsonBytes(bytes, `${label}:${name}`);
-    else if (/^data\/cobblemon\/species_additions\/.+\.json$/.test(name)) {
-      const json = parseJsonBytes(bytes, `${label}:${name}`);
-      const target = typeof json.target === 'string' ? json.target : `cobblemon:${speciesSlug(name)}`;
-      result.additions.push({target: target.replace(/^cobblemon:/, ''), json});
-    } else if (showdownKind) {
-      // O Mega Showdown traz `showdown/moves.js` e `showdown/mods/moves.js`: guardar todos, sem sobrescrever.
-      result.showdown[showdownKind] = [...(result.showdown[showdownKind] ?? []), {file: name, source: strFromU8(bytes)}];
-    } else if (/\/showdown\/battle-actions\.js$/.test(name)) result.battleActions = strFromU8(bytes);
-    else if (/\/showdown\/held_items\/.+\.js$/.test(name)) {
-      result.heldItemOverrides.push(
-        path
-          .basename(name, '.js')
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, ''),
-      );
-    }
-  }
-  return result;
-}
-
-function collectDirectoryProviders(instance) {
-  const providers = [];
-  for (const relative of DATA_DIRECTORIES) {
-    const directory = path.join(instance, relative);
-    if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) continue;
-    const entries = {};
-    for (const file of walkFiles(directory)) {
-      const normalized = file.split(path.sep).join('/');
-      const speciesMatch = normalized.match(/\/data\/cobblemon\/species\/.+\.json$/) || normalized.match(/\/cobblemon\/species\/.+\.json$/);
-      const additionMatch = normalized.match(/\/cobblemon\/species_additions\/.+\.json$/);
-      if (speciesMatch) entries[`data/cobblemon/species/${path.basename(file)}`] = fs.readFileSync(file);
-      else if (additionMatch) entries[`data/cobblemon/species_additions/${path.basename(file)}`] = fs.readFileSync(file);
-    }
-    if (Object.keys(entries).length > 0) providers.push(classifyProviderEntries({entries}, relative));
-  }
-  return providers;
-}
 
 function addConflict(conflicts, slug, conflict) {
   if (!Object.hasOwn(conflicts, slug)) conflicts[slug] = [];
@@ -418,4 +336,8 @@ function main() {
   console.log('Arquivos versionados coincidem com a geração.');
 }
 
-main();
+try {
+  main();
+} catch (error) {
+  fail(error.message);
+}

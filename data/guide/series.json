@@ -1,0 +1,3114 @@
+{
+  "bdsp": {
+    "difficulty": 5,
+    "requiredSeries": [],
+    "initialLevelCap": null,
+    "relativeLevelCap": null,
+    "trainerIds": [
+      "rctmod:champion_cynthia_03a5",
+      "rctmod:champion_cynthia_05a2",
+      "rctmod:champion_cynthia_05a7",
+      "rctmod:commander_jupiter_041d",
+      "rctmod:commander_jupiter_041e",
+      "rctmod:commander_mars_03c2",
+      "rctmod:commander_mars_041c",
+      "rctmod:commander_mars_0477",
+      "rctmod:commander_mars_jupiter_m009",
+      "rctmod:commander_saturn_041f",
+      "rctmod:commander_saturn_0420",
+      "rctmod:elite_four_aaron_039f",
+      "rctmod:elite_four_aaron_059e",
+      "rctmod:elite_four_aaron_05a3",
+      "rctmod:elite_four_bertha_03a0",
+      "rctmod:elite_four_bertha_059f",
+      "rctmod:elite_four_bertha_05a4",
+      "rctmod:elite_four_flint_03a1",
+      "rctmod:elite_four_flint_05a0",
+      "rctmod:elite_four_flint_05a5",
+      "rctmod:elite_four_lucian_03a2",
+      "rctmod:elite_four_lucian_05a1",
+      "rctmod:elite_four_lucian_05a6",
+      "rctmod:gym_leader_byron_0399",
+      "rctmod:gym_leader_byron_0590",
+      "rctmod:gym_leader_candice_03da",
+      "rctmod:gym_leader_candice_058f",
+      "rctmod:gym_leader_fantina_03d9",
+      "rctmod:gym_leader_fantina_058e",
+      "rctmod:gym_leader_gardenia_03d6",
+      "rctmod:gym_leader_gardenia_058b",
+      "rctmod:gym_leader_maylene_03d8",
+      "rctmod:gym_leader_maylene_058d",
+      "rctmod:gym_leader_roark_0395",
+      "rctmod:gym_leader_roark_058a",
+      "rctmod:gym_leader_volkner_03db",
+      "rctmod:gym_leader_volkner_0591",
+      "rctmod:gym_leader_wake_03d7",
+      "rctmod:gym_leader_wake_058c",
+      "rctmod:pokemon_trainer_cedric_0445",
+      "rctmod:pokemon_trainer_cedric_0446",
+      "rctmod:pokemon_trainer_cedric_0447",
+      "rctmod:pokemon_trainer_cedric_0448",
+      "rctmod:pokemon_trainer_cedric_0449",
+      "rctmod:pokemon_trainer_cedric_044a",
+      "rctmod:pokemon_trainer_cedric_044b",
+      "rctmod:pokemon_trainer_cedric_044c",
+      "rctmod:pokemon_trainer_cedric_044d",
+      "rctmod:pokemon_trainer_cedric_044e",
+      "rctmod:pokemon_trainer_cedric_044f",
+      "rctmod:pokemon_trainer_cedric_0450",
+      "rctmod:team_galactic_boss_cyrus_041a",
+      "rctmod:team_galactic_boss_cyrus_041b",
+      "rctmod:team_galactic_grunt_03c3",
+      "rctmod:team_galactic_grunt_03c4",
+      "rctmod:team_galactic_grunt_03c5",
+      "rctmod:team_galactic_grunt_03c6",
+      "rctmod:team_galactic_grunt_0421",
+      "rctmod:team_galactic_grunt_0422",
+      "rctmod:team_galactic_grunt_0423",
+      "rctmod:team_galactic_grunt_0424",
+      "rctmod:team_galactic_grunt_0425",
+      "rctmod:team_galactic_grunt_0426",
+      "rctmod:team_galactic_grunt_0427",
+      "rctmod:team_galactic_grunt_0428",
+      "rctmod:team_galactic_grunt_042a",
+      "rctmod:team_galactic_grunt_042b",
+      "rctmod:team_galactic_grunt_042c",
+      "rctmod:team_galactic_grunt_042d",
+      "rctmod:team_galactic_grunt_042e",
+      "rctmod:team_galactic_grunt_042f",
+      "rctmod:team_galactic_grunt_0430",
+      "rctmod:team_galactic_grunt_0431",
+      "rctmod:team_galactic_grunt_0463",
+      "rctmod:team_galactic_grunt_0464",
+      "rctmod:team_galactic_grunt_0465",
+      "rctmod:team_galactic_grunt_0466",
+      "rctmod:team_galactic_grunt_0467",
+      "rctmod:team_galactic_grunt_0468",
+      "rctmod:team_galactic_grunt_0469",
+      "rctmod:team_galactic_grunt_046a",
+      "rctmod:team_galactic_grunt_046b",
+      "rctmod:team_galactic_grunt_046c",
+      "rctmod:team_galactic_grunt_046d",
+      "rctmod:team_galactic_grunt_046e",
+      "rctmod:team_galactic_grunt_046f",
+      "rctmod:team_galactic_grunt_0470",
+      "rctmod:team_galactic_grunt_0471",
+      "rctmod:team_galactic_grunt_0472",
+      "rctmod:team_galactic_grunt_0473",
+      "rctmod:team_galactic_grunt_0474",
+      "rctmod:team_galactic_grunt_0475",
+      "rctmod:team_galactic_grunt_0476",
+      "rctmod:team_galactic_grunt_0579",
+      "rctmod:team_galactic_grunt_057a",
+      "rctmod:team_galactic_grunt_057b",
+      "rctmod:team_galactic_grunt_057c",
+      "rctmod:team_galactic_grunt_0583",
+      "rctmod:team_galactic_grunt_0587",
+      "rctmod:team_galactic_grunt_0588",
+      "rctmod:team_galactic_grunt_0589"
+    ],
+    "order": [
+      "rctmod:commander_jupiter_041e",
+      "rctmod:commander_mars_0477",
+      "rctmod:gym_leader_roark_0395",
+      "rctmod:team_galactic_grunt_03c3",
+      "rctmod:team_galactic_grunt_03c4",
+      "rctmod:team_galactic_grunt_03c5",
+      "rctmod:team_galactic_grunt_03c6",
+      "rctmod:team_galactic_grunt_0421",
+      "rctmod:team_galactic_grunt_0422",
+      "rctmod:team_galactic_grunt_0423",
+      "rctmod:team_galactic_grunt_0424",
+      "rctmod:team_galactic_grunt_0425",
+      "rctmod:team_galactic_grunt_0426",
+      "rctmod:team_galactic_grunt_0427",
+      "rctmod:team_galactic_grunt_0428",
+      "rctmod:team_galactic_grunt_042a",
+      "rctmod:team_galactic_grunt_042b",
+      "rctmod:team_galactic_grunt_042c",
+      "rctmod:team_galactic_grunt_042d",
+      "rctmod:team_galactic_grunt_042e",
+      "rctmod:team_galactic_grunt_042f",
+      "rctmod:team_galactic_grunt_0430",
+      "rctmod:team_galactic_grunt_0431",
+      "rctmod:team_galactic_grunt_0463",
+      "rctmod:team_galactic_grunt_0464",
+      "rctmod:team_galactic_grunt_0465",
+      "rctmod:team_galactic_grunt_0466",
+      "rctmod:team_galactic_grunt_0467",
+      "rctmod:team_galactic_grunt_0468",
+      "rctmod:team_galactic_grunt_0469",
+      "rctmod:team_galactic_grunt_046a",
+      "rctmod:team_galactic_grunt_046b",
+      "rctmod:team_galactic_grunt_046c",
+      "rctmod:team_galactic_grunt_046d",
+      "rctmod:team_galactic_grunt_046e",
+      "rctmod:team_galactic_grunt_046f",
+      "rctmod:team_galactic_grunt_0470",
+      "rctmod:team_galactic_grunt_0471",
+      "rctmod:team_galactic_grunt_0472",
+      "rctmod:team_galactic_grunt_0473",
+      "rctmod:team_galactic_grunt_0474",
+      "rctmod:team_galactic_grunt_0475",
+      "rctmod:team_galactic_grunt_0476",
+      "rctmod:team_galactic_grunt_0579",
+      "rctmod:team_galactic_grunt_057a",
+      "rctmod:team_galactic_grunt_057b",
+      "rctmod:team_galactic_grunt_057c",
+      "rctmod:team_galactic_grunt_0583",
+      "rctmod:team_galactic_grunt_0587",
+      "rctmod:team_galactic_grunt_0588",
+      "rctmod:team_galactic_grunt_0589",
+      "rctmod:commander_mars_03c2",
+      "rctmod:gym_leader_roark_058a",
+      "rctmod:commander_jupiter_041d",
+      "rctmod:gym_leader_gardenia_03d6",
+      "rctmod:gym_leader_gardenia_058b",
+      "rctmod:pokemon_trainer_cedric_0445",
+      "rctmod:pokemon_trainer_cedric_0446",
+      "rctmod:pokemon_trainer_cedric_0447",
+      "rctmod:gym_leader_maylene_03d8",
+      "rctmod:gym_leader_maylene_058d",
+      "rctmod:gym_leader_wake_03d7",
+      "rctmod:gym_leader_wake_058c",
+      "rctmod:pokemon_trainer_cedric_0448",
+      "rctmod:pokemon_trainer_cedric_0449",
+      "rctmod:pokemon_trainer_cedric_044a",
+      "rctmod:gym_leader_fantina_03d9",
+      "rctmod:gym_leader_fantina_058e",
+      "rctmod:pokemon_trainer_cedric_044b",
+      "rctmod:pokemon_trainer_cedric_044c",
+      "rctmod:pokemon_trainer_cedric_044d",
+      "rctmod:gym_leader_byron_0399",
+      "rctmod:commander_saturn_041f",
+      "rctmod:gym_leader_byron_0590",
+      "rctmod:commander_mars_041c",
+      "rctmod:gym_leader_candice_03da",
+      "rctmod:gym_leader_candice_058f",
+      "rctmod:team_galactic_boss_cyrus_041a",
+      "rctmod:commander_saturn_0420",
+      "rctmod:commander_mars_jupiter_m009",
+      "rctmod:team_galactic_boss_cyrus_041b",
+      "rctmod:gym_leader_volkner_03db",
+      "rctmod:gym_leader_volkner_0591",
+      "rctmod:pokemon_trainer_cedric_044e",
+      "rctmod:pokemon_trainer_cedric_044f",
+      "rctmod:pokemon_trainer_cedric_0450",
+      "rctmod:elite_four_aaron_039f",
+      "rctmod:elite_four_bertha_03a0",
+      "rctmod:elite_four_flint_03a1",
+      "rctmod:elite_four_lucian_03a2",
+      "rctmod:champion_cynthia_03a5",
+      "rctmod:elite_four_aaron_059e",
+      "rctmod:elite_four_bertha_059f",
+      "rctmod:elite_four_flint_05a0",
+      "rctmod:elite_four_lucian_05a1",
+      "rctmod:champion_cynthia_05a2",
+      "rctmod:elite_four_aaron_05a3",
+      "rctmod:elite_four_bertha_05a4",
+      "rctmod:elite_four_flint_05a5",
+      "rctmod:elite_four_lucian_05a6",
+      "rctmod:champion_cynthia_05a7"
+    ],
+    "graph": {
+      "rctmod:champion_cynthia_03a5": {
+        "type": "champ",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_lucian_03a2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_cynthia_05a2": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_lucian_05a1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_cynthia_05a7": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_lucian_05a6"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:commander_jupiter_041d": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:commander_mars_03c2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:commander_jupiter_041e": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:commander"
+      },
+      "rctmod:commander_mars_03c2": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_roark_0395"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:commander_mars_041c": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:commander_saturn_041f"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:commander_mars_0477": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:commander"
+      },
+      "rctmod:commander_mars_jupiter_m009": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:commander_saturn_0420"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:commander_saturn_041f": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_byron_0399"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:commander_saturn_0420": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_galactic_boss_cyrus_041a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_aaron_039f": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:pokemon_trainer_cedric_044e",
+            "rctmod:pokemon_trainer_cedric_044f",
+            "rctmod:pokemon_trainer_cedric_0450"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_aaron_059e": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_cynthia_03a5"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_aaron_05a3": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_cynthia_05a2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_bertha_03a0": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_aaron_039f"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_bertha_059f": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_aaron_059e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_bertha_05a4": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_aaron_05a3"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_flint_03a1": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_bertha_03a0"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_flint_05a0": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_bertha_059f"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_flint_05a5": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_bertha_05a4"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lucian_03a2": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_flint_03a1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lucian_05a1": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_flint_05a0"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lucian_05a6": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:elite_four_flint_05a5"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_byron_0399": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:pokemon_trainer_cedric_044b",
+            "rctmod:pokemon_trainer_cedric_044c",
+            "rctmod:pokemon_trainer_cedric_044d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_byron_0590": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_byron_0399"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_candice_03da": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:commander_mars_041c"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_candice_058f": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_candice_03da"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_fantina_03d9": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:pokemon_trainer_cedric_0448",
+            "rctmod:pokemon_trainer_cedric_0449",
+            "rctmod:pokemon_trainer_cedric_044a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_fantina_058e": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_fantina_03d9"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_gardenia_03d6": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:commander_jupiter_041d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_gardenia_058b": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_gardenia_03d6"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_maylene_03d8": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:pokemon_trainer_cedric_0445",
+            "rctmod:pokemon_trainer_cedric_0446",
+            "rctmod:pokemon_trainer_cedric_0447"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_maylene_058d": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_maylene_03d8"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_roark_0395": {
+        "type": "leader",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_roark_058a": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_roark_0395"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_volkner_03db": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_galactic_boss_cyrus_041b"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_volkner_0591": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_volkner_03db"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_wake_03d7": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_maylene_03d8"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:gym_leader_wake_058c": {
+        "type": "normal",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:gym_leader_wake_03d7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_0445": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_gardenia_03d6"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_0446": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_gardenia_03d6"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_0447": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_gardenia_03d6"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_0448": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_wake_03d7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_0449": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_wake_03d7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_044a": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_wake_03d7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_044b": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_fantina_03d9"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_044c": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_fantina_03d9"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_044d": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_fantina_03d9"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_044e": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_volkner_03db"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_044f": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_volkner_03db"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:pokemon_trainer_cedric_0450": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_volkner_03db"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_galactic_boss_cyrus_041a": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:gym_leader_candice_03da"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_galactic_boss_cyrus_041b": {
+        "type": "team_galactic",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:commander_mars_jupiter_m009"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_galactic_grunt_03c3": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_03c4": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_03c5": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_03c6": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0421": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0422": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0423": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0424": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0425": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0426": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0427": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0428": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_042a": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_042b": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_042c": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_042d": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_042e": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_042f": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0430": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0431": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0463": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0464": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0465": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0466": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0467": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0468": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0469": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_046a": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_046b": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_046c": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_046d": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_046e": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_046f": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0470": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0471": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0472": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0473": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0474": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0475": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0476": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0579": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_057a": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_057b": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_057c": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0583": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0587": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0588": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      },
+      "rctmod:team_galactic_grunt_0589": {
+        "type": "team_galactic",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_galactic"
+      }
+    }
+  },
+  "radicalred": {
+    "difficulty": 9,
+    "requiredSeries": [],
+    "initialLevelCap": null,
+    "relativeLevelCap": null,
+    "trainerIds": [
+      "rctmod:boss_giovanni_0045",
+      "rctmod:boss_giovanni_015c",
+      "rctmod:boss_giovanni_015d",
+      "rctmod:champion_terry_01b6",
+      "rctmod:champion_terry_01b7",
+      "rctmod:champion_terry_01b8",
+      "rctmod:champion_terry_02e3",
+      "rctmod:champion_terry_02e4",
+      "rctmod:champion_terry_02e5",
+      "rctmod:elite_four_agatha_0053",
+      "rctmod:elite_four_agatha_0054",
+      "rctmod:elite_four_bruno_0050",
+      "rctmod:elite_four_bruno_0051",
+      "rctmod:elite_four_lance_0056",
+      "rctmod:elite_four_lance_0057",
+      "rctmod:elite_four_lorelei_004d",
+      "rctmod:elite_four_lorelei_004e",
+      "rctmod:leader_blaine_01a3",
+      "rctmod:leader_brock_019e",
+      "rctmod:leader_clair_004a",
+      "rctmod:leader_erika_01a1",
+      "rctmod:leader_giovanni_015e",
+      "rctmod:leader_koga_01a2",
+      "rctmod:leader_lt_surge_01a0",
+      "rctmod:leader_misty_019f",
+      "rctmod:leader_sabrina_01a4",
+      "rctmod:rival_terry_0146",
+      "rctmod:rival_terry_0147",
+      "rctmod:rival_terry_0148",
+      "rctmod:rival_terry_0149",
+      "rctmod:rival_terry_014a",
+      "rctmod:rival_terry_014b",
+      "rctmod:rival_terry_014c",
+      "rctmod:rival_terry_014d",
+      "rctmod:rival_terry_014e",
+      "rctmod:rival_terry_01aa",
+      "rctmod:rival_terry_01ab",
+      "rctmod:rival_terry_01ac",
+      "rctmod:rival_terry_01ad",
+      "rctmod:rival_terry_01ae",
+      "rctmod:rival_terry_01af",
+      "rctmod:rival_terry_01b0",
+      "rctmod:rival_terry_01b1",
+      "rctmod:rival_terry_01b2",
+      "rctmod:rival_terry_01b3",
+      "rctmod:rival_terry_01b4",
+      "rctmod:rival_terry_01b5",
+      "rctmod:rocket_admin_archer_002a",
+      "rctmod:rocket_admin_archer_002e",
+      "rctmod:rocket_admin_archer_0035",
+      "rctmod:rocket_admin_archer_0043",
+      "rctmod:rocket_admin_archer_ariana_m000",
+      "rctmod:rocket_admin_ariana_0029",
+      "rctmod:rocket_admin_ariana_0036",
+      "rctmod:rocket_admin_ariana_0044",
+      "rctmod:team_rocket_admin_021f",
+      "rctmod:team_rocket_admin_0220",
+      "rctmod:team_rocket_grunt_0046",
+      "rctmod:team_rocket_grunt_0047",
+      "rctmod:team_rocket_grunt_0048",
+      "rctmod:team_rocket_grunt_0049",
+      "rctmod:team_rocket_grunt_015f",
+      "rctmod:team_rocket_grunt_0160",
+      "rctmod:team_rocket_grunt_0161",
+      "rctmod:team_rocket_grunt_0162",
+      "rctmod:team_rocket_grunt_0163",
+      "rctmod:team_rocket_grunt_0164",
+      "rctmod:team_rocket_grunt_0165",
+      "rctmod:team_rocket_grunt_0166",
+      "rctmod:team_rocket_grunt_0167",
+      "rctmod:team_rocket_grunt_0168",
+      "rctmod:team_rocket_grunt_0169",
+      "rctmod:team_rocket_grunt_016a",
+      "rctmod:team_rocket_grunt_016b",
+      "rctmod:team_rocket_grunt_016c",
+      "rctmod:team_rocket_grunt_016d",
+      "rctmod:team_rocket_grunt_016e",
+      "rctmod:team_rocket_grunt_016f",
+      "rctmod:team_rocket_grunt_0170",
+      "rctmod:team_rocket_grunt_0171",
+      "rctmod:team_rocket_grunt_0172",
+      "rctmod:team_rocket_grunt_0173",
+      "rctmod:team_rocket_grunt_0174",
+      "rctmod:team_rocket_grunt_0175",
+      "rctmod:team_rocket_grunt_0176",
+      "rctmod:team_rocket_grunt_0177",
+      "rctmod:team_rocket_grunt_0178",
+      "rctmod:team_rocket_grunt_0179",
+      "rctmod:team_rocket_grunt_017a",
+      "rctmod:team_rocket_grunt_017b",
+      "rctmod:team_rocket_grunt_017c",
+      "rctmod:team_rocket_grunt_017d",
+      "rctmod:team_rocket_grunt_017e",
+      "rctmod:team_rocket_grunt_017f",
+      "rctmod:team_rocket_grunt_0180",
+      "rctmod:team_rocket_grunt_0181",
+      "rctmod:team_rocket_grunt_0182",
+      "rctmod:team_rocket_grunt_0183",
+      "rctmod:team_rocket_grunt_0184",
+      "rctmod:team_rocket_grunt_0185",
+      "rctmod:team_rocket_grunt_0186",
+      "rctmod:team_rocket_grunt_0187",
+      "rctmod:team_rocket_grunt_0204",
+      "rctmod:team_rocket_grunt_0219",
+      "rctmod:team_rocket_grunt_021a",
+      "rctmod:team_rocket_grunt_021b",
+      "rctmod:team_rocket_grunt_021c",
+      "rctmod:team_rocket_grunt_021d",
+      "rctmod:team_rocket_grunt_021e",
+      "rctmod:team_rocket_grunt_0237",
+      "rctmod:team_rocket_grunt_0238",
+      "rctmod:team_rocket_grunt_0239",
+      "rctmod:trainer_brendan_001a",
+      "rctmod:trainer_brendan_0032",
+      "rctmod:trainer_brendan_0039",
+      "rctmod:trainer_may_003d",
+      "rctmod:trainer_red_0003"
+    ],
+    "order": [
+      "rctmod:leader_brock_019e",
+      "rctmod:rival_terry_0146",
+      "rctmod:rival_terry_0147",
+      "rctmod:rival_terry_0148",
+      "rctmod:rival_terry_0149",
+      "rctmod:rival_terry_014a",
+      "rctmod:rival_terry_014b",
+      "rctmod:rival_terry_01aa",
+      "rctmod:rival_terry_01ab",
+      "rctmod:rival_terry_01ac",
+      "rctmod:rival_terry_01ad",
+      "rctmod:rival_terry_01ae",
+      "rctmod:rival_terry_01af",
+      "rctmod:team_rocket_admin_021f",
+      "rctmod:team_rocket_admin_0220",
+      "rctmod:team_rocket_grunt_0046",
+      "rctmod:team_rocket_grunt_0047",
+      "rctmod:team_rocket_grunt_0048",
+      "rctmod:team_rocket_grunt_0049",
+      "rctmod:team_rocket_grunt_015f",
+      "rctmod:team_rocket_grunt_0160",
+      "rctmod:team_rocket_grunt_0161",
+      "rctmod:team_rocket_grunt_0162",
+      "rctmod:team_rocket_grunt_0163",
+      "rctmod:team_rocket_grunt_0164",
+      "rctmod:team_rocket_grunt_0165",
+      "rctmod:team_rocket_grunt_0166",
+      "rctmod:team_rocket_grunt_0167",
+      "rctmod:team_rocket_grunt_0168",
+      "rctmod:team_rocket_grunt_0169",
+      "rctmod:team_rocket_grunt_016a",
+      "rctmod:team_rocket_grunt_016b",
+      "rctmod:team_rocket_grunt_016c",
+      "rctmod:team_rocket_grunt_016d",
+      "rctmod:team_rocket_grunt_016e",
+      "rctmod:team_rocket_grunt_016f",
+      "rctmod:team_rocket_grunt_0170",
+      "rctmod:team_rocket_grunt_0171",
+      "rctmod:team_rocket_grunt_0172",
+      "rctmod:team_rocket_grunt_0173",
+      "rctmod:team_rocket_grunt_0174",
+      "rctmod:team_rocket_grunt_0175",
+      "rctmod:team_rocket_grunt_0176",
+      "rctmod:team_rocket_grunt_0177",
+      "rctmod:team_rocket_grunt_0178",
+      "rctmod:team_rocket_grunt_0179",
+      "rctmod:team_rocket_grunt_017a",
+      "rctmod:team_rocket_grunt_017b",
+      "rctmod:team_rocket_grunt_017c",
+      "rctmod:team_rocket_grunt_017d",
+      "rctmod:team_rocket_grunt_017e",
+      "rctmod:team_rocket_grunt_017f",
+      "rctmod:team_rocket_grunt_0180",
+      "rctmod:team_rocket_grunt_0181",
+      "rctmod:team_rocket_grunt_0182",
+      "rctmod:team_rocket_grunt_0183",
+      "rctmod:team_rocket_grunt_0184",
+      "rctmod:team_rocket_grunt_0185",
+      "rctmod:team_rocket_grunt_0186",
+      "rctmod:team_rocket_grunt_0187",
+      "rctmod:team_rocket_grunt_0204",
+      "rctmod:team_rocket_grunt_0219",
+      "rctmod:team_rocket_grunt_021a",
+      "rctmod:team_rocket_grunt_021b",
+      "rctmod:team_rocket_grunt_021c",
+      "rctmod:team_rocket_grunt_021d",
+      "rctmod:team_rocket_grunt_021e",
+      "rctmod:team_rocket_grunt_0237",
+      "rctmod:team_rocket_grunt_0238",
+      "rctmod:team_rocket_grunt_0239",
+      "rctmod:rocket_admin_archer_002e",
+      "rctmod:rival_terry_014c",
+      "rctmod:rival_terry_014d",
+      "rctmod:rival_terry_014e",
+      "rctmod:leader_misty_019f",
+      "rctmod:trainer_brendan_0032",
+      "rctmod:leader_lt_surge_01a0",
+      "rctmod:leader_erika_01a1",
+      "rctmod:boss_giovanni_015c",
+      "rctmod:leader_giovanni_015e",
+      "rctmod:rival_terry_01b0",
+      "rctmod:rival_terry_01b1",
+      "rctmod:rival_terry_01b2",
+      "rctmod:rocket_admin_archer_ariana_m000",
+      "rctmod:boss_giovanni_015d",
+      "rctmod:leader_sabrina_01a4",
+      "rctmod:rocket_admin_archer_0035",
+      "rctmod:rocket_admin_ariana_0036",
+      "rctmod:trainer_brendan_0039",
+      "rctmod:leader_koga_01a2",
+      "rctmod:trainer_may_003d",
+      "rctmod:champion_terry_02e3",
+      "rctmod:champion_terry_02e4",
+      "rctmod:champion_terry_02e5",
+      "rctmod:leader_blaine_01a3",
+      "rctmod:rocket_admin_archer_0043",
+      "rctmod:rocket_admin_ariana_0044",
+      "rctmod:boss_giovanni_0045",
+      "rctmod:leader_clair_004a",
+      "rctmod:rival_terry_01b3",
+      "rctmod:rival_terry_01b4",
+      "rctmod:rival_terry_01b5",
+      "rctmod:trainer_brendan_001a",
+      "rctmod:elite_four_agatha_0053",
+      "rctmod:elite_four_agatha_0054",
+      "rctmod:elite_four_bruno_0050",
+      "rctmod:elite_four_bruno_0051",
+      "rctmod:elite_four_lance_0056",
+      "rctmod:elite_four_lance_0057",
+      "rctmod:elite_four_lorelei_004d",
+      "rctmod:elite_four_lorelei_004e",
+      "rctmod:rocket_admin_archer_002a",
+      "rctmod:rocket_admin_ariana_0029",
+      "rctmod:champion_terry_01b6",
+      "rctmod:champion_terry_01b7",
+      "rctmod:champion_terry_01b8",
+      "rctmod:trainer_red_0003"
+    ],
+    "graph": {
+      "rctmod:boss_giovanni_0045": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rocket_admin_ariana_0044"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:boss_giovanni_015c": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_erika_01a1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:boss_giovanni_015d": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rocket_admin_archer_ariana_m000"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_terry_01b6": {
+        "type": "champ",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_bruno_0050",
+            "rctmod:elite_four_bruno_0051"
+          ],
+          [
+            "rctmod:elite_four_lance_0056",
+            "rctmod:elite_four_lance_0057"
+          ],
+          [
+            "rctmod:elite_four_lorelei_004d",
+            "rctmod:elite_four_lorelei_004e"
+          ],
+          [
+            "rctmod:elite_four_agatha_0053",
+            "rctmod:elite_four_agatha_0054"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_terry_01b7": {
+        "type": "champ",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_bruno_0050",
+            "rctmod:elite_four_bruno_0051"
+          ],
+          [
+            "rctmod:elite_four_lance_0056",
+            "rctmod:elite_four_lance_0057"
+          ],
+          [
+            "rctmod:elite_four_lorelei_004d",
+            "rctmod:elite_four_lorelei_004e"
+          ],
+          [
+            "rctmod:elite_four_agatha_0053",
+            "rctmod:elite_four_agatha_0054"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_terry_01b8": {
+        "type": "champ",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_bruno_0050",
+            "rctmod:elite_four_bruno_0051"
+          ],
+          [
+            "rctmod:elite_four_lance_0056",
+            "rctmod:elite_four_lance_0057"
+          ],
+          [
+            "rctmod:elite_four_lorelei_004d",
+            "rctmod:elite_four_lorelei_004e"
+          ],
+          [
+            "rctmod:elite_four_agatha_0053",
+            "rctmod:elite_four_agatha_0054"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_terry_02e3": {
+        "type": "rival",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:trainer_may_003d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_terry_02e4": {
+        "type": "rival",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:trainer_may_003d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_terry_02e5": {
+        "type": "rival",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:trainer_may_003d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_agatha_0053": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_agatha_0054": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_bruno_0050": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_bruno_0051": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lance_0056": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lance_0057": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lorelei_004d": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_lorelei_004e": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_blaine_01a3": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_may_003d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_brock_019e": {
+        "type": "leader",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:leader_clair_004a": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_0045"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_erika_01a1": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_lt_surge_01a0"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_giovanni_015e": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015c"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_koga_01a2": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_0039"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_lt_surge_01a0": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_0032"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_misty_019f": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_terry_014c",
+            "rctmod:rival_terry_014d",
+            "rctmod:rival_terry_014e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_sabrina_01a4": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_0146": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_0147": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_0148": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_0149": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_014a": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_014b": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_014c": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rocket_admin_archer_002e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_014d": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rocket_admin_archer_002e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_014e": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rocket_admin_archer_002e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_01aa": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_01ab": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_01ac": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_01ad": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_01ae": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_01af": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "group:rival"
+      },
+      "rctmod:rival_terry_01b0": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015c"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_01b1": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015c"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_01b2": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015c"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_01b3": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_clair_004a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_01b4": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_clair_004a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_terry_01b5": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_clair_004a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_archer_002a": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_archer_002e": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_brock_019e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_archer_0035": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_archer_0043": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_blaine_01a3"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_archer_ariana_m000": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_terry_01b0",
+            "rctmod:rival_terry_01b1",
+            "rctmod:rival_terry_01b2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_ariana_0029": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:trainer_brendan_001a"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_ariana_0036": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:boss_giovanni_015d"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rocket_admin_ariana_0044": {
+        "type": "team_rocket",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rocket_admin_archer_0043"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_rocket_admin_021f": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_admin"
+      },
+      "rctmod:team_rocket_admin_0220": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_admin"
+      },
+      "rctmod:team_rocket_grunt_0046": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0047": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0048": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0049": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_015f": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0160": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0161": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0162": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0163": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0164": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0165": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0166": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0167": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0168": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0169": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_016a": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_016b": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_016c": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_016d": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_016e": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_016f": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0170": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0171": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0172": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0173": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0174": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0175": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0176": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0177": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0178": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0179": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_017a": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_017b": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_017c": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_017d": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_017e": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_017f": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0180": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0181": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0182": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0183": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0184": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0185": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0186": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0187": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0204": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0219": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_021a": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_021b": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_021c": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_021d": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_021e": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0237": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0238": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:team_rocket_grunt_0239": {
+        "type": "team_rocket",
+        "optional": true,
+        "requires": [],
+        "via": "group:team_rocket_grunt"
+      },
+      "rctmod:trainer_brendan_001a": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_terry_01b3",
+            "rctmod:rival_terry_01b4",
+            "rctmod:rival_terry_01b5"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:trainer_brendan_0032": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_misty_019f"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:trainer_brendan_0039": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_sabrina_01a4"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:trainer_may_003d": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_koga_01a2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:trainer_red_0003": {
+        "type": "rival",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_terry_01b6",
+            "rctmod:champion_terry_01b7",
+            "rctmod:champion_terry_01b8"
+          ]
+        ],
+        "via": "mob"
+      }
+    }
+  },
+  "unbound": {
+    "difficulty": 8,
+    "requiredSeries": [
+      [
+        "bdsp",
+        "radicalred"
+      ]
+    ],
+    "initialLevelCap": null,
+    "relativeLevelCap": null,
+    "trainerIds": [
+      "rctmod:battleground_alice_05f4",
+      "rctmod:battleground_benjamin_05f9",
+      "rctmod:battleground_big_mo_05f7",
+      "rctmod:battleground_mel_05f5",
+      "rctmod:battleground_mirskle_05f2",
+      "rctmod:battleground_tessy_05f8",
+      "rctmod:battleground_vega_05f3",
+      "rctmod:boss_zeph_1_05bb",
+      "rctmod:boss_zeph_2_05bf",
+      "rctmod:champion_jax_05b7",
+      "rctmod:elite_four_arabella_05b5",
+      "rctmod:elite_four_elias_05b4",
+      "rctmod:elite_four_moleman_05b3",
+      "rctmod:elite_four_penny_05b6",
+      "rctmod:leader_alice_05ac",
+      "rctmod:leader_benjamin_05b2",
+      "rctmod:leader_big_mo_05b0",
+      "rctmod:leader_galavan_05af",
+      "rctmod:leader_mel_05ad",
+      "rctmod:leader_mirskle_05aa",
+      "rctmod:leader_tessy_05b1",
+      "rctmod:leader_vega_05ab",
+      "rctmod:light_of_ruin_admin_ivory_3_05c3",
+      "rctmod:light_of_ruin_aklove_1_05c2",
+      "rctmod:light_of_ruin_aklove_2_05c4",
+      "rctmod:light_of_ruin_aklove_3_05c5",
+      "rctmod:light_of_ruin_vega_05c1",
+      "rctmod:rival_1_player_chose_beldum_0607",
+      "rctmod:rival_1_player_chose_gible_0606",
+      "rctmod:rival_1_player_chose_larvitar_0608",
+      "rctmod:rival_2_player_chose_beldum_060a",
+      "rctmod:rival_2_player_chose_gible_0609",
+      "rctmod:rival_2_player_chose_larvitar_060b",
+      "rctmod:rival_3_player_chose_beldum_05fb",
+      "rctmod:rival_3_player_chose_gible_05fa",
+      "rctmod:rival_3_player_chose_larvitar_05fc",
+      "rctmod:rival_4_player_chose_beldum_05fe",
+      "rctmod:rival_4_player_chose_gible_05fd",
+      "rctmod:rival_4_player_chose_larvitar_05ff",
+      "rctmod:rival_5_player_chose_beldum_0601",
+      "rctmod:rival_5_player_chose_gible_0600",
+      "rctmod:rival_5_player_chose_larvitar_0602",
+      "rctmod:shadow_admin_ivory_1_05ba",
+      "rctmod:shadow_admin_ivory_2_05bc",
+      "rctmod:shadow_admin_ivory_grunt_m00f",
+      "rctmod:shadow_admin_marlon_1_05b8",
+      "rctmod:shadow_admin_marlon_2_05be",
+      "rctmod:shadow_admin_marlon_3_05c0",
+      "rctmod:shadow_admin_marlon_grunt_m00e",
+      "rctmod:shadow_grunt_w_ivory_2_05bd",
+      "rctmod:shadow_grunt_w_marlon_1_05b9",
+      "rctmod:sucessor_maxima_05ae",
+      "rctmod:title_defense_jax_05ee",
+      "rctmod:title_defense_marlon_05eb",
+      "rctmod:title_defense_milo_05ed",
+      "rctmod:title_defense_rival_player_chose_beldum_05f0",
+      "rctmod:title_defense_rival_player_chose_gible_05ef",
+      "rctmod:title_defense_rival_player_chose_larvitar_05f1",
+      "rctmod:title_defense_solenk_05ec",
+      "rctmod:title_defense_zeph_05ea",
+      "rctmod:trainer_77_05f6",
+      "rctmod:trainer_92_0605"
+    ],
+    "order": [
+      "rctmod:rival_1_player_chose_beldum_0607",
+      "rctmod:rival_1_player_chose_gible_0606",
+      "rctmod:rival_1_player_chose_larvitar_0608",
+      "rctmod:rival_2_player_chose_beldum_060a",
+      "rctmod:rival_2_player_chose_gible_0609",
+      "rctmod:rival_2_player_chose_larvitar_060b",
+      "rctmod:shadow_grunt_w_ivory_2_05bd",
+      "rctmod:shadow_grunt_w_marlon_1_05b9",
+      "rctmod:leader_mirskle_05aa",
+      "rctmod:shadow_admin_marlon_grunt_m00e",
+      "rctmod:leader_vega_05ab",
+      "rctmod:shadow_admin_marlon_1_05b8",
+      "rctmod:shadow_admin_ivory_1_05ba",
+      "rctmod:boss_zeph_1_05bb",
+      "rctmod:rival_3_player_chose_beldum_05fb",
+      "rctmod:rival_3_player_chose_gible_05fa",
+      "rctmod:rival_3_player_chose_larvitar_05fc",
+      "rctmod:leader_alice_05ac",
+      "rctmod:leader_mel_05ad",
+      "rctmod:shadow_admin_ivory_grunt_m00f",
+      "rctmod:shadow_admin_ivory_2_05bc",
+      "rctmod:sucessor_maxima_05ae",
+      "rctmod:shadow_admin_marlon_2_05be",
+      "rctmod:rival_4_player_chose_beldum_05fe",
+      "rctmod:rival_4_player_chose_gible_05fd",
+      "rctmod:rival_4_player_chose_larvitar_05ff",
+      "rctmod:leader_galavan_05af",
+      "rctmod:light_of_ruin_vega_05c1",
+      "rctmod:boss_zeph_2_05bf",
+      "rctmod:light_of_ruin_aklove_1_05c2",
+      "rctmod:leader_big_mo_05b0",
+      "rctmod:leader_tessy_05b1",
+      "rctmod:rival_5_player_chose_beldum_0601",
+      "rctmod:rival_5_player_chose_gible_0600",
+      "rctmod:rival_5_player_chose_larvitar_0602",
+      "rctmod:light_of_ruin_admin_ivory_3_05c3",
+      "rctmod:light_of_ruin_aklove_2_05c4",
+      "rctmod:shadow_admin_marlon_3_05c0",
+      "rctmod:leader_benjamin_05b2",
+      "rctmod:elite_four_arabella_05b5",
+      "rctmod:elite_four_elias_05b4",
+      "rctmod:elite_four_moleman_05b3",
+      "rctmod:elite_four_penny_05b6",
+      "rctmod:champion_jax_05b7",
+      "rctmod:light_of_ruin_aklove_3_05c5",
+      "rctmod:title_defense_jax_05ee",
+      "rctmod:title_defense_marlon_05eb",
+      "rctmod:title_defense_milo_05ed",
+      "rctmod:title_defense_rival_player_chose_beldum_05f0",
+      "rctmod:title_defense_rival_player_chose_gible_05ef",
+      "rctmod:title_defense_rival_player_chose_larvitar_05f1",
+      "rctmod:title_defense_solenk_05ec",
+      "rctmod:title_defense_zeph_05ea",
+      "rctmod:battleground_alice_05f4",
+      "rctmod:battleground_benjamin_05f9",
+      "rctmod:battleground_big_mo_05f7",
+      "rctmod:battleground_mel_05f5",
+      "rctmod:battleground_mirskle_05f2",
+      "rctmod:battleground_tessy_05f8",
+      "rctmod:battleground_vega_05f3",
+      "rctmod:trainer_77_05f6",
+      "rctmod:trainer_92_0605"
+    ],
+    "graph": {
+      "rctmod:battleground_alice_05f4": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:battleground_benjamin_05f9": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:battleground_big_mo_05f7": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:battleground_mel_05f5": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:battleground_mirskle_05f2": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:battleground_tessy_05f8": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:battleground_vega_05f3": {
+        "type": "battleground",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:title_defense_jax_05ee"
+          ],
+          [
+            "rctmod:title_defense_marlon_05eb"
+          ],
+          [
+            "rctmod:title_defense_milo_05ed"
+          ],
+          [
+            "rctmod:title_defense_rival_player_chose_beldum_05f0",
+            "rctmod:title_defense_rival_player_chose_gible_05ef",
+            "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+          ],
+          [
+            "rctmod:title_defense_solenk_05ec"
+          ],
+          [
+            "rctmod:title_defense_zeph_05ea"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:boss_zeph_1_05bb": {
+        "type": "team_shadow",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_ivory_1_05ba"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:boss_zeph_2_05bf": {
+        "type": "team_shadow",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:light_of_ruin_vega_05c1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:champion_jax_05b7": {
+        "type": "champ",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:elite_four_moleman_05b3"
+          ],
+          [
+            "rctmod:elite_four_elias_05b4"
+          ],
+          [
+            "rctmod:elite_four_arabella_05b5"
+          ],
+          [
+            "rctmod:elite_four_penny_05b6"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_arabella_05b5": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_benjamin_05b2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_elias_05b4": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_benjamin_05b2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_moleman_05b3": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_benjamin_05b2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:elite_four_penny_05b6": {
+        "type": "e4",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_benjamin_05b2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_alice_05ac": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_3_player_chose_beldum_05fb",
+            "rctmod:rival_3_player_chose_gible_05fa",
+            "rctmod:rival_3_player_chose_larvitar_05fc"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_benjamin_05b2": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_marlon_3_05c0"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_big_mo_05b0": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:light_of_ruin_aklove_1_05c2"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_galavan_05af": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_4_player_chose_beldum_05fe",
+            "rctmod:rival_4_player_chose_gible_05fd",
+            "rctmod:rival_4_player_chose_larvitar_05ff"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_mel_05ad": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_alice_05ac"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_mirskle_05aa": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_2_player_chose_beldum_060a",
+            "rctmod:rival_2_player_chose_gible_0609",
+            "rctmod:rival_2_player_chose_larvitar_060b"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_tessy_05b1": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_big_mo_05b0"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:leader_vega_05ab": {
+        "type": "leader",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_marlon_grunt_m00e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:light_of_ruin_admin_ivory_3_05c3": {
+        "type": "ligh_of_ruin",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:rival_5_player_chose_beldum_0601",
+            "rctmod:rival_5_player_chose_gible_0600",
+            "rctmod:rival_5_player_chose_larvitar_0602"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:light_of_ruin_aklove_1_05c2": {
+        "type": "ligh_of_ruin",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_zeph_2_05bf"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:light_of_ruin_aklove_2_05c4": {
+        "type": "ligh_of_ruin",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:light_of_ruin_admin_ivory_3_05c3"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:light_of_ruin_aklove_3_05c5": {
+        "type": "ligh_of_ruin",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:light_of_ruin_vega_05c1": {
+        "type": "ligh_of_ruin",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_galavan_05af"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_1_player_chose_beldum_0607": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:rival_1_player_chose_gible_0606": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:rival_1_player_chose_larvitar_0608": {
+        "type": "rival",
+        "optional": true,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:rival_2_player_chose_beldum_060a": {
+        "type": "rival",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:rival_2_player_chose_gible_0609": {
+        "type": "rival",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:rival_2_player_chose_larvitar_060b": {
+        "type": "rival",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:rival_3_player_chose_beldum_05fb": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_zeph_1_05bb"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_3_player_chose_gible_05fa": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_zeph_1_05bb"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_3_player_chose_larvitar_05fc": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:boss_zeph_1_05bb"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_4_player_chose_beldum_05fe": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_marlon_2_05be"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_4_player_chose_gible_05fd": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_marlon_2_05be"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_4_player_chose_larvitar_05ff": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_marlon_2_05be"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_5_player_chose_beldum_0601": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_tessy_05b1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_5_player_chose_gible_0600": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_tessy_05b1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:rival_5_player_chose_larvitar_0602": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_tessy_05b1"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_ivory_1_05ba": {
+        "type": "team_shadow",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_vega_05ab"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_ivory_2_05bc": {
+        "type": "team_shadow",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:shadow_admin_ivory_grunt_m00f"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_ivory_grunt_m00f": {
+        "type": "team_shadow",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_mel_05ad"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_marlon_1_05b8": {
+        "type": "team_shadow",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:shadow_admin_marlon_grunt_m00e"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_marlon_2_05be": {
+        "type": "team_shadow",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:sucessor_maxima_05ae"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_marlon_3_05c0": {
+        "type": "ligh_of_ruin",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:light_of_ruin_aklove_2_05c4"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_admin_marlon_grunt_m00e": {
+        "type": "team_shadow",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:leader_mirskle_05aa"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:shadow_grunt_w_ivory_2_05bd": {
+        "type": "team_shadow",
+        "optional": true,
+        "requires": [],
+        "via": "group:shadow_grunt"
+      },
+      "rctmod:shadow_grunt_w_marlon_1_05b9": {
+        "type": "team_shadow",
+        "optional": true,
+        "requires": [],
+        "via": "group:shadow_grunt"
+      },
+      "rctmod:sucessor_maxima_05ae": {
+        "type": "rival",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:shadow_admin_ivory_grunt_m00f"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_jax_05ee": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_marlon_05eb": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_milo_05ed": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_rival_player_chose_beldum_05f0": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_rival_player_chose_gible_05ef": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_rival_player_chose_larvitar_05f1": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_solenk_05ec": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:title_defense_zeph_05ea": {
+        "type": "champ",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:champion_jax_05b7"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:trainer_77_05f6": {
+        "type": "rival",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:battleground_mirskle_05f2"
+          ],
+          [
+            "rctmod:battleground_vega_05f3"
+          ],
+          [
+            "rctmod:battleground_alice_05f4"
+          ],
+          [
+            "rctmod:battleground_mel_05f5"
+          ],
+          [
+            "rctmod:battleground_big_mo_05f7"
+          ],
+          [
+            "rctmod:battleground_tessy_05f8"
+          ],
+          [
+            "rctmod:battleground_benjamin_05f9"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:trainer_92_0605": {
+        "type": "rival",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:battleground_mirskle_05f2"
+          ],
+          [
+            "rctmod:battleground_vega_05f3"
+          ],
+          [
+            "rctmod:battleground_alice_05f4"
+          ],
+          [
+            "rctmod:battleground_mel_05f5"
+          ],
+          [
+            "rctmod:battleground_big_mo_05f7"
+          ],
+          [
+            "rctmod:battleground_tessy_05f8"
+          ],
+          [
+            "rctmod:battleground_benjamin_05f9"
+          ]
+        ],
+        "via": "mob"
+      }
+    }
+  }
+}

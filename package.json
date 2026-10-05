@@ -20,7 +20,8 @@
     "test:coverage": "vitest run --coverage",
     "test:mutation": "stryker run",
     "test:mutation:cjs": "stryker run stryker.cjs.config.json",
-    "catalog:generate": "node scripts/generate-compat-catalog.mjs"
+    "catalog:generate": "node scripts/generate-compat-catalog.mjs",
+    "guide-data:generate": "node scripts/generate-guide-data.mjs"
   },
   "engines": {
     "node": ">=22"
