@@ -61,21 +61,36 @@ export function deriveEvolutions(evolutions) {
 
 const FORMATS = {GEN_9_SINGLES: 'singles', GEN_9_DOUBLES: 'doubles'};
 
-export function deriveTrainer(json, {id, jar, sha256, file}) {
+/** heldItem da fonte é uma lista de alternativas (o RCT sorteia/escolhe uma): vira lista de ids, nunca um item escolhido. */
+function heldItemAlternatives(heldItem) {
+  const list = (Array.isArray(heldItem) ? heldItem : [heldItem]).filter(Boolean).map(withNamespace);
+  return list.length > 0 ? list : null;
+}
+
+export function deriveTrainer(json, {id, jar, sha256, file, mob}) {
   if (!Array.isArray(json.team) || json.team.length === 0) throw new Error(`treinador sem time: ${file}`);
   return {
     id,
     name: json.name,
     format: json.battleFormat === undefined ? 'singles' : (FORMATS[json.battleFormat] ?? 'unknown'), // TrainerTeam.battleFormat inicia em GEN_9_SINGLES
+    ai: json.ai ?? null,
+    battleRules: {maxItemUses: json.battleRules?.maxItemUses ?? null},
+    bag: (json.bag ?? []).map((entry) => ({item: withNamespace(entry.item), quantity: entry.quantity ?? 1})),
+    mob: mob
+      ? {
+          type: mob.type ?? null,
+          signatureItem: mob.signatureItem ? withNamespace(mob.signatureItem) : null,
+          optional: mob.optional === true,
+        }
+      : null,
     team: json.team.map((pokemon) => {
-      const item = Array.isArray(pokemon.heldItem) ? pokemon.heldItem[0] : pokemon.heldItem;
       return {
         speciesId: withNamespace(pokemon.species),
         level: pokemon.level,
         moves: (pokemon.moveset ?? []).map(withNamespace),
         ability: pokemon.ability ?? null,
         nature: pokemon.nature ?? null,
-        heldItem: item ? withNamespace(item) : null,
+        heldItem: heldItemAlternatives(pokemon.heldItem),
         ivs: pokemon.ivs ?? null,
         evs: pokemon.evs ?? null,
         aspects: pokemon.aspects ?? [],
@@ -97,7 +112,12 @@ export function deriveSeries({namespace, seriesMeta, mobs, groups, trainerIds}) 
   const nodeFor = (json, via) => ({
     type: json.type ?? null,
     optional: json.optional === true,
-    requires: (json.requiredDefeats ?? []).map((group) => group.map((id) => `${namespace}:${id}`)),
+    requires: (json.requiredDefeats ?? [])
+      .filter((group) => group.length > 0)
+      .map(
+        // grupo vazio (`[[]]` nas séries do KubeJS) não exige nada
+        (group) => group.map((id) => `${namespace}:${id}`),
+      ),
     via,
   });
   const result = {};

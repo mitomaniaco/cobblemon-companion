@@ -33,6 +33,12 @@ function parseArguments(argv) {
   return options;
 }
 
+function walkFiles(directory) {
+  return fs
+    .readdirSync(directory, {withFileTypes: true})
+    .flatMap((entry) => (entry.isDirectory() ? walkFiles(path.join(directory, entry.name)) : [path.join(directory, entry.name)]));
+}
+
 const jsonText = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
 function main() {
@@ -71,31 +77,52 @@ function main() {
     evolutions[slug] = deriveEvolutions(species[slug].evolutions);
   }
 
-  const trainers = [];
-  const series = {};
+  // Arquivos do RCT: JARs com "rct" no nome; depois kubejs/data/ sobrepõe o mesmo caminho (pacote de dados do KubeJS vem por último).
+  const rctFiles = new Map();
   for (const jar of jars.filter((name) => /rct/i.test(name)).sort()) {
     const file = path.join(modsDirectory, jar);
-    const entries = unzipSelected(file, (name) => RCT_ENTRY.test(name));
-    const seriesParts = {namespace: null, seriesMeta: {}, mobs: {}, groups: {}, trainerIds: []};
     const jarSha = sha256(fs.readFileSync(file));
-    for (const [name, bytes] of Object.entries(entries)) {
-      const namespace = name.split('/')[1];
-      const parts = name.split('/');
-      if (!TRAINER_ENTRY.test(name)) {
-        seriesParts.namespace = namespace;
-        const json = parseJsonBytes(bytes, `${jar}:${name}`);
-        const base = path.basename(name, '.json');
-        if (parts[2] === 'series') seriesParts.seriesMeta[base] = json;
-        else if (parts[4] === 'groups') seriesParts.groups[base] = json;
-        else if (parts[4] !== undefined && parts.length === 6) seriesParts.mobs[base] = json;
-        continue;
-      }
-      seriesParts.trainerIds.push(path.basename(name, '.json'));
-      const id = `${namespace}:${path.basename(name, '.json')}`;
-      trainers.push(deriveTrainer(parseJsonBytes(bytes, `${jar}:${name}`), {id, jar, sha256: jarSha, file: name}));
+    for (const [name, bytes] of Object.entries(unzipSelected(file, (entry) => RCT_ENTRY.test(entry)))) {
+      rctFiles.set(name, {bytes, origin: jar, sha256: jarSha});
     }
-    if (seriesParts.namespace && Object.keys(seriesParts.seriesMeta).length > 0) Object.assign(series, deriveSeries(seriesParts));
   }
+  const kubejsRoot = path.join(instance, 'kubejs/data');
+  if (fs.existsSync(kubejsRoot)) {
+    for (const file of walkFiles(kubejsRoot)) {
+      const name = `data/${path.relative(kubejsRoot, file).split(path.sep).join('/')}`;
+      if (!RCT_ENTRY.test(name)) continue;
+      const bytes = fs.readFileSync(file);
+      rctFiles.set(name, {bytes, origin: 'kubejs/data', sha256: sha256(bytes)});
+    }
+  }
+
+  const seriesParts = {namespace: null, seriesMeta: {}, mobs: {}, groups: {}, trainerIds: []};
+  const trainerFiles = [];
+  for (const [name, entry] of [...rctFiles].sort(([a], [b]) => (a < b ? -1 : 1))) {
+    const parts = name.split('/');
+    const base = path.basename(name, '.json');
+    if (TRAINER_ENTRY.test(name)) {
+      seriesParts.trainerIds.push(base);
+      trainerFiles.push([name, entry]);
+      continue;
+    }
+    seriesParts.namespace = parts[1];
+    const json = parseJsonBytes(entry.bytes, `${entry.origin}:${name}`);
+    if (parts[2] === 'series') seriesParts.seriesMeta[base] = json;
+    else if (parts[4] === 'groups') seriesParts.groups[base] = json;
+    else if (parts.length === 6) seriesParts.mobs[base] = json;
+  }
+  const trainers = trainerFiles.map(([name, entry]) => {
+    const base = path.basename(name, '.json');
+    return deriveTrainer(parseJsonBytes(entry.bytes, `${entry.origin}:${name}`), {
+      id: `${name.split('/')[1]}:${base}`,
+      jar: entry.origin,
+      sha256: entry.sha256,
+      file: name,
+      mob: seriesParts.mobs[base] ?? null,
+    });
+  });
+  const series = Object.keys(seriesParts.seriesMeta).length > 0 ? deriveSeries(seriesParts) : {};
   if (trainers.length === 0) fail('nenhum treinador do RCT encontrado (JARs com "rct" no nome e data/<ns>/trainers/*.json)');
   trainers.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 
