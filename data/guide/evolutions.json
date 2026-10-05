@@ -1,0 +1,4664 @@
+{
+  "abomasnow": [],
+  "abra": [
+    {
+      "to": "cobblemon:kadabra",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "absol": [],
+  "accelgor": [],
+  "aegislash": [],
+  "aerodactyl": [],
+  "aggron": [],
+  "aipom": [
+    {
+      "to": "cobblemon:ambipom",
+      "method": "level_up",
+      "requirement": "has_move(move=doublehit)"
+    }
+  ],
+  "alakazam": [],
+  "alcremie": [],
+  "alomomola": [],
+  "altaria": [],
+  "amaura": [
+    {
+      "to": "cobblemon:aurorus",
+      "method": "level_up",
+      "requirement": "level(minLevel=39); time_range(range=night)"
+    }
+  ],
+  "ambipom": [],
+  "amoonguss": [],
+  "ampharos": [],
+  "annihilape": [],
+  "anorith": [
+    {
+      "to": "cobblemon:armaldo",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "appletun": [],
+  "applin": [
+    {
+      "to": "cobblemon:flapple",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:tart_apple"
+    },
+    {
+      "to": "cobblemon:appletun",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sweet_apple"
+    },
+    {
+      "to": "cobblemon:dipplin",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:syrupy_apple"
+    }
+  ],
+  "araquanid": [],
+  "arbok": [],
+  "arboliva": [],
+  "arcanine": [],
+  "arceus": [],
+  "archaludon": [],
+  "archen": [
+    {
+      "to": "cobblemon:archeops",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "archeops": [],
+  "arctibax": [
+    {
+      "to": "cobblemon:baxcalibur",
+      "method": "level_up",
+      "requirement": "level(minLevel=54)"
+    }
+  ],
+  "arctovish": [],
+  "arctozolt": [],
+  "ariados": [],
+  "armaldo": [],
+  "armarouge": [],
+  "aromatisse": [],
+  "aron": [
+    {
+      "to": "cobblemon:lairon",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "arrokuda": [
+    {
+      "to": "cobblemon:barraskewda",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "articuno": [],
+  "audino": [],
+  "aurorus": [],
+  "avalugg": [],
+  "axew": [
+    {
+      "to": "cobblemon:fraxure",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "azelf": [],
+  "azumarill": [],
+  "azurill": [
+    {
+      "to": "cobblemon:marill",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "bagon": [
+    {
+      "to": "cobblemon:shelgon",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "baltoy": [
+    {
+      "to": "cobblemon:claydol",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "banette": [],
+  "barbaracle": [],
+  "barboach": [
+    {
+      "to": "cobblemon:whiscash",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "barraskewda": [],
+  "basculegion": [],
+  "basculin": [],
+  "bastiodon": [],
+  "baxcalibur": [],
+  "bayleef": [
+    {
+      "to": "cobblemon:meganium",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "beartic": [],
+  "beautifly": [],
+  "beedrill": [],
+  "beheeyem": [],
+  "beldum": [
+    {
+      "to": "cobblemon:metang",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "bellibolt": [],
+  "bellossom": [],
+  "bellsprout": [
+    {
+      "to": "cobblemon:weepinbell",
+      "method": "level_up",
+      "requirement": "level(minLevel=21)"
+    }
+  ],
+  "bergmite": [
+    {
+      "to": "cobblemon:avalugg",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    },
+    {
+      "to": "cobblemon:avalugg",
+      "method": "level_up",
+      "requirement": "level(minLevel=37); biome(biomeCondition=#cobblemon:is_mountain)"
+    }
+  ],
+  "bewear": [],
+  "bibarel": [],
+  "bidoof": [
+    {
+      "to": "cobblemon:bibarel",
+      "method": "level_up",
+      "requirement": "level(minLevel=15)"
+    }
+  ],
+  "binacle": [
+    {
+      "to": "cobblemon:barbaracle",
+      "method": "level_up",
+      "requirement": "level(minLevel=39)"
+    }
+  ],
+  "bisharp": [
+    {
+      "to": "cobblemon:kingambit",
+      "method": "level_up",
+      "requirement": "defeat(target=bisharp held_item=cobblemon:kings_rock,amount=3)"
+    }
+  ],
+  "blacephalon": [],
+  "blastoise": [],
+  "blaziken": [],
+  "blipbug": [
+    {
+      "to": "cobblemon:dottler",
+      "method": "level_up",
+      "requirement": "level(minLevel=10)"
+    }
+  ],
+  "blissey": [],
+  "blitzle": [
+    {
+      "to": "cobblemon:zebstrika",
+      "method": "level_up",
+      "requirement": "level(minLevel=27)"
+    }
+  ],
+  "boldore": [
+    {
+      "to": "cobblemon:gigalith",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "boltund": [],
+  "bombirdier": [],
+  "bonsly": [
+    {
+      "to": "cobblemon:sudowoodo",
+      "method": "level_up",
+      "requirement": "has_move(move=mimic)"
+    }
+  ],
+  "bouffalant": [],
+  "bounsweet": [
+    {
+      "to": "cobblemon:steenee",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "braixen": [
+    {
+      "to": "cobblemon:delphox",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "brambleghast": [],
+  "bramblin": [
+    {
+      "to": "cobblemon:brambleghast",
+      "method": "level_up",
+      "requirement": "blocks_traveled(amount=1000)"
+    }
+  ],
+  "braviary": [],
+  "breloom": [],
+  "brionne": [
+    {
+      "to": "cobblemon:primarina",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "bronzong": [],
+  "bronzor": [
+    {
+      "to": "cobblemon:bronzong",
+      "method": "level_up",
+      "requirement": "level(minLevel=33)"
+    }
+  ],
+  "brutebonnet": [],
+  "bruxish": [],
+  "budew": [
+    {
+      "to": "cobblemon:roselia",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); time_range(range=day)"
+    }
+  ],
+  "buizel": [
+    {
+      "to": "cobblemon:floatzel",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "bulbasaur": [
+    {
+      "to": "cobblemon:ivysaur",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "buneary": [
+    {
+      "to": "cobblemon:lopunny",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "bunnelby": [
+    {
+      "to": "cobblemon:diggersby",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "burmy": [
+    {
+      "to": "cobblemon:wormadam",
+      "method": "level_up",
+      "requirement": "level(minLevel=20); properties(target=gender=female)"
+    },
+    {
+      "to": "cobblemon:mothim",
+      "method": "level_up",
+      "requirement": "level(minLevel=20); properties(target=gender=male)"
+    }
+  ],
+  "butterfree": [],
+  "buzzwole": [],
+  "cacnea": [
+    {
+      "to": "cobblemon:cacturne",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "cacturne": [],
+  "calyrex": [],
+  "camerupt": [],
+  "capsakid": [
+    {
+      "to": "cobblemon:scovillain",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:fire_stone"
+    }
+  ],
+  "carbink": [],
+  "carkol": [
+    {
+      "to": "cobblemon:coalossal",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "carnivine": [],
+  "carracosta": [],
+  "carvanha": [
+    {
+      "to": "cobblemon:sharpedo",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "cascoon": [
+    {
+      "to": "cobblemon:dustox",
+      "method": "level_up",
+      "requirement": "level(minLevel=10)"
+    }
+  ],
+  "castform": [],
+  "caterpie": [
+    {
+      "to": "cobblemon:metapod",
+      "method": "level_up",
+      "requirement": "level(minLevel=7)"
+    }
+  ],
+  "celebi": [],
+  "celesteela": [],
+  "centiskorch": [],
+  "ceruledge": [],
+  "cetitan": [],
+  "cetoddle": [
+    {
+      "to": "cobblemon:cetitan",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:ice_stone"
+    }
+  ],
+  "chandelure": [],
+  "chansey": [
+    {
+      "to": "cobblemon:blissey",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "charcadet": [
+    {
+      "to": "cobblemon:armarouge",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:auspicious_armor"
+    },
+    {
+      "to": "cobblemon:ceruledge",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:malicious_armor"
+    }
+  ],
+  "charizard": [],
+  "charjabug": [
+    {
+      "to": "cobblemon:vikavolt",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone"
+    }
+  ],
+  "charmander": [
+    {
+      "to": "cobblemon:charmeleon",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "charmeleon": [
+    {
+      "to": "cobblemon:charizard",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "chatot": [],
+  "cherrim": [],
+  "cherubi": [
+    {
+      "to": "cobblemon:cherrim",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "chesnaught": [],
+  "chespin": [
+    {
+      "to": "cobblemon:quilladin",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "chewtle": [
+    {
+      "to": "cobblemon:drednaw",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "chienpao": [],
+  "chikorita": [
+    {
+      "to": "cobblemon:bayleef",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "chimchar": [
+    {
+      "to": "cobblemon:monferno",
+      "method": "level_up",
+      "requirement": "level(minLevel=14)"
+    }
+  ],
+  "chimecho": [],
+  "chinchou": [
+    {
+      "to": "cobblemon:lanturn",
+      "method": "level_up",
+      "requirement": "level(minLevel=27)"
+    }
+  ],
+  "chingling": [
+    {
+      "to": "cobblemon:chimecho",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); time_range(range=night)"
+    }
+  ],
+  "chiyu": [],
+  "cinccino": [],
+  "cinderace": [],
+  "clamperl": [
+    {
+      "to": "cobblemon:huntail",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:deep_sea_tooth)"
+    },
+    {
+      "to": "cobblemon:gorebyss",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:deep_sea_scale)"
+    }
+  ],
+  "clauncher": [
+    {
+      "to": "cobblemon:clawitzer",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "clawitzer": [],
+  "claydol": [],
+  "clefable": [],
+  "clefairy": [
+    {
+      "to": "cobblemon:clefable",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:moon_stone"
+    }
+  ],
+  "cleffa": [
+    {
+      "to": "cobblemon:clefairy",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "clobbopus": [
+    {
+      "to": "cobblemon:grapploct",
+      "method": "level_up",
+      "requirement": "has_move(move=taunt)"
+    }
+  ],
+  "clodsire": [],
+  "cloyster": [],
+  "coalossal": [],
+  "cobalion": [],
+  "cofagrigus": [],
+  "combee": [
+    {
+      "to": "cobblemon:vespiquen",
+      "method": "level_up",
+      "requirement": "level(minLevel=21); properties(target=gender=female)"
+    }
+  ],
+  "combusken": [
+    {
+      "to": "cobblemon:blaziken",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "comfey": [],
+  "conkeldurr": [],
+  "copperajah": [],
+  "corphish": [
+    {
+      "to": "cobblemon:crawdaunt",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "corsola": [],
+  "corviknight": [],
+  "corvisquire": [
+    {
+      "to": "cobblemon:corviknight",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "cosmoem": [
+    {
+      "to": "cobblemon:solgaleo",
+      "method": "level_up",
+      "requirement": "level(minLevel=53); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:lunala",
+      "method": "level_up",
+      "requirement": "level(minLevel=53); time_range(range=night)"
+    }
+  ],
+  "cosmog": [
+    {
+      "to": "cobblemon:cosmoem",
+      "method": "level_up",
+      "requirement": "level(minLevel=43)"
+    }
+  ],
+  "cottonee": [
+    {
+      "to": "cobblemon:whimsicott",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sun_stone"
+    }
+  ],
+  "crabominable": [],
+  "crabrawler": [
+    {
+      "to": "cobblemon:crabominable",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:ice_stone"
+    }
+  ],
+  "cradily": [],
+  "cramorant": [],
+  "cranidos": [
+    {
+      "to": "cobblemon:rampardos",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "crawdaunt": [],
+  "cresselia": [],
+  "croagunk": [
+    {
+      "to": "cobblemon:toxicroak",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "crobat": [],
+  "crocalor": [
+    {
+      "to": "cobblemon:skeledirge",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "croconaw": [
+    {
+      "to": "cobblemon:feraligatr",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "crustle": [],
+  "cryogonal": [],
+  "cubchoo": [
+    {
+      "to": "cobblemon:beartic",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "cubone": [
+    {
+      "to": "cobblemon:marowak",
+      "method": "level_up",
+      "requirement": "level(minLevel=28); biome(biomeAnticondition=#cobblemon:evolution/regional/cubone_alolabiome); biome(biomeAnticondition=#minecraft:is_nether)"
+    },
+    {
+      "to": "cobblemon:marowak",
+      "method": "level_up",
+      "requirement": "level(minLevel=28); time_range(range=night); biome(biomeCondition=#cobblemon:evolution/regional/cubone_alolabiome); biome(biomeAnticondition=#cobblemon:evolution/regional/cubone_kantobiome); biome(biomeAnticondition=#minecraft:is_nether)"
+    },
+    {
+      "to": "cobblemon:marowak",
+      "method": "level_up",
+      "requirement": "level(minLevel=28); biome(biomeAnticondition=#cobblemon:is_overworld); biome(biomeCondition=#minecraft:is_nether)"
+    }
+  ],
+  "cufant": [
+    {
+      "to": "cobblemon:copperajah",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "cursola": [],
+  "cutiefly": [
+    {
+      "to": "cobblemon:ribombee",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "cyclizar": [],
+  "cyndaquil": [
+    {
+      "to": "cobblemon:quilava",
+      "method": "level_up",
+      "requirement": "level(minLevel=14)"
+    }
+  ],
+  "dachsbun": [],
+  "darkrai": [],
+  "darmanitan": [],
+  "dartrix": [
+    {
+      "to": "cobblemon:decidueye",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    },
+    {
+      "to": "cobblemon:decidueye",
+      "method": "level_up",
+      "requirement": "level(minLevel=36); biome(biomeCondition=#cobblemon:evolution/regional/dartrix_hisuibiome)"
+    }
+  ],
+  "darumaka": [
+    {
+      "to": "cobblemon:darmanitan",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "decidueye": [],
+  "dedenne": [],
+  "deerling": [
+    {
+      "to": "cobblemon:sawsbuck",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "deino": [
+    {
+      "to": "cobblemon:zweilous",
+      "method": "level_up",
+      "requirement": "level(minLevel=50)"
+    }
+  ],
+  "delcatty": [],
+  "delibird": [],
+  "delphox": [],
+  "deoxys": [],
+  "dewgong": [],
+  "dewott": [
+    {
+      "to": "cobblemon:samurott",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    },
+    {
+      "to": "cobblemon:samurott",
+      "method": "level_up",
+      "requirement": "level(minLevel=36); biome(biomeCondition=#cobblemon:evolution/regional/dewott_hisuibiome)"
+    }
+  ],
+  "dewpider": [
+    {
+      "to": "cobblemon:araquanid",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "dhelmise": [],
+  "dialga": [],
+  "diancie": [],
+  "diggersby": [],
+  "diglett": [
+    {
+      "to": "cobblemon:dugtrio",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "dipplin": [
+    {
+      "to": "cobblemon:hydrapple",
+      "method": "level_up",
+      "requirement": "has_move(move=dragoncheer)"
+    }
+  ],
+  "ditto": [],
+  "dodrio": [],
+  "doduo": [
+    {
+      "to": "cobblemon:dodrio",
+      "method": "level_up",
+      "requirement": "level(minLevel=31)"
+    }
+  ],
+  "dolliv": [
+    {
+      "to": "cobblemon:arboliva",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "dondozo": [],
+  "donphan": [],
+  "dottler": [
+    {
+      "to": "cobblemon:orbeetle",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "doublade": [
+    {
+      "to": "cobblemon:aegislash",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:dusk_stone"
+    }
+  ],
+  "dracovish": [],
+  "dracozolt": [],
+  "dragalge": [],
+  "dragapult": [],
+  "dragonair": [
+    {
+      "to": "cobblemon:dragonite",
+      "method": "level_up",
+      "requirement": "level(minLevel=55)"
+    }
+  ],
+  "dragonite": [],
+  "drakloak": [
+    {
+      "to": "cobblemon:dragapult",
+      "method": "level_up",
+      "requirement": "level(minLevel=60)"
+    }
+  ],
+  "drampa": [],
+  "drapion": [],
+  "dratini": [
+    {
+      "to": "cobblemon:dragonair",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "drednaw": [],
+  "dreepy": [
+    {
+      "to": "cobblemon:drakloak",
+      "method": "level_up",
+      "requirement": "level(minLevel=50)"
+    }
+  ],
+  "drifblim": [],
+  "drifloon": [
+    {
+      "to": "cobblemon:drifblim",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "drilbur": [
+    {
+      "to": "cobblemon:excadrill",
+      "method": "level_up",
+      "requirement": "level(minLevel=31)"
+    }
+  ],
+  "drizzile": [
+    {
+      "to": "cobblemon:inteleon",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "drowzee": [
+    {
+      "to": "cobblemon:hypno",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "druddigon": [],
+  "dubwool": [],
+  "ducklett": [
+    {
+      "to": "cobblemon:swanna",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "dudunsparce": [],
+  "dugtrio": [],
+  "dunsparce": [
+    {
+      "to": "cobblemon:dudunsparce",
+      "method": "level_up",
+      "requirement": "has_move(move=hyperdrill)"
+    }
+  ],
+  "duosion": [
+    {
+      "to": "cobblemon:reuniclus",
+      "method": "level_up",
+      "requirement": "level(minLevel=41)"
+    }
+  ],
+  "duraludon": [
+    {
+      "to": "cobblemon:archaludon",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:metal_alloy"
+    }
+  ],
+  "durant": [],
+  "dusclops": [
+    {
+      "to": "cobblemon:dusknoir",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:reaper_cloth)"
+    }
+  ],
+  "dusknoir": [],
+  "duskull": [
+    {
+      "to": "cobblemon:dusclops",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "dustox": [],
+  "dwebble": [
+    {
+      "to": "cobblemon:crustle",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "eelektrik": [
+    {
+      "to": "cobblemon:eelektross",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone"
+    }
+  ],
+  "eelektross": [],
+  "eevee": [
+    {
+      "to": "cobblemon:jolteon",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone"
+    },
+    {
+      "to": "cobblemon:vaporeon",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:water_stone"
+    },
+    {
+      "to": "cobblemon:flareon",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:fire_stone"
+    },
+    {
+      "to": "cobblemon:espeon",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:umbreon",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:sylveon",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); has_move_type(type=fairy)"
+    },
+    {
+      "to": "cobblemon:leafeon",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone"
+    },
+    {
+      "to": "cobblemon:glaceon",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:ice_stone"
+    }
+  ],
+  "eiscue": [],
+  "ekans": [
+    {
+      "to": "cobblemon:arbok",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "eldegoss": [],
+  "electabuzz": [
+    {
+      "to": "cobblemon:electivire",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:electirizer)"
+    }
+  ],
+  "electivire": [],
+  "electrike": [
+    {
+      "to": "cobblemon:manectric",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "electrode": [],
+  "elekid": [
+    {
+      "to": "cobblemon:electabuzz",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "elgyem": [
+    {
+      "to": "cobblemon:beheeyem",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    }
+  ],
+  "emboar": [],
+  "emolga": [],
+  "empoleon": [],
+  "enamorus": [],
+  "entei": [],
+  "escavalier": [],
+  "espathra": [],
+  "espeon": [],
+  "espurr": [
+    {
+      "to": "cobblemon:meowstic",
+      "method": "level_up",
+      "requirement": "level(minLevel=25); properties(target=gender=male)"
+    },
+    {
+      "to": "cobblemon:meowstic",
+      "method": "level_up",
+      "requirement": "level(minLevel=25); properties(target=gender=female)"
+    }
+  ],
+  "eternatus": [],
+  "excadrill": [],
+  "exeggcute": [
+    {
+      "to": "cobblemon:exeggutor",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone"
+    },
+    {
+      "to": "cobblemon:exeggutor",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone; biome(biomeCondition=#cobblemon:evolution/regional/exeggcute_alolabiome)"
+    }
+  ],
+  "exeggutor": [],
+  "exploud": [],
+  "falinks": [],
+  "farfetchd": [],
+  "farigiraf": [],
+  "fearow": [],
+  "feebas": [
+    {
+      "to": "cobblemon:milotic",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:prism_scale)"
+    }
+  ],
+  "fennekin": [
+    {
+      "to": "cobblemon:braixen",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "feraligatr": [],
+  "ferroseed": [
+    {
+      "to": "cobblemon:ferrothorn",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "ferrothorn": [],
+  "fezandipiti": [],
+  "fidough": [
+    {
+      "to": "cobblemon:dachsbun",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "finizen": [
+    {
+      "to": "cobblemon:palafin",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "finneon": [
+    {
+      "to": "cobblemon:lumineon",
+      "method": "level_up",
+      "requirement": "level(minLevel=31)"
+    }
+  ],
+  "flaaffy": [
+    {
+      "to": "cobblemon:ampharos",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "flabebe": [
+    {
+      "to": "cobblemon:floette",
+      "method": "level_up",
+      "requirement": "level(minLevel=19)"
+    }
+  ],
+  "flamigo": [],
+  "flapple": [],
+  "flareon": [],
+  "fletchinder": [
+    {
+      "to": "cobblemon:talonflame",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "fletchling": [
+    {
+      "to": "cobblemon:fletchinder",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "flittle": [
+    {
+      "to": "cobblemon:espathra",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "floatzel": [],
+  "floette": [
+    {
+      "to": "cobblemon:florges",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:shiny_stone"
+    }
+  ],
+  "floragato": [
+    {
+      "to": "cobblemon:meowscarada",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "florges": [],
+  "fluttermane": [],
+  "flygon": [],
+  "fomantis": [
+    {
+      "to": "cobblemon:lurantis",
+      "method": "level_up",
+      "requirement": "level(minLevel=34); time_range(range=day)"
+    }
+  ],
+  "foongus": [
+    {
+      "to": "cobblemon:amoonguss",
+      "method": "level_up",
+      "requirement": "level(minLevel=39)"
+    }
+  ],
+  "forretress": [],
+  "fraxure": [
+    {
+      "to": "cobblemon:haxorus",
+      "method": "level_up",
+      "requirement": "level(minLevel=48)"
+    }
+  ],
+  "frigibax": [
+    {
+      "to": "cobblemon:arctibax",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "frillish": [
+    {
+      "to": "cobblemon:jellicent",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "froakie": [
+    {
+      "to": "cobblemon:frogadier",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "frogadier": [
+    {
+      "to": "cobblemon:greninja",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "froslass": [],
+  "frosmoth": [],
+  "fuecoco": [
+    {
+      "to": "cobblemon:crocalor",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "furfrou": [],
+  "furret": [],
+  "gabite": [
+    {
+      "to": "cobblemon:garchomp",
+      "method": "level_up",
+      "requirement": "level(minLevel=48)"
+    }
+  ],
+  "gallade": [],
+  "galvantula": [],
+  "garbodor": [],
+  "garchomp": [],
+  "gardevoir": [],
+  "garganacl": [],
+  "gastly": [
+    {
+      "to": "cobblemon:haunter",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "gastrodon": [],
+  "genesect": [],
+  "gengar": [],
+  "geodude": [
+    {
+      "to": "cobblemon:graveler",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "gholdengo": [],
+  "gible": [
+    {
+      "to": "cobblemon:gabite",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "gigalith": [],
+  "gimmighoul": [
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=32-63,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=64-95,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=96-127,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=128-159,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=160-191,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=192-223,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=224-255,feature=gimmighoul_netherite)"
+    },
+    {
+      "to": "cobblemon:gholdengo",
+      "method": "level_up",
+      "requirement": "properties(target=gimmighoul gimmighoul_coins=999); properties(target=gimmighoul gimmighoul_netherite=256)"
+    }
+  ],
+  "girafarig": [
+    {
+      "to": "cobblemon:farigiraf",
+      "method": "level_up",
+      "requirement": "has_move(move=twinbeam)"
+    }
+  ],
+  "giratina": [],
+  "glaceon": [],
+  "glalie": [],
+  "glameow": [
+    {
+      "to": "cobblemon:purugly",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "glastrier": [],
+  "gligar": [
+    {
+      "to": "cobblemon:gliscor",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:razor_fang); time_range(range=night)"
+    }
+  ],
+  "glimmet": [
+    {
+      "to": "cobblemon:glimmora",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "glimmora": [],
+  "gliscor": [],
+  "gloom": [
+    {
+      "to": "cobblemon:vileplume",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone"
+    },
+    {
+      "to": "cobblemon:bellossom",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sun_stone"
+    }
+  ],
+  "gogoat": [],
+  "golbat": [
+    {
+      "to": "cobblemon:crobat",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "goldeen": [
+    {
+      "to": "cobblemon:seaking",
+      "method": "level_up",
+      "requirement": "level(minLevel=33)"
+    }
+  ],
+  "golduck": [],
+  "golem": [],
+  "golett": [
+    {
+      "to": "cobblemon:golurk",
+      "method": "level_up",
+      "requirement": "level(minLevel=43)"
+    }
+  ],
+  "golisopod": [],
+  "golurk": [],
+  "goodra": [],
+  "goomy": [
+    {
+      "to": "cobblemon:sliggoo",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    },
+    {
+      "to": "cobblemon:sliggoo",
+      "method": "level_up",
+      "requirement": "level(minLevel=40); biome(biomeCondition=#cobblemon:evolution/regional/goomy_hisuibiome)"
+    }
+  ],
+  "gorebyss": [],
+  "gossifleur": [
+    {
+      "to": "cobblemon:eldegoss",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "gothita": [
+    {
+      "to": "cobblemon:gothorita",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "gothitelle": [],
+  "gothorita": [
+    {
+      "to": "cobblemon:gothitelle",
+      "method": "level_up",
+      "requirement": "level(minLevel=41)"
+    }
+  ],
+  "gougingfire": [],
+  "gourgeist": [],
+  "grafaiai": [],
+  "granbull": [],
+  "grapploct": [],
+  "graveler": [
+    {
+      "to": "cobblemon:golem",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "greattusk": [],
+  "greavard": [
+    {
+      "to": "cobblemon:houndstone",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); time_range(range=night)"
+    }
+  ],
+  "greedent": [],
+  "greninja": [],
+  "grimer": [
+    {
+      "to": "cobblemon:muk",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "grimmsnarl": [],
+  "grookey": [
+    {
+      "to": "cobblemon:thwackey",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "grotle": [
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:oak_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); biome(biomeConditions=#cobblemon:is_swamp); held_item(itemCondition=minecraft:oak_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:birch_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:dark_oak_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:acacia_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=#cobblemon:azalea_tree)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:jungle_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:spruce_sapling)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:mangrove_propagule)"
+    },
+    {
+      "to": "cobblemon:torterra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:cherry_sapling)"
+    }
+  ],
+  "groudon": [],
+  "grovyle": [
+    {
+      "to": "cobblemon:sceptile",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "growlithe": [
+    {
+      "to": "cobblemon:arcanine",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:fire_stone"
+    }
+  ],
+  "grubbin": [
+    {
+      "to": "cobblemon:charjabug",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "grumpig": [],
+  "gulpin": [
+    {
+      "to": "cobblemon:swalot",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "gumshoos": [],
+  "gurdurr": [
+    {
+      "to": "cobblemon:conkeldurr",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "guzzlord": [],
+  "gyarados": [],
+  "hakamoo": [
+    {
+      "to": "cobblemon:kommoo",
+      "method": "level_up",
+      "requirement": "level(minLevel=45)"
+    }
+  ],
+  "happiny": [
+    {
+      "to": "cobblemon:chansey",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:oval_stone); time_range(range=day)"
+    }
+  ],
+  "hariyama": [],
+  "hatenna": [
+    {
+      "to": "cobblemon:hattrem",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "hatterene": [],
+  "hattrem": [
+    {
+      "to": "cobblemon:hatterene",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    }
+  ],
+  "haunter": [
+    {
+      "to": "cobblemon:gengar",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "hawlucha": [],
+  "haxorus": [],
+  "heatmor": [],
+  "heatran": [],
+  "heliolisk": [],
+  "helioptile": [
+    {
+      "to": "cobblemon:heliolisk",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sun_stone"
+    }
+  ],
+  "heracross": [],
+  "herdier": [
+    {
+      "to": "cobblemon:stoutland",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "hippopotas": [
+    {
+      "to": "cobblemon:hippowdon",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "hippowdon": [],
+  "hitmonchan": [],
+  "hitmonlee": [],
+  "hitmontop": [],
+  "honchkrow": [],
+  "honedge": [
+    {
+      "to": "cobblemon:doublade",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "hooh": [],
+  "hoopa": [],
+  "hoothoot": [
+    {
+      "to": "cobblemon:noctowl",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "hoppip": [
+    {
+      "to": "cobblemon:skiploom",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "horsea": [
+    {
+      "to": "cobblemon:seadra",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "houndoom": [],
+  "houndour": [
+    {
+      "to": "cobblemon:houndoom",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "houndstone": [],
+  "huntail": [],
+  "hydrapple": [],
+  "hydreigon": [],
+  "hypno": [],
+  "igglybuff": [
+    {
+      "to": "cobblemon:jigglypuff",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "illumise": [],
+  "impidimp": [
+    {
+      "to": "cobblemon:morgrem",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "incineroar": [],
+  "indeedee": [],
+  "infernape": [],
+  "inkay": [
+    {
+      "to": "cobblemon:malamar",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); has_move(move=topsyturvy)"
+    },
+    {
+      "to": "cobblemon:malamar",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=nickname=Dinnerbone)"
+    },
+    {
+      "to": "cobblemon:malamar",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=nickname=Grumm)"
+    }
+  ],
+  "inteleon": [],
+  "ironboulder": [],
+  "ironbundle": [],
+  "ironcrown": [],
+  "ironhands": [],
+  "ironjugulis": [],
+  "ironleaves": [],
+  "ironmoth": [],
+  "ironthorns": [],
+  "irontreads": [],
+  "ironvaliant": [],
+  "ivysaur": [
+    {
+      "to": "cobblemon:venusaur",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "jangmoo": [
+    {
+      "to": "cobblemon:hakamoo",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "jellicent": [],
+  "jigglypuff": [
+    {
+      "to": "cobblemon:wigglytuff",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:moon_stone"
+    }
+  ],
+  "jirachi": [],
+  "jolteon": [],
+  "joltik": [
+    {
+      "to": "cobblemon:galvantula",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "jumpluff": [],
+  "jynx": [],
+  "kabuto": [
+    {
+      "to": "cobblemon:kabutops",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "kabutops": [],
+  "kadabra": [
+    {
+      "to": "cobblemon:alakazam",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "kakuna": [
+    {
+      "to": "cobblemon:beedrill",
+      "method": "level_up",
+      "requirement": "level(minLevel=10)"
+    }
+  ],
+  "kangaskhan": [],
+  "karrablast": [
+    {
+      "to": "cobblemon:escavalier",
+      "method": "trade",
+      "requirement": "requiredContext=shelmet"
+    },
+    {
+      "to": "cobblemon:escavalier",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:shell_helmet"
+    }
+  ],
+  "kartana": [],
+  "kecleon": [],
+  "keldeo": [],
+  "kilowattrel": [],
+  "kingambit": [],
+  "kingdra": [],
+  "kingler": [],
+  "kirlia": [
+    {
+      "to": "cobblemon:gardevoir",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    },
+    {
+      "to": "cobblemon:gallade",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:dawn_stone; properties(target=gender=male)"
+    }
+  ],
+  "klang": [
+    {
+      "to": "cobblemon:klinklang",
+      "method": "level_up",
+      "requirement": "level(minLevel=49)"
+    }
+  ],
+  "klawf": [],
+  "kleavor": [],
+  "klefki": [],
+  "klink": [
+    {
+      "to": "cobblemon:klang",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "klinklang": [],
+  "koffing": [
+    {
+      "to": "cobblemon:weezing",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    },
+    {
+      "to": "cobblemon:weezing",
+      "method": "level_up",
+      "requirement": "level(minLevel=35); biome(biomeCondition=#cobblemon:evolution/regional/koffing_galarbiome)"
+    }
+  ],
+  "komala": [],
+  "kommoo": [],
+  "koraidon": [],
+  "krabby": [
+    {
+      "to": "cobblemon:kingler",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "kricketot": [
+    {
+      "to": "cobblemon:kricketune",
+      "method": "level_up",
+      "requirement": "level(minLevel=10)"
+    }
+  ],
+  "kricketune": [],
+  "krokorok": [
+    {
+      "to": "cobblemon:krookodile",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "krookodile": [],
+  "kubfu": [
+    {
+      "to": "cobblemon:urshifu",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:scroll_of_darkness"
+    },
+    {
+      "to": "cobblemon:urshifu",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:scroll_of_waters"
+    }
+  ],
+  "kyogre": [],
+  "kyurem": [],
+  "lairon": [
+    {
+      "to": "cobblemon:aggron",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    }
+  ],
+  "lampent": [
+    {
+      "to": "cobblemon:chandelure",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:dusk_stone"
+    }
+  ],
+  "landorus": [],
+  "lanturn": [],
+  "lapras": [],
+  "larvesta": [
+    {
+      "to": "cobblemon:volcarona",
+      "method": "level_up",
+      "requirement": "level(minLevel=59)"
+    }
+  ],
+  "larvitar": [
+    {
+      "to": "cobblemon:pupitar",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "latias": [],
+  "latios": [],
+  "leafeon": [],
+  "leavanny": [],
+  "lechonk": [
+    {
+      "to": "cobblemon:oinkologne",
+      "method": "level_up",
+      "requirement": "level(minLevel=18); properties(target=gender=male)"
+    },
+    {
+      "to": "cobblemon:oinkologne",
+      "method": "level_up",
+      "requirement": "level(minLevel=18); properties(target=gender=female)"
+    }
+  ],
+  "ledian": [],
+  "ledyba": [
+    {
+      "to": "cobblemon:ledian",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "lickilicky": [],
+  "lickitung": [
+    {
+      "to": "cobblemon:lickilicky",
+      "method": "level_up",
+      "requirement": "has_move(move=rollout)"
+    }
+  ],
+  "liepard": [],
+  "lileep": [
+    {
+      "to": "cobblemon:cradily",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "lilligant": [],
+  "lillipup": [
+    {
+      "to": "cobblemon:herdier",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "linoone": [],
+  "litleo": [
+    {
+      "to": "cobblemon:pyroar",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "litten": [
+    {
+      "to": "cobblemon:torracat",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "litwick": [
+    {
+      "to": "cobblemon:lampent",
+      "method": "level_up",
+      "requirement": "level(minLevel=41)"
+    }
+  ],
+  "lokix": [],
+  "lombre": [
+    {
+      "to": "cobblemon:ludicolo",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:water_stone"
+    }
+  ],
+  "lopunny": [],
+  "lotad": [
+    {
+      "to": "cobblemon:lombre",
+      "method": "level_up",
+      "requirement": "level(minLevel=14)"
+    }
+  ],
+  "loudred": [
+    {
+      "to": "cobblemon:exploud",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "lucario": [],
+  "ludicolo": [],
+  "lugia": [],
+  "lumineon": [],
+  "lunala": [],
+  "lunatone": [],
+  "lurantis": [],
+  "luvdisc": [],
+  "luxio": [
+    {
+      "to": "cobblemon:luxray",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "luxray": [],
+  "lycanroc": [],
+  "mabosstiff": [],
+  "machamp": [],
+  "machoke": [
+    {
+      "to": "cobblemon:machamp",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "machop": [
+    {
+      "to": "cobblemon:machoke",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "magby": [
+    {
+      "to": "cobblemon:magmar",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "magcargo": [],
+  "magearna": [],
+  "magikarp": [
+    {
+      "to": "cobblemon:gyarados",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "magmar": [
+    {
+      "to": "cobblemon:magmortar",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:magmarizer)"
+    }
+  ],
+  "magmortar": [],
+  "magnemite": [
+    {
+      "to": "cobblemon:magneton",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "magneton": [
+    {
+      "to": "cobblemon:magnezone",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone"
+    }
+  ],
+  "magnezone": [],
+  "makuhita": [
+    {
+      "to": "cobblemon:hariyama",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "malamar": [],
+  "mamoswine": [],
+  "manaphy": [],
+  "mandibuzz": [],
+  "manectric": [],
+  "mankey": [
+    {
+      "to": "cobblemon:primeape",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "mantine": [],
+  "mantyke": [
+    {
+      "to": "cobblemon:mantine",
+      "method": "level_up",
+      "requirement": "party_member(target=remoraid,contains=true)"
+    }
+  ],
+  "maractus": [],
+  "mareanie": [
+    {
+      "to": "cobblemon:toxapex",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "mareep": [
+    {
+      "to": "cobblemon:flaaffy",
+      "method": "level_up",
+      "requirement": "level(minLevel=15)"
+    }
+  ],
+  "marill": [
+    {
+      "to": "cobblemon:azumarill",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "marowak": [],
+  "marshadow": [],
+  "marshtomp": [
+    {
+      "to": "cobblemon:swampert",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "maschiff": [
+    {
+      "to": "cobblemon:mabosstiff",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "masquerain": [],
+  "maushold": [],
+  "mawile": [],
+  "medicham": [],
+  "meditite": [
+    {
+      "to": "cobblemon:medicham",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "meganium": [],
+  "melmetal": [],
+  "meloetta": [],
+  "meltan": [
+    {
+      "to": "cobblemon:melmetal",
+      "method": "level_up",
+      "requirement": "properties(target=meltan meltan_iron_charge=999)"
+    }
+  ],
+  "meowscarada": [],
+  "meowstic": [],
+  "meowth": [
+    {
+      "to": "cobblemon:persian",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "mesprit": [],
+  "metagross": [],
+  "metang": [
+    {
+      "to": "cobblemon:metagross",
+      "method": "level_up",
+      "requirement": "level(minLevel=45)"
+    }
+  ],
+  "metapod": [
+    {
+      "to": "cobblemon:butterfree",
+      "method": "level_up",
+      "requirement": "level(minLevel=10)"
+    }
+  ],
+  "mew": [],
+  "mewtwo": [],
+  "mienfoo": [
+    {
+      "to": "cobblemon:mienshao",
+      "method": "level_up",
+      "requirement": "level(minLevel=50)"
+    }
+  ],
+  "mienshao": [],
+  "mightyena": [],
+  "milcery": [
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=dusk)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=dusk)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=dusk)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=dusk)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=dusk)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=dusk)"
+    },
+    {
+      "to": "cobblemon:alcremie",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=dusk)"
+    }
+  ],
+  "milotic": [],
+  "miltank": [],
+  "mimejr": [
+    {
+      "to": "cobblemon:mrmime",
+      "method": "level_up",
+      "requirement": "has_move(move=mimic)"
+    },
+    {
+      "to": "cobblemon:mrmime",
+      "method": "level_up",
+      "requirement": "has_move(move=mimic); biome(biomeCondition=#cobblemon:evolution/regional/mimejr_galarbiome)"
+    }
+  ],
+  "mimikyu": [],
+  "minccino": [
+    {
+      "to": "cobblemon:cinccino",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:shiny_stone"
+    }
+  ],
+  "minior": [],
+  "minun": [],
+  "miraidon": [],
+  "misdreavus": [
+    {
+      "to": "cobblemon:mismagius",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:dusk_stone"
+    }
+  ],
+  "mismagius": [],
+  "moltres": [],
+  "monferno": [
+    {
+      "to": "cobblemon:infernape",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "morelull": [
+    {
+      "to": "cobblemon:shiinotic",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "morgrem": [
+    {
+      "to": "cobblemon:grimmsnarl",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    }
+  ],
+  "morpeko": [],
+  "mothim": [],
+  "mrmime": [],
+  "mrrime": [],
+  "mudbray": [
+    {
+      "to": "cobblemon:mudsdale",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "mudkip": [
+    {
+      "to": "cobblemon:marshtomp",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "mudsdale": [],
+  "muk": [],
+  "munchlax": [
+    {
+      "to": "cobblemon:snorlax",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "munkidori": [],
+  "munna": [
+    {
+      "to": "cobblemon:musharna",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:moon_stone"
+    }
+  ],
+  "murkrow": [
+    {
+      "to": "cobblemon:honchkrow",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:dusk_stone"
+    }
+  ],
+  "musharna": [],
+  "nacli": [
+    {
+      "to": "cobblemon:naclstack",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "naclstack": [
+    {
+      "to": "cobblemon:garganacl",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "naganadel": [],
+  "natu": [
+    {
+      "to": "cobblemon:xatu",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "necrozma": [],
+  "nickit": [
+    {
+      "to": "cobblemon:thievul",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "nidoking": [],
+  "nidoqueen": [],
+  "nidoranf": [
+    {
+      "to": "cobblemon:nidorina",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "nidoranm": [
+    {
+      "to": "cobblemon:nidorino",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "nidorina": [
+    {
+      "to": "cobblemon:nidoqueen",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:moon_stone"
+    }
+  ],
+  "nidorino": [
+    {
+      "to": "cobblemon:nidoking",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:moon_stone"
+    }
+  ],
+  "nihilego": [],
+  "nincada": [
+    {
+      "to": "cobblemon:ninjask",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "ninetales": [],
+  "ninjask": [],
+  "noctowl": [],
+  "noibat": [
+    {
+      "to": "cobblemon:noivern",
+      "method": "level_up",
+      "requirement": "level(minLevel=48)"
+    }
+  ],
+  "noivern": [],
+  "nosepass": [
+    {
+      "to": "cobblemon:probopass",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone"
+    }
+  ],
+  "numel": [
+    {
+      "to": "cobblemon:camerupt",
+      "method": "level_up",
+      "requirement": "level(minLevel=33)"
+    }
+  ],
+  "nuzleaf": [
+    {
+      "to": "cobblemon:shiftry",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone"
+    }
+  ],
+  "nymble": [
+    {
+      "to": "cobblemon:lokix",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "obstagoon": [],
+  "octillery": [],
+  "oddish": [
+    {
+      "to": "cobblemon:gloom",
+      "method": "level_up",
+      "requirement": "level(minLevel=21)"
+    }
+  ],
+  "ogerpon": [],
+  "oinkologne": [],
+  "okidogi": [],
+  "omanyte": [
+    {
+      "to": "cobblemon:omastar",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "omastar": [],
+  "onix": [
+    {
+      "to": "cobblemon:steelix",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:metal_coat)"
+    }
+  ],
+  "oranguru": [],
+  "orbeetle": [],
+  "oricorio": [],
+  "orthworm": [],
+  "oshawott": [
+    {
+      "to": "cobblemon:dewott",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "overqwil": [],
+  "pachirisu": [],
+  "palafin": [],
+  "palkia": [],
+  "palossand": [],
+  "palpitoad": [
+    {
+      "to": "cobblemon:seismitoad",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "pancham": [
+    {
+      "to": "cobblemon:pangoro",
+      "method": "level_up",
+      "requirement": "level(minLevel=32); party_member(target=type=dark,contains=true)"
+    }
+  ],
+  "pangoro": [],
+  "panpour": [
+    {
+      "to": "cobblemon:simipour",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:water_stone"
+    }
+  ],
+  "pansage": [
+    {
+      "to": "cobblemon:simisage",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone"
+    }
+  ],
+  "pansear": [
+    {
+      "to": "cobblemon:simisear",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:fire_stone"
+    }
+  ],
+  "paras": [
+    {
+      "to": "cobblemon:parasect",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "parasect": [],
+  "passimian": [],
+  "patrat": [
+    {
+      "to": "cobblemon:watchog",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "pawmi": [
+    {
+      "to": "cobblemon:pawmo",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "pawmo": [
+    {
+      "to": "cobblemon:pawmot",
+      "method": "level_up",
+      "requirement": "blocks_traveled(amount=1000)"
+    }
+  ],
+  "pawmot": [],
+  "pawniard": [
+    {
+      "to": "cobblemon:bisharp",
+      "method": "level_up",
+      "requirement": "level(minLevel=52)"
+    }
+  ],
+  "pecharunt": [],
+  "pelipper": [],
+  "perrserker": [],
+  "persian": [],
+  "petilil": [
+    {
+      "to": "cobblemon:lilligant",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sun_stone; biome(biomeCondition=#cobblemon:evolution/regional/petilil_hisuibiome)"
+    },
+    {
+      "to": "cobblemon:lilligant",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sun_stone"
+    }
+  ],
+  "phanpy": [
+    {
+      "to": "cobblemon:donphan",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "phantump": [
+    {
+      "to": "cobblemon:trevenant",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "pheromosa": [],
+  "phione": [],
+  "pichu": [
+    {
+      "to": "cobblemon:pikachu",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "pidgeot": [],
+  "pidgeotto": [
+    {
+      "to": "cobblemon:pidgeot",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "pidgey": [
+    {
+      "to": "cobblemon:pidgeotto",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "pidove": [
+    {
+      "to": "cobblemon:tranquill",
+      "method": "level_up",
+      "requirement": "level(minLevel=21)"
+    }
+  ],
+  "pignite": [
+    {
+      "to": "cobblemon:emboar",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "pikachu": [
+    {
+      "to": "cobblemon:raichu",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone; biome(biomeAnticondition=#cobblemon:evolution/regional/pikachu_alolabiome)"
+    },
+    {
+      "to": "cobblemon:raichu",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone; biome(biomeCondition=#cobblemon:evolution/regional/pikachu_alolabiome); biome(biomeAnticondition=#cobblemon:evolution/regional/pikachu_kantobiome)"
+    }
+  ],
+  "pikipek": [
+    {
+      "to": "cobblemon:trumbeak",
+      "method": "level_up",
+      "requirement": "level(minLevel=14)"
+    }
+  ],
+  "piloswine": [
+    {
+      "to": "cobblemon:mamoswine",
+      "method": "level_up",
+      "requirement": "has_move(move=ancientpower)"
+    }
+  ],
+  "pincurchin": [],
+  "pineco": [
+    {
+      "to": "cobblemon:forretress",
+      "method": "level_up",
+      "requirement": "level(minLevel=31)"
+    }
+  ],
+  "pinsir": [],
+  "piplup": [
+    {
+      "to": "cobblemon:prinplup",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "plusle": [],
+  "poipole": [
+    {
+      "to": "cobblemon:naganadel",
+      "method": "level_up",
+      "requirement": "has_move(move=dragonpulse)"
+    }
+  ],
+  "politoed": [],
+  "poliwag": [
+    {
+      "to": "cobblemon:poliwhirl",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "poliwhirl": [
+    {
+      "to": "cobblemon:poliwrath",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:water_stone"
+    },
+    {
+      "to": "cobblemon:politoed",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:kings_rock)"
+    }
+  ],
+  "poliwrath": [],
+  "poltchageist": [
+    {
+      "to": "cobblemon:sinistcha",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:unremarkable_teacup"
+    }
+  ],
+  "polteageist": [],
+  "ponyta": [
+    {
+      "to": "cobblemon:rapidash",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "poochyena": [
+    {
+      "to": "cobblemon:mightyena",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "popplio": [
+    {
+      "to": "cobblemon:brionne",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "porygon": [
+    {
+      "to": "cobblemon:porygon2",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:upgrade)"
+    }
+  ],
+  "porygon2": [
+    {
+      "to": "cobblemon:porygonz",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:dubious_disc)"
+    }
+  ],
+  "porygonz": [],
+  "primarina": [],
+  "primeape": [
+    {
+      "to": "cobblemon:annihilape",
+      "method": "level_up",
+      "requirement": "use_move(move=ragefist,amount=20)"
+    }
+  ],
+  "prinplup": [
+    {
+      "to": "cobblemon:empoleon",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "probopass": [],
+  "psyduck": [
+    {
+      "to": "cobblemon:golduck",
+      "method": "level_up",
+      "requirement": "level(minLevel=33)"
+    }
+  ],
+  "pumpkaboo": [
+    {
+      "to": "cobblemon:gourgeist",
+      "method": "trade",
+      "requirement": ""
+    }
+  ],
+  "pupitar": [
+    {
+      "to": "cobblemon:tyranitar",
+      "method": "level_up",
+      "requirement": "level(minLevel=55)"
+    }
+  ],
+  "purrloin": [
+    {
+      "to": "cobblemon:liepard",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "purugly": [],
+  "pyroar": [],
+  "pyukumuku": [],
+  "quagsire": [],
+  "quaquaval": [],
+  "quaxly": [
+    {
+      "to": "cobblemon:quaxwell",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "quaxwell": [
+    {
+      "to": "cobblemon:quaquaval",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "quilava": [
+    {
+      "to": "cobblemon:typhlosion",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    },
+    {
+      "to": "cobblemon:typhlosion",
+      "method": "level_up",
+      "requirement": "level(minLevel=36); biome(biomeCondition=#cobblemon:evolution/regional/quilava_hisuibiome)"
+    }
+  ],
+  "quilladin": [
+    {
+      "to": "cobblemon:chesnaught",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "qwilfish": [],
+  "raboot": [
+    {
+      "to": "cobblemon:cinderace",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "rabsca": [],
+  "ragingbolt": [],
+  "raichu": [],
+  "raikou": [],
+  "ralts": [
+    {
+      "to": "cobblemon:kirlia",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "rampardos": [],
+  "rapidash": [],
+  "raticate": [],
+  "rattata": [
+    {
+      "to": "cobblemon:raticate",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "rayquaza": [],
+  "regice": [],
+  "regidrago": [],
+  "regieleki": [],
+  "regigigas": [],
+  "regirock": [],
+  "registeel": [],
+  "relicanth": [],
+  "rellor": [
+    {
+      "to": "cobblemon:rabsca",
+      "method": "level_up",
+      "requirement": "blocks_traveled(amount=1000)"
+    }
+  ],
+  "remoraid": [
+    {
+      "to": "cobblemon:octillery",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "reshiram": [],
+  "reuniclus": [],
+  "revavroom": [],
+  "rhydon": [
+    {
+      "to": "cobblemon:rhyperior",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:protector)"
+    }
+  ],
+  "rhyhorn": [
+    {
+      "to": "cobblemon:rhydon",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    }
+  ],
+  "rhyperior": [],
+  "ribombee": [],
+  "rillaboom": [],
+  "riolu": [
+    {
+      "to": "cobblemon:lucario",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); time_range(range=day)"
+    }
+  ],
+  "roaringmoon": [],
+  "rockruff": [
+    {
+      "to": "cobblemon:lycanroc",
+      "method": "level_up",
+      "requirement": "level(minLevel=25); time_range(range=day)"
+    },
+    {
+      "to": "cobblemon:lycanroc",
+      "method": "level_up",
+      "requirement": "level(minLevel=25); time_range(range=night)"
+    }
+  ],
+  "roggenrola": [
+    {
+      "to": "cobblemon:boldore",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "rolycoly": [
+    {
+      "to": "cobblemon:carkol",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "rookidee": [
+    {
+      "to": "cobblemon:corvisquire",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "roselia": [
+    {
+      "to": "cobblemon:roserade",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:shiny_stone"
+    }
+  ],
+  "roserade": [],
+  "rotom": [],
+  "rowlet": [
+    {
+      "to": "cobblemon:dartrix",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "rufflet": [
+    {
+      "to": "cobblemon:braviary",
+      "method": "level_up",
+      "requirement": "level(minLevel=54)"
+    },
+    {
+      "to": "cobblemon:braviary",
+      "method": "level_up",
+      "requirement": "level(minLevel=54); biome(biomeCondition=#cobblemon:evolution/regional/rufflet_hisuibiome)"
+    }
+  ],
+  "runerigus": [],
+  "sableye": [],
+  "salamence": [],
+  "salandit": [
+    {
+      "to": "cobblemon:salazzle",
+      "method": "level_up",
+      "requirement": "level(minLevel=33); properties(target=gender=female)"
+    }
+  ],
+  "salazzle": [],
+  "samurott": [],
+  "sandaconda": [],
+  "sandile": [
+    {
+      "to": "cobblemon:krokorok",
+      "method": "level_up",
+      "requirement": "level(minLevel=29)"
+    }
+  ],
+  "sandshrew": [
+    {
+      "to": "cobblemon:sandslash",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "sandslash": [],
+  "sandygast": [
+    {
+      "to": "cobblemon:palossand",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    }
+  ],
+  "sandyshocks": [],
+  "sawk": [],
+  "sawsbuck": [],
+  "scatterbug": [
+    {
+      "to": "cobblemon:spewpa",
+      "method": "level_up",
+      "requirement": "level(minLevel=9)"
+    }
+  ],
+  "sceptile": [],
+  "scizor": [],
+  "scolipede": [],
+  "scorbunny": [
+    {
+      "to": "cobblemon:raboot",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "scovillain": [],
+  "scrafty": [],
+  "scraggy": [
+    {
+      "to": "cobblemon:scrafty",
+      "method": "level_up",
+      "requirement": "level(minLevel=39)"
+    }
+  ],
+  "screamtail": [],
+  "scyther": [
+    {
+      "to": "cobblemon:scizor",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:metal_coat)"
+    },
+    {
+      "to": "cobblemon:kleavor",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:black_augurite"
+    }
+  ],
+  "seadra": [
+    {
+      "to": "cobblemon:kingdra",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:dragon_scale)"
+    }
+  ],
+  "seaking": [],
+  "sealeo": [
+    {
+      "to": "cobblemon:walrein",
+      "method": "level_up",
+      "requirement": "level(minLevel=44)"
+    }
+  ],
+  "seedot": [
+    {
+      "to": "cobblemon:nuzleaf",
+      "method": "level_up",
+      "requirement": "level(minLevel=14)"
+    }
+  ],
+  "seel": [
+    {
+      "to": "cobblemon:dewgong",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "seismitoad": [],
+  "sentret": [
+    {
+      "to": "cobblemon:furret",
+      "method": "level_up",
+      "requirement": "level(minLevel=15)"
+    }
+  ],
+  "serperior": [],
+  "servine": [
+    {
+      "to": "cobblemon:serperior",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "seviper": [],
+  "sewaddle": [
+    {
+      "to": "cobblemon:swadloon",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "sharpedo": [],
+  "shaymin": [],
+  "shedinja": [],
+  "shelgon": [
+    {
+      "to": "cobblemon:salamence",
+      "method": "level_up",
+      "requirement": "level(minLevel=50)"
+    }
+  ],
+  "shellder": [
+    {
+      "to": "cobblemon:cloyster",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:water_stone"
+    }
+  ],
+  "shellos": [
+    {
+      "to": "cobblemon:gastrodon",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "shelmet": [
+    {
+      "to": "cobblemon:accelgor",
+      "method": "trade",
+      "requirement": "requiredContext=karrablast"
+    },
+    {
+      "to": "cobblemon:accelgor",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:link_cable; party_member(target=karrablast,contains=true)"
+    }
+  ],
+  "shieldon": [
+    {
+      "to": "cobblemon:bastiodon",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "shiftry": [],
+  "shiinotic": [],
+  "shinx": [
+    {
+      "to": "cobblemon:luxio",
+      "method": "level_up",
+      "requirement": "level(minLevel=15)"
+    }
+  ],
+  "shroodle": [
+    {
+      "to": "cobblemon:grafaiai",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "shroomish": [
+    {
+      "to": "cobblemon:breloom",
+      "method": "level_up",
+      "requirement": "level(minLevel=23)"
+    }
+  ],
+  "shuckle": [],
+  "shuppet": [
+    {
+      "to": "cobblemon:banette",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "sigilyph": [],
+  "silcoon": [
+    {
+      "to": "cobblemon:beautifly",
+      "method": "level_up",
+      "requirement": "level(minLevel=10)"
+    }
+  ],
+  "silicobra": [
+    {
+      "to": "cobblemon:sandaconda",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "silvally": [
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:fighting_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:flying_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:poison_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ground_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:rock_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:bug_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ghost_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:steel_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:fire_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:water_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:grass_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:electric_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:psychic_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:ice_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:dragon_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:dark_gem)"
+    },
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:fairy_gem)"
+    }
+  ],
+  "simipour": [],
+  "simisage": [],
+  "simisear": [],
+  "sinistcha": [],
+  "sinistea": [
+    {
+      "to": "cobblemon:polteageist",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:cracked_pot"
+    }
+  ],
+  "sirfetchd": [],
+  "sizzlipede": [
+    {
+      "to": "cobblemon:centiskorch",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "skarmory": [],
+  "skeledirge": [],
+  "skiddo": [
+    {
+      "to": "cobblemon:gogoat",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "skiploom": [
+    {
+      "to": "cobblemon:jumpluff",
+      "method": "level_up",
+      "requirement": "level(minLevel=27)"
+    }
+  ],
+  "skitty": [
+    {
+      "to": "cobblemon:delcatty",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:moon_stone"
+    }
+  ],
+  "skorupi": [
+    {
+      "to": "cobblemon:drapion",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "skrelp": [
+    {
+      "to": "cobblemon:dragalge",
+      "method": "level_up",
+      "requirement": "level(minLevel=48)"
+    }
+  ],
+  "skuntank": [],
+  "skwovet": [
+    {
+      "to": "cobblemon:greedent",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "slaking": [],
+  "slakoth": [
+    {
+      "to": "cobblemon:vigoroth",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "sliggoo": [
+    {
+      "to": "cobblemon:goodra",
+      "method": "level_up",
+      "requirement": "level(minLevel=50); weather(isRaining=true)"
+    }
+  ],
+  "slitherwing": [],
+  "slowbro": [],
+  "slowking": [],
+  "slowpoke": [
+    {
+      "to": "cobblemon:slowbro",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    },
+    {
+      "to": "cobblemon:slowking",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:kings_rock)"
+    }
+  ],
+  "slugma": [
+    {
+      "to": "cobblemon:magcargo",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "slurpuff": [],
+  "smeargle": [],
+  "smoliv": [
+    {
+      "to": "cobblemon:dolliv",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "smoochum": [
+    {
+      "to": "cobblemon:jynx",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "sneasel": [
+    {
+      "to": "cobblemon:weavile",
+      "method": "level_up",
+      "requirement": "held_item(itemCondition=cobblemon:razor_claw); time_range(range=night)"
+    }
+  ],
+  "sneasler": [],
+  "snivy": [
+    {
+      "to": "cobblemon:servine",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "snom": [
+    {
+      "to": "cobblemon:frosmoth",
+      "method": "level_up",
+      "requirement": "friendship(amount=160); time_range(range=night)"
+    }
+  ],
+  "snorlax": [],
+  "snorunt": [
+    {
+      "to": "cobblemon:glalie",
+      "method": "level_up",
+      "requirement": "level(minLevel=42)"
+    },
+    {
+      "to": "cobblemon:froslass",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:dawn_stone; properties(target=gender=female)"
+    }
+  ],
+  "snover": [
+    {
+      "to": "cobblemon:abomasnow",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "snubbull": [
+    {
+      "to": "cobblemon:granbull",
+      "method": "level_up",
+      "requirement": "level(minLevel=23)"
+    }
+  ],
+  "sobble": [
+    {
+      "to": "cobblemon:drizzile",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "solgaleo": [],
+  "solosis": [
+    {
+      "to": "cobblemon:duosion",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "solrock": [],
+  "spearow": [
+    {
+      "to": "cobblemon:fearow",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "spectrier": [],
+  "spewpa": [
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/archipelago); biome(biomeAnticondition=#cobblemon:evolution/vivillon/archipelago_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/continental); biome(biomeAnticondition=#cobblemon:evolution/vivillon/continental_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/elegant); biome(biomeAnticondition=#cobblemon:evolution/vivillon/elegant_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/fancy); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/garden); biome(biomeAnticondition=#cobblemon:evolution/vivillon/garden_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/high_plains); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/icy_snow); biome(biomeAnticondition=#cobblemon:evolution/vivillon/icy_snow_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/jungle); biome(biomeAnticondition=#cobblemon:evolution/vivillon/jungle_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/marine); biome(biomeAnticondition=#cobblemon:evolution/vivillon/marine_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/meadow); biome(biomeAnticondition=#cobblemon:evolution/vivillon/meadow_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); structure(structureCondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/monsoon); biome(biomeAnticondition=#cobblemon:evolution/vivillon/monsoon_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/ocean); biome(biomeAnticondition=#cobblemon:evolution/vivillon/ocean_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/polar); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/river); biome(biomeAnticondition=#cobblemon:evolution/vivillon/river_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/sandstorm); biome(biomeAnticondition=#cobblemon:evolution/vivillon/sandstorm_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/savanna); biome(biomeAnticondition=#cobblemon:evolution/vivillon/savanna_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/sun); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/tundra); biome(biomeAnticondition=#cobblemon:evolution/vivillon/tundra_anti); structure(structureAnticondition=#minecraft:village)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/inferno)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/void)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/forsaken)"
+    },
+    {
+      "to": "cobblemon:vivillon",
+      "method": "level_up",
+      "requirement": "level(minLevel=12); advancement(requiredAdvancement=cobblemon:catch_all_vivillon)"
+    }
+  ],
+  "spheal": [
+    {
+      "to": "cobblemon:sealeo",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "spidops": [],
+  "spinarak": [
+    {
+      "to": "cobblemon:ariados",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "spinda": [],
+  "spiritomb": [],
+  "spoink": [
+    {
+      "to": "cobblemon:grumpig",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "sprigatito": [
+    {
+      "to": "cobblemon:floragato",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "spritzee": [
+    {
+      "to": "cobblemon:aromatisse",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:sachet)"
+    }
+  ],
+  "squawkabilly": [],
+  "squirtle": [
+    {
+      "to": "cobblemon:wartortle",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "stakataka": [],
+  "stantler": [
+    {
+      "to": "cobblemon:wyrdeer",
+      "method": "level_up",
+      "requirement": "has_move(move=psyshieldbash)"
+    }
+  ],
+  "staraptor": [],
+  "staravia": [
+    {
+      "to": "cobblemon:staraptor",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "starly": [
+    {
+      "to": "cobblemon:staravia",
+      "method": "level_up",
+      "requirement": "level(minLevel=14)"
+    }
+  ],
+  "starmie": [],
+  "staryu": [
+    {
+      "to": "cobblemon:starmie",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:water_stone"
+    }
+  ],
+  "steelix": [],
+  "steenee": [
+    {
+      "to": "cobblemon:tsareena",
+      "method": "level_up",
+      "requirement": "has_move(move=stomp)"
+    }
+  ],
+  "stonjourner": [],
+  "stoutland": [],
+  "stufful": [
+    {
+      "to": "cobblemon:bewear",
+      "method": "level_up",
+      "requirement": "level(minLevel=27)"
+    }
+  ],
+  "stunfisk": [],
+  "stunky": [
+    {
+      "to": "cobblemon:skuntank",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "sudowoodo": [],
+  "suicune": [],
+  "sunflora": [],
+  "sunkern": [
+    {
+      "to": "cobblemon:sunflora",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:sun_stone"
+    }
+  ],
+  "surskit": [
+    {
+      "to": "cobblemon:masquerain",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "swablu": [
+    {
+      "to": "cobblemon:altaria",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "swadloon": [
+    {
+      "to": "cobblemon:leavanny",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "swalot": [],
+  "swampert": [],
+  "swanna": [],
+  "swellow": [],
+  "swinub": [
+    {
+      "to": "cobblemon:piloswine",
+      "method": "level_up",
+      "requirement": "level(minLevel=33)"
+    }
+  ],
+  "swirlix": [
+    {
+      "to": "cobblemon:slurpuff",
+      "method": "trade",
+      "requirement": "held_item(itemCondition=cobblemon:whipped_dream)"
+    }
+  ],
+  "swoobat": [],
+  "sylveon": [],
+  "tadbulb": [
+    {
+      "to": "cobblemon:bellibolt",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:thunder_stone"
+    }
+  ],
+  "taillow": [
+    {
+      "to": "cobblemon:swellow",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "talonflame": [],
+  "tandemaus": [
+    {
+      "to": "cobblemon:maushold",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "tangela": [
+    {
+      "to": "cobblemon:tangrowth",
+      "method": "level_up",
+      "requirement": "has_move(move=ancientpower)"
+    }
+  ],
+  "tangrowth": [],
+  "tapubulu": [],
+  "tapufini": [],
+  "tapukoko": [],
+  "tapulele": [],
+  "tarountula": [
+    {
+      "to": "cobblemon:spidops",
+      "method": "level_up",
+      "requirement": "level(minLevel=15)"
+    }
+  ],
+  "tatsugiri": [],
+  "tauros": [],
+  "teddiursa": [
+    {
+      "to": "cobblemon:ursaring",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "tentacool": [
+    {
+      "to": "cobblemon:tentacruel",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "tentacruel": [],
+  "tepig": [
+    {
+      "to": "cobblemon:pignite",
+      "method": "level_up",
+      "requirement": "level(minLevel=17)"
+    }
+  ],
+  "terapagos": [],
+  "terrakion": [],
+  "thievul": [],
+  "throh": [],
+  "thundurus": [],
+  "thwackey": [
+    {
+      "to": "cobblemon:rillaboom",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "timburr": [
+    {
+      "to": "cobblemon:gurdurr",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "tinglu": [],
+  "tinkatink": [
+    {
+      "to": "cobblemon:tinkatuff",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "tinkaton": [],
+  "tinkatuff": [
+    {
+      "to": "cobblemon:tinkaton",
+      "method": "level_up",
+      "requirement": "level(minLevel=38)"
+    }
+  ],
+  "tirtouga": [
+    {
+      "to": "cobblemon:carracosta",
+      "method": "level_up",
+      "requirement": "level(minLevel=37)"
+    }
+  ],
+  "toedscool": [
+    {
+      "to": "cobblemon:toedscruel",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "toedscruel": [],
+  "togedemaru": [],
+  "togekiss": [],
+  "togepi": [
+    {
+      "to": "cobblemon:togetic",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "togetic": [
+    {
+      "to": "cobblemon:togekiss",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:shiny_stone"
+    }
+  ],
+  "torchic": [
+    {
+      "to": "cobblemon:combusken",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "torkoal": [],
+  "tornadus": [],
+  "torracat": [
+    {
+      "to": "cobblemon:incineroar",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "torterra": [],
+  "totodile": [
+    {
+      "to": "cobblemon:croconaw",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "toucannon": [],
+  "toxapex": [],
+  "toxel": [
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=hardy)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=brave)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=adamant)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=naughty)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=docile)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=impish)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=lax)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=hasty)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=jolly)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=naive)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=rash)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=sassy)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=quirky)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=lonely)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=bold)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=relaxed)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=timid)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=serious)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=modest)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=mild)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=quiet)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=bashful)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=calm)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=gentle)"
+    },
+    {
+      "to": "cobblemon:toxtricity",
+      "method": "level_up",
+      "requirement": "level(minLevel=30); properties(target=toxel nature=careful)"
+    }
+  ],
+  "toxicroak": [],
+  "toxtricity": [],
+  "tranquill": [
+    {
+      "to": "cobblemon:unfezant",
+      "method": "level_up",
+      "requirement": "level(minLevel=32)"
+    }
+  ],
+  "trapinch": [
+    {
+      "to": "cobblemon:vibrava",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "treecko": [
+    {
+      "to": "cobblemon:grovyle",
+      "method": "level_up",
+      "requirement": "level(minLevel=16)"
+    }
+  ],
+  "trevenant": [],
+  "tropius": [],
+  "trubbish": [
+    {
+      "to": "cobblemon:garbodor",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "trumbeak": [
+    {
+      "to": "cobblemon:toucannon",
+      "method": "level_up",
+      "requirement": "level(minLevel=28)"
+    }
+  ],
+  "tsareena": [],
+  "turtonator": [],
+  "turtwig": [
+    {
+      "to": "cobblemon:grotle",
+      "method": "level_up",
+      "requirement": "level(minLevel=18)"
+    }
+  ],
+  "tympole": [
+    {
+      "to": "cobblemon:palpitoad",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "tynamo": [
+    {
+      "to": "cobblemon:eelektrik",
+      "method": "level_up",
+      "requirement": "level(minLevel=39)"
+    }
+  ],
+  "typenull": [
+    {
+      "to": "cobblemon:silvally",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "typhlosion": [],
+  "tyranitar": [],
+  "tyrantrum": [],
+  "tyrogue": [
+    {
+      "to": "cobblemon:hitmonchan",
+      "method": "level_up",
+      "requirement": "level(minLevel=20); stat_compare(highStat=defence,lowStat=attack)"
+    },
+    {
+      "to": "cobblemon:hitmonlee",
+      "method": "level_up",
+      "requirement": "level(minLevel=20); stat_compare(highStat=attack,lowStat=defence)"
+    },
+    {
+      "to": "cobblemon:hitmontop",
+      "method": "level_up",
+      "requirement": "level(minLevel=20); stat_equal(statOne=attack,statTwo=defence)"
+    }
+  ],
+  "tyrunt": [
+    {
+      "to": "cobblemon:tyrantrum",
+      "method": "level_up",
+      "requirement": "level(minLevel=39); time_range(range=day)"
+    }
+  ],
+  "umbreon": [],
+  "unfezant": [],
+  "unown": [],
+  "ursaluna": [],
+  "ursaring": [
+    {
+      "to": "cobblemon:ursaluna",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:peat_block; moon_phase(moonPhase=FULL_MOON); time_range(range=night)"
+    }
+  ],
+  "urshifu": [],
+  "uxie": [],
+  "vanillish": [
+    {
+      "to": "cobblemon:vanilluxe",
+      "method": "level_up",
+      "requirement": "level(minLevel=47)"
+    }
+  ],
+  "vanillite": [
+    {
+      "to": "cobblemon:vanillish",
+      "method": "level_up",
+      "requirement": "level(minLevel=35)"
+    }
+  ],
+  "vanilluxe": [],
+  "vaporeon": [],
+  "varoom": [
+    {
+      "to": "cobblemon:revavroom",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "veluza": [],
+  "venipede": [
+    {
+      "to": "cobblemon:whirlipede",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "venomoth": [],
+  "venonat": [
+    {
+      "to": "cobblemon:venomoth",
+      "method": "level_up",
+      "requirement": "level(minLevel=31)"
+    }
+  ],
+  "venusaur": [],
+  "vespiquen": [],
+  "vibrava": [
+    {
+      "to": "cobblemon:flygon",
+      "method": "level_up",
+      "requirement": "level(minLevel=45)"
+    }
+  ],
+  "victini": [],
+  "victreebel": [],
+  "vigoroth": [
+    {
+      "to": "cobblemon:slaking",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "vikavolt": [],
+  "vileplume": [],
+  "virizion": [],
+  "vivillon": [],
+  "volbeat": [],
+  "volcanion": [],
+  "volcarona": [],
+  "voltorb": [
+    {
+      "to": "cobblemon:electrode",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "vullaby": [
+    {
+      "to": "cobblemon:mandibuzz",
+      "method": "level_up",
+      "requirement": "level(minLevel=54)"
+    }
+  ],
+  "vulpix": [
+    {
+      "to": "cobblemon:ninetales",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:fire_stone"
+    }
+  ],
+  "wailmer": [
+    {
+      "to": "cobblemon:wailord",
+      "method": "level_up",
+      "requirement": "level(minLevel=40)"
+    }
+  ],
+  "wailord": [],
+  "walkingwake": [],
+  "walrein": [],
+  "wartortle": [
+    {
+      "to": "cobblemon:blastoise",
+      "method": "level_up",
+      "requirement": "level(minLevel=36)"
+    }
+  ],
+  "watchog": [],
+  "wattrel": [
+    {
+      "to": "cobblemon:kilowattrel",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "weavile": [],
+  "weedle": [
+    {
+      "to": "cobblemon:kakuna",
+      "method": "level_up",
+      "requirement": "level(minLevel=7)"
+    }
+  ],
+  "weepinbell": [
+    {
+      "to": "cobblemon:victreebel",
+      "method": "item_interact",
+      "requirement": "requiredContext=cobblemon:leaf_stone"
+    }
+  ],
+  "weezing": [],
+  "whimsicott": [],
+  "whirlipede": [
+    {
+      "to": "cobblemon:scolipede",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "whiscash": [],
+  "whismur": [
+    {
+      "to": "cobblemon:loudred",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "wigglytuff": [],
+  "wiglett": [
+    {
+      "to": "cobblemon:wugtrio",
+      "method": "level_up",
+      "requirement": "level(minLevel=26)"
+    }
+  ],
+  "wimpod": [
+    {
+      "to": "cobblemon:golisopod",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "wingull": [
+    {
+      "to": "cobblemon:pelipper",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "wishiwashi": [],
+  "wobbuffet": [],
+  "wochien": [],
+  "woobat": [
+    {
+      "to": "cobblemon:swoobat",
+      "method": "level_up",
+      "requirement": "friendship(amount=160)"
+    }
+  ],
+  "wooloo": [
+    {
+      "to": "cobblemon:dubwool",
+      "method": "level_up",
+      "requirement": "level(minLevel=24)"
+    }
+  ],
+  "wooper": [
+    {
+      "to": "cobblemon:quagsire",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "wormadam": [],
+  "wugtrio": [],
+  "wurmple": [
+    {
+      "to": "cobblemon:silcoon",
+      "method": "level_up",
+      "requirement": "level(minLevel=7); properties(target=wurmple cocoon_species=silcoon)"
+    },
+    {
+      "to": "cobblemon:cascoon",
+      "method": "level_up",
+      "requirement": "level(minLevel=7); properties(target=wurmple cocoon_species=cascoon)"
+    }
+  ],
+  "wynaut": [
+    {
+      "to": "cobblemon:wobbuffet",
+      "method": "level_up",
+      "requirement": "level(minLevel=15)"
+    }
+  ],
+  "wyrdeer": [],
+  "xatu": [],
+  "xerneas": [],
+  "xurkitree": [],
+  "yamask": [
+    {
+      "to": "cobblemon:cofagrigus",
+      "method": "level_up",
+      "requirement": "level(minLevel=34)"
+    }
+  ],
+  "yamper": [
+    {
+      "to": "cobblemon:boltund",
+      "method": "level_up",
+      "requirement": "level(minLevel=25)"
+    }
+  ],
+  "yanma": [
+    {
+      "to": "cobblemon:yanmega",
+      "method": "level_up",
+      "requirement": "has_move(move=ancientpower)"
+    }
+  ],
+  "yanmega": [],
+  "yungoos": [
+    {
+      "to": "cobblemon:gumshoos",
+      "method": "level_up",
+      "requirement": "level(minLevel=20); time_range(range=day)"
+    }
+  ],
+  "yveltal": [],
+  "zacian": [],
+  "zamazenta": [],
+  "zangoose": [],
+  "zapdos": [],
+  "zarude": [],
+  "zebstrika": [],
+  "zekrom": [],
+  "zeraora": [],
+  "zigzagoon": [
+    {
+      "to": "cobblemon:linoone",
+      "method": "level_up",
+      "requirement": "level(minLevel=20)"
+    }
+  ],
+  "zoroark": [],
+  "zorua": [
+    {
+      "to": "cobblemon:zoroark",
+      "method": "level_up",
+      "requirement": "level(minLevel=30)"
+    }
+  ],
+  "zubat": [
+    {
+      "to": "cobblemon:golbat",
+      "method": "level_up",
+      "requirement": "level(minLevel=22)"
+    }
+  ],
+  "zweilous": [
+    {
+      "to": "cobblemon:hydreigon",
+      "method": "level_up",
+      "requirement": "level(minLevel=64)"
+    }
+  ],
+  "zygarde": []
+}

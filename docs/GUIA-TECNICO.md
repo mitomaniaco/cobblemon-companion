@@ -174,3 +174,7 @@ Definição conservadora para continuar sem enganar: fechar primeiro a cobertura
 | `CLAUDE.md` | Instruções de entrada e limites que Claude deve ler antes do trabalho. |
 
 A documentação do workspace histórico pode mencionar `battle-planner/`, `experiments/` ou `AGENTS.md`. A raiz portátil não contém necessariamente esses caminhos; o próprio `docs/README.md` avisa para não executar comandos desses relatórios como se fossem comandos do app.
+
+## Dados do guia de progressão
+
+`data/guide/learnsets.json`, `evolutions.json` e `trainers.json` são gerados por `npm run guide-data:generate -- --instance <pasta com mods/> [--write]` (scripts/generate-guide-data.mjs; regras puras em scripts/lib/guide-data.mjs; leitura de JARs compartilhada com o gerador do catálogo em scripts/lib/jar.mjs). Sem `--write` o comando só confere se os arquivos versionados batem. Learnsets e evoluções vêm do JSON de espécie do Cobblemon com os provedores aplicados na mesma ordem do catálogo (`species_additions` acrescentam golpes e evoluções); `legacy:` e `special:` entram em `tutor`, `form_change:` é ignorado e o único `0:` da fonte (vaporeon) vira nível 1. Treinadores vêm de `data/<ns>/trainers/*.json` nos JARs com `rct` no nome; `heldItem` guarda o primeiro item da lista da fonte e `format` é `unknown` quando `battleFormat` não existe.
