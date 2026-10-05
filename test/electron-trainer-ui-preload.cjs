@@ -20,6 +20,13 @@ const bridge = {
   buildGuide: (request) => ipcRenderer.invoke('companion:guide-build', request),
   listGuideTrainers: () => ipcRenderer.invoke('companion:guide-trainers'),
   guideNextGoal: () => ipcRenderer.invoke('companion:guide-next-goal'),
+  readGuideProgress: () => ipcRenderer.invoke('companion:read-progress'),
+  onProgressChanged: (callback) => {
+    if (typeof callback !== 'function') throw new TypeError('onProgressChanged precisa de uma função');
+    const listener = (_event, progress) => callback(progress);
+    ipcRenderer.on('companion:progress-changed', listener);
+    return () => ipcRenderer.removeListener('companion:progress-changed', listener);
+  },
   buildBattlePlan: (request) => ipcRenderer.invoke('companion:battle-plan-build', request),
   buildEvolutionPlan: (request) => ipcRenderer.invoke('companion:evolution-plan-build', request),
   buildCapturePlan: (request) => ipcRenderer.invoke('companion:capture-plan-build', request),
