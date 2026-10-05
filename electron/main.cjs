@@ -14,16 +14,25 @@ const PRELOAD_PATH = TRAINER_UI_TEST_MODE
 const WORKER_PATH = path.resolve(__dirname, 'worker.cjs');
 const PLAYER_IMPORT_PATH = path.resolve(__dirname, 'player-import.cjs');
 const TRAINER_UI_SNAPSHOT_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-snapshot.json');
+const TRAINER_UI_GUIDE_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-guide.json');
+const TRAINER_UI_GUIDE = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_GUIDE_PATH, 'utf8')) : null;
+const GUIDE_WORKER_PATH = path.resolve(__dirname, 'guide-worker.cjs');
+const GUIDE_TIMEOUT_MS = 180000;
 const TRAINER_UI_SNAPSHOT = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_SNAPSHOT_PATH, 'utf8')) : null;
 const {readPlayerSnapshotFromConfig, resolvePlayerSourcePaths, publicPlayerImportError} = require(PLAYER_IMPORT_PATH);
 const {createSaveWatcher} = require('./lib/save-watcher.cjs');
-const {calculateRealDamage} = require('./lib/real-damage.cjs');
+const {assertFreshSources, calculateRealDamage} = require('./lib/real-damage.cjs');
+const {loadGuideData} = require('./lib/guide/data.cjs');
+const {guideNextGoal, listGuideTrainers} = require('./lib/guide/trainers.cjs');
 const PROTOCOL = 'cobblemon';
 const ORIGIN = `${PROTOCOL}://app`;
 const IPC_CALCULATE = 'companion:calculate';
 const IPC_REAL_DAMAGE = 'companion:calculate-real-damage';
 const IPC_CANCEL = 'companion:cancel';
 const IPC_READ_PLAYER_SNAPSHOT = 'companion:read-player-snapshot';
+const IPC_GUIDE_BUILD = 'companion:guide-build';
+const IPC_GUIDE_TRAINERS = 'companion:guide-trainers';
+const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
 const IPC_AUTO_REFRESH = 'companion:auto-refresh';
 const IPC_SNAPSHOT_CHANGED = 'companion:snapshot-changed';
 const IPC_TEST_SIMULATE_CHANGE = 'companion:test:simulate-snapshot-change';
@@ -41,6 +50,8 @@ let latestJobId;
 let nextTestBehavior = 'normal';
 const testResponses = [];
 const jobs = new Map();
+const guideJobs = new Map();
+let guideSequence = 0;
 let shutdownStarted = false;
 let autoRefreshEnabled = true;
 let firstReadDone = false;
@@ -205,6 +216,16 @@ function handleCalculate(event, request) {
 function handleCancel(event, request) {
   requireSender(event);
   const jobId = validateCancel(request);
+  const guideJob = guideJobs.get(jobId);
+  if (guideJob) {
+    guideJob.cancelRequested = true;
+    try {
+      guideJob.child.postMessage({type: 'cancel', jobId});
+    } catch {
+      settleGuide(guideJob, new Error('Cancelamento do guia falhou'));
+    }
+    return {status: 'cancel-requested', jobId};
+  }
   const job = jobs.get(jobId);
   if (!job) return {status: 'not-active', jobId};
   job.cancelRequested = true;
@@ -214,6 +235,90 @@ function handleCancel(event, request) {
     settle(job, {status: 'failed', jobId, error: `Cancelamento falhou: ${error.message}`});
   }
   return {status: 'cancel-requested', jobId};
+}
+function readSnapshotForRenderer() {
+  try {
+    return TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_SNAPSHOT) : readPlayerSnapshotFromConfig();
+  } catch (error) {
+    throw new Error(publicPlayerImportError(error));
+  }
+}
+function validateGuideRequest(request) {
+  exactKeys(request, ['sources', 'goal', 'jobId'], 'request');
+  if (!isRecord(request.goal)) throw new TypeError('request.goal precisa ser um objeto');
+  if (request.goal.kind === 'pve') exactKeys(request.goal, ['kind'], 'request.goal');
+  else if (request.goal.kind === 'trainer') {
+    exactKeys(request.goal, ['kind', 'trainerId'], 'request.goal');
+    if (typeof request.goal.trainerId !== 'string' || request.goal.trainerId.length === 0 || request.goal.trainerId.length > 200)
+      throw new TypeError('request.goal.trainerId precisa ser texto não vazio');
+  } else throw new TypeError('request.goal.kind não é suportado');
+  if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
+  const jobId = request.jobId ?? `guide-${Date.now()}-${++guideSequence}`;
+  if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
+  return {jobId, goal: structuredClone(request.goal)};
+}
+function settleGuide(job, failure, result) {
+  if (job.settled) return;
+  job.settled = true;
+  clearTimeout(job.timeout);
+  guideJobs.delete(job.jobId);
+  try {
+    job.child.kill();
+  } catch {
+    /* o processo já saiu */
+  }
+  if (failure) job.reject(failure);
+  else job.resolve(result);
+}
+function handleGuideBuild(event, request) {
+  requireSender(event);
+  const {jobId, goal} = validateGuideRequest(request);
+  const snapshot = readSnapshotForRenderer();
+  assertFreshSources(request.sources, snapshot.sources);
+  if (TRAINER_UI_TEST_MODE) {
+    if (goal.kind === 'trainer' && goal.trainerId !== TRAINER_UI_GUIDE.result.goal.trainerId)
+      throw new Error('Treinador sintético não encontrado');
+    return structuredClone({...TRAINER_UI_GUIDE.result, goal});
+  }
+  return new Promise((resolve, reject) => {
+    const child = utilityProcess.fork(GUIDE_WORKER_PATH, [], {cwd: ROOT, stdio: 'ignore', serviceName: 'Cobblemon Companion guide'});
+    const job = {jobId, child, resolve, reject, settled: false, cancelRequested: false};
+    job.timeout = setTimeout(() => settleGuide(job, new Error('A montagem do guia excedeu o tempo limite')), GUIDE_TIMEOUT_MS);
+    guideJobs.set(jobId, job);
+    child.on('message', (message) => {
+      if (!message || message.jobId !== jobId) return;
+      if (message.type === 'result') settleGuide(job, null, message.result);
+      else if (message.type === 'cancelled') settleGuide(job, new Error('A montagem do guia foi cancelada'));
+      else if (message.type === 'failed') settleGuide(job, new Error(`Guia: ${message.error}`));
+    });
+    child.on('exit', () =>
+      settleGuide(
+        job,
+        new Error(job.cancelRequested ? 'A montagem do guia foi cancelada' : 'O processo do guia encerrou antes do resultado'),
+      ),
+    );
+    child.on('error', (error) => settleGuide(job, error));
+    try {
+      child.postMessage({type: 'run', jobId, snapshot, goal});
+    } catch (error) {
+      settleGuide(job, error);
+    }
+  });
+}
+function handleGuideTrainers(event, ...args) {
+  requireSender(event);
+  if (args.length !== 0) throw new TypeError('A lista de treinadores não aceita argumentos');
+  if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.trainers);
+  return listGuideTrainers(loadGuideData());
+}
+function handleGuideNextGoal(event, ...args) {
+  requireSender(event);
+  if (args.length !== 0) throw new TypeError('O próximo objetivo não aceita argumentos');
+  if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.nextGoal);
+  const levels = readSnapshotForRenderer()
+    .individuals.filter((individual) => individual.location.container === 'party' && Number.isSafeInteger(individual.level))
+    .map((individual) => individual.level);
+  return guideNextGoal(loadGuideData(), levels.length > 0 ? Math.max(...levels) : null);
 }
 function handleRealDamageCalculation(event, request) {
   requireSender(event);
@@ -361,6 +466,9 @@ function installIpc() {
   ipcMain.handle(IPC_CANCEL, handleCancel);
   ipcMain.handle(IPC_READ_PLAYER_SNAPSHOT, handleReadPlayerSnapshot);
   ipcMain.handle(IPC_AUTO_REFRESH, handleSetAutoRefresh);
+  ipcMain.handle(IPC_GUIDE_BUILD, handleGuideBuild);
+  ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
+  ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
   if (TRAINER_UI_TEST_MODE) ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);
   if (RUNTIME_TEST_MODE) {
     ipcMain.handle(IPC_TEST_BEHAVIOR, handleSetTestBehavior);
@@ -380,6 +488,7 @@ app.on('before-quit', (event) => {
   if (shutdownStarted) return;
   shutdownStarted = true;
   for (const job of [...jobs.values()]) settle(job, {status: 'failed', jobId: job.jobId, error: 'Aplicação encerrada'});
+  for (const job of [...guideJobs.values()]) settleGuide(job, new Error('Aplicação encerrada'));
   void stopWorker().finally(() => {
     allowQuitAfterWorkerStop = true;
     app.quit();

@@ -1,8 +1,8 @@
 'use strict';
 
 const crypto = require('node:crypto');
-const calc = require('@smogon/calc');
 const calcPackage = require('@smogon/calc/package.json');
+const {damageRange, pokemonFromSpec} = require('./calc-profile.cjs');
 const compatibility = require('./combat-compatibility.json');
 
 const CALC_VERSION = '0.11.0';
@@ -194,7 +194,8 @@ function heldItemName(id, pathName) {
   return name;
 }
 
-function actorProfile(actor) {
+/** Perfil do indivíduo sem a exigência de item (usado pelo guia, que decide o item por conta própria). */
+function baseActorProfile(actor) {
   if (actor?.formId !== 'normal') fail('actor.formId', 'somente forma normal é compatível');
   const species = supportedSpecies(actor.speciesId, 'actor.speciesId');
   if (!Number.isSafeInteger(actor.level)) fail('actor.level', 'não foi capturado');
@@ -204,29 +205,25 @@ function actorProfile(actor) {
   const abilityId = text(actor.observed.ability, 'actor.observed.ability');
   const nature = supportedNature(natureId, 'actor.observed.nature');
   const ability = supportedAbility(species, abilityId, 'actor.observed.ability');
-  const item = actor.observed.heldItem === null ? null : heldItemName(actor.observed.heldItem, 'actor.observed.heldItem');
-  // O estado de batalha do item (gema consumida, Berry, etc.) fica coberto pela confirmação de cenário do usuário.
   // Snapshot v2 null is unknown; the required manual baseline attestation supplies this scenario fact.
   const ivs = effectiveIvs(actor.battleStats);
   const evs = statValues(actor.battleStats.evs, 'actor.battleStats.evs', 0, 252);
   if (STATS.reduce((sum, stat) => sum + evs[stat], 0) > 510) fail('actor.battleStats.evs', 'a soma excede 510');
-  return {species, level: actor.level, nature, ability, ivs, evs, item};
+  return {species, level: actor.level, nature, ability, ivs, evs};
+}
+
+function actorProfile(actor) {
+  const profile = baseActorProfile(actor);
+  // O estado de batalha do item (gema consumida, Berry, etc.) fica coberto pela confirmação de cenário do usuário.
+  const item = actor.observed.heldItem === null ? null : heldItemName(actor.observed.heldItem, 'actor.observed.heldItem');
+  return {...profile, item};
 }
 
 // The actor and target HP assumptions are explicit in validateAssumptions;
 // calc otherwise defaults current HP to the full stat.
 function pokemon(spec, pathName) {
   try {
-    return new calc.Pokemon(9, spec.species.name, {
-      level: spec.level,
-      nature: spec.nature,
-      ability: spec.ability,
-      item: spec.item ?? '',
-      status: '',
-      boosts: Object.fromEntries(STATS.map((stat) => [stat, 0])),
-      ivs: spec.ivs,
-      evs: spec.evs,
-    });
+    return pokemonFromSpec(spec);
   } catch (error) {
     fail(pathName, `não pôde ser construído pelo motor revisado (${error.message})`);
   }
@@ -235,20 +232,10 @@ function pokemon(spec, pathName) {
 function damage(attacker, defender, moveId, pathName) {
   const moveName = mappedMoveName(moveId, pathName);
   try {
-    const result = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), new calc.Field());
-    // O calc devolve o número 0 (não os 16 rolls) quando o alvo é imune ao tipo; mostramos 0–0 em vez de bloquear.
-    const rolls = result.damage === 0 ? new Array(16).fill(0) : result.damage;
-    if (!Array.isArray(rolls) || rolls.length !== 16 || !rolls.every((value) => Number.isSafeInteger(value) && value >= 0)) {
-      fail(pathName, 'o motor não retornou os 16 rolls inteiros esperados');
-    }
-    return {
-      moveId,
-      min: Math.min(...rolls),
-      max: Math.max(...rolls),
-      targetHP: defender.stats.hp,
-      rollCount: rolls.length,
-    };
+    const {min, max, targetHP} = damageRange(attacker, defender, moveName);
+    return {moveId, min, max, targetHP, rollCount: 16};
   } catch (error) {
+    if (error?.code === 'ERR_CALC_ROLLS') fail(pathName, error.message);
     if (error instanceof TypeError && error.message.startsWith('Cálculo real:')) throw error;
     fail(pathName, `o motor revisado recusou a entrada (${error.message})`);
   }
@@ -363,6 +350,7 @@ function calculateRealDamage(snapshot, rawRequest) {
 module.exports = {
   ADAPTER_VERSION,
   COMPATIBILITY: compatibility,
+  baseActorProfile,
   assertFreshSources,
   calculateRealDamage,
 };

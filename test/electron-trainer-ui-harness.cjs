@@ -1188,6 +1188,38 @@ async function exerciseSnapshotChanged(contents) {
   console.log('PASS aviso snapshot-changed respeita inscrição e auto-refresh');
 }
 
+async function exerciseGuideContract(contents) {
+  const result = await evaluate(
+    contents,
+    `(async () => {
+    const api = window.cobblemonCompanion;
+    const snapshot = await api.readPlayerSnapshot();
+    const trainers = await api.listGuideTrainers();
+    const nextGoal = await api.guideNextGoal();
+    const sources = snapshot.sources.map(({kind, sha256}) => ({kind, sha256}));
+    const guide = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}});
+    const stale = await api.buildGuide({sources: [], goal: {kind: 'pve'}}).then(() => 'built', (error) => error.message);
+    return {trainers, nextGoal, guide, stale};
+  })()`,
+  );
+  check(
+    result.trainers.length === 1 && result.trainers[0].format === 'singles',
+    'A lista de treinadores sintética não tem 1 treinador singles.',
+  );
+  check(
+    result.nextGoal.trainerId === result.trainers[0].id && result.nextGoal.basis === 'nível',
+    'O próximo objetivo sintético não aponta para o treinador.',
+  );
+  const card = result.guide.team[0];
+  check(card && card.reason.length > 0 && card.item.status === 'obter', 'O guia sintético não trouxe um card com reason e item a obter.');
+  check(
+    result.guide.team.length <= 6 && result.guide.team.every((member) => member.moves.length <= 4),
+    'O guia sintético passou de 6 membros ou 4 golpes.',
+  );
+  check(result.stale !== 'built', 'O guia aceitou fontes que não correspondem ao snapshot atual.');
+  console.log('PASS contrato do guia no modo sintético (treinadores, próximo objetivo, card e fontes)');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1209,6 +1241,7 @@ async function run() {
   await exerciseCollectionAndDamage(window, snapshot);
   await exerciseDetailContainment(window, snapshot);
   await exerciseSnapshotChanged(contents);
+  await exerciseGuideContract(contents);
   await exerciseShellScrollLock(window, snapshot);
   await exerciseDemo(contents);
   await exerciseRealDamage(contents);
