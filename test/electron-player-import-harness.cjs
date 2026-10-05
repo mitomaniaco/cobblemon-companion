@@ -262,70 +262,51 @@ async function activateTab(contents, label) {
   );
 }
 
-async function readAccessibleSelectOptions(contents, label) {
-  const opened = await evaluate(
+async function readEnabledOptions(contents, label) {
+  const options = await evaluate(
     contents,
     `(() => {
     const details = document.querySelector('[data-testid="individual-details"]');
-    const planner = [...(details?.querySelectorAll('section') || [])]
-      .find(section => section.querySelector('h4')?.textContent?.trim() === 'Preparar uma troca de golpe');
-    const triggers = [...(planner?.querySelectorAll('button[aria-haspopup]') || [])]
-      .filter(button => (button.getAttribute('aria-labelledby') || '').split(/\\s+/)
-        .some(id => document.getElementById(id)?.textContent.trim() === ${JSON.stringify(label)}));
-    if (triggers.length !== 1) return false;
-    triggers[0].click();
-    return true;
+    const listbox = [...(details?.querySelectorAll('[role="listbox"]') || [])]
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(label)});
+    if (!listbox) return null;
+    return [...listbox.querySelectorAll('[role="option"]')]
+      .filter(option => option.getAttribute('aria-disabled') !== 'true')
+      .map(option => option.getAttribute('aria-label'));
   })()`,
   );
-  check(opened, 'O controle React Aria não foi encontrado pelo rótulo acessível.');
-  const listboxName = `${label} opções`;
-  await waitFor(
-    contents,
-    `Boolean([...document.querySelectorAll('[role="listbox"]')]
-    .find(listbox => listbox.getAttribute('aria-label') === ${JSON.stringify(listboxName)}))`,
-    'opções do controle React Aria',
-  );
-  return evaluate(
-    contents,
-    `(() => {
-    const listbox = [...document.querySelectorAll('[role="listbox"]')]
-      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(listboxName)});
-    return [...(listbox?.querySelectorAll('[role="option"]') || [])]
-      .map(option => (option.innerText || option.textContent || '').trim());
-  })()`,
-  );
+  check(options !== null, 'O seletor de golpes não foi encontrado pelo rótulo acessível.');
+  return options;
 }
 
 async function selectAccessibleOption(contents, label, index, expectedOptions, failureMessage) {
-  const options = await readAccessibleSelectOptions(contents, label);
+  const options = await readEnabledOptions(contents, label);
   check(JSON.stringify(options) === JSON.stringify(expectedOptions), failureMessage);
   const selectedLabel = expectedOptions[index];
-  check(selectedLabel !== undefined, 'O índice da opção React Aria não existe no snapshot.');
-  const listboxName = `${label} opções`;
+  check(selectedLabel !== undefined, 'O índice da opção do seletor não existe no snapshot.');
   const clicked = await evaluate(
     contents,
     `(() => {
-    const listbox = [...document.querySelectorAll('[role="listbox"]')]
-      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(listboxName)});
-    const option = listbox?.querySelectorAll('[role="option"]')?.[${index}];
+    const details = document.querySelector('[data-testid="individual-details"]');
+    const listbox = [...(details?.querySelectorAll('[role="listbox"]') || [])]
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(label)});
+    const option = [...(listbox?.querySelectorAll('[role="option"]') || [])]
+      .filter(item => item.getAttribute('aria-disabled') !== 'true')[${index}];
     if (!option) return false;
     option.click();
     return true;
   })()`,
   );
-  check(clicked, 'A opção React Aria do snapshot não pôde ser selecionada.');
+  check(clicked, 'A opção do snapshot não pôde ser selecionada.');
   await waitFor(
     contents,
     `(() => {
     const details = document.querySelector('[data-testid="individual-details"]');
-    const planner = [...(details?.querySelectorAll('section') || [])]
-      .find(section => section.querySelector('h4')?.textContent?.trim() === 'Preparar uma troca de golpe');
-    const trigger = [...(planner?.querySelectorAll('button[aria-haspopup]') || [])]
-      .find(button => (button.getAttribute('aria-labelledby') || '').split(/\\s+/)
-        .some(id => document.getElementById(id)?.textContent.trim() === ${JSON.stringify(label)}));
-    return (trigger?.innerText || trigger?.textContent || '').trim().includes(${JSON.stringify(selectedLabel)});
+    const listbox = [...(details?.querySelectorAll('[role="listbox"]') || [])]
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(label)});
+    return listbox?.querySelector('[role="option"][aria-selected="true"]')?.getAttribute('aria-label') === ${JSON.stringify(selectedLabel)};
   })()`,
-    'valor selecionado no controle React Aria',
+    'valor selecionado no seletor de golpes',
   );
 }
 
@@ -339,8 +320,8 @@ async function readRenderedMoves(contents) {
         .includes(section.querySelector('h3')?.textContent?.trim()))
       .map(section => ({
         title: section.querySelector('h3')?.textContent?.trim(),
-        moves: [...section.querySelectorAll('ul > li > span:first-child')]
-          .map(node => node.textContent.trim()),
+        moves: [...section.querySelectorAll('[data-move-name]')]
+          .map(node => node.dataset.moveName),
         state: section.querySelector('[role="status"]')?.textContent?.trim() || null,
       }));
   })()`,
@@ -382,17 +363,19 @@ async function readMovePreparation(contents) {
     `(() => {
     const details = document.querySelector('[data-testid="individual-details"]');
     const planner = [...(details?.querySelectorAll('section') || [])]
-      .find(section => section.querySelector('h4')?.textContent?.trim() === 'Preparar uma troca de golpe');
+      .find(section => section.querySelector('h4')?.textContent?.trim() === 'Planejar troca');
     if (!planner) return null;
-    const triggerFor = label => [...planner.querySelectorAll('button[aria-haspopup]')]
-      .find(button => (button.getAttribute('aria-labelledby') || '').split(/\\s+/)
-        .some(id => document.getElementById(id)?.textContent.trim() === label)) || null;
+    const selectedFor = label => {
+      const listbox = [...(details?.querySelectorAll('[role="listbox"]') || [])]
+        .find(item => item.getAttribute('aria-label') === label);
+      return listbox?.querySelector('[role="option"][aria-selected="true"]')?.getAttribute('aria-label') || null;
+    };
     const preview = planner.querySelector('[aria-label="Prévia da troca planejada"]');
     const groups = [...(preview?.querySelectorAll(':scope > div') || [])];
     return {
       state: planner.querySelector('[role="status"]')?.textContent?.trim() || null,
-      slot: triggerFor('Slot equipado para a prévia')?.textContent?.trim() || null,
-      candidate: triggerFor('Golpe aprendido para a proposta')?.textContent?.trim() || null,
+      slot: selectedFor('Slot equipado para a prévia'),
+      candidate: selectedFor('Golpe aprendido para a proposta'),
       preview: Boolean(preview),
       beforeLabel: groups[0]?.querySelector('span')?.textContent?.trim() || null,
       beforeMove: groups[0]?.querySelector('strong')?.textContent?.trim() || null,
@@ -648,7 +631,7 @@ async function run() {
   await activateTab(contents, 'Golpes');
   assertRenderedMoves(await readRenderedMoves(contents), target);
   const initialPlanner = await readMovePreparation(contents);
-  check(initialPlanner, 'A aba Golpes não renderizou Preparar uma troca de golpe.');
+  check(initialPlanner, 'A aba Golpes não renderizou Planejar troca.');
 
   async function buildPreview(individual) {
     const candidates = eligibleCandidates(individual);
@@ -659,7 +642,7 @@ async function run() {
     );
     const before = await readMovePreparation(contents);
     check(
-      before && !before.preview && before.slot === 'Escolha um slot' && before.candidate === 'Escolha um golpe aprendido',
+      before && !before.preview && before.slot === null && before.candidate === null,
       'A prévia apareceu antes da seleção de slot e candidato.',
     );
     const slotOptions = individual.equippedMoves.map((move, index) => `Slot ${index + 1} · ${moveLabel(move.id)}`);
@@ -686,9 +669,9 @@ async function run() {
     const preview = await readMovePreparation(contents);
     const candidateId = candidates[0];
     check(
-      preview.beforeLabel === 'Antes · slot 1' &&
+      preview.beforeLabel === 'Slot 1' &&
         preview.beforeMove === moveLabel(individual.equippedMoves[0].id) &&
-        preview.afterLabel === 'Depois · proposta' &&
+        preview.afterLabel === 'Proposta' &&
         preview.afterMove === moveLabel(candidateId) &&
         preview.slot === slotOptions[0] &&
         preview.candidate === candidateOptions[0],
@@ -703,21 +686,15 @@ async function run() {
     const controlSelectors = await evaluate(
       contents,
       `(() => {
+      const selectors = [
+        '[role="listbox"][aria-label="Slot equipado para a prévia"]',
+        '[role="listbox"][aria-label="Golpe aprendido para a proposta"]',
+      ];
       const details = document.querySelector('[data-testid="individual-details"]');
-      const planner = [...(details?.querySelectorAll('section') || [])]
-        .find(section => section.querySelector('h4')?.textContent?.trim() === 'Preparar uma troca de golpe');
-      const selectors = ['Slot equipado para a prévia', 'Golpe aprendido para a proposta'];
-      const controls = [...(planner?.querySelectorAll('button[aria-haspopup]') || [])]
-        .filter(button => (button.getAttribute('aria-labelledby') || '').split(/\\s+/)
-          .some(id => selectors.includes(document.getElementById(id)?.textContent.trim())));
-      return controls.map(button => {
-        const labelId = (button.getAttribute('aria-labelledby') || '').split(/\\s+/)
-          .find(id => selectors.includes(document.getElementById(id)?.textContent.trim()));
-        return 'button[aria-labelledby~="' + labelId + '"]';
-      });
+      return selectors.filter(selector => Boolean(details?.querySelector(selector)));
     })()`,
     );
-    check(controlSelectors.length === 2, 'A prévia não expôs os dois controles acessíveis do MovePreparation.');
+    check(controlSelectors.length === 2, 'A prévia não expôs os dois seletores de golpes da ficha.');
     const size = await capture(window, screenshotPath, '[aria-label="Prévia da troca planejada"]', [
       ...controlSelectors,
       '[aria-label="Prévia da troca planejada"]',

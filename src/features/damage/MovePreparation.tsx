@@ -1,17 +1,15 @@
 import {useId} from 'react';
 import {ArrowRight} from '@phosphor-icons/react';
-import {moveLabel} from '../../domain/catalog-labels';
 import {moveDisplay} from '../../domain/dex';
 import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
 import type {PlayerIndividual} from '../../platform/api';
-import {Button, Select, StatusMessage, TypeBadge, type SelectOption} from '../../ui';
+import {Button, StatusMessage, TypeBadge} from '../../ui';
 import {damageSwapBlocker} from './model';
 import styles from './MovePreparation.module.css';
 
 export interface MovePreparationProps {
   individual: PlayerIndividual;
   plan: MoveSwapPlan;
-  onPlanChange(patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>): void;
   onOpenDamage(candidateMoveId: string, slotIndex: number): void;
 }
 
@@ -26,19 +24,11 @@ function PreviewTile({caption, moveId}: {caption: string; moveId: string}) {
   );
 }
 
-export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: MovePreparationProps) {
+export function MovePreparation({individual, plan, onOpenDamage}: MovePreparationProps) {
   const titleId = useId();
   const view = getMoveSwapView(individual, plan);
-  const selectedPlan = plan.individualUuid === individual.uuid;
   const preview = view.status === 'ready' ? view.preview : null;
   const damageBlocker = preview ? damageSwapBlocker(individual, preview.slotIndex, preview.afterMoveId) : null;
-
-  const slotOptions: SelectOption[] =
-    view.status === 'ready'
-      ? view.equippedMoves.map((move, index) => ({key: String(index), label: `Slot ${index + 1} · ${moveLabel(move.id)}`}))
-      : [];
-  const candidateOptions: SelectOption[] =
-    view.status === 'ready' ? view.candidates.map((move) => ({key: move.id, label: moveLabel(move.id)})) : [];
 
   return (
     <section className={styles.preparation} aria-labelledby={titleId}>
@@ -61,23 +51,6 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
         </p>
       ) : (
         <>
-          <div className={styles.fields}>
-            <Select
-              label="Slot equipado para a prévia"
-              options={slotOptions}
-              value={selectedPlan && plan.slotIndex !== null ? String(plan.slotIndex) : null}
-              onChange={(value) => onPlanChange({slotIndex: value === null ? null : Number(value)})}
-              placeholder="Escolha um slot"
-            />
-            <Select
-              label="Golpe aprendido para a proposta"
-              options={candidateOptions}
-              value={selectedPlan ? plan.candidateMoveId : null}
-              onChange={(value) => onPlanChange({candidateMoveId: value})}
-              placeholder="Escolha um golpe aprendido"
-            />
-          </div>
-
           {preview ? (
             <output className={styles.preview} aria-label="Prévia da troca planejada">
               <PreviewTile caption={`Slot ${preview.slotIndex + 1}`} moveId={preview.beforeMoveId} />
@@ -86,7 +59,7 @@ export function MovePreparation({individual, plan, onPlanChange, onOpenDamage}: 
               <p className={styles.calculationNote}>O cálculo compara o slot {preview.slotIndex + 1} com o candidato.</p>
             </output>
           ) : (
-            <p className={styles.emptyPreview}>Escolha um slot e um candidato para conferir o antes e depois.</p>
+            <p className={styles.emptyPreview}>Escolha um golpe equipado e um aprendido nas listas acima.</p>
           )}
 
           {preview &&

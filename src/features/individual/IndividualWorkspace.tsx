@@ -1,10 +1,10 @@
 import {useId, useState} from 'react';
-import type {CSSProperties} from 'react';
+import type {CSSProperties, ReactNode} from 'react';
 import {ArrowLeft, CaretDown, CaretUp} from '@phosphor-icons/react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {abilityName, dexId, moveDisplay, natureDisplay, speciesDisplay, titleCaseId} from '../../domain/dex';
 import {locationLabel} from '../../domain/location-label';
-import type {MoveSwapPlan} from '../../domain/move-swap';
+import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
 import {MovePreparation} from '../damage/MovePreparation';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from '../../platform/api';
 import {
@@ -20,6 +20,7 @@ import {
   Tabs,
   TypeBadge,
   ItemIcon,
+  MovePicker,
   typeColorVar,
 } from '../../ui';
 import {IvRadar} from './IvRadar';
@@ -62,21 +63,41 @@ function formatFact(fact: NumericFact) {
   return fact.value === null ? 'Sem override' : String(fact.value);
 }
 
-function MoveTile({move}: {move: MoveEntry}) {
-  const display = moveDisplay(move.id);
+function moveMeta(move: MoveEntry) {
   return (
-    <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
+    <>
       <span>PP {move.pp ?? '?'}</span>
       <span className={styles.ppUps} role="img" aria-label={move.ppUps === null ? 'PP Ups não capturado' : `PP Ups ${move.ppUps}`}>
         {[0, 1, 2].map((dot) => (
           <span key={dot} className={styles.ppDot} data-filled={move.ppUps !== null && dot < move.ppUps ? 'true' : undefined} />
         ))}
       </span>
+    </>
+  );
+}
+
+function MoveTile({move}: {move: MoveEntry}) {
+  const display = moveDisplay(move.id);
+  return (
+    <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
+      {moveMeta(move)}
     </MoveChip>
   );
 }
 
-function MoveGroup({title, known, moves, kind}: {title: string; known: boolean; moves: MoveEntry[]; kind: 'equipped' | 'learned'}) {
+function MoveGroup({
+  title,
+  known,
+  moves,
+  kind,
+  picker,
+}: {
+  title: string;
+  known: boolean;
+  moves: MoveEntry[];
+  kind: 'equipped' | 'learned';
+  picker?: ReactNode;
+}) {
   const titleId = useId();
   return (
     <section className={styles.moveGroup} aria-labelledby={titleId}>
@@ -92,11 +113,13 @@ function MoveGroup({title, known, moves, kind}: {title: string; known: boolean; 
         <p className={styles.listState} role="status">
           Nenhum golpe registrado nesta captura.
         </p>
+      ) : picker ? (
+        picker
       ) : kind === 'equipped' ? (
         <ul className={styles.tileList}>
           {moves.map((move, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: a lista capturada pode repetir golpes; o índice evita chaves duplicadas e a lista é somente leitura
-            <li key={`${index}-${move.id}`}>
+            <li key={`${index}-${move.id}`} data-move-name={moveDisplay(move.id).name}>
               <MoveTile move={move} />
             </li>
           ))}
@@ -107,7 +130,7 @@ function MoveGroup({title, known, moves, kind}: {title: string; known: boolean; 
             const display = moveDisplay(move.id);
             return (
               // biome-ignore lint/suspicious/noArrayIndexKey: a lista capturada pode repetir golpes; o índice evita chaves duplicadas e a lista é somente leitura
-              <li key={`${index}-${move.id}`}>
+              <li key={`${index}-${move.id}`} data-move-name={display.name}>
                 <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="chip" />
               </li>
             );
@@ -344,6 +367,66 @@ export function IndividualWorkspace({
   const evValues = STAT_ROWS.map((stat) => knownNumber(individual.battleStats.evs[stat.key]));
   const evsComplete = evValues.every((value) => value !== null);
   const evTotal = evValues.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+  const view = getMoveSwapView(individual, moveSwapPlan);
+  const planned = moveSwapPlan.individualUuid === individual.uuid;
+  let equippedPicker: ReactNode;
+  let learnedPicker: ReactNode;
+  if (view.status === 'ready') {
+    const equippedKeys = new Set(individual.equippedMoves.map((move) => move.id.trim().toLowerCase()));
+    const firstIndex = new Map<string, number>();
+    for (const candidate of view.candidates) {
+      firstIndex.set(
+        candidate.id,
+        individual.learnedMoves.findIndex((move) => move.id === candidate.id),
+      );
+    }
+    const selectedLearned = planned && moveSwapPlan.candidateMoveId !== null ? firstIndex.get(moveSwapPlan.candidateMoveId) : undefined;
+    equippedPicker = (
+      <MovePicker
+        variant="tile"
+        label="Slot equipado para a prévia"
+        items={individual.equippedMoves.map((move, index) => {
+          const display = moveDisplay(move.id);
+          return {
+            key: String(index),
+            textValue: `Slot ${index + 1} · ${display.name}`,
+            name: display.name,
+            type: display.type,
+            category: display.category,
+            power: display.power,
+            meta: moveMeta(move),
+          };
+        })}
+        selectedKey={planned && moveSwapPlan.slotIndex !== null ? String(moveSwapPlan.slotIndex) : null}
+        onSelectionChange={(key) => onMoveSwapPlanChange({slotIndex: Number(key)})}
+      />
+    );
+    learnedPicker = (
+      <MovePicker
+        variant="chip"
+        label="Golpe aprendido para a proposta"
+        items={individual.learnedMoves.map((move, index) => {
+          const display = moveDisplay(move.id);
+          const enabled = firstIndex.get(move.id) === index;
+          return {
+            key: String(index),
+            textValue: display.name,
+            name: display.name,
+            type: display.type,
+            category: display.category,
+            power: display.power,
+            isDisabled: !enabled,
+            note: equippedKeys.has(move.id.trim().toLowerCase()) ? 'Equipado' : 'Repetido',
+          };
+        })}
+        selectedKey={selectedLearned === undefined ? null : String(selectedLearned)}
+        onSelectionChange={(key) => {
+          const move = individual.learnedMoves[Number(key)];
+          if (move) onMoveSwapPlanChange({candidateMoveId: move.id});
+        }}
+      />
+    );
+  }
 
   return (
     <aside className={styles.workspace} data-testid="individual-details" aria-labelledby={titleId}>
@@ -462,15 +545,17 @@ export function IndividualWorkspace({
                   known={individual.equippedMovesKnown}
                   moves={individual.equippedMoves}
                   kind="equipped"
+                  picker={equippedPicker}
                 />
-                <MoveGroup title="Golpes aprendidos" known={individual.learnedMovesKnown} moves={individual.learnedMoves} kind="learned" />
+                <MoveGroup
+                  title="Golpes aprendidos"
+                  known={individual.learnedMovesKnown}
+                  moves={individual.learnedMoves}
+                  kind="learned"
+                  picker={learnedPicker}
+                />
               </div>
-              <MovePreparation
-                individual={individual}
-                plan={moveSwapPlan}
-                onPlanChange={onMoveSwapPlanChange}
-                onOpenDamage={onOpenDamage}
-              />
+              <MovePreparation individual={individual} plan={moveSwapPlan} onOpenDamage={onOpenDamage} />
             </section>
           </TabPanel>
           <TabPanel id="stats">
