@@ -12,7 +12,11 @@ const trainers: {
   id: string;
   name: string;
   format: string;
-  team: {speciesId: string; level: number; moves: string[]; ability: string | null; nature: string | null; heldItem: string | null}[];
+  team: {speciesId: string; level: number; moves: string[]; ability: string | null; nature: string | null; heldItem: string[] | null}[];
+  bag: {item: string; quantity: number}[];
+  battleRules: {maxItemUses: number | null};
+  ai: {type: string} | null;
+  mob: {type: string | null; signatureItem: string | null; optional: boolean} | null;
   source: {jar: string; sha256: string; file: string};
 }[] = read('trainers.json');
 
@@ -59,7 +63,16 @@ describe('dados do guia', () => {
         expect(pokemon.speciesId, trainer.id).toMatch(namespaced);
         expect(pokemon.level >= 1 && pokemon.level <= 100, `${trainer.id} nível ${pokemon.level}`).toBe(true);
         for (const moveId of pokemon.moves) expect(moveId, trainer.id).toMatch(namespaced);
-        if (pokemon.heldItem !== null) expect(pokemon.heldItem, trainer.id).toMatch(namespaced);
+        if (pokemon.heldItem !== null) {
+          expect(pokemon.heldItem.length, trainer.id).toBeGreaterThan(0);
+          for (const item of pokemon.heldItem) expect(item, trainer.id).toMatch(namespaced);
+        }
+      }
+    }
+    for (const trainer of trainers) {
+      for (const entry of trainer.bag) {
+        expect(entry.item, trainer.id).toMatch(namespaced);
+        expect(entry.quantity, trainer.id).toBeGreaterThan(0);
       }
     }
     const brock = trainers.find((trainer) => trainer.name === 'Leader Brock');
@@ -69,6 +82,21 @@ describe('dados do guia', () => {
   it('treinadores sem battleFormat na fonte são singles', () => {
     expect(trainers.find((trainer) => trainer.id === 'rctmod:leader_brock_019e')?.format).toBe('singles');
     expect(trainers.some((trainer) => trainer.format === 'doubles')).toBe(true);
+  });
+
+  it('Brock: bolsa, regras, IA, tipo do mob e itens como lista', () => {
+    const brock = trainers.find((trainer) => trainer.id === 'rctmod:leader_brock_019e');
+    expect(brock?.bag).toEqual([{item: 'cobblemon:potion', quantity: 1}]);
+    expect(brock?.battleRules.maxItemUses).toBe(2);
+    expect(brock?.ai?.type).toBe('rct');
+    expect(brock?.mob).toMatchObject({type: 'leader', signatureItem: 'cobblemon:hard_stone'});
+    expect(brock?.team[0].heldItem).toEqual(['cobblemon:custap_berry']);
+    expect(trainers.some((trainer) => trainer.team.some((pokemon) => (pokemon.heldItem?.length ?? 0) > 1))).toBe(true);
+  });
+
+  it('trainers do KubeJS entram com origem kubejs/data e suas séries existem', () => {
+    expect(trainers.some((trainer) => trainer.source.jar === 'kubejs/data')).toBe(true);
+    expect(Object.keys(series)).toEqual(expect.arrayContaining(['atm_team', 'contentcreators']));
   });
 
   it('séries listam treinadores existentes em ordem consistente com os pré-requisitos', () => {

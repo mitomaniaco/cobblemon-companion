@@ -21,7 +21,9 @@ function namedFromCatalog(table, id) {
   return typeof namespaced === 'string' ? namespaced : undefined;
 }
 
-function heldItemName(id) {
+/** `heldItem` é uma lista de alternativas: só com uma alternativa o item é conhecido; com várias, o cálculo não escolhe. */
+function heldItemName(alternatives) {
+  const id = Array.isArray(alternatives) ? (alternatives.length === 1 ? alternatives[0] : null) : alternatives;
   if (typeof id !== 'string' || !id.startsWith('cobblemon:')) return '';
   return lookup(COMPATIBILITY.items, id.slice('cobblemon:'.length).replace(/_/g, ''))?.name ?? '';
 }

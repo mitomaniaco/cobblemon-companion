@@ -1,4 +1,256 @@
 {
+  "atm_team": {
+    "difficulty": 9,
+    "requiredSeries": [
+      [
+        "bdsp"
+      ]
+    ],
+    "initialLevelCap": null,
+    "relativeLevelCap": null,
+    "trainerIds": [
+      "rctmod:allthemods_trainer_lego",
+      "rctmod:allthemods_trainer_nektar",
+      "rctmod:team_allthemods_bored420",
+      "rctmod:team_allthemods_cesarzorak",
+      "rctmod:team_allthemods_drackion",
+      "rctmod:team_allthemods_dragondogemaster",
+      "rctmod:team_allthemods_helix_ranmaru",
+      "rctmod:team_allthemods_joeychin01",
+      "rctmod:team_allthemods_lobsterjonn",
+      "rctmod:team_allthemods_mitchell52",
+      "rctmod:team_allthemods_mutantgumdrop",
+      "rctmod:team_allthemods_notch",
+      "rctmod:team_allthemods_oly2o6",
+      "rctmod:team_allthemods_rosary",
+      "rctmod:team_allthemods_satherov",
+      "rctmod:team_allthemods_shinyporygon",
+      "rctmod:team_allthemods_thevortex",
+      "rctmod:team_allthemods_toblerone0508",
+      "rctmod:team_allthemods_ultramegaa",
+      "rctmod:team_allthemods_uncandango",
+      "rctmod:team_allthemods_whatthedrunk"
+    ],
+    "order": [
+      "rctmod:allthemods_trainer_lego",
+      "rctmod:allthemods_trainer_nektar",
+      "rctmod:team_allthemods_bored420",
+      "rctmod:team_allthemods_drackion",
+      "rctmod:team_allthemods_dragondogemaster",
+      "rctmod:team_allthemods_helix_ranmaru",
+      "rctmod:team_allthemods_joeychin01",
+      "rctmod:team_allthemods_mitchell52",
+      "rctmod:team_allthemods_mutantgumdrop",
+      "rctmod:team_allthemods_oly2o6",
+      "rctmod:team_allthemods_shinyporygon",
+      "rctmod:team_allthemods_toblerone0508",
+      "rctmod:team_allthemods_ultramegaa",
+      "rctmod:team_allthemods_lobsterjonn",
+      "rctmod:team_allthemods_cesarzorak",
+      "rctmod:team_allthemods_rosary",
+      "rctmod:team_allthemods_satherov",
+      "rctmod:team_allthemods_uncandango",
+      "rctmod:team_allthemods_thevortex",
+      "rctmod:team_allthemods_whatthedrunk",
+      "rctmod:team_allthemods_notch"
+    ],
+    "graph": {
+      "rctmod:allthemods_trainer_lego": {
+        "type": "team_allthemods_trainer",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:allthemods_trainer_nektar": {
+        "type": "team_allthemods_trainer",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_bored420": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_cesarzorak": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_bored420"
+          ],
+          [
+            "rctmod:team_allthemods_drackion"
+          ],
+          [
+            "rctmod:team_allthemods_dragondogemaster"
+          ],
+          [
+            "rctmod:team_allthemods_helix_ranmaru"
+          ],
+          [
+            "rctmod:team_allthemods_lobsterjonn"
+          ],
+          [
+            "rctmod:team_allthemods_mitchell52"
+          ],
+          [
+            "rctmod:team_allthemods_mutantgumdrop"
+          ],
+          [
+            "rctmod:team_allthemods_oly2o6"
+          ],
+          [
+            "rctmod:team_allthemods_shinyporygon"
+          ],
+          [
+            "rctmod:team_allthemods_toblerone0508"
+          ],
+          [
+            "rctmod:team_allthemods_ultramegaa"
+          ],
+          [
+            "rctmod:team_allthemods_joeychin01"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_drackion": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_dragondogemaster": {
+        "type": "team_allthemods_custom_gym",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_helix_ranmaru": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_joeychin01": {
+        "type": "team_allthemods_custom_gym",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_lobsterjonn": {
+        "type": "team_allthemods_custom_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:allthemods_trainer_lego"
+          ],
+          [
+            "rctmod:allthemods_trainer_nektar"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_mitchell52": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_mutantgumdrop": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_notch": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_whatthedrunk"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_oly2o6": {
+        "type": "team_allthemods_custom_gym",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_rosary": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_cesarzorak"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_satherov": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_rosary"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_shinyporygon": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_thevortex": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_uncandango"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_toblerone0508": {
+        "type": "team_allthemods_custom_gym",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_ultramegaa": {
+        "type": "team_allthemods_wandering",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_uncandango": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_satherov"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:team_allthemods_whatthedrunk": {
+        "type": "team_allthemods_elite_gym",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:team_allthemods_thevortex"
+          ]
+        ],
+        "via": "mob"
+      }
+    }
+  },
   "bdsp": {
     "difficulty": 5,
     "requiredSeries": [],
@@ -223,7 +475,7 @@
       },
       "rctmod:champion_cynthia_05a2": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_lucian_05a1"
@@ -233,7 +485,7 @@
       },
       "rctmod:champion_cynthia_05a7": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_lucian_05a6"
@@ -327,7 +579,7 @@
       },
       "rctmod:elite_four_aaron_059e": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:champion_cynthia_03a5"
@@ -337,7 +589,7 @@
       },
       "rctmod:elite_four_aaron_05a3": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:champion_cynthia_05a2"
@@ -357,7 +609,7 @@
       },
       "rctmod:elite_four_bertha_059f": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_aaron_059e"
@@ -367,7 +619,7 @@
       },
       "rctmod:elite_four_bertha_05a4": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_aaron_05a3"
@@ -387,7 +639,7 @@
       },
       "rctmod:elite_four_flint_05a0": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_bertha_059f"
@@ -397,7 +649,7 @@
       },
       "rctmod:elite_four_flint_05a5": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_bertha_05a4"
@@ -417,7 +669,7 @@
       },
       "rctmod:elite_four_lucian_05a1": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_flint_05a0"
@@ -427,7 +679,7 @@
       },
       "rctmod:elite_four_lucian_05a6": {
         "type": "normal",
-        "optional": true,
+        "optional": false,
         "requires": [
           [
             "rctmod:elite_four_flint_05a5"
@@ -1027,6 +1279,122 @@
       }
     }
   },
+  "contentcreators": {
+    "difficulty": 6,
+    "requiredSeries": [],
+    "initialLevelCap": null,
+    "relativeLevelCap": null,
+    "trainerIds": [
+      "rctmod:contentcreators_bucketst",
+      "rctmod:contentcreators_chosenarchitect",
+      "rctmod:contentcreators_danrique",
+      "rctmod:contentcreators_direwolf20",
+      "rctmod:contentcreators_mitinhoplayer",
+      "rctmod:contentcreators_nofaxu",
+      "rctmod:contentcreators_pilpoh",
+      "rctmod:contentcreators_princessstellar",
+      "rctmod:contentcreators_virtuositas"
+    ],
+    "order": [
+      "rctmod:contentcreators_princessstellar",
+      "rctmod:contentcreators_mitinhoplayer",
+      "rctmod:contentcreators_bucketst",
+      "rctmod:contentcreators_pilpoh",
+      "rctmod:contentcreators_virtuositas",
+      "rctmod:contentcreators_danrique",
+      "rctmod:contentcreators_direwolf20",
+      "rctmod:contentcreators_chosenarchitect",
+      "rctmod:contentcreators_nofaxu"
+    ],
+    "graph": {
+      "rctmod:contentcreators_bucketst": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_mitinhoplayer"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_chosenarchitect": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_direwolf20"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_danrique": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_virtuositas"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_direwolf20": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_danrique"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_mitinhoplayer": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_princessstellar"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_nofaxu": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_chosenarchitect"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_pilpoh": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_bucketst"
+          ]
+        ],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_princessstellar": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [],
+        "via": "mob"
+      },
+      "rctmod:contentcreators_virtuositas": {
+        "type": "contentcreators",
+        "optional": false,
+        "requires": [
+          [
+            "rctmod:contentcreators_pilpoh"
+          ]
+        ],
+        "via": "mob"
+      }
+    }
+  },
   "radicalred": {
     "difficulty": 9,
     "requiredSeries": [],
@@ -1052,6 +1420,7 @@
       "rctmod:elite_four_lorelei_004e",
       "rctmod:leader_blaine_01a3",
       "rctmod:leader_brock_019e",
+      "rctmod:leader_clair_0026",
       "rctmod:leader_clair_004a",
       "rctmod:leader_erika_01a1",
       "rctmod:leader_giovanni_015e",
@@ -1251,6 +1620,7 @@
       "rctmod:rocket_admin_ariana_0044",
       "rctmod:boss_giovanni_0045",
       "rctmod:leader_clair_004a",
+      "rctmod:leader_clair_0026",
       "rctmod:rival_terry_01b3",
       "rctmod:rival_terry_01b4",
       "rctmod:rival_terry_01b5",
@@ -1494,6 +1864,16 @@
         "type": "leader",
         "optional": false,
         "requires": [],
+        "via": "mob"
+      },
+      "rctmod:leader_clair_0026": {
+        "type": "leader",
+        "optional": true,
+        "requires": [
+          [
+            "rctmod:leader_clair_004a"
+          ]
+        ],
         "via": "mob"
       },
       "rctmod:leader_clair_004a": {
