@@ -1,5 +1,11 @@
 import {describe, expect, it} from 'vitest';
-import {createMoveSwapPlan, getMoveSwapView, invalidateMoveSwapPlan, selectMoveSwapIndividual} from '../src/domain/move-swap';
+import {
+  createMoveSwapPlan,
+  getMoveSwapProgress,
+  getMoveSwapView,
+  invalidateMoveSwapPlan,
+  selectMoveSwapIndividual,
+} from '../src/domain/move-swap';
 import type {PlayerIndividual} from '../src/platform/api';
 
 const unknownFact = (nbtPath: string) => ({
@@ -89,6 +95,34 @@ describe('planejamento de troca de golpe', () => {
       beforeMoveId: 'quick-attack',
       afterMoveId: 'iron-tail',
       evidence: 'observed-learned-on-individual',
+    });
+  });
+
+  it('informa quais seleções do plano são válidas para orientar o próximo passo', () => {
+    const uuid = 'pikachu-uuid';
+    expect(getMoveSwapProgress(individual(), createMoveSwapPlan(uuid))).toEqual({slotMoveId: null, candidateMoveId: null});
+    expect(getMoveSwapProgress(individual(), {individualUuid: uuid, slotIndex: 1, candidateMoveId: null})).toEqual({
+      slotMoveId: 'quick-attack',
+      candidateMoveId: null,
+    });
+    expect(getMoveSwapProgress(individual(), {individualUuid: uuid, slotIndex: null, candidateMoveId: 'iron-tail'})).toEqual({
+      slotMoveId: null,
+      candidateMoveId: 'iron-tail',
+    });
+    expect(getMoveSwapProgress(individual(), {individualUuid: uuid, slotIndex: 0, candidateMoveId: 'volt-tackle'})).toEqual({
+      slotMoveId: 'thunder-shock',
+      candidateMoveId: 'volt-tackle',
+    });
+  });
+
+  it('ignora seleção de outro UUID, slot fora do intervalo e candidato já equipado', () => {
+    expect(getMoveSwapProgress(individual(), {individualUuid: 'outro', slotIndex: 0, candidateMoveId: 'iron-tail'})).toEqual({
+      slotMoveId: null,
+      candidateMoveId: null,
+    });
+    expect(getMoveSwapProgress(individual(), {individualUuid: 'pikachu-uuid', slotIndex: 9, candidateMoveId: 'quick-attack'})).toEqual({
+      slotMoveId: null,
+      candidateMoveId: null,
     });
   });
 

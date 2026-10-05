@@ -197,25 +197,33 @@ async function chooseSelect(contents, labelText, optionText) {
 
 async function chooseComboBox(contents, labelText, optionText) {
   const listboxName = `${labelText} opções`;
-  await evaluate(
-    contents,
-    `(() => {
-    const label = [...document.querySelectorAll('.real-damage-planner label')]
-      .find(node => node.textContent.trim() === ${JSON.stringify(labelText)});
-    const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
-    if (!(input instanceof HTMLInputElement)) throw new Error('O campo de busca acessível não foi encontrado.');
-    input.focus();
-    input.select();
-  })()`,
-  );
-  await contents.insertText(optionText);
-  await waitFor(
-    contents,
-    `(() => [...document.querySelectorAll('[role="listbox"]')]
+  const listboxVisible = `(() => [...document.querySelectorAll('[role="listbox"]')]
     .some(listbox => listbox.getAttribute('aria-label') === ${JSON.stringify(listboxName)}
-      && listbox.getClientRects().length > 0))()`,
-    `opções de ${labelText}`,
-  );
+      && listbox.getClientRects().length > 0))()`;
+  let opened = false;
+  // A abertura da lista depende de foco real na janela; tenta de novo em vez de depender de uma única corrida.
+  for (let attempt = 0; attempt < 4 && !opened; attempt += 1) {
+    await evaluate(
+      contents,
+      `(() => {
+      const label = [...document.querySelectorAll('.real-damage-planner label')]
+        .find(node => node.textContent.trim() === ${JSON.stringify(labelText)});
+      const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+      if (!(input instanceof HTMLInputElement)) throw new Error('O campo de busca acessível não foi encontrado.');
+      input.focus();
+      input.select();
+    })()`,
+    );
+    contents.focus();
+    await contents.insertText(optionText);
+    try {
+      await waitFor(contents, listboxVisible, `opções de ${labelText}`);
+      opened = true;
+    } catch {
+      opened = false;
+    }
+  }
+  check(opened, `As opções de ${labelText} não abriram depois de digitar.`);
   await evaluate(
     contents,
     `(() => {
@@ -470,7 +478,21 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await openCaptureDetails(contents);
   check((await selectedUuid(contents)) === damageIndividual.uuid, 'A espécie repetida selecionou outro indivíduo pelo UUID.');
   await clickTab(contents, 'Golpes');
+  const plannerText = () =>
+    evaluate(
+      contents,
+      `(() => [...document.querySelectorAll('[data-testid="individual-details"] section')]
+      .find(section => section.querySelector('h4')?.textContent?.trim() === 'Planejar troca')?.innerText || '')()`,
+    );
+  check(
+    (await plannerText()).includes('1. Clique no golpe equipado que sairia.'),
+    'A troca não instruiu a escolher o golpe equipado primeiro.',
+  );
   await pickOption(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
+  check(
+    (await plannerText()).includes('2. Agora clique no golpe aprendido que entraria no lugar de Tackle.'),
+    'A troca não instruiu a escolher o golpe aprendido depois do slot.',
+  );
   await pickOption(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
   await waitFor(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))', 'prévia de troca antes/depois');
   check(

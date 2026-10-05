@@ -1,7 +1,7 @@
 import {useId} from 'react';
 import {ArrowRight} from '@phosphor-icons/react';
 import {moveDisplay} from '../../domain/dex';
-import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
+import {getMoveSwapProgress, getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
 import type {PlayerIndividual} from '../../platform/api';
 import {Button, StatusMessage, TypeBadge} from '../../ui';
 import {damageSwapBlocker} from './model';
@@ -29,6 +29,13 @@ export function MovePreparation({individual, plan, onOpenDamage}: MovePreparatio
   const view = getMoveSwapView(individual, plan);
   const preview = view.status === 'ready' ? view.preview : null;
   const damageBlocker = preview ? damageSwapBlocker(individual, preview.slotIndex, preview.afterMoveId) : null;
+  const {slotMoveId, candidateMoveId} = getMoveSwapProgress(individual, plan);
+  const nextStep =
+    slotMoveId !== null
+      ? `2. Agora clique no golpe aprendido que entraria no lugar de ${moveDisplay(slotMoveId).name}.`
+      : candidateMoveId !== null
+        ? `Agora clique no golpe equipado que sairia para dar lugar a ${moveDisplay(candidateMoveId).name}.`
+        : '1. Clique no golpe equipado que sairia.';
 
   return (
     <section className={styles.preparation} aria-labelledby={titleId}>
@@ -59,7 +66,9 @@ export function MovePreparation({individual, plan, onOpenDamage}: MovePreparatio
               <p className={styles.calculationNote}>O cálculo compara o slot {preview.slotIndex + 1} com o candidato.</p>
             </output>
           ) : (
-            <p className={styles.emptyPreview}>Escolha um golpe equipado e um aprendido nas listas acima.</p>
+            <p className={styles.emptyPreview} role="status" aria-live="polite">
+              {nextStep}
+            </p>
           )}
 
           {preview &&
