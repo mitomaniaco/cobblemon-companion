@@ -1,0 +1,63 @@
+.group {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--color-sunken);
+}
+
+.segment {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--color-muted);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-hover) var(--ease-out),
+    color var(--duration-hover) var(--ease-out);
+}
+
+.segment[data-selected] {
+  color: var(--color-text);
+  background: var(--color-raised);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.segment[data-focus-visible] {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.segment[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .segment:not([data-disabled]):not([data-selected]):hover {
+    color: var(--color-text);
+    background: var(--color-raised);
+  }
+}
+
+@media (forced-colors: active) {
+  .segment {
+    color: ButtonText;
+    background: ButtonFace;
+  }
+
+  .segment[data-selected] {
+    border-color: Highlight;
+    color: HighlightText;
+    background: Highlight;
+  }
+}

@@ -1,19 +1,22 @@
 import {lazy, Suspense, useCallback, useEffect, useRef, useState} from 'react';
-import {Archive, ArrowClockwise, Flask, Info, Lifebuoy, LockSimple, Sword, UsersThree} from '@phosphor-icons/react';
+import {Archive, ArrowClockwise, Compass, Flask, Info, Lifebuoy, LockSimple, Sword, UsersThree} from '@phosphor-icons/react';
 import {DemoWorkspace} from '../features/demo/DemoWorkspace';
 import {useDamagePlanner} from '../features/damage/controller';
 import {CollectionWorkspace} from '../features/collection/CollectionWorkspace';
 import {IndividualWorkspace} from '../features/individual/IndividualWorkspace';
 import type {IndividualWorkspaceTab} from '../features/individual/IndividualWorkspace';
-import {getCompanionApi, type PlayerSnapshot} from '../platform/api';
+import {getCompanionApi, type GuideTeamMember, type PlayerSnapshot} from '../platform/api';
+import {guideCalculationTarget} from '../features/guide/guide-model';
+import {useGuide} from '../features/guide/useGuide';
 import {useTrainerSession} from './useTrainerSession';
-import {Button, Dialog, PokeBallMark, StatusMessage} from '../ui';
+import {Button, Dialog, PokeBallMark, StatusMessage, Switch} from '../ui';
 import styles from './TrainerApp.module.css';
 
 const DamageWorkspace = lazy(() => import('../features/damage/DamageWorkspace').then((module) => ({default: module.DamageWorkspace})));
 const HelpWorkspace = lazy(() => import('./HelpWorkspace'));
+const GuideWorkspace = lazy(() => import('../features/guide/GuideWorkspace').then((module) => ({default: module.GuideWorkspace})));
 
-type Workspace = 'team' | 'pc' | 'help' | 'damage' | 'demo';
+type Workspace = 'guide' | 'team' | 'pc' | 'help' | 'damage' | 'demo';
 type CompactPanel = 'collection' | 'detail';
 type FocusRequest = CompactPanel | 'help';
 
@@ -36,6 +39,7 @@ type NavigationItem = {
 };
 
 const PRIMARY_NAVIGATION: NavigationItem[] = [
+  {id: 'guide', label: 'Guia', Icon: Compass},
   {id: 'team', label: 'Equipe', Icon: UsersThree},
   {id: 'pc', label: 'PC', Icon: Archive},
   {id: 'damage', label: 'Dano', Icon: Sword},
@@ -59,6 +63,7 @@ function formatCaptureChip(value: string) {
 }
 
 function workspaceTitle(workspace: Workspace) {
+  if (workspace === 'guide') return 'Guia';
   if (workspace === 'team') return 'Equipe';
   if (workspace === 'pc') return 'PC';
   if (workspace === 'damage') return 'Planejador de dano';
@@ -218,7 +223,7 @@ function NavigationGroup({items, workspace, onNavigate}: {items: NavigationItem[
 export function TrainerApp() {
   const api = useCallback(() => getCompanionApi(), []);
   const session = useTrainerSession(api);
-  const [workspace, setWorkspace] = useState<Workspace>('team');
+  const [workspace, setWorkspace] = useState<Workspace>('guide');
   const [damageReturnWorkspace, setDamageReturnWorkspace] = useState<Exclude<Workspace, 'damage'>>('team');
   const [detailTab, setDetailTab] = useState<IndividualWorkspaceTab>('summary');
   const [compactPanel, setCompactPanel] = useState<CompactPanel>('collection');
@@ -227,6 +232,9 @@ export function TrainerApp() {
   const [isWideLayout, setIsWideLayout] = useState(() => window.matchMedia('(min-width: 1100px)').matches);
   const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null);
   const [isCaptureDialogOpen, setIsCaptureDialogOpen] = useState(false);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [pendingCalculation, setPendingCalculation] = useState<{uuid: string; candidateMoveId?: string; slotIndex?: number} | null>(null);
+  const pushedSnapshotRef = useRef<(snapshot: PlayerSnapshot) => void>(() => undefined);
   const previousSelectionRef = useRef<string | null>(session.selectedUuid);
 
   useEffect(() => {
@@ -279,6 +287,31 @@ export function TrainerApp() {
 
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
+  const guide = useGuide(api, session.snapshot, workspace === 'guide');
+
+  useEffect(() => {
+    let unsubscribe = () => {};
+    try {
+      unsubscribe = api().onSnapshotChanged((snapshot) => pushedSnapshotRef.current(snapshot));
+    } catch {
+      // Ponte sem monitoramento do save: a leitura manual continua disponível.
+    }
+    return unsubscribe;
+  }, [api]);
+
+  useEffect(() => {
+    void Promise.resolve()
+      .then(() => api().setAutoRefresh(true))
+      .catch(() => undefined);
+  }, [api]);
+
+  // O Dano só recebe golpe/slot depois que o indivíduo do guia virou o selecionado (a identidade do controlador muda junto).
+  // biome-ignore lint/correctness/useExhaustiveDependencies: navigateToDamage lê o estado atual; o gatilho é a seleção concluir
+  useEffect(() => {
+    if (!pendingCalculation || session.selectedUuid !== pendingCalculation.uuid) return;
+    setPendingCalculation(null);
+    navigateToDamage(pendingCalculation.candidateMoveId, pendingCalculation.slotIndex);
+  }, [pendingCalculation, session.selectedUuid]);
   const isCollectionWorkspace = workspace === 'team' || workspace === 'pc';
   const collectionView: CollectionView = workspace === 'pc' ? 'pc' : 'team';
   const title = workspaceTitle(workspace);
@@ -290,6 +323,28 @@ export function TrainerApp() {
     setCompactPanel('collection');
     setDetailTab('summary');
     await session.refresh();
+  }
+
+  pushedSnapshotRef.current = (snapshot: PlayerSnapshot) => {
+    damageController.invalidateCalculation();
+    setSnapshotRevision((revision) => revision + 1);
+    session.applySnapshot(snapshot);
+  };
+
+  function changeAutoRefresh(enabled: boolean) {
+    setAutoRefresh(enabled);
+    void Promise.resolve()
+      .then(() => api().setAutoRefresh(enabled))
+      .then((response) => setAutoRefresh(response.enabled))
+      .catch(() => setAutoRefresh(!enabled));
+  }
+
+  function openGuideCalculation(uuid: string, move: GuideTeamMember['moves'][number]) {
+    const individual = session.snapshot?.individuals.find((candidate) => candidate.uuid === uuid);
+    if (!individual) return;
+    setDetailTab('summary');
+    session.selectIndividual(uuid);
+    setPendingCalculation({uuid, ...guideCalculationTarget(individual, move)});
   }
 
   function selectIndividual(uuid: string) {
@@ -321,7 +376,15 @@ export function TrainerApp() {
 
   function returnFromDamage() {
     setWorkspace(damageReturnWorkspace);
-    setFocusRequest(damageReturnWorkspace === 'help' ? 'help' : compactPanel === 'detail' ? 'detail' : 'collection');
+    setFocusRequest(
+      damageReturnWorkspace === 'help'
+        ? 'help'
+        : damageReturnWorkspace === 'guide'
+          ? null
+          : compactPanel === 'detail'
+            ? 'detail'
+            : 'collection',
+    );
   }
 
   const noSnapshot = session.snapshot === null;
@@ -354,6 +417,9 @@ export function TrainerApp() {
             <>
               <CaptureStatus snapshot={session.snapshot} />
               <div className={styles.headerActions}>
+                <Switch isSelected={autoRefresh} onChange={changeAutoRefresh}>
+                  Atualizar automaticamente
+                </Switch>
                 {session.snapshot && (
                   <Button
                     className={styles.captureButton}
@@ -426,10 +492,22 @@ export function TrainerApp() {
                       ? 'Voltar à equipe'
                       : damageReturnWorkspace === 'pc'
                         ? 'Voltar ao PC'
-                        : 'Voltar à ajuda e diagnóstico'
+                        : damageReturnWorkspace === 'guide'
+                          ? 'Voltar ao guia'
+                          : 'Voltar à ajuda e diagnóstico'
                   }
                   onBack={returnFromDamage}
                   onRefresh={() => void refreshSnapshot()}
+                />
+              </Suspense>
+            ) : workspace === 'guide' ? (
+              <Suspense fallback={<RouteFallback blocks={3} />}>
+                <GuideWorkspace
+                  snapshot={session.snapshot}
+                  guide={guide}
+                  loading={session.phase === 'loading'}
+                  onRefresh={() => void refreshSnapshot()}
+                  onOpenCalculation={openGuideCalculation}
                 />
               </Suspense>
             ) : session.snapshot ? (

@@ -10,6 +10,8 @@ export type TrainerSessionController = {
   selectedUuid: string | null;
   moveSwapPlan: MoveSwapPlan;
   refresh(): Promise<void>;
+  /** Aplica um snapshot recebido do monitoramento do save (mesmo caminho de estado da leitura manual). */
+  applySnapshot(snapshot: PlayerSnapshot): void;
   selectIndividual(uuid: string): void;
   updateMoveSwap(patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>): void;
 };
@@ -52,9 +54,14 @@ export function useTrainerSession(api: () => CompanionApi): TrainerSessionContro
     dispatch({type: 'move-swap-updated', patch});
   }, []);
 
+  const applySnapshot = useCallback((snapshot: PlayerSnapshot): void => {
+    dispatch({type: 'refresh-succeeded', snapshot});
+  }, []);
+
   return {
     ...state,
     refresh,
+    applySnapshot,
     selectIndividual,
     updateMoveSwap,
   };
