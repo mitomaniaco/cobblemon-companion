@@ -257,6 +257,69 @@ export type EvolutionPlanResult = {
   limits: string[];
 };
 
+export type CapturePlanRequest = {
+  sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
+  /** Mesmo objetivo do guia: define os adversários cujas lacunas serão cobertas. */
+  goal: GuideGoal;
+  /** Uuids do time de 6 do guia; indivíduos fora dele podem aparecer como cobertura já possuída. */
+  teamUuids: string[];
+  /** `GuideResult.opponents[].id` dos adversários que nenhum membro do time vence. */
+  gapOpponentIds: string[];
+  /** Identificador opcional para cancelar com `cancel(jobId)`. */
+  jobId?: string;
+};
+
+/** Onde, quando e em que nível a espécie nasce, em texto legível (biomas resolvidos, sem tags cruas). */
+export type CaptureSpawn = {
+  biomes: string[];
+  /** Horário, clima, luz, estrutura, altura e demais condições, já em texto. */
+  conditions: string[];
+  levelMin: number;
+  levelMax: number;
+  bucket: 'common' | 'uncommon' | 'rare' | 'ultra-rare';
+  position: string;
+};
+
+export type CaptureRequirement = {
+  kind: 'nível' | 'pika-star';
+  text: string;
+  /** Só o nível da party é conhecido; o advancement Pika Star fica no save e não é lido: sempre `não verificado`. */
+  status: 'cumprido' | 'pendente' | 'não verificado';
+};
+
+export type CaptureCandidate = {
+  speciesId: string;
+  /** Por que ajuda contra o adversário da lacuna (tipo, dano, Speed), em texto. */
+  reason: string;
+  /** Só spawns naturais conhecidos; espécie sem spawn conhecido nunca vira candidata nem ganha local inventado. */
+  spawns: CaptureSpawn[];
+  /** Regra do modpack pelo nível do primeiro Pokémon da party: `depende-do-nível` quando só parte da faixa de nível está liberada. */
+  catchable: 'liberada' | 'depende-do-nível' | 'bloqueada' | 'não verificado';
+  catchableReason: string;
+  requirements: CaptureRequirement[];
+};
+
+/** Indivíduo que o jogador já tem (party ou PC, fora do time) e que cobre a lacuna: aparece antes de qualquer captura. */
+export type CaptureOwned = {uuid: string; speciesId: string; level: number; container: 'party' | 'pc'; reason: string};
+
+export type CaptureGap = {
+  opponentId: string;
+  speciesId: string;
+  level: number;
+  owned: CaptureOwned[];
+  candidates: CaptureCandidate[];
+  /** Explica quando não há candidato (por exemplo, nenhuma espécie com spawn natural cobre a lacuna). */
+  note: string | null;
+};
+
+export type CapturePlanResult = {
+  /** Nível do primeiro Pokémon da party; nulo se a party está vazia. O app não vê quem está desmaiado. */
+  firstPartyLevel: number | null;
+  gaps: CaptureGap[];
+  assumptions: string[];
+  limits: string[];
+};
+
 /** Próximo objetivo sugerido. `nível`: pelo maior nível da party, sem ler o progresso de treinadores do save. */
 export type GuideNextGoal = {trainerId: string | null; basis: 'progresso' | 'nível'; reason: string};
 
@@ -279,6 +342,8 @@ export type CompanionApi = {
   buildBattlePlan(request: BattlePlanRequest): Promise<BattlePlanResult>;
   /** Evoluções possíveis de cada membro do time, com requisitos, alcance no cap e golpes ganhos ou perdidos. Cancelável por `cancel(request.jobId)`. */
   buildEvolutionPlan(request: EvolutionPlanRequest): Promise<EvolutionPlanResult>;
+  /** Capturas recomendadas para as lacunas do time: antes, o que já existe no PC. Cancelável por `cancel(request.jobId)`. */
+  buildCapturePlan(request: CapturePlanRequest): Promise<CapturePlanResult>;
 };
 
 declare global {
