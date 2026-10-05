@@ -1,5 +1,7 @@
-import catalogJson from '../../electron/lib/combat-compatibility.json';
 import {moveDisplay, titleCaseId} from './dex';
+
+// Catálogo compatível em chunk próprio, fora do bundle principal.
+const {default: catalogJson} = await import('../../electron/lib/combat-compatibility.json');
 
 type LabelCatalog = {
   items: Record<string, {name: string}>;

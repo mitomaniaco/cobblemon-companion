@@ -147,7 +147,7 @@ Antes de executar qualquer outro arquivo `electron-*-harness.cjs`, confira se o 
 - `npm run check` passa com 565 testes e build Vite na `main` (a7eac29, 05/10/2026). Quando este guia foi escrito, eram 46 testes.
 - Nesta continuação, `node_modules/electron/dist/electron.exe test/electron-trainer-ui-harness.cjs` passou todos os fluxos sintéticos do `TrainerApp`: prévia de troca, demo isolada, cálculo de Gardevoir normal/Synchronize, invalidação por refresh e layouts 1440/1200/800 CSS px e 200% de zoom.
 - O mesmo harness agora verifica 1186×852 CSS px: depois de marcar a primeira confirmação do dano, o formulário continua visível e o cálculo completa. Capturas sintéticas locais foram inspecionadas em `.runtime/diagnostics/trainer-ui-DCFyK0/`, incluindo `damage-default-viewport.png` e `gardevoir-damage-result.png`. O diretório é ignorado e não deve ser tratado como artefato portátil.
-- Nenhum `config.json` nem save real foi lido nesta continuação. Não há aprovação Medium. O bundle principal do renderer tem ~844 KB (aviso do Vite acima de 500 KB, sem falhar o build; Issue #76).
+- Nenhum `config.json` nem save real foi lido nesta continuação. Não há aprovação Medium. O bundle principal do renderer tem ~601 KB (Issue #76; era ~913 KB). O dex de exibição (`virtual:display-dex`, só espécies do Cobblemon, sem itens) e o catálogo `combat-compatibility.json` são carregados por `await import()` em `src/domain/dex.ts` e `catalog-labels.ts`, em chunks próprios (~129 KB e ~158 KB); por isso `build.target` é `es2022`. O Vite ainda avisa acima de 500 KB, sem falhar o build.
 
 ### Bloqueios atuais solicitados pelo usuário
 

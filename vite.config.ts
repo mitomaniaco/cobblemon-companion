@@ -8,6 +8,8 @@ export default defineConfig({
     outDir: 'dist/renderer',
     emptyOutDir: true,
     sourcemap: false,
+    // Top-level await em src/domain/dex.ts (dex em chunk separado); o Electron embutido suporta ES2022.
+    target: 'es2022',
   },
   test: {
     exclude: ['node_modules/**', 'dist/**', '.runtime/**', '.stryker-tmp*/**'],
