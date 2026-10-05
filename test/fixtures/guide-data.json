@@ -5,64 +5,193 @@
       "name": "Sintético Fogo",
       "format": "singles",
       "team": [
-        {"speciesId": "cobblemon:charizard", "level": 40, "moves": ["cobblemon:flamethrower", "cobblemon:airslash", "cobblemon:roost"], "ability": "blaze", "nature": "modest", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []}
+        {
+          "speciesId": "cobblemon:charizard",
+          "level": 40,
+          "moves": [
+            "cobblemon:flamethrower",
+            "cobblemon:airslash",
+            "cobblemon:roost"
+          ],
+          "ability": "blaze",
+          "nature": "modest",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        }
       ],
-      "source": {"jar": "synthetic", "sha256": "0", "file": "synthetic"}
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      }
     },
     {
       "id": "synthetic:flyer",
       "name": "Sintético Voador",
       "format": "singles",
       "team": [
-        {"speciesId": "cobblemon:pidgeot", "level": 40, "moves": ["cobblemon:airslash"], "ability": "keeneye", "nature": "hardy", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []}
+        {
+          "speciesId": "cobblemon:pidgeot",
+          "level": 40,
+          "moves": [
+            "cobblemon:airslash"
+          ],
+          "ability": "keeneye",
+          "nature": "hardy",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        }
       ],
-      "source": {"jar": "synthetic", "sha256": "0", "file": "synthetic"}
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      }
     },
     {
       "id": "synthetic:mixed",
       "name": "Sintético Misto",
       "format": "singles",
       "team": [
-        {"speciesId": "cobblemon:charizard", "level": 40, "moves": ["cobblemon:flamethrower"], "ability": "blaze", "nature": "modest", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []},
-        {"speciesId": "cobblemon:golem", "level": 40, "moves": ["cobblemon:earthquake"], "ability": "sturdy", "nature": "adamant", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []},
-        {"speciesId": "mod:especie_desconhecida", "level": 40, "moves": ["cobblemon:tackle"], "ability": "blaze", "nature": "hardy", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []}
+        {
+          "speciesId": "cobblemon:charizard",
+          "level": 40,
+          "moves": [
+            "cobblemon:flamethrower"
+          ],
+          "ability": "blaze",
+          "nature": "modest",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "cobblemon:golem",
+          "level": 40,
+          "moves": [
+            "cobblemon:earthquake"
+          ],
+          "ability": "sturdy",
+          "nature": "adamant",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "mod:especie_desconhecida",
+          "level": 40,
+          "moves": [
+            "cobblemon:tackle"
+          ],
+          "ability": "blaze",
+          "nature": "hardy",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        }
       ],
-      "source": {"jar": "synthetic", "sha256": "0", "file": "synthetic"}
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      }
     },
     {
       "id": "synthetic:duo",
       "name": "Sintético Dupla",
       "format": "doubles",
       "team": [
-        {"speciesId": "cobblemon:charizard", "level": 40, "moves": ["cobblemon:flamethrower"], "ability": "blaze", "nature": "modest", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []}
+        {
+          "speciesId": "cobblemon:charizard",
+          "level": 40,
+          "moves": [
+            "cobblemon:flamethrower"
+          ],
+          "ability": "blaze",
+          "nature": "modest",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        }
       ],
-      "source": {"jar": "synthetic", "sha256": "0", "file": "synthetic"}
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      }
     },
     {
       "id": "synthetic:far",
       "name": "Sintético Longe",
       "format": "singles",
       "team": [
-        {"speciesId": "cobblemon:dragonite", "level": 90, "moves": ["cobblemon:earthquake"], "ability": "innerfocus", "nature": "adamant", "heldItem": null, "ivs": {}, "evs": {}, "aspects": []}
+        {
+          "speciesId": "cobblemon:dragonite",
+          "level": 90,
+          "moves": [
+            "cobblemon:earthquake"
+          ],
+          "ability": "innerfocus",
+          "nature": "adamant",
+          "heldItem": null,
+          "ivs": {},
+          "evs": {},
+          "aspects": []
+        }
       ],
-      "source": {"jar": "synthetic", "sha256": "0", "file": "synthetic"}
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      }
     }
   ],
   "series": {
     "radicalred": {
-      "trainerIds": ["synthetic:fire", "synthetic:flyer", "synthetic:mixed", "synthetic:duo"],
-      "order": ["synthetic:fire", "synthetic:duo", "synthetic:flyer", "synthetic:mixed"]
+      "trainerIds": [
+        "synthetic:fire",
+        "synthetic:flyer",
+        "synthetic:mixed",
+        "synthetic:duo"
+      ],
+      "order": [
+        "synthetic:fire",
+        "synthetic:duo",
+        "synthetic:flyer",
+        "synthetic:mixed"
+      ]
     }
   },
   "learnsets": {
     "blastoise": {
       "levelUp": [
-        {"level": 1, "moveId": "cobblemon:tackle"},
-        {"level": 45, "moveId": "cobblemon:surf"}
+        {
+          "level": 1,
+          "moveId": "cobblemon:tackle"
+        },
+        {
+          "level": 45,
+          "moveId": "cobblemon:surf"
+        }
       ],
-      "tm": ["cobblemon:hydropump"],
-      "tutor": ["cobblemon:scald"],
+      "tm": [
+        "cobblemon:hydropump"
+      ],
+      "tutor": [
+        "cobblemon:scald"
+      ],
       "egg": []
     }
+  },
+  "evolutions": {
+    "blastoise": []
   }
 }

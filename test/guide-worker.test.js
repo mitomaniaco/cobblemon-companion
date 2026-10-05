@@ -71,6 +71,15 @@ describe('guide-worker', () => {
     });
   });
 
+  it('task evolution-plan devolve o plano de evoluções do time', async () => {
+    const request = {sources: [], team: [{uuid: 'u-1', usefulMoveIds: []}], levelCap: null};
+    deliver({data: {type: 'run', task: 'evolution-plan', jobId: 'job-evo', snapshot, request}});
+    await waitFor(() => sent.some((message) => message.jobId === 'job-evo'));
+    const message = sent.find((candidate) => candidate.jobId === 'job-evo');
+    expect(message.type).toBe('result');
+    expect(message.result.members[0]).toMatchObject({uuid: 'u-1', status: 'sem-evolução'});
+  });
+
   it('cancel durante a montagem responde cancelled e não devolve resultado', async () => {
     deliver({data: {type: 'run', jobId: 'job-cancel', snapshot, goal: {kind: 'trainer', trainerId: 'synthetic:fire'}}});
     deliver({data: {type: 'cancel', jobId: 'job-cancel'}});
