@@ -233,6 +233,11 @@ describe('versioned real damage adapter', () => {
     expect(() => calculateRealDamage(makeSnapshot(unsupportedMove), makeRequest({candidateMoveId: 'cobblemon:vine_whip'}))).toThrow(
       /subconjunto compatível versionado/,
     );
+    const prototypeMove = makeIndividual();
+    prototypeMove.learnedMoves[0].id = 'constructor';
+    expect(() => calculateRealDamage(makeSnapshot(prototypeMove), makeRequest({candidateMoveId: 'constructor'}))).toThrow(
+      /subconjunto compatível versionado/,
+    );
     const incompleteAssumptions = makeRequest();
     for (const key of Object.keys(incompleteAssumptions.assumptions)) {
       incompleteAssumptions.assumptions[key] = false;
@@ -967,6 +972,10 @@ describe('perfil do indivíduo que ataca', () => {
     expect(() => run((a) => (a.observed.ability = ''))).toThrow('Cálculo real: actor.observed.ability');
     expect(() => run((a) => (a.observed.ability = 'cobblemon:blaze'))).toThrow('Cálculo real: actor.observed.ability não está mapeada');
     expect(() => run((a) => (a.observed.heldItem = 'cobblemon:item_inexistente'))).toThrow(
+      'Cálculo real: actor.observed.heldItem está fora do subconjunto',
+    );
+    // Ids que coincidem com propriedades de Object.prototype não podem virar item nem golpe do catálogo.
+    expect(() => run((a) => (a.observed.heldItem = 'cobblemon:constructor'))).toThrow(
       'Cálculo real: actor.observed.heldItem está fora do subconjunto',
     );
   });
