@@ -351,7 +351,16 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   check(team.length > 0 && pc.length > 0, 'A fixture precisa conter indivíduos na equipe e no PC.');
 
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="refresh-snapshot"]\'))', 'ação de atualização');
+  await waitFor(
+    contents,
+    `(() => {
+    const active = [...document.querySelectorAll('nav[aria-label="Vistas"] button')].find(button => button.getAttribute('aria-current') === 'page');
+    return active?.textContent.trim() === 'Guia' && document.body.innerText.includes('Atualize do save para montar o time');
+  })()`,
+    'tela Guia inicial com o convite para atualizar do save',
+  );
   await clickButton(contents, 'Atualizar do save');
+  await navigate(contents, 'Equipe');
   await waitFor(
     contents,
     `(() => {
@@ -776,6 +785,9 @@ async function exerciseRefreshInvalidation(window, snapshot) {
   await clickButton(contents, 'Voltar à equipe');
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="collection"]\'))', 'retorno da rota de dano');
   await clickTab(contents, 'Golpes');
+  // O snapshot simulado e a recarga anteriores invalidaram o plano de troca: monta a prévia de novo.
+  await pickOption(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
+  await pickOption(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
   check(
     await evaluate(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))'),
     'O cenário de refresh não começou com uma prévia de troca ativa.',
@@ -1241,6 +1253,14 @@ async function run() {
   await exerciseCollectionAndDamage(window, snapshot);
   await exerciseDetailContainment(window, snapshot);
   await exerciseSnapshotChanged(contents);
+  // O app também assina o aviso: o snapshot simulado (hash 'c…') passou a ser o da sessão. Volta à captura da fixture.
+  await clickButton(contents, 'Atualizar do save');
+  await delay(150);
+  await waitFor(
+    contents,
+    "document.querySelector('[data-testid=\"refresh-snapshot\"]')?.textContent.trim() === 'Atualizar do save'",
+    'recarga da fixture depois do snapshot simulado',
+  );
   await exerciseGuideContract(contents);
   await exerciseShellScrollLock(window, snapshot);
   await exerciseDemo(contents);
