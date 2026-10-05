@@ -1,4 +1,5 @@
 import {createHash} from 'node:crypto';
+import {readFileSync} from 'node:fs';
 import {lstat, mkdir, mkdtemp, rename, rm, rmdir, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -307,6 +308,11 @@ function listItems() {
   return items;
 }
 
+/**
+ * O CSV do PokéAPI usa identifiers com hífen (`mr-mime`, `tapu-koko`); o Cobblemon usa slugs sem hífen (`mrmime`).
+ * `data/guide/artwork-sources.json` liga o slug do Cobblemon ao número da dex; cada slug sem entrada própria
+ * ganha um alias para a arte do mesmo número (nome-independente), então a UI acha a imagem pelo id do Cobblemon.
+ */
 function createSpeciesManifest(results) {
   const manifest = {};
   for (const result of results) {
@@ -314,6 +320,12 @@ function createSpeciesManifest(results) {
       dexNumber: result.dexNumber,
       artworkPath: result.artworkPath,
     };
+  }
+  const byDex = new Map(results.map((result) => [result.dexNumber, manifest[result.speciesId]]));
+  const sources = JSON.parse(readFileSync(path.join(PROJECT_ROOT, 'data', 'guide', 'artwork-sources.json'), 'utf8'));
+  for (const [slug, source] of Object.entries(sources)) {
+    const id = `cobblemon:${slug}`;
+    if (!Object.hasOwn(manifest, id) && byDex.has(source.nationalDex)) manifest[id] = {...byDex.get(source.nationalDex)};
   }
   return manifest;
 }

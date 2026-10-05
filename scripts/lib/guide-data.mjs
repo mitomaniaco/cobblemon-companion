@@ -264,3 +264,23 @@ export function deriveCampaign({series, trainers}) {
   }
   return result;
 }
+
+/**
+ * Mapeamento espécie -> fonte de arte. O app só consegue arte 2D do PokeAPI/HOME por número da dex nacional: os JARs do
+ * modpack trazem apenas texturas de modelo 3D (atlas UV em assets/cobblemon/textures/pokemon/<dex>_<slug>/), que não servem como retrato.
+ * A chave é o slug do Cobblemon (nome-independente); `forms` lista as formas declaradas (aspectos) que NÃO têm arte própria.
+ */
+export function deriveArtworkSources(species, slugs) {
+  const result = {};
+  for (const slug of slugs) {
+    const json = species[slug];
+    result[slug] = {
+      nationalDex: Number.isInteger(json.nationalPokedexNumber) ? json.nationalPokedexNumber : null,
+      source: 'pokeapi-home-dex',
+      forms: (json.forms ?? [])
+        .filter((form) => (form.aspects ?? []).length > 0)
+        .map((form) => ({name: form.name, aspects: [...form.aspects].sort()})),
+    };
+  }
+  return result;
+}
