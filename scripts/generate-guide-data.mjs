@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {deriveEvolutions, deriveLearnset, deriveTrainer, mergeSpecies} from './lib/guide-data.mjs';
+import {deriveEvolutions, deriveLearnset, deriveSeries, deriveTrainer, mergeSpecies} from './lib/guide-data.mjs';
 import {classifyProviderEntries, collectDirectoryProviders, collectJarProvider, parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
 import {speciesSlug} from './lib/compat-catalog.mjs';
 
@@ -14,6 +14,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
 const OUTPUT_DIRECTORY = path.join(ROOT, 'data/guide');
 const TRAINER_ENTRY = /^data\/[^/]+\/trainers\/[^/]+\.json$/;
+const RCT_ENTRY = /^data\/[^/]+\/(?:trainers\/[^/]+|series\/[^/]+|mobs\/trainers\/[^/]+\/[^/]+)\.json$/;
 
 function fail(message) {
   console.error(`ERRO: ${message}`);
@@ -71,15 +72,29 @@ function main() {
   }
 
   const trainers = [];
+  const series = {};
   for (const jar of jars.filter((name) => /rct/i.test(name)).sort()) {
     const file = path.join(modsDirectory, jar);
-    const entries = unzipSelected(file, (name) => TRAINER_ENTRY.test(name));
+    const entries = unzipSelected(file, (name) => RCT_ENTRY.test(name));
+    const seriesParts = {namespace: null, seriesMeta: {}, mobs: {}, groups: {}, trainerIds: []};
     const jarSha = sha256(fs.readFileSync(file));
     for (const [name, bytes] of Object.entries(entries)) {
       const namespace = name.split('/')[1];
+      const parts = name.split('/');
+      if (!TRAINER_ENTRY.test(name)) {
+        seriesParts.namespace = namespace;
+        const json = parseJsonBytes(bytes, `${jar}:${name}`);
+        const base = path.basename(name, '.json');
+        if (parts[2] === 'series') seriesParts.seriesMeta[base] = json;
+        else if (parts[4] === 'groups') seriesParts.groups[base] = json;
+        else if (parts[4] !== undefined && parts.length === 6) seriesParts.mobs[base] = json;
+        continue;
+      }
+      seriesParts.trainerIds.push(path.basename(name, '.json'));
       const id = `${namespace}:${path.basename(name, '.json')}`;
       trainers.push(deriveTrainer(parseJsonBytes(bytes, `${jar}:${name}`), {id, jar, sha256: jarSha, file: name}));
     }
+    if (seriesParts.namespace && Object.keys(seriesParts.seriesMeta).length > 0) Object.assign(series, deriveSeries(seriesParts));
   }
   if (trainers.length === 0) fail('nenhum treinador do RCT encontrado (JARs com "rct" no nome e data/<ns>/trainers/*.json)');
   trainers.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
@@ -88,6 +103,7 @@ function main() {
     ['learnsets.json', jsonText(learnsets)],
     ['evolutions.json', jsonText(evolutions)],
     ['trainers.json', jsonText(trainers)],
+    ['series.json', jsonText(series)],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 
   if (options.write) {

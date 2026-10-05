@@ -66,7 +66,7 @@ export function deriveTrainer(json, {id, jar, sha256, file}) {
   return {
     id,
     name: json.name,
-    format: FORMATS[json.battleFormat] ?? 'unknown',
+    format: json.battleFormat === undefined ? 'singles' : (FORMATS[json.battleFormat] ?? 'unknown'), // TrainerTeam.battleFormat inicia em GEN_9_SINGLES
     team: json.team.map((pokemon) => {
       const item = Array.isArray(pokemon.heldItem) ? pokemon.heldItem[0] : pokemon.heldItem;
       return {
@@ -83,4 +83,64 @@ export function deriveTrainer(json, {id, jar, sha256, file}) {
     }),
     source: {jar, sha256, file},
   };
+}
+
+/**
+ * Séries do RCT. Cada série tem metadados (data/<ns>/series/<id>.json) e membros: treinadores com arquivo em
+ * mobs/trainers/<dir>/<id>.json cujo `series` a lista, mais (inferido) treinadores sem arquivo próprio cujo id começa com
+ * `<grupo>_` de um mobs/trainers/groups/<grupo>.json que a lista (vence o prefixo mais longo).
+ * `requires` é uma lista de grupos "qualquer um de" (requiredDefeats): o treinador libera quando todos os grupos têm uma vitória.
+ */
+export function deriveSeries({namespace, seriesMeta, mobs, groups, trainerIds}) {
+  const own = new Set(Object.keys(mobs));
+  const groupNames = Object.keys(groups).sort((a, b) => b.length - a.length || (a < b ? -1 : 1));
+  const nodeFor = (json, via) => ({
+    type: json.type ?? null,
+    optional: json.optional === true,
+    requires: (json.requiredDefeats ?? []).map((group) => group.map((id) => `${namespace}:${id}`)),
+    via,
+  });
+  const result = {};
+  for (const seriesId of Object.keys(seriesMeta).sort()) {
+    const meta = seriesMeta[seriesId];
+    const graph = {};
+    for (const [id, json] of Object.entries(mobs)) if (json.series?.includes(seriesId)) graph[`${namespace}:${id}`] = nodeFor(json, 'mob');
+    for (const id of trainerIds) {
+      if (own.has(id)) continue;
+      const group = groupNames.find((name) => id.startsWith(`${name}_`));
+      if (group && groups[group].series?.includes(seriesId)) graph[`${namespace}:${id}`] = nodeFor(groups[group], `group:${group}`);
+    }
+    result[seriesId] = {
+      difficulty: meta.difficulty ?? null,
+      requiredSeries: meta.requiredSeries ?? [],
+      initialLevelCap: meta.initialLevelCap ?? null,
+      relativeLevelCap: meta.relativeLevelCap ?? null,
+      trainerIds: Object.keys(graph).sort(),
+      order: topologicalOrder(graph, seriesId),
+      graph: Object.fromEntries(Object.entries(graph).sort(([a], [b]) => (a < b ? -1 : 1))),
+    };
+  }
+  return result;
+}
+
+function topologicalOrder(graph, seriesId) {
+  const placed = new Set();
+  const order = [];
+  const pending = new Set(Object.keys(graph));
+  while (pending.size > 0) {
+    const ready = [...pending]
+      .filter((id) =>
+        graph[id].requires.every((group) =>
+          group.some((dependency) => placed.has(dependency) || (!pending.has(dependency) && !(dependency in graph))),
+        ),
+      )
+      .sort();
+    if (ready.length === 0) throw new Error(`dependência cíclica na série ${seriesId}`);
+    for (const id of ready) {
+      placed.add(id);
+      pending.delete(id);
+      order.push(id);
+    }
+  }
+  return order;
 }

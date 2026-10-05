@@ -16,6 +16,9 @@ const trainers: {
   source: {jar: string; sha256: string; file: string};
 }[] = read('trainers.json');
 
+type SeriesNode = {type: string | null; optional: boolean; requires: string[][]; via: string};
+const series: Record<string, {trainerIds: string[]; order: string[]; graph: Record<string, SeriesNode>}> = read('series.json');
+
 const namespaced = /^[a-z0-9_.-]+:[a-z0-9_/.-]+$/;
 
 describe('dados do guia', () => {
@@ -61,5 +64,32 @@ describe('dados do guia', () => {
     }
     const brock = trainers.find((trainer) => trainer.name === 'Leader Brock');
     expect(brock?.team.length).toBeGreaterThan(0);
+  });
+
+  it('treinadores sem battleFormat na fonte são singles', () => {
+    expect(trainers.find((trainer) => trainer.id === 'rctmod:leader_brock_019e')?.format).toBe('singles');
+    expect(trainers.some((trainer) => trainer.format === 'doubles')).toBe(true);
+  });
+
+  it('séries listam treinadores existentes em ordem consistente com os pré-requisitos', () => {
+    const known = new Set(trainers.map((trainer) => trainer.id));
+    expect(Object.keys(series)).toContain('radicalred');
+    for (const [seriesId, entry] of Object.entries(series)) {
+      expect([...entry.order].sort(), seriesId).toEqual([...entry.trainerIds].sort());
+      expect(Object.keys(entry.graph).sort(), seriesId).toEqual([...entry.trainerIds].sort());
+      const position = new Map(entry.order.map((id, index) => [id, index]));
+      for (const id of entry.trainerIds) {
+        expect(known.has(id), `${seriesId} ${id}`).toBe(true);
+        for (const group of entry.graph[id].requires) {
+          expect(group.length, id).toBeGreaterThan(0);
+          const inSeries = group.filter((dependency) => position.has(dependency));
+          if (inSeries.length > 0)
+            expect(Math.min(...inSeries.map((dependency) => position.get(dependency) as number)), id).toBeLessThan(
+              position.get(id) as number,
+            );
+        }
+      }
+    }
+    expect(series.radicalred.trainerIds).toContain('rctmod:leader_brock_019e');
   });
 });
