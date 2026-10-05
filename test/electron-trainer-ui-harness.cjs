@@ -194,6 +194,24 @@ async function chooseSelect(contents, labelText, optionText) {
   );
 }
 
+async function pickOption(contents, listboxLabel, optionLabel) {
+  const findOption = `(() => {
+    const listbox = [...document.querySelectorAll('[role="listbox"]')]
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(listboxLabel)});
+    return [...(listbox?.querySelectorAll('[role="option"]') || [])]
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(optionLabel)});
+  })()`;
+  await evaluate(
+    contents,
+    `(() => {
+    const option = ${findOption};
+    if (!option) throw new Error('A opção do seletor de golpes não foi encontrada.');
+    option.click();
+  })()`,
+  );
+  await waitFor(contents, `${findOption}?.getAttribute('aria-selected') === 'true'`, `seleção de ${optionLabel}`);
+}
+
 async function setLabeledInput(contents, labelText, value, groupLegend = null) {
   await evaluate(
     contents,
@@ -403,9 +421,13 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await openCaptureDetails(contents);
   check((await selectedUuid(contents)) === damageIndividual.uuid, 'A espécie repetida selecionou outro indivíduo pelo UUID.');
   await clickTab(contents, 'Golpes');
-  await chooseSelect(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
-  await chooseSelect(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
+  await pickOption(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
+  await pickOption(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
   await waitFor(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))', 'prévia de troca antes/depois');
+  check(
+    await evaluate(contents, 'document.querySelectorAll(\'[data-testid="individual-details"] button[aria-haspopup]\').length === 0'),
+    'A aba Golpes ainda expõe seletores em lista suspensa.',
+  );
   const preview = await evaluate(
     contents,
     `(() => {
@@ -795,8 +817,8 @@ async function exerciseResponsiveLayout(window, snapshot) {
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="collection"]\'))', 'coleção para revisão responsiva');
   await selectIndividual(contents, damageIndividual.uuid);
   await clickTab(contents, 'Golpes');
-  await chooseSelect(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
-  await chooseSelect(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
+  await pickOption(contents, 'Slot equipado para a prévia', 'Slot 1 · Tackle');
+  await pickOption(contents, 'Golpe aprendido para a proposta', 'Seed Bomb');
   await waitFor(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))', 'prévia responsiva');
 
   const trainerLayouts = [

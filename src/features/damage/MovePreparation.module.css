@@ -8,6 +8,15 @@
   background: var(--color-sunken);
 }
 
+@media (min-height: 700px) {
+  .preparation {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    box-shadow: var(--shadow-pop);
+  }
+}
+
 .heading {
   display: grid;
   gap: var(--space-1);
@@ -28,13 +37,6 @@
   color: var(--color-muted);
   font-size: var(--text-caption);
   line-height: var(--line-caption);
-}
-
-.fields {
-  display: grid;
-  min-width: 0;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
 }
 
 .preview {
@@ -90,10 +92,6 @@
 }
 
 @container troca (max-width: 420px) {
-  .fields {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .preview {
     grid-template-columns: minmax(0, 1fr);
   }
