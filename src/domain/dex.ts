@@ -1,6 +1,9 @@
-import dexData from 'virtual:display-dex';
-import catalogJson from '../../electron/lib/combat-compatibility.json';
 import type {PlayerStat} from '../platform/api';
+
+// Dex de exibição em chunk próprio: fora do bundle principal; o módulo só termina de carregar depois dele.
+const {default: dexData} = await import('virtual:display-dex');
+// Catálogo compatível em chunk próprio, fora do bundle principal.
+const {default: catalogJson} = await import('../../electron/lib/combat-compatibility.json');
 
 const POKEMON_TYPES = [
   'Normal',

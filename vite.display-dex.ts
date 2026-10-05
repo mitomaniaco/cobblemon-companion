@@ -1,6 +1,8 @@
+import fs from 'node:fs';
 import {createRequire} from 'node:module';
 import type {Plugin} from 'vite';
 
+const MANIFEST_PATH = new URL('./data/compat/manifest.json', import.meta.url);
 const VIRTUAL_ID = 'virtual:display-dex';
 const RESOLVED_ID = `\0${VIRTUAL_ID}`;
 const TYPES = new Set([
@@ -31,7 +33,6 @@ type CalcGeneration = {
   species: Iterable<Named & {types: string[]}>;
   moves: Iterable<Named & {type: string; category: string; basePower: number}>;
   abilities: Iterable<Named>;
-  items: Iterable<Named>;
   natures: Iterable<Named & {plus?: string; minus?: string}>;
 };
 
@@ -41,10 +42,12 @@ function buildDisplayDex() {
   const species: Record<string, {name: string; types: string[]}> = {};
   const moves: Record<string, {name: string; type: string; category: string; basePower: number}> = {};
   const abilities: Record<string, string> = {};
-  const items: Record<string, string> = {};
   const natures: Record<string, {name: string; plus: string | null; minus: string | null}> = {};
 
+  // Só as espécies do Cobblemon (chaves do manifesto): formas e espécies de outras gerações do calc não têm como aparecer na tela.
+  const cobblemonSpecies = new Set(Object.keys(JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')).species));
   for (const entry of generation.species) {
+    if (!cobblemonSpecies.has(dexId(entry.name))) continue;
     species[dexId(entry.name)] = {name: entry.name, types: entry.types.filter((type) => TYPES.has(type))};
   }
   for (const entry of generation.moves) {
@@ -52,7 +55,6 @@ function buildDisplayDex() {
     moves[dexId(entry.name)] = {name: entry.name, type: entry.type, category: entry.category, basePower: entry.basePower};
   }
   for (const entry of generation.abilities) abilities[dexId(entry.name)] = entry.name;
-  for (const entry of generation.items) items[dexId(entry.name)] = entry.name;
   for (const entry of generation.natures) {
     const neutral = !entry.plus || !entry.minus || entry.plus === entry.minus;
     natures[dexId(entry.name)] = {
@@ -62,7 +64,7 @@ function buildDisplayDex() {
     };
   }
 
-  return {species, moves, abilities, items, natures};
+  return {species, moves, abilities, natures};
 }
 
 /** Módulo virtual com nomes, tipos e poder do Showdown (@smogon/calc, geração 9), só para exibição. */
