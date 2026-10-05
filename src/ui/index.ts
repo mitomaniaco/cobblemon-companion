@@ -8,6 +8,8 @@ export {Dialog} from './Dialog';
 export type {DialogControls, DialogProps} from './Dialog';
 export {Disclosure} from './Disclosure';
 export type {DisclosureProps} from './Disclosure';
+export {MoveChip} from './MoveChip';
+export type {MoveChipProps, MoveChipCategory} from './MoveChip';
 export {PokemonArtwork} from './PokemonArtwork';
 export type {PokemonArtworkProps, PokemonArtworkVariant} from './PokemonArtwork';
 export {PokeBallMark} from './PokeBallMark';
