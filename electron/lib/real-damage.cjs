@@ -91,7 +91,7 @@ function mappedName(table, id, pathName) {
 
 function mappedMoveName(id, pathName) {
   text(id, pathName);
-  const move = compatibility.moves[id];
+  const move = Object.hasOwn(compatibility.moves, id) ? compatibility.moves[id] : undefined;
   if (!move || typeof move.name !== 'string' || move.name.length === 0) {
     fail(pathName, 'está fora do subconjunto compatível versionado');
   }
@@ -188,7 +188,8 @@ function validateAssumptions(raw) {
 function heldItemName(id, pathName) {
   text(id, pathName);
   if (!id.startsWith('cobblemon:')) fail(pathName, 'usa um namespace sem mapeamento');
-  const name = compatibility.items?.[id.slice('cobblemon:'.length).replace(/_/g, '')]?.name;
+  const key = id.slice('cobblemon:'.length).replace(/_/g, '');
+  const name = compatibility.items && Object.hasOwn(compatibility.items, key) ? compatibility.items[key].name : undefined;
   if (typeof name !== 'string' || name.length === 0) fail(pathName, 'está fora do subconjunto compatível versionado');
   return name;
 }

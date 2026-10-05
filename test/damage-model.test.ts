@@ -933,6 +933,42 @@ describe('modelo do planejador de dano real', () => {
     });
   });
 
+  describe('bloqueios do indivíduo na visão', () => {
+    it('pede um indivíduo quando nenhum está selecionado', () => {
+      const state = createDamagePlannerState({individualUuid: null, revision: 1});
+      expect(getDamagePlannerView(null, state).blocker).toContain('Selecione um indivíduo');
+    });
+
+    it('bloqueia quando o estado pertence a outro UUID, sem reaproveitar o cálculo anterior', () => {
+      const actor = individual('individual-two');
+      const stale = readyState({individualUuid: 'individual-one', revision: 1});
+      const view = getDamagePlannerView(actor, stale);
+      expect(view.blocker).toContain('mudou');
+      expect(view.ready).toBe(false);
+    });
+
+    it('aceita habilidade observada sem o prefixo cobblemon: quando pertence à espécie', () => {
+      const gardevoir: PlayerIndividual = {
+        ...individual(),
+        speciesId: 'cobblemon:gardevoir',
+        observed: {...individual().observed, ability: 'synchronize'},
+      };
+      expect(damageActorBlocker(gardevoir)).toBeNull();
+    });
+
+    it('descarta o resultado ao invalidar o cálculo, mantendo slot e candidato', () => {
+      const identity = {individualUuid: 'individual-one', revision: 1};
+      let state = readyState(identity);
+      state = damagePlannerReducer(state, {type: 'slot-selected', identity, slotIndex: 0});
+      state = damagePlannerReducer(state, {type: 'calculation-started', identity, requestId: 1});
+      const invalidated = damagePlannerReducer(state, {type: 'calculation-invalidated', identity});
+      expect(invalidated.phase).toBe('idle');
+      expect(invalidated.result).toBeNull();
+      expect(invalidated.activeRequestId).toBeNull();
+      expect(invalidated.candidateMoveId).toBe('cobblemon:seedbomb');
+    });
+  });
+
   describe('opções de espécie e natureza', () => {
     it('lista Gardevoir normal pelo nome e mantém as espécies ordenadas por nome', () => {
       expect(DAMAGE_SPECIES_OPTIONS).toContainEqual({id: 'cobblemon:gardevoir', name: 'Gardevoir'});

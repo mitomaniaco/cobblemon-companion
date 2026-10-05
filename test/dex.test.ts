@@ -19,4 +19,15 @@ describe('dados de exibição', () => {
     expect(natureDisplay('cobblemon:hardy')).toEqual({name: 'Hardy', plus: null, minus: null});
     expect(abilityName('cobblemon:synchronize')).toBe('Synchronize');
   });
+
+  it('normaliza o id do save (namespace, underscore e caixa) antes de consultar o dex', () => {
+    expect(moveDisplay('cobblemon:vine_whip').name).toBe('Vine Whip');
+    expect(moveDisplay('COBBLEMON:Calm_Mind').category).toBe('Status');
+    expect(speciesDisplay('gardevoir', 'normal').name).toBe('Gardevoir');
+  });
+
+  it('usa o id em title case quando habilidade ou natureza são desconhecidas', () => {
+    expect(abilityName('cobblemon:habilidade_inexistente')).toBe('Habilidade Inexistente');
+    expect(natureDisplay('cobblemon:natureza_inexistente')).toEqual({name: 'Natureza Inexistente', plus: null, minus: null});
+  });
 });
