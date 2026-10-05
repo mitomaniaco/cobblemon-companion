@@ -25,6 +25,7 @@ const screenshotPaths = Object.freeze({
   guide1440: path.join(runDirectory, 'guide-1440.png'),
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
+  battlePlan: path.join(runDirectory, 'battle-plan.png'),
   damageCompact: path.join(runDirectory, 'damage-800.png'),
   damageDefaultViewport: path.join(runDirectory, 'damage-default-viewport.png'),
   layout1440: path.join(runDirectory, 'layout-1440.png'),
@@ -1273,6 +1274,19 @@ async function exerciseGuideWorkspace(window) {
     check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
   }
   await capture(window, screenshotPaths.guide1440, '[aria-label="Time recomendado"]');
+
+  await clickButton(contents, 'Ver plano de batalha');
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('ol[aria-label="Confronto por adversário"] > li'))`,
+    'plano de batalha do motor sintético',
+  );
+  const planText = await evaluate(contents, `document.querySelector('[aria-label="Plano de batalha"]')?.innerText || ''`);
+  for (const expected of ['Plano de batalha contra', 'Sugestão de lead', 'Riscos do treinador', 'Hipóteses', 'Limites']) {
+    check(planText.includes(expected), `O plano de batalha não mostrou "${expected}".`);
+  }
+  check(!/vit[óo]ria garantida|vai vencer|voc[êe] vence|garant/i.test(planText), 'O plano de batalha contém texto que promete vitória.');
+  await capture(window, screenshotPaths.battlePlan, '[aria-label="Plano de batalha"]');
 
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
