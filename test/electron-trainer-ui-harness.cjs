@@ -26,6 +26,8 @@ const screenshotPaths = Object.freeze({
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
+  battlePlan1200: path.join(runDirectory, 'battle-plan-1200.png'),
+  battlePlan800: path.join(runDirectory, 'battle-plan-800.png'),
   captures: path.join(runDirectory, 'captures.png'),
   evolutions: path.join(runDirectory, 'evolutions.png'),
   damageCompact: path.join(runDirectory, 'damage-800.png'),
@@ -1335,6 +1337,32 @@ async function exerciseGuideWorkspace(window) {
   }
   check(!/vit[óo]ria garantida|vai vencer|voc[êe] vence|garant/i.test(planText), 'O plano de batalha contém texto que promete vitória.');
   await capture(window, screenshotPaths.battlePlan, '[aria-label="Plano de batalha"]');
+  const entries = await evaluate(
+    contents,
+    `[...document.querySelectorAll('ol[aria-label="Confronto por adversário"] > li')].map(item => {
+    const facts = Object.fromEntries([...item.querySelectorAll('dl > div')].map(row => [row.querySelector('dt').textContent.trim(), row.querySelector('dd').textContent.trim()]));
+    return {status: item.dataset.status, blocked: item.textContent.includes('Confronto bloqueado'), facts};
+  })`,
+  );
+  check(entries.length >= 1, 'O plano de batalha não listou adversários.');
+  for (const entry of entries) {
+    check(
+      entry.blocked || (entry.facts.Respondedor?.includes(' com ') && entry.facts['Ordem de ação']),
+      'Um adversário do plano não mostrou o respondedor com o golpe sugerido e a ordem de ação.',
+    );
+  }
+  for (const layout of [
+    {width: 1200, shot: 'battlePlan1200'},
+    {width: 800, shot: 'battlePlan800'},
+  ]) {
+    window.setContentSize(layout.width, 1000);
+    await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport do plano de batalha em ${layout.width}px`);
+    const overflow = await evaluate(contents, '(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)()');
+    check(!overflow, `O plano de batalha em ${layout.width}px gerou rolagem horizontal.`);
+    await capture(window, screenshotPaths[layout.shot], '[aria-label="Plano de batalha"]');
+  }
+  window.setContentSize(1440, 1000);
+  await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após o plano de batalha');
 
   await clickButton(contents, 'Ver evoluções do time');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Evoluções por membro"] > li'))`, 'evoluções do motor sintético');
