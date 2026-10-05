@@ -624,6 +624,21 @@ async function exerciseRealDamage(contents) {
   })()`,
   );
   check(initialGate, 'O cálculo real não começou bloqueado pelas cinco confirmações acessíveis.');
+  const itemCopy = await evaluate(
+    contents,
+    `(() => ({
+    matchup: document.querySelector('.real-damage-planner')?.innerText || '',
+    checklist: document.querySelector('.real-confirmations')?.innerText || '',
+  }))()`,
+  );
+  check(
+    itemCopy.matchup.includes('Item não registrado no save') && !itemCopy.matchup.includes('Item: nenhum'),
+    'O planejador não disse que o item não está registrado no save (heldItem null).',
+  );
+  check(
+    /nem item/.test(itemCopy.checklist) && /Confirme que ele não segura nenhum item/.test(itemCopy.checklist),
+    'O checklist não exige confirmar a ausência de item quando heldItem é null.',
+  );
 
   await chooseComboBox(contents, 'Espécie', 'Abra');
   await setLabeledInput(contents, 'Nível', '50');

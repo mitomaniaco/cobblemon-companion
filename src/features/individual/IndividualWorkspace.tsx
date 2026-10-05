@@ -503,7 +503,7 @@ export function IndividualWorkspace({
                 <dt>Item</dt>
                 <dd className={styles.itemFact}>
                   {individual.observed.heldItem !== null && <ItemIcon itemDexId={dexId(individual.observed.heldItem)} />}
-                  {individual.observed.heldItem === null ? 'Nenhum' : itemLabel(individual.observed.heldItem)}
+                  {individual.observed.heldItem === null ? 'Não registrado no save' : itemLabel(individual.observed.heldItem)}
                 </dd>
               </div>
               <div>

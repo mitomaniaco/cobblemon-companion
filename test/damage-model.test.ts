@@ -3,6 +3,7 @@ import {
   buildRealDamageRequest,
   createDamagePlannerState,
   DAMAGE_CONFIRMATION_KEYS,
+  damageConfirmationCopy,
   DAMAGE_NATURE_OPTIONS,
   DAMAGE_SPECIES_OPTIONS,
   DAMAGE_STATS,
@@ -199,6 +200,26 @@ describe('modelo do planejador de dano real', () => {
     expect(state.target.level).toBe('26');
     expect(state.result).toBeNull();
     expect(state.phase).toBe('idle');
+  });
+
+  describe('damageConfirmationCopy', () => {
+    it('exige atestar a ausência de item quando heldItem é null (desconhecido no snapshot)', () => {
+      const copy = damageConfirmationCopy('actorBaselineConfirmed', null);
+      expect(copy.label).toContain('nem item');
+      expect(copy.detail).toContain('não registra o item');
+    });
+
+    it('com item registrado, diz que ele entra no cálculo e não pede ausência de item', () => {
+      const copy = damageConfirmationCopy('actorBaselineConfirmed', 'cobblemon:focus_sash');
+      expect(copy.label).not.toContain('item');
+      expect(copy.detail).toBe('O item registrado no save entra no cálculo.');
+    });
+
+    it('não altera as demais confirmações', () => {
+      for (const key of DAMAGE_CONFIRMATION_KEYS.filter((candidate) => candidate !== 'actorBaselineConfirmed')) {
+        expect(damageConfirmationCopy(key, null)).toEqual(damageConfirmationCopy(key, 'cobblemon:focus_sash'));
+      }
+    });
   });
 
   describe('parseDamageInteger', () => {

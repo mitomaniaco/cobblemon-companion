@@ -74,14 +74,13 @@ export const DAMAGE_CONFIRMATION_KEYS = [
   'fieldBaselineConfirmed',
 ] as const satisfies readonly DamageConfirmationKey[];
 
-export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, {label: string; detail?: string}> = {
+const CONFIRMATION_COPY: Record<DamageConfirmationKey, {label: string; detail?: string}> = {
   rulesetMatchesActiveWorld: {
     label: `Mundo com Cobblemon ${catalog.ruleset.cobblemonVersion} e Showdown ${catalog.ruleset.showdownVersion}`,
     detail: 'O app não detecta a versão do servidor.',
   },
   actorBaselineConfirmed: {
     label: 'Seu Pokémon sem status ou aspecto de batalha',
-    detail: 'O item registrado no save entra no cálculo.',
   },
   actorFullHpConfirmed: {
     label: 'Seu Pokémon com HP cheio',
@@ -93,6 +92,20 @@ export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, {label: str
     detail: 'Sem clima, terreno, telas, salas, trocas de habilidade, boosts ou Terastal.',
   },
 };
+
+/**
+ * `heldItem: null` no snapshot v2 é desconhecido, não prova ausência de item. Nesse caso a confirmação do ator
+ * também exige que a pessoa ateste que o Pokémon está sem item; com item registrado, ele entra no cálculo.
+ */
+export function damageConfirmationCopy(key: DamageConfirmationKey, heldItem: string | null): {label: string; detail?: string} {
+  if (key !== 'actorBaselineConfirmed') return CONFIRMATION_COPY[key];
+  return heldItem === null
+    ? {
+        label: 'Seu Pokémon sem status, aspecto de batalha nem item',
+        detail: 'O save não registra o item (heldItem ausente). Confirme que ele não segura nenhum item.',
+      }
+    : {label: CONFIRMATION_COPY[key].label, detail: 'O item registrado no save entra no cálculo.'};
+}
 
 export const DAMAGE_SPECIES_OPTIONS = Object.entries(catalog.species)
   .filter(([, species]) => species.abilities.some((abilityId) => Boolean(catalog.abilities[abilityId])))

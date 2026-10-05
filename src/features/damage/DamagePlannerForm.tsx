@@ -20,8 +20,8 @@ import {
 } from '../../ui';
 import type {DamagePlannerController} from './controller';
 import {
-  DAMAGE_CONFIRMATION_COPY,
   DAMAGE_CONFIRMATION_KEYS,
+  damageConfirmationCopy,
   DAMAGE_NATURE_OPTIONS,
   DAMAGE_SPECIES_OPTIONS,
   DAMAGE_STATS,
@@ -139,7 +139,7 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
             {individual.observed.heldItem !== null && <ItemIcon itemDexId={dexId(individual.observed.heldItem)} />}
             <span>
               {individual.observed.heldItem === null
-                ? 'Item: nenhum'
+                ? 'Item não registrado no save'
                 : `Item: ${itemLabel(individual.observed.heldItem)} · entra no cálculo`}
             </span>
           </span>
@@ -447,12 +447,12 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               {DAMAGE_CONFIRMATION_KEYS.map((key) => (
                 <Checkbox
                   key={key}
-                  description={DAMAGE_CONFIRMATION_COPY[key].detail}
+                  description={damageConfirmationCopy(key, individual.observed.heldItem).detail}
                   isSelected={state.confirmations[key]}
                   isDisabled={calculating}
                   onChange={(checked) => controller.updateConfirmation(key, checked)}
                 >
-                  {DAMAGE_CONFIRMATION_COPY[key].label}
+                  {damageConfirmationCopy(key, individual.observed.heldItem).label}
                 </Checkbox>
               ))}
             </fieldset>
