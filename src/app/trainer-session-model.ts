@@ -29,7 +29,7 @@ export function createInitialTrainerSessionState(): TrainerSessionState {
   };
 }
 
-export function beginTrainerSessionRefresh(): TrainerSessionState {
+function beginTrainerSessionRefresh(): TrainerSessionState {
   return {
     snapshot: null,
     phase: 'loading',
@@ -68,7 +68,7 @@ export function completeTrainerSessionRefresh(state: TrainerSessionState, snapsh
   };
 }
 
-export function failTrainerSessionRefresh(error: string): TrainerSessionState {
+function failTrainerSessionRefresh(error: string): TrainerSessionState {
   return {
     snapshot: null,
     phase: 'error',

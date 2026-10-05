@@ -2,7 +2,7 @@ import dexData from 'virtual:display-dex';
 import catalogJson from '../../electron/lib/combat-compatibility.json';
 import type {PlayerStat} from '../platform/api';
 
-export const POKEMON_TYPES = [
+const POKEMON_TYPES = [
   'Normal',
   'Fire',
   'Water',
@@ -26,14 +26,6 @@ export const POKEMON_TYPES = [
 export type PokemonType = (typeof POKEMON_TYPES)[number];
 export type MoveCategory = 'Physical' | 'Special' | 'Status';
 
-export type DisplayDexData = {
-  species: Record<string, {name: string; types: string[]}>;
-  moves: Record<string, {name: string; type: string; category: string; basePower: number}>;
-  abilities: Record<string, string>;
-  items: Record<string, string>;
-  natures: Record<string, {name: string; plus: PlayerStat | null; minus: PlayerStat | null}>;
-};
-
 type MoveNameCatalog = {moves: Record<string, {name: string}>};
 const moveNameCatalog: MoveNameCatalog = catalogJson as unknown as MoveNameCatalog;
 const catalogMoves = moveNameCatalog.moves;
@@ -48,7 +40,7 @@ export function titleCaseId(id: string): string {
 }
 
 /** Id do dex do Showdown: sem namespace até `:`, minúsculas e só alfanuméricos. */
-export function dexId(id: string): string {
+function dexId(id: string): string {
   return id
     .replace(/^[^:]+:/, '')
     .toLowerCase()

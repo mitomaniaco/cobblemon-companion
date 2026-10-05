@@ -554,10 +554,7 @@ function assessFreshness(reference, bundle, {engineVersion, policyVersion} = {})
 }
 
 module.exports = {
-  CONTRACT,
-  ACCESS_NOW,
   validatePreflight,
-  computeInputDigest,
   makeAnalysisRef,
   assessFreshness,
 };

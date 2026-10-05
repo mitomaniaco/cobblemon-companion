@@ -510,4 +510,4 @@ function adaptOfflineComparison(input) {
   });
 }
 
-module.exports = {ENGINE_VERSION, adaptOfflineComparison, assessOfflineFreshness};
+module.exports = {ENGINE_VERSION, adaptOfflineComparison};

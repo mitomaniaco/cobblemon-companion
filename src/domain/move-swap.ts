@@ -6,12 +6,12 @@ export type MoveSwapPlan = {
   candidateMoveId: string | null;
 };
 
-export type MoveSwapCandidate = {
+type MoveSwapCandidate = {
   id: string;
   evidence: 'observed-learned-on-individual';
 };
 
-export type MoveSwapPreview = {
+type MoveSwapPreview = {
   slotIndex: number;
   beforeMoveId: string;
   afterMoveId: string;
