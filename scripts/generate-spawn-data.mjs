@@ -190,7 +190,8 @@ function main() {
       }
       const {condition, anticondition} = applyPresets(spawn, presetJson);
       for (const tag of [...collectBiomeTags(condition), ...collectBiomeTags(anticondition)]) usedTags.add(tag);
-      (spawnsBySpecies[slug] ??= []).push({
+      if (!Object.hasOwn(spawnsBySpecies, slug)) spawnsBySpecies[slug] = [];
+      spawnsBySpecies[slug].push({
         id: spawn.id ?? null,
         pool: poolId,
         source,
