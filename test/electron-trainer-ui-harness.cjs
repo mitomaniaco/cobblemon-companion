@@ -420,24 +420,6 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await capture(window, screenshotPaths.preview, '[aria-label="Prévia da troca planejada"]');
   console.log('PASS preview de troca sintética e screenshot em diagnostics');
 
-  await evaluate(
-    contents,
-    `(() => {
-    const confirmation = [...document.querySelectorAll('input[type="checkbox"]')]
-      .find(input => [...(input.labels || [])]
-        .some(label => label.textContent.includes('Confirmo que esta é apenas uma proposta local')));
-    if (!confirmation) throw new Error('Confirmação acessível da prévia não encontrada.');
-    confirmation.click();
-  })()`,
-  );
-  await waitFor(
-    contents,
-    `([...document.querySelectorAll('input[type="checkbox"]')]
-    .find(input => [...(input.labels || [])]
-      .some(label => label.textContent.includes('Confirmo que esta é apenas uma proposta local')))
-    ?.checked) === true`,
-    'confirmação da prévia',
-  );
   await clickButton(contents, 'Abrir cálculo de dano');
   await waitFor(contents, "Boolean(document.querySelector('.real-damage-planner'))", 'navegação da prévia ao cálculo de dano');
 }

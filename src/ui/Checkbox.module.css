@@ -88,3 +88,24 @@
     color: GrayText;
   }
 }
+
+.checkbox:has(.description) {
+  align-items: flex-start;
+  padding-block: var(--space-1);
+}
+
+.checkbox:has(.description) .indicator {
+  margin-top: 2px;
+}
+
+.label {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.description {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
+}

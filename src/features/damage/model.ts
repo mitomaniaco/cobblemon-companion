@@ -74,14 +74,24 @@ export const DAMAGE_CONFIRMATION_KEYS = [
   'fieldBaselineConfirmed',
 ] as const satisfies readonly DamageConfirmationKey[];
 
-export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, string> = {
-  rulesetMatchesActiveWorld: `O mundo ativo usa o conjunto declarado: Cobblemon ${catalog.ruleset.cobblemonVersion}, Showdown ${catalog.ruleset.showdownVersion}. O app não detecta a versão do servidor.`,
-  actorBaselineConfirmed:
-    'O indivíduo selecionado não tem status nem aspecto que altere sua forma de batalha. O item usado é o registrado no save; sem item quando o save não registra nenhum.',
-  actorFullHpConfirmed: 'O indivíduo selecionado começa com HP cheio; isso é necessário para habilidades ou golpes dependentes do HP.',
-  targetBaselineConfirmed: 'O alvo usa forma normal, sem aspectos, item ou status, e começa com HP cheio.',
-  fieldBaselineConfirmed:
-    'Sem clima/terreno ou outros efeitos de campo; sem barreiras (Reflect, Light Screen, Aurora Veil), salas (Trick Room, Wonder Room, Magic Room), efeitos de troca/habilidade, boosts ou Terastallization.',
+export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, {label: string; detail?: string}> = {
+  rulesetMatchesActiveWorld: {
+    label: `Mundo com Cobblemon ${catalog.ruleset.cobblemonVersion} e Showdown ${catalog.ruleset.showdownVersion}`,
+    detail: 'O app não detecta a versão do servidor.',
+  },
+  actorBaselineConfirmed: {
+    label: 'Seu Pokémon sem status ou aspecto de batalha',
+    detail: 'O item registrado no save entra no cálculo.',
+  },
+  actorFullHpConfirmed: {
+    label: 'Seu Pokémon com HP cheio',
+    detail: 'Necessário para habilidades e golpes que dependem do HP.',
+  },
+  targetBaselineConfirmed: {label: 'Alvo na forma normal, sem item ou status, com HP cheio'},
+  fieldBaselineConfirmed: {
+    label: 'Campo neutro',
+    detail: 'Sem clima, terreno, telas, salas, trocas de habilidade, boosts ou Terastal.',
+  },
 };
 
 export const DAMAGE_SPECIES_OPTIONS = Object.entries(catalog.species)
