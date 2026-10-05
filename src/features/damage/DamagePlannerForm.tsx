@@ -1,7 +1,8 @@
 import {useId, type FormEvent} from 'react';
 import {itemLabel, moveLabel} from '../../domain/catalog-labels';
+import {moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {PlayerIndividual} from '../../platform/api';
-import {Button, Checkbox, Select, StatusMessage, type SelectOption} from '../../ui';
+import {Button, Checkbox, HpBar, PokeBallMark, PokemonArtwork, Select, StatusMessage, TypeBadge, type SelectOption} from '../../ui';
 import type {DamagePlannerController} from './controller';
 import {
   DAMAGE_CONFIRMATION_COPY,
@@ -18,6 +19,21 @@ import styles from './DamagePlannerForm.module.css';
 export interface DamagePlannerFormProps {
   individual: PlayerIndividual;
   controller: DamagePlannerController;
+}
+
+function signed(value: number) {
+  return value > 0 ? `+${value}` : value < 0 ? `−${Math.abs(value)}` : '0';
+}
+
+function MoveLine({caption, moveId}: {caption: string; moveId: string}) {
+  const display = moveDisplay(moveId);
+  return (
+    <span className={styles.moveLine}>
+      <span>{caption}</span>
+      <span className={styles.moveName}>{display.name}</span>
+      {display.type && <TypeBadge type={display.type} size="sm" />}
+    </span>
+  );
 }
 
 export function DamagePlannerForm({individual, controller}: DamagePlannerFormProps) {
@@ -42,6 +58,10 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   const natureOptions: SelectOption[] = DAMAGE_NATURE_OPTIONS.map((nature) => ({key: nature.id, label: nature.name}));
   const abilityOptions: SelectOption[] = view.abilities.map((ability) => ({key: ability.id, label: ability.name}));
   const selectedSpeciesAvailable = DAMAGE_SPECIES_OPTIONS.some((species) => species.id === state.target.speciesId);
+  const actor = speciesDisplay(individual.speciesId, individual.formId);
+  const targetSpeciesId = selectedSpeciesAvailable ? `cobblemon:${state.target.speciesId.replace(/^[^:]+:/, '')}` : null;
+  const target = targetSpeciesId ? speciesDisplay(targetSpeciesId, 'normal') : null;
+  const result = state.result;
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,10 +70,53 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
 
   return (
     <section className={`${styles.planner} real-damage-planner`} aria-labelledby={`${ids}-title`} aria-busy={state.phase === 'calculating'}>
-      <h3 id={`${ids}-title`}>Calcular dano com este indivíduo</h3>
+      <h3 id={`${ids}-title`} className={styles.visuallyHidden}>
+        Calcular dano com este indivíduo
+      </h3>
       <p className={`${styles.intro} real-damage-intro`}>
-        O golpe do slot escolhido é comparado a um golpe aprendido deste UUID. O perfil do alvo é manual e não recebe valores presumidos.
+        Compare o golpe de um slot com um golpe aprendido contra um alvo que você define.
       </p>
+
+      <div className={styles.matchup}>
+        <div className={styles.combatant}>
+          <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="collection" />
+          <div className={styles.combatantInfo}>
+            <span className={styles.combatantName}>{actor.name}</span>
+            <span className={styles.combatantTypes}>
+              {actor.types.map((type) => (
+                <TypeBadge key={type} type={type} size="sm" />
+              ))}
+              <span className={styles.levelText}>{individual.level === null ? 'Nv. ?' : `Nv. ${individual.level}`}</span>
+            </span>
+            <span className={styles.itemText}>
+              {individual.observed.heldItem === null
+                ? 'Item: nenhum'
+                : `Item: ${itemLabel(individual.observed.heldItem)} · entra no cálculo`}
+            </span>
+          </div>
+        </div>
+        <PokeBallMark className={styles.versus} />
+        <div className={styles.combatant}>
+          {targetSpeciesId && target ? (
+            <>
+              <PokemonArtwork speciesId={targetSpeciesId} formId="normal" variant="collection" />
+              <div className={styles.combatantInfo}>
+                <span className={styles.combatantName}>{target.name}</span>
+                <span className={styles.combatantTypes}>
+                  {target.types.map((type) => (
+                    <TypeBadge key={type} type={type} size="sm" />
+                  ))}
+                </span>
+              </div>
+            </>
+          ) : (
+            <div className={styles.combatantInfo}>
+              <span className={styles.combatantName}>Escolha o alvo</span>
+            </div>
+          )}
+        </div>
+      </div>
+
       {view.blocker ? (
         <StatusMessage tone="info" title="Cálculo indisponível" className={`${styles.blocker} real-damage-blocker`}>
           {view.blocker}.
@@ -81,11 +144,6 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   placeholder="Escolha um golpe compatível"
                   isDisabled={state.phase === 'calculating'}
                 />
-                <p className={`${styles.fieldHelp} field-help`}>
-                  Item segurado:{' '}
-                  {individual.observed.heldItem === null ? 'nenhum registrado no save' : itemLabel(individual.observed.heldItem)} · entra no
-                  cálculo.
-                </p>
               </div>
 
               <fieldset className={`${styles.targetProfile} real-target-profile`}>
@@ -188,96 +246,108 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                     </div>
                   </fieldset>
                 </div>
-
-                <fieldset className={`${styles.confirmations} real-confirmations`} aria-label="Confirmações do cenário">
-                  {DAMAGE_CONFIRMATION_KEYS.map((key) => (
-                    <Checkbox
-                      key={key}
-                      isSelected={state.confirmations[key]}
-                      isDisabled={state.phase === 'calculating'}
-                      onChange={(checked) => controller.updateConfirmation(key, checked)}
-                    >
-                      {DAMAGE_CONFIRMATION_COPY[key]}
-                    </Checkbox>
-                  ))}
-                </fieldset>
               </fieldset>
             </fieldset>
 
-            {view.profileBlocker && (
-              <p className={`${styles.blockerText} real-damage-blocker`} role="status">
-                Para habilitar: {view.profileBlocker}.
-              </p>
-            )}
-            {view.confirmationBlocker && !view.profileBlocker && (
-              <p className={`${styles.blockerText} real-damage-blocker`} role="status">
-                Confirme todas as condições do cenário para habilitar o cálculo.
-              </p>
-            )}
-            {state.error && (
-              <StatusMessage tone="error" title="O cálculo não foi concluído" className={`${styles.error} real-damage-error`}>
-                {state.error} Atualize o save se os arquivos mudaram.
-              </StatusMessage>
-            )}
-            <div className={`${styles.actions} real-damage-actions`}>
-              <Button variant="primary" type="submit" isDisabled={!view.ready}>
-                {state.phase === 'calculating' ? 'Calculando…' : 'Calcular rolls de dano'}
-              </Button>
-              <span>Gen 9 · singles · um acerto · min/máx entre 16 rolls</span>
+            <div className={styles.side}>
+              <fieldset className={`${styles.confirmations} real-confirmations`} aria-label="Checklist do cenário">
+                <legend className={styles.checklistTitle}>Checklist do cenário</legend>
+                {DAMAGE_CONFIRMATION_KEYS.map((key) => (
+                  <Checkbox
+                    key={key}
+                    description={DAMAGE_CONFIRMATION_COPY[key].detail}
+                    isSelected={state.confirmations[key]}
+                    isDisabled={state.phase === 'calculating'}
+                    onChange={(checked) => controller.updateConfirmation(key, checked)}
+                  >
+                    {DAMAGE_CONFIRMATION_COPY[key].label}
+                  </Checkbox>
+                ))}
+              </fieldset>
+
+              {view.profileBlocker && (
+                <p className={`${styles.blockerText} real-damage-blocker`} role="status">
+                  Para habilitar: {view.profileBlocker}.
+                </p>
+              )}
+              {view.confirmationBlocker && !view.profileBlocker && (
+                <p className={`${styles.blockerText} real-damage-blocker`} role="status">
+                  Marque todo o checklist para habilitar o cálculo.
+                </p>
+              )}
+              {state.error && (
+                <StatusMessage tone="error" title="O cálculo não foi concluído" className={`${styles.error} real-damage-error`}>
+                  {state.error} Atualize o save se os arquivos mudaram.
+                </StatusMessage>
+              )}
+              <div className={`${styles.actions} real-damage-actions`}>
+                <Button variant="primary" type="submit" isDisabled={!view.ready}>
+                  {state.phase === 'calculating' ? 'Calculando…' : 'Calcular rolls de dano'}
+                </Button>
+                <span>Gen 9 · singles · 16 rolls</span>
+              </div>
             </div>
           </form>
-          {state.result && (
+
+          {result && (
             <section className={`${styles.result} real-damage-result`} aria-live="polite" aria-labelledby={`${ids}-result-title`}>
-              <div className={`${styles.resultHeading} real-damage-result-heading`}>
-                <h4 id={`${ids}-result-title`}>Dano se acertar</h4>
-                <span>não estima chance de acerto ou nocaute</span>
-              </div>
+              <h4 id={`${ids}-result-title`}>Dano se acertar</h4>
               <div className={`${styles.ranges} real-damage-ranges`}>
-                <div>
-                  <span>
-                    Slot {state.result.actor.currentSlotIndex + 1} · {moveLabel(state.result.current.moveId)}
-                  </span>
-                  <strong>
-                    {state.result.current.min}–{state.result.current.max}
-                    <small> HP</small>
-                  </strong>
-                  <p>Alvo com {state.result.current.targetHP} HP máximos</p>
-                </div>
-                <div>
-                  <span>Candidato · {moveLabel(state.result.candidate.moveId)}</span>
-                  <strong>
-                    {state.result.candidate.min}–{state.result.candidate.max}
-                    <small> HP</small>
-                  </strong>
-                  <p>Alvo com {state.result.candidate.targetHP} HP máximos</p>
-                </div>
+                {[
+                  {caption: `Slot ${result.actor.currentSlotIndex + 1}`, row: result.current},
+                  {caption: 'Candidato', row: result.candidate},
+                ].map(({caption, row}) => (
+                  <div className={styles.rangeRow} key={caption}>
+                    <MoveLine caption={caption} moveId={row.moveId} />
+                    <strong>
+                      {row.min}–{row.max}
+                      <small> HP</small>
+                    </strong>
+                    <HpBar
+                      total={row.targetHP}
+                      minDamage={row.min}
+                      maxDamage={row.max}
+                      label={`Alvo: ${Math.max(0, row.targetHP - row.min)} HP restantes de ${row.targetHP} no roll mínimo`}
+                    />
+                  </div>
+                ))}
               </div>
+              {(() => {
+                const deltaMin = result.candidate.min - result.current.min;
+                const deltaMax = result.candidate.max - result.current.max;
+                const tone = deltaMin >= 0 && deltaMax >= 0 ? 'gain' : deltaMin <= 0 && deltaMax <= 0 ? 'loss' : 'mixed';
+                return (
+                  <span className={styles.diff} data-tone={tone}>
+                    Candidato: {signed(deltaMin)} a {signed(deltaMax)} HP
+                  </span>
+                );
+              })()}
               <p className={`${styles.limits} real-damage-limits`}>
-                Sem precisão, críticos, efeitos secundários, turnos futuros, ranking ou recomendação.
+                Sem precisão, crítico, efeitos secundários, nocaute, turnos futuros, ranking ou recomendação.
               </p>
               <details className={`${styles.trace} real-damage-trace`}>
                 <summary>Versões e vínculo da captura</summary>
                 <dl>
                   <div>
                     <dt>Catálogo</dt>
-                    <dd>{state.result.ruleset.id}</dd>
+                    <dd>{result.ruleset.id}</dd>
                   </div>
                   <div>
                     <dt>Motor</dt>
                     <dd>
-                      @smogon/calc {state.result.ruleset.calcVersion} · adaptador {state.result.ruleset.adapterVersion}
+                      @smogon/calc {result.ruleset.calcVersion} · adaptador {result.ruleset.adapterVersion}
                     </dd>
                   </div>
                   <div>
                     <dt>Snapshot</dt>
                     <dd>
-                      {state.result.snapshot.capturedAt} · {state.result.snapshot.worldName}
+                      {result.snapshot.capturedAt} · {result.snapshot.worldName}
                     </dd>
                   </div>
                   <div>
                     <dt>Entrada SHA-256</dt>
                     <dd>
-                      <code>{state.result.inputDigest}</code>
+                      <code>{result.inputDigest}</code>
                     </dd>
                   </div>
                 </dl>
