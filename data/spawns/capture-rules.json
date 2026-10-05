@@ -1,0 +1,7756 @@
+{
+  "source": {
+    "file": "kubejs/startup_scripts/catch_restrictions.js",
+    "sha256": "a5ecd4ca5ee7491e06b8e83feba4992d23be44c1056352ba3f426c624b2cfc11"
+  },
+  "outOfBattle": {
+    "comparesWith": "primeiro Pokémon não desmaiado da party",
+    "noLeaderMaxLevel": 15,
+    "guaranteedBallIgnoresLevel": true
+  },
+  "pikaStar": {
+    "labels": [
+      "legendary",
+      "mythical",
+      "paradox",
+      "ultra_beast"
+    ],
+    "advancement": "allthemons:<região>_pika_star",
+    "regions": [
+      "kanto",
+      "johto",
+      "hoenn",
+      "sinnoh",
+      "unova",
+      "kalos",
+      "alola",
+      "galar",
+      "hisui",
+      "paldea"
+    ],
+    "verified": false
+  },
+  "species": {
+    "abomasnow": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "abra": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "absol": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "accelgor": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "aegislash": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "aerodactyl": {
+      "labels": [
+        "fossil",
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "aggron": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "aipom": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "alakazam": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "alcremie": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "alomomola": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "altaria": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "amaura": {
+      "labels": [
+        "fossil",
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ambipom": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "amoonguss": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "ampharos": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "annihilape": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "anorith": {
+      "labels": [
+        "fossil",
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "appletun": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "applin": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "araquanid": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "arbok": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "arboliva": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "arcanine": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "arceus": {
+      "labels": [
+        "gen4",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "archaludon": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": null
+    },
+    "archen": {
+      "labels": [
+        "fossil",
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "archeops": {
+      "labels": [
+        "fossil",
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "arctibax": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "arctovish": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "arctozolt": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ariados": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "armaldo": {
+      "labels": [
+        "fossil",
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "armarouge": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "aromatisse": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 140,
+      "pikaStarRegions": null
+    },
+    "aron": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "arrokuda": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "articuno": {
+      "labels": [
+        "gen1",
+        "kantonian_form",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kanto",
+        "galar"
+      ]
+    },
+    "audino": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "aurorus": {
+      "labels": [
+        "fossil",
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "avalugg": {
+      "labels": [
+        "gen6",
+        "kalosian_form"
+      ],
+      "catchRate": 55,
+      "pikaStarRegions": null
+    },
+    "axew": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "azelf": {
+      "labels": [
+        "gen4",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "azumarill": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "azurill": {
+      "labels": [
+        "baby",
+        "gen3"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "bagon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "baltoy": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "banette": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "barbaracle": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "barboach": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "barraskewda": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "basculegion": {
+      "labels": [
+        "gen8a"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "basculin": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "bastiodon": {
+      "labels": [
+        "fossil",
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "baxcalibur": {
+      "labels": [
+        "gen9",
+        "powerhouse"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": null
+    },
+    "bayleef": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "beartic": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "beautifly": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "beedrill": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "beheeyem": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "beldum": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": null
+    },
+    "bellibolt": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "bellossom": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "bellsprout": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "bergmite": {
+      "labels": [
+        "gen6",
+        "kalosian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "bewear": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 70,
+      "pikaStarRegions": null
+    },
+    "bibarel": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "bidoof": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "binacle": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "bisharp": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "blacephalon": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "blastoise": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "blaziken": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "blipbug": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "blissey": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "blitzle": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "boldore": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "boltund": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "bombirdier": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "bonsly": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "bouffalant": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "bounsweet": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "braixen": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "brambleghast": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "bramblin": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "braviary": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "breloom": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "brionne": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "bronzong": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "bronzor": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "brutebonnet": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "bruxish": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 80,
+      "pikaStarRegions": null
+    },
+    "budew": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "buizel": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "bulbasaur": {
+      "labels": [
+        "gen1",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "buneary": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "bunnelby": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "burmy": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "butterfree": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "buzzwole": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "cacnea": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "cacturne": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "calyrex": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "camerupt": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "capsakid": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "carbink": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "carkol": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "carnivine": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "carracosta": {
+      "labels": [
+        "fossil",
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "carvanha": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "cascoon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "castform": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "caterpie": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "celebi": {
+      "labels": [
+        "gen2",
+        "mythical"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "johto"
+      ]
+    },
+    "celesteela": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "centiskorch": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "ceruledge": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "cetitan": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "cetoddle": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "chandelure": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chansey": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "charcadet": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "charizard": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "charjabug": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "charmander": {
+      "labels": [
+        "gen1",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "charmeleon": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chatot": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "cherrim": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "cherubi": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "chesnaught": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chespin": {
+      "labels": [
+        "gen6",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chewtle": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "chienpao": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 6,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "chikorita": {
+      "labels": [
+        "gen2",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chimchar": {
+      "labels": [
+        "gen4",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chimecho": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "chinchou": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "chingling": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "chiyu": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 6,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "cinccino": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "cinderace": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "clamperl": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "clauncher": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "clawitzer": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 55,
+      "pikaStarRegions": null
+    },
+    "claydol": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "clefable": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "clefairy": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "cleffa": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "clobbopus": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "clodsire": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "cloyster": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "coalossal": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "cobalion": {
+      "labels": [
+        "gen5",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "cofagrigus": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "combee": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "combusken": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "comfey": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "conkeldurr": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "copperajah": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "corphish": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 205,
+      "pikaStarRegions": null
+    },
+    "corsola": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "corviknight": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "corvisquire": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "cosmoem": {
+      "labels": [
+        "gen7",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "cosmog": {
+      "labels": [
+        "gen7",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "cottonee": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "crabominable": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "crabrawler": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "cradily": {
+      "labels": [
+        "fossil",
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "cramorant": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "cranidos": {
+      "labels": [
+        "fossil",
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "crawdaunt": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 155,
+      "pikaStarRegions": null
+    },
+    "cresselia": {
+      "labels": [
+        "gen4",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "croagunk": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 140,
+      "pikaStarRegions": null
+    },
+    "crobat": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "crocalor": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "croconaw": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "crustle": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "cryogonal": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "cubchoo": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "cubone": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "cufant": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "cursola": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "cutiefly": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "cyclizar": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "cyndaquil": {
+      "labels": [
+        "gen2",
+        "johtonian_form",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dachsbun": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "darkrai": {
+      "labels": [
+        "gen4",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "darmanitan": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "dartrix": {
+      "labels": [
+        "alolan_form",
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "darumaka": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "decidueye": {
+      "labels": [
+        "alolan_form",
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dedenne": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "deerling": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "deino": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "delcatty": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "delibird": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "delphox": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "deoxys": {
+      "labels": [
+        "gen3",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "dewgong": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "dewott": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dewpider": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "dhelmise": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "dialga": {
+      "labels": [
+        "gen4",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "diancie": {
+      "labels": [
+        "gen6",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kalos"
+      ]
+    },
+    "diggersby": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "diglett": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "dipplin": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ditto": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 35,
+      "pikaStarRegions": null
+    },
+    "dodrio": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "doduo": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "dolliv": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "dondozo": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "donphan": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "dottler": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "doublade": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "dracovish": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dracozolt": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dragalge": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 55,
+      "pikaStarRegions": null
+    },
+    "dragapult": {
+      "labels": [
+        "gen8",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dragonair": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dragonite": {
+      "labels": [
+        "gen1",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "drakloak": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "drampa": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 70,
+      "pikaStarRegions": null
+    },
+    "drapion": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dratini": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "drednaw": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "dreepy": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "drifblim": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "drifloon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 125,
+      "pikaStarRegions": null
+    },
+    "drilbur": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "drizzile": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "drowzee": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "druddigon": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dubwool": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "ducklett": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "dudunsparce": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dugtrio": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "dunsparce": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "duosion": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "duraludon": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "durant": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "dusclops": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "dusknoir": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "duskull": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "dustox": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "dwebble": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "eelektrik": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "eelektross": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "eevee": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "eiscue": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "ekans": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "eldegoss": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "electabuzz": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "electivire": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "electrike": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "electrode": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "elekid": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "elgyem": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "emboar": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "emolga": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "empoleon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "enamorus": {
+      "labels": [
+        "gen8a",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hisui"
+      ]
+    },
+    "entei": {
+      "labels": [
+        "gen2",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "johto"
+      ]
+    },
+    "escavalier": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "espathra": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "espeon": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "espurr": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "eternatus": {
+      "labels": [
+        "gen8",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "excadrill": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "exeggcute": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "exeggutor": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "exploud": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "falinks": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "farfetchd": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "farigiraf": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "fearow": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "feebas": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "fennekin": {
+      "labels": [
+        "gen6",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "feraligatr": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ferroseed": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "ferrothorn": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "fezandipiti": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "fidough": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "finizen": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "finneon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "flaaffy": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "flabebe": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "flamigo": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "flapple": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "flareon": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "fletchinder": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "fletchling": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "flittle": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "floatzel": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "floette": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "floragato": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "florges": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "fluttermane": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "flygon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "fomantis": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "foongus": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "forretress": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "fraxure": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "frigibax": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "frillish": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "froakie": {
+      "labels": [
+        "gen6",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "frogadier": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "froslass": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "frosmoth": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "fuecoco": {
+      "labels": [
+        "gen9",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "furfrou": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 160,
+      "pikaStarRegions": null
+    },
+    "furret": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "gabite": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gallade": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "galvantula": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "garbodor": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "garchomp": {
+      "labels": [
+        "gen4",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gardevoir": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "garganacl": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gastly": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "gastrodon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "genesect": {
+      "labels": [
+        "gen5",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "gengar": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "geodude": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "gholdengo": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gible": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gigalith": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gimmighoul": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "girafarig": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "giratina": {
+      "labels": [
+        "gen4",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "glaceon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "glalie": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "glameow": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "glastrier": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "gligar": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "glimmet": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 70,
+      "pikaStarRegions": null
+    },
+    "glimmora": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "gliscor": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "gloom": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "gogoat": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "golbat": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "goldeen": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "golduck": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "golem": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "golett": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "golisopod": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "golurk": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "goodra": {
+      "labels": [
+        "gen6",
+        "kalosian_form",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "goomy": {
+      "labels": [
+        "gen6",
+        "kalosian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "gorebyss": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "gossifleur": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "gothita": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "gothitelle": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "gothorita": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "gougingfire": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "gourgeist": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "grafaiai": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "granbull": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "grapploct": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "graveler": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "greattusk": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "greavard": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "greedent": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "greninja": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "grimer": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "grimmsnarl": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "grookey": {
+      "labels": [
+        "gen8",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "grotle": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "groudon": {
+      "labels": [
+        "gen3",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "grovyle": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "growlithe": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "grubbin": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "grumpig": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "gulpin": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "gumshoos": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "gurdurr": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "guzzlord": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "gyarados": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "hakamoo": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "happiny": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 130,
+      "pikaStarRegions": null
+    },
+    "hariyama": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "hatenna": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "hatterene": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "hattrem": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "haunter": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "hawlucha": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "haxorus": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "heatmor": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "heatran": {
+      "labels": [
+        "gen4",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "heliolisk": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "helioptile": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "heracross": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "herdier": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "hippopotas": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 140,
+      "pikaStarRegions": null
+    },
+    "hippowdon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "hitmonchan": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "hitmonlee": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "hitmontop": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "honchkrow": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "honedge": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "hooh": {
+      "labels": [
+        "gen2",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "johto"
+      ]
+    },
+    "hoopa": {
+      "labels": [
+        "gen6",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kalos"
+      ]
+    },
+    "hoothoot": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "hoppip": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "horsea": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "houndoom": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "houndour": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "houndstone": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "huntail": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "hydrapple": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": null
+    },
+    "hydreigon": {
+      "labels": [
+        "gen5",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "hypno": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "igglybuff": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 170,
+      "pikaStarRegions": null
+    },
+    "illumise": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "impidimp": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "incineroar": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "indeedee": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "infernape": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "inkay": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "inteleon": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ironboulder": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironbundle": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironcrown": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironhands": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironjugulis": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironleaves": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 5,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironmoth": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironthorns": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "irontreads": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ironvaliant": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "ivysaur": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "jangmoo": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "jellicent": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "jigglypuff": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 170,
+      "pikaStarRegions": null
+    },
+    "jirachi": {
+      "labels": [
+        "gen3",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "jolteon": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "joltik": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "jumpluff": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "jynx": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "kabuto": {
+      "labels": [
+        "fossil",
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "kabutops": {
+      "labels": [
+        "fossil",
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "kadabra": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "kakuna": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "kangaskhan": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "karrablast": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "kartana": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "kecleon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "keldeo": {
+      "labels": [
+        "gen5",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "kilowattrel": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "kingambit": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "kingdra": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "kingler": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "kirlia": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "klang": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "klawf": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "kleavor": {
+      "labels": [
+        "gen8a"
+      ],
+      "catchRate": 15,
+      "pikaStarRegions": null
+    },
+    "klefki": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "klink": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 130,
+      "pikaStarRegions": null
+    },
+    "klinklang": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "koffing": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "komala": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "kommoo": {
+      "labels": [
+        "gen7",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "koraidon": {
+      "labels": [
+        "gen9",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "krabby": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "kricketot": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "kricketune": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "krokorok": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "krookodile": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "kubfu": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "kyogre": {
+      "labels": [
+        "gen3",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "kyurem": {
+      "labels": [
+        "gen5",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "lairon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "lampent": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "landorus": {
+      "labels": [
+        "gen5",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "lanturn": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "lapras": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "larvesta": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "larvitar": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "latias": {
+      "labels": [
+        "gen3",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "latios": {
+      "labels": [
+        "gen3",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "leafeon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "leavanny": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "lechonk": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "ledian": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "ledyba": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "lickilicky": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "lickitung": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "liepard": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "lileep": {
+      "labels": [
+        "fossil",
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "lilligant": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "lillipup": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "linoone": {
+      "labels": [
+        "gen3",
+        "hoennian_form"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "litleo": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 220,
+      "pikaStarRegions": null
+    },
+    "litten": {
+      "labels": [
+        "gen7",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "litwick": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "lokix": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "lombre": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "lopunny": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "lotad": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "loudred": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "lucario": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ludicolo": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "lugia": {
+      "labels": [
+        "gen2",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "johto"
+      ]
+    },
+    "lumineon": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "lunala": {
+      "labels": [
+        "gen7",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "lunatone": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "lurantis": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "luvdisc": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "luxio": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "luxray": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "lycanroc": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "mabosstiff": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "machamp": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "machoke": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "machop": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "magby": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "magcargo": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "magearna": {
+      "labels": [
+        "gen7",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "magikarp": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "magmar": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "magmortar": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "magnemite": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "magneton": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "magnezone": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "makuhita": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "malamar": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 80,
+      "pikaStarRegions": null
+    },
+    "mamoswine": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "manaphy": {
+      "labels": [
+        "gen4",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "mandibuzz": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "manectric": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mankey": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "mantine": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "mantyke": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "maractus": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "mareanie": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "mareep": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "marill": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "marowak": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "marshadow": {
+      "labels": [
+        "gen7",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "marshtomp": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "maschiff": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "masquerain": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "maushold": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "mawile": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "medicham": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "meditite": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "meganium": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "melmetal": {
+      "labels": [
+        "gen7b",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": []
+    },
+    "meloetta": {
+      "labels": [
+        "gen5",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "meltan": {
+      "labels": [
+        "gen7b",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": []
+    },
+    "meowscarada": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "meowstic": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "meowth": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "mesprit": {
+      "labels": [
+        "gen4",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "metagross": {
+      "labels": [
+        "gen3",
+        "powerhouse"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": null
+    },
+    "metang": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": null
+    },
+    "metapod": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "mew": {
+      "labels": [
+        "gen1",
+        "mythical"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "kanto"
+      ]
+    },
+    "mewtwo": {
+      "labels": [
+        "gen1",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kanto"
+      ]
+    },
+    "mienfoo": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "mienshao": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mightyena": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "milcery": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "milotic": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "miltank": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mimejr": {
+      "labels": [
+        "baby",
+        "gen4",
+        "sinnohan_form"
+      ],
+      "catchRate": 145,
+      "pikaStarRegions": null
+    },
+    "mimikyu": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "minccino": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "minior": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "minun": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "miraidon": {
+      "labels": [
+        "gen9",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "misdreavus": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mismagius": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "moltres": {
+      "labels": [
+        "gen1",
+        "kantonian_form",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kanto",
+        "galar"
+      ]
+    },
+    "monferno": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "morelull": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "morgrem": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "morpeko": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "mothim": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mrmime": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mrrime": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mudbray": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "mudkip": {
+      "labels": [
+        "gen3",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "mudsdale": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "muk": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "munchlax": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "munkidori": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "munna": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "murkrow": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "musharna": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "nacli": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "naclstack": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "naganadel": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "natu": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "necrozma": {
+      "labels": [
+        "gen7",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "nickit": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "nidoking": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "nidoqueen": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "nidoranf": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "nidoranm": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "nidorina": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "nidorino": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "nihilego": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "nincada": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "ninetales": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "ninjask": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "noctowl": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "noibat": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "noivern": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "nosepass": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "numel": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "nuzleaf": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "nymble": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "obstagoon": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "octillery": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "oddish": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "ogerpon": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 5,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "oinkologne": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "okidogi": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "omanyte": {
+      "labels": [
+        "fossil",
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "omastar": {
+      "labels": [
+        "fossil",
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "onix": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "oranguru": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "orbeetle": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "oricorio": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "orthworm": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "oshawott": {
+      "labels": [
+        "gen5",
+        "starter",
+        "unovan_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "overqwil": {
+      "labels": [
+        "gen8a"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "pachirisu": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "palafin": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "palkia": {
+      "labels": [
+        "gen4",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "palossand": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "palpitoad": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "pancham": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 220,
+      "pikaStarRegions": null
+    },
+    "pangoro": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 65,
+      "pikaStarRegions": null
+    },
+    "panpour": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pansage": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pansear": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "paras": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "parasect": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "passimian": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "patrat": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "pawmi": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pawmo": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 80,
+      "pikaStarRegions": null
+    },
+    "pawmot": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "pawniard": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "pecharunt": {
+      "labels": [
+        "gen9",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "pelipper": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "perrserker": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "persian": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "petilil": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "phanpy": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "phantump": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "pheromosa": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "phione": {
+      "labels": [
+        "gen4",
+        "mythical"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "pichu": {
+      "labels": [
+        "baby",
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pidgeot": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "pidgeotto": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "pidgey": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "pidove": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "pignite": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "pikachu": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pikipek": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "piloswine": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "pincurchin": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "pineco": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pinsir": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "piplup": {
+      "labels": [
+        "gen4",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "plusle": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "poipole": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "politoed": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "poliwag": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "poliwhirl": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "poliwrath": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "poltchageist": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "polteageist": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "ponyta": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "poochyena": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "popplio": {
+      "labels": [
+        "gen7",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "porygon": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "porygon2": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "porygonz": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "primarina": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "primeape": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "prinplup": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "probopass": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "psyduck": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "pumpkaboo": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "pupitar": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "purrloin": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "purugly": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "pyroar": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 65,
+      "pikaStarRegions": null
+    },
+    "pyukumuku": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "quagsire": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "quaquaval": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "quaxly": {
+      "labels": [
+        "gen9",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "quaxwell": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "quilava": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "quilladin": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "qwilfish": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "raboot": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "rabsca": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "ragingbolt": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "raichu": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "raikou": {
+      "labels": [
+        "gen2",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "johto"
+      ]
+    },
+    "ralts": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "rampardos": {
+      "labels": [
+        "fossil",
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "rapidash": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "raticate": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "rattata": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "rayquaza": {
+      "labels": [
+        "gen3",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "regice": {
+      "labels": [
+        "gen3",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "regidrago": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "regieleki": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "regigigas": {
+      "labels": [
+        "gen4",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "regirock": {
+      "labels": [
+        "gen3",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "registeel": {
+      "labels": [
+        "gen3",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "hoenn"
+      ]
+    },
+    "relicanth": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "rellor": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "remoraid": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "reshiram": {
+      "labels": [
+        "gen5",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "reuniclus": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "revavroom": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "rhydon": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "rhyhorn": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "rhyperior": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "ribombee": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "rillaboom": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "riolu": {
+      "labels": [
+        "baby",
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "roaringmoon": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "rockruff": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "roggenrola": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "rolycoly": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "rookidee": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "roselia": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "roserade": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "rotom": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "rowlet": {
+      "labels": [
+        "alolan_form",
+        "gen7",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "rufflet": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "runerigus": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "sableye": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "salamence": {
+      "labels": [
+        "gen3",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "salandit": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "salazzle": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "samurott": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "sandaconda": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "sandile": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "sandshrew": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "sandslash": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "sandygast": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 140,
+      "pikaStarRegions": null
+    },
+    "sandyshocks": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "sawk": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "sawsbuck": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "scatterbug": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "sceptile": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "scizor": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "scolipede": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "scorbunny": {
+      "labels": [
+        "gen8",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "scovillain": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "scrafty": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "scraggy": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "screamtail": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "scyther": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "seadra": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "seaking": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "sealeo": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "seedot": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "seel": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "seismitoad": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "sentret": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "serperior": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "servine": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "seviper": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "sewaddle": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "sharpedo": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "shaymin": {
+      "labels": [
+        "gen4",
+        "mythical"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "shedinja": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "shelgon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "shellder": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "shellos": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "shelmet": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "shieldon": {
+      "labels": [
+        "fossil",
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "shiftry": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "shiinotic": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "shinx": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "shroodle": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "shroomish": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "shuckle": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "shuppet": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "sigilyph": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "silcoon": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "silicobra": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "silvally": {
+      "labels": [
+        "gen7",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "simipour": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "simisage": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "simisear": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "sinistcha": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "sinistea": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "sirfetchd": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "sizzlipede": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "skarmory": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "skeledirge": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "skiddo": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "skiploom": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "skitty": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "skorupi": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "skrelp": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "skuntank": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "skwovet": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "slaking": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "slakoth": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "sliggoo": {
+      "labels": [
+        "gen6",
+        "kalosian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "slitherwing": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "slowbro": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "slowking": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 70,
+      "pikaStarRegions": null
+    },
+    "slowpoke": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "slugma": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "slurpuff": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 140,
+      "pikaStarRegions": null
+    },
+    "smeargle": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "smoliv": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "smoochum": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "sneasel": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "sneasler": {
+      "labels": [
+        "gen8a"
+      ],
+      "catchRate": 20,
+      "pikaStarRegions": null
+    },
+    "snivy": {
+      "labels": [
+        "gen5",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "snom": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "snorlax": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "snorunt": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "snover": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "snubbull": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "sobble": {
+      "labels": [
+        "gen8",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "solgaleo": {
+      "labels": [
+        "gen7",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "solosis": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "solrock": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "spearow": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "spectrier": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "spewpa": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "spheal": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "spidops": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "spinarak": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "spinda": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "spiritomb": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "spoink": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "sprigatito": {
+      "labels": [
+        "gen9",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "spritzee": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "squawkabilly": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "squirtle": {
+      "labels": [
+        "gen1",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "stakataka": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "stantler": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "staraptor": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "staravia": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "starly": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "starmie": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "staryu": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "steelix": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 25,
+      "pikaStarRegions": null
+    },
+    "steenee": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "stonjourner": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "stoutland": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "stufful": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 140,
+      "pikaStarRegions": null
+    },
+    "stunfisk": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "stunky": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "sudowoodo": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 65,
+      "pikaStarRegions": null
+    },
+    "suicune": {
+      "labels": [
+        "gen2",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "johto"
+      ]
+    },
+    "sunflora": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "sunkern": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 235,
+      "pikaStarRegions": null
+    },
+    "surskit": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "swablu": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "swadloon": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "swalot": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "swampert": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "swanna": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "swellow": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "swinub": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "swirlix": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "swoobat": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "sylveon": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tadbulb": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "taillow": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "talonflame": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tandemaus": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "tangela": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tangrowth": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "tapubulu": {
+      "labels": [
+        "gen7",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "tapufini": {
+      "labels": [
+        "gen7",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "tapukoko": {
+      "labels": [
+        "gen7",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "tapulele": {
+      "labels": [
+        "gen7",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "tarountula": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "tatsugiri": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "tauros": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "teddiursa": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "tentacool": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "tentacruel": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "tepig": {
+      "labels": [
+        "gen5",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "terapagos": {
+      "labels": [
+        "gen9",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "terrakion": {
+      "labels": [
+        "gen5",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "thievul": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 127,
+      "pikaStarRegions": null
+    },
+    "throh": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "thundurus": {
+      "labels": [
+        "gen5",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "thwackey": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "timburr": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "tinglu": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 6,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "tinkatink": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "tinkaton": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tinkatuff": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "tirtouga": {
+      "labels": [
+        "fossil",
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "toedscool": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "toedscruel": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "togedemaru": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "togekiss": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "togepi": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "togetic": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "torchic": {
+      "labels": [
+        "gen3",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "torkoal": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "tornadus": {
+      "labels": [
+        "gen5",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "torracat": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "torterra": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "totodile": {
+      "labels": [
+        "gen2",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "toucannon": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "toxapex": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "toxel": {
+      "labels": [
+        "baby",
+        "gen8"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "toxicroak": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "toxtricity": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tranquill": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "trapinch": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "treecko": {
+      "labels": [
+        "gen3",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "trevenant": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "tropius": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 200,
+      "pikaStarRegions": null
+    },
+    "trubbish": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "trumbeak": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "tsareena": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "turtonator": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 70,
+      "pikaStarRegions": null
+    },
+    "turtwig": {
+      "labels": [
+        "gen4",
+        "starter"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tympole": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "tynamo": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "typenull": {
+      "labels": [
+        "gen7",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "typhlosion": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tyranitar": {
+      "labels": [
+        "gen2",
+        "powerhouse"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tyrantrum": {
+      "labels": [
+        "fossil",
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "tyrogue": {
+      "labels": [
+        "baby",
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "tyrunt": {
+      "labels": [
+        "fossil",
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "umbreon": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "unfezant": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "unown": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 225,
+      "pikaStarRegions": null
+    },
+    "ursaluna": {
+      "labels": [
+        "gen8a"
+      ],
+      "catchRate": 20,
+      "pikaStarRegions": null
+    },
+    "ursaring": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "urshifu": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "uxie": {
+      "labels": [
+        "gen4",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "sinnoh"
+      ]
+    },
+    "vanillish": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "vanillite": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "vanilluxe": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "vaporeon": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "varoom": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "veluza": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 100,
+      "pikaStarRegions": null
+    },
+    "venipede": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "venomoth": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "venonat": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "venusaur": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "vespiquen": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "vibrava": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "victini": {
+      "labels": [
+        "gen5",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "victreebel": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "vigoroth": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "vikavolt": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "vileplume": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "virizion": {
+      "labels": [
+        "gen5",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "vivillon": {
+      "labels": [
+        "gen6"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "volbeat": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 150,
+      "pikaStarRegions": null
+    },
+    "volcanion": {
+      "labels": [
+        "gen6",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kalos"
+      ]
+    },
+    "volcarona": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 15,
+      "pikaStarRegions": null
+    },
+    "voltorb": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "vullaby": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "vulpix": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "wailmer": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 125,
+      "pikaStarRegions": null
+    },
+    "wailord": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "walkingwake": {
+      "labels": [
+        "gen9",
+        "paradox"
+      ],
+      "catchRate": 5,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "walrein": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "wartortle": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "watchog": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "wattrel": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 180,
+      "pikaStarRegions": null
+    },
+    "weavile": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "weedle": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "weepinbell": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "weezing": {
+      "labels": [
+        "gen1",
+        "kantonian_form"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "whimsicott": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "whirlipede": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 120,
+      "pikaStarRegions": null
+    },
+    "whiscash": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "whismur": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "wigglytuff": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "wiglett": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "wimpod": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "wingull": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "wishiwashi": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 60,
+      "pikaStarRegions": null
+    },
+    "wobbuffet": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "wochien": {
+      "labels": [
+        "gen9",
+        "legendary"
+      ],
+      "catchRate": 6,
+      "pikaStarRegions": [
+        "paldea"
+      ]
+    },
+    "woobat": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "wooloo": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "wooper": {
+      "labels": [
+        "gen2",
+        "johtonian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "wormadam": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "wugtrio": {
+      "labels": [
+        "gen9"
+      ],
+      "catchRate": 50,
+      "pikaStarRegions": null
+    },
+    "wurmple": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "wynaut": {
+      "labels": [
+        "baby",
+        "gen3"
+      ],
+      "catchRate": 125,
+      "pikaStarRegions": null
+    },
+    "wyrdeer": {
+      "labels": [
+        "gen8a"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "xatu": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "xerneas": {
+      "labels": [
+        "gen6",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "kalos"
+      ]
+    },
+    "xurkitree": {
+      "labels": [
+        "gen7",
+        "ultra_beast"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "yamask": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 190,
+      "pikaStarRegions": null
+    },
+    "yamper": {
+      "labels": [
+        "gen8"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "yanma": {
+      "labels": [
+        "gen2"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "yanmega": {
+      "labels": [
+        "gen4"
+      ],
+      "catchRate": 30,
+      "pikaStarRegions": null
+    },
+    "yungoos": {
+      "labels": [
+        "gen7"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "yveltal": {
+      "labels": [
+        "gen6",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": [
+        "kalos"
+      ]
+    },
+    "zacian": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "zamazenta": {
+      "labels": [
+        "gen8",
+        "legendary"
+      ],
+      "catchRate": 10,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "zangoose": {
+      "labels": [
+        "gen3"
+      ],
+      "catchRate": 90,
+      "pikaStarRegions": null
+    },
+    "zapdos": {
+      "labels": [
+        "gen1",
+        "kantonian_form",
+        "legendary"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kanto",
+        "galar"
+      ]
+    },
+    "zarude": {
+      "labels": [
+        "gen8",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "galar"
+      ]
+    },
+    "zebstrika": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "zekrom": {
+      "labels": [
+        "gen5",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "unova"
+      ]
+    },
+    "zeraora": {
+      "labels": [
+        "gen7",
+        "mythical"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "alola"
+      ]
+    },
+    "zigzagoon": {
+      "labels": [
+        "gen3",
+        "hoennian_form"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "zoroark": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "zorua": {
+      "labels": [
+        "gen5",
+        "unovan_form"
+      ],
+      "catchRate": 75,
+      "pikaStarRegions": null
+    },
+    "zubat": {
+      "labels": [
+        "gen1"
+      ],
+      "catchRate": 255,
+      "pikaStarRegions": null
+    },
+    "zweilous": {
+      "labels": [
+        "gen5"
+      ],
+      "catchRate": 45,
+      "pikaStarRegions": null
+    },
+    "zygarde": {
+      "labels": [
+        "gen6",
+        "legendary",
+        "restricted"
+      ],
+      "catchRate": 3,
+      "pikaStarRegions": [
+        "kalos"
+      ]
+    }
+  }
+}
