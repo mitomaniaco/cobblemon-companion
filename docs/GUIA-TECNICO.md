@@ -99,7 +99,7 @@ A coleção mantém seleção por UUID. A ficha individual separa resumo, golpes
 
 ### Dano real
 
-O indivíduo selecionado é o atacante; o cálculo compara o golpe do slot escolhido com um golpe aprendido compatível ainda não equipado. Stats/natureza/habilidade vêm da captura; IV desconhecido, EV desconhecido, item fora do catálogo compatível ou campos inválidos bloqueiam; um item segurado do catálogo entra no cálculo. `heldItem: null` é hoje tratado como sem item sem confirmação própria (lacuna aberta na Issue #75). O alvo é um perfil manual completo, não é lido da batalha. O formulário exige cinco confirmações porque versão e estado do combate não são detectados automaticamente.
+O indivíduo selecionado é o atacante; o cálculo compara o golpe do slot escolhido com um golpe aprendido compatível ainda não equipado. Stats/natureza/habilidade vêm da captura; IV desconhecido, EV desconhecido, item fora do catálogo compatível ou campos inválidos bloqueiam; um item segurado do catálogo entra no cálculo. `heldItem: null` é desconhecido (o importador não prova ausência de item): a UI diz “Item não registrado no save” e a confirmação do atacante do checklist passa a exigir atestar que o Pokémon está sem item (Issue #75). O alvo é um perfil manual completo, não é lido da batalha. O formulário exige cinco confirmações porque versão e estado do combate não são detectados automaticamente.
 
 O adaptador valida novamente, em processo confiável, fontes, UUID, IDs, nível, natureza, habilidade, IV/EV, EV total e premissas. O resultado mostra dois ranges mínimo–máximo dos **16 rolls** por golpe se acertar. Ele não estima precisão, crítico, efeitos secundários, nocaute, adversário, turnos futuros, ranking ou recomendação.
 
