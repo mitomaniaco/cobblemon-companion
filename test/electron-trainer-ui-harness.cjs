@@ -1158,6 +1158,36 @@ async function exerciseShellScrollLock(window, snapshot) {
   console.log('PASS casca fixa sem rolagem fantasma em 1568×839');
 }
 
+async function exerciseSnapshotChanged(contents) {
+  const received = () =>
+    evaluate(
+      contents,
+      `(async () => {
+    const api = window.cobblemonCompanion;
+    const seen = [];
+    const unsubscribe = api.onSnapshotChanged((snapshot) => seen.push(snapshot.sources[0].sha256));
+    const on = await api.test.simulateSnapshotChange();
+    await api.setAutoRefresh(false);
+    const off = await api.test.simulateSnapshotChange();
+    await api.setAutoRefresh(true);
+    unsubscribe();
+    const afterUnsubscribe = await api.test.simulateSnapshotChange();
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    return {seen, on, off, afterUnsubscribe};
+  })()`,
+    );
+  const result = await received();
+  check(
+    result.on.sent === true && result.off.sent === false && result.afterUnsubscribe.sent === true,
+    'O auto-refresh não ligou e desligou o aviso de mudança do save.',
+  );
+  check(
+    result.seen.length === 1 && result.seen[0] === 'c'.repeat(64),
+    'O renderer não recebeu exatamente um snapshot-changed enquanto inscrito e com auto-refresh ligado.',
+  );
+  console.log('PASS aviso snapshot-changed respeita inscrição e auto-refresh');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1178,6 +1208,7 @@ async function run() {
   );
   await exerciseCollectionAndDamage(window, snapshot);
   await exerciseDetailContainment(window, snapshot);
+  await exerciseSnapshotChanged(contents);
   await exerciseShellScrollLock(window, snapshot);
   await exerciseDemo(contents);
   await exerciseRealDamage(contents);
