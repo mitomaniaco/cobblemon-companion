@@ -93,3 +93,18 @@ export function getMoveSwapView(individual: PlayerIndividual, plan: MoveSwapPlan
         : null,
   };
 }
+
+/** Seleções válidas do plano para este indivíduo (ids dos golpes escolhidos), usadas para orientar o próximo passo. */
+export function getMoveSwapProgress(
+  individual: PlayerIndividual,
+  plan: MoveSwapPlan,
+): {slotMoveId: string | null; candidateMoveId: string | null} {
+  const view = getMoveSwapView(individual, plan);
+  if (view.status !== 'ready' || plan.individualUuid !== individual.uuid) return {slotMoveId: null, candidateMoveId: null};
+  const slotMoveId =
+    plan.slotIndex !== null && plan.slotIndex >= 0 && plan.slotIndex < view.equippedMoves.length
+      ? view.equippedMoves[plan.slotIndex].id
+      : null;
+  const candidateMoveId = view.candidates.find((move) => move.id === plan.candidateMoveId)?.id ?? null;
+  return {slotMoveId, candidateMoveId};
+}

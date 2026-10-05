@@ -91,6 +91,20 @@
   gap: var(--space-4);
 }
 
+.pickerGroup {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-2);
+}
+
+.pickerLabel {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  line-height: var(--line-caption);
+}
+
 .inputs {
   display: grid;
   min-width: 0;

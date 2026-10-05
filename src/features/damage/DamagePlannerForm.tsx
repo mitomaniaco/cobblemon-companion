@@ -32,6 +32,9 @@ import {
 } from './model';
 import styles from './DamagePlannerForm.module.css';
 
+const SLOT_LABEL = '1. Golpe atual (slot)';
+const CANDIDATE_LABEL = '2. Golpe aprendido para comparar';
+
 export interface DamagePlannerFormProps {
   individual: PlayerIndividual;
   controller: DamagePlannerController;
@@ -75,6 +78,13 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   useEffect(() => {
     setSpeciesQuery(DAMAGE_SPECIES_OPTIONS.find((species) => species.id === state.target.speciesId)?.name ?? '');
   }, [state.target.speciesId]);
+
+  const firstCandidateId = view.candidateMoves[0]?.id;
+  const candidateUnset = state.candidateMoveId === '';
+  const {selectCandidate} = controller;
+  useEffect(() => {
+    if (candidateUnset && firstCandidateId !== undefined) selectCandidate(firstCandidateId);
+  }, [candidateUnset, firstCandidateId, selectCandidate]);
 
   useEffect(() => {
     if (state.result !== null) resultRef.current?.scrollIntoView({block: 'nearest'});
@@ -271,27 +281,37 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               <h4 id={`${ids}-moves-title`} className={styles.sectionTitle}>
                 Golpes comparados
               </h4>
-              <MovePicker
-                variant="tile"
-                label="Slot comparado"
-                items={slotItems}
-                selectedKey={String(state.currentSlotIndex)}
-                onSelectionChange={(key) => controller.selectSlot(Number(key))}
-                isDisabled={calculating}
-              />
+              <div className={styles.pickerGroup}>
+                <p className={styles.pickerLabel} aria-hidden="true">
+                  {SLOT_LABEL}
+                </p>
+                <MovePicker
+                  variant="tile"
+                  label={SLOT_LABEL}
+                  items={slotItems}
+                  selectedKey={String(state.currentSlotIndex)}
+                  onSelectionChange={(key) => controller.selectSlot(Number(key))}
+                  isDisabled={calculating}
+                />
+              </div>
               {candidateItems.length === 0 ? (
                 <p className={styles.blockerText} role="status">
                   Nenhum golpe aprendido compatível com o cálculo.
                 </p>
               ) : (
-                <MovePicker
-                  variant="chip"
-                  label="Golpe aprendido para comparar"
-                  items={candidateItems}
-                  selectedKey={state.candidateMoveId || null}
-                  onSelectionChange={(key) => controller.selectCandidate(key)}
-                  isDisabled={calculating}
-                />
+                <div className={styles.pickerGroup}>
+                  <p className={styles.pickerLabel} aria-hidden="true">
+                    {CANDIDATE_LABEL}
+                  </p>
+                  <MovePicker
+                    variant="chip"
+                    label={CANDIDATE_LABEL}
+                    items={candidateItems}
+                    selectedKey={state.candidateMoveId || null}
+                    onSelectionChange={(key) => controller.selectCandidate(key)}
+                    isDisabled={calculating}
+                  />
+                </div>
               )}
             </section>
 

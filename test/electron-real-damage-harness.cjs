@@ -283,7 +283,7 @@ async function run() {
   })()`);
   check(initialGate, 'O perfil manual e as cinco confirmações precisam iniciar bloqueados, sem valores presumidos.');
 
-  await pickListOption(webContents, 'Golpe aprendido para comparar', COMPATIBILITY.moves[probe.candidateMoveId].name);
+  await pickListOption(webContents, '2. Golpe aprendido para comparar', COMPATIBILITY.moves[probe.candidateMoveId].name);
   const targetSpecies = COMPATIBILITY.species['cobblemon:abra'];
   const targetNature = COMPATIBILITY.natures['cobblemon:modest'];
   const targetAbility = COMPATIBILITY.abilities['cobblemon:synchronize'];
