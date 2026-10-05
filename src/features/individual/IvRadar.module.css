@@ -1,0 +1,51 @@
+.radar {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin-inline: auto;
+}
+
+.ring,
+.axis {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.shape {
+  transform-origin: 100px 100px;
+  animation: radar-in var(--duration-enter) var(--ease-out) both;
+}
+
+.area {
+  fill: color-mix(in oklab, var(--radar-accent) 35%, transparent);
+  stroke: var(--radar-accent);
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.label {
+  fill: var(--color-muted);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+@keyframes radar-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@media (forced-colors: active) {
+  .ring,
+  .axis,
+  .area {
+    stroke: CanvasText;
+  }
+
+  .label {
+    fill: CanvasText;
+  }
+}

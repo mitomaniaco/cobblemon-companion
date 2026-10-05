@@ -1,4 +1,5 @@
 .workspace {
+  container: ficha / inline-size;
   display: flex;
   width: 100%;
   min-width: 0;
@@ -10,114 +11,148 @@
 
 .returnButton {
   align-self: flex-start;
-  min-height: var(--size-navigation-target);
+  gap: var(--space-2);
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  overflow: clip;
+  border-radius: var(--radius-panel);
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in oklab, var(--hero-a) 38%, transparent), transparent 60%),
+    radial-gradient(90% 120% at 100% 100%, color-mix(in oklab, var(--hero-b) 28%, transparent), transparent 55%), var(--color-raised);
+  transition:
+    --hero-a var(--duration-hero) var(--ease-out),
+    --hero-b var(--duration-hero) var(--ease-out);
+}
+
+.heroMark {
+  position: absolute;
+  top: -48px;
+  right: -48px;
+  width: 240px;
+  height: 240px;
+  color: color-mix(in oklab, var(--color-text) 7%, transparent);
+  pointer-events: none;
+  rotate: -12deg;
+}
+
+.heroArtwork {
+  position: relative;
+  animation: artwork-in var(--duration-enter) var(--ease-out) both;
 }
 
 .identity {
+  position: relative;
   display: grid;
   min-width: 0;
-  grid-template-columns: 160px minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-4);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.identityInfo {
-  min-width: 0;
+  gap: var(--space-3);
+  justify-items: start;
 }
 
 .name {
-  margin: 0 0 var(--space-3);
+  min-width: 0;
+  margin: 0;
   font-size: var(--text-display);
   font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: var(--line-display);
   overflow-wrap: anywhere;
 }
 
-.identityFacts,
-.summaryFacts,
-.captureFacts,
-.provenanceList {
-  display: grid;
-  min-width: 0;
-  margin: 0;
+.name:focus {
+  outline: none;
 }
 
-.identityFacts {
-  gap: var(--space-3);
+.identityTypes,
+.identityChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
-.identityFacts > div,
-.summaryFacts > div,
-.captureFacts > div,
-.provenanceList > div {
-  min-width: 0;
-}
-
-.identityFacts dt,
-.summaryFacts dt,
-.captureFacts dt,
-.provenanceList dt {
-  color: var(--color-muted);
-  font-size: var(--text-caption);
-  line-height: var(--line-caption);
-}
-
-.identityFacts dd,
-.summaryFacts dd,
-.captureFacts dd,
-.provenanceList dd {
-  min-width: 0;
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.identityFacts dd {
-  font-weight: 600;
+.chip {
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--color-sunken) 70%, transparent);
+  font-size: var(--text-label);
+  line-height: 26px;
 }
 
 .tabs {
   min-width: 0;
 }
 
-.panelHeading {
-  margin: 0 0 var(--space-3);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
+.summaryFacts {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
 }
 
-.summaryFacts {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4) var(--space-3);
+.summaryFacts > div {
+  min-width: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-sunken);
+}
+
+.summaryFacts dt {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
 }
 
 .summaryFacts dd {
-  margin-top: var(--space-1);
-}
-
-.movesContent {
-  min-width: 0;
-}
-
-.moveGroups {
   display: grid;
   min-width: 0;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  margin: var(--space-1) 0 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
-.moveGroup {
-  min-width: 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-border);
+.natureLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: var(--line-caption);
+}
+
+.natureUp,
+.natureDown {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.natureUp {
+  color: var(--color-success);
+}
+
+.natureDown {
+  color: var(--color-error);
+}
+
+.inUse {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
 }
 
 .subheading {
-  margin: 0 0 var(--space-2);
+  margin: 0;
   font-size: var(--text-body);
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--line-body);
 }
 
@@ -126,7 +161,8 @@
   color: var(--color-muted);
 }
 
-.moveList,
+.chipList,
+.tileList,
 .sourceList,
 .warningList,
 .rawMoveGroup ul {
@@ -135,38 +171,108 @@
   list-style: none;
 }
 
-.moveList {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.moveItem {
-  display: grid;
-  min-width: 0;
-  gap: var(--space-1);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.moveName {
-  overflow-wrap: anywhere;
-  font-weight: 600;
-}
-
-.moveFacts {
+.chipList {
   display: flex;
   min-width: 0;
   flex-wrap: wrap;
-  gap: var(--space-1) var(--space-3);
+  gap: var(--space-2);
+}
+
+.tileList {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.tileList > li {
+  min-width: 0;
+}
+
+.movesContent {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-5);
+}
+
+.moveGroups {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-5);
+}
+
+.moveGroup {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.moveGroup > :not(h3, .moveCount) {
+  grid-column: 1 / -1;
+}
+
+.moveCount {
+  min-width: 22px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
   color: var(--color-muted);
+  background: var(--color-sunken);
   font-size: var(--text-caption);
-  line-height: var(--line-caption);
+  line-height: 20px;
+  text-align: center;
+}
+
+.ppUps {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.ppDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+}
+
+.ppDot[data-filled="true"] {
+  background: var(--color-highlight);
+}
+
+.statsContent {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+}
+
+.evSummary {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+
+.evTrack,
+.statBar {
+  display: block;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--radar-accent, var(--color-accent-bright)) calc(var(--fill) * 100%), var(--color-sunken) 0);
+}
+
+.evTrack {
+  --radar-accent: var(--color-accent-bright);
+  height: 6px;
+}
+
+.statBar {
+  margin-bottom: 4px;
 }
 
 .attributeTableScroll {
   max-width: 100%;
   overflow-x: auto;
-  border-bottom: 1px solid var(--color-border);
   scrollbar-width: thin;
 }
 
@@ -195,9 +301,11 @@
 
 .attributeTable tbody th {
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .attributeTable td {
+  min-width: 72px;
   color: var(--color-text);
   white-space: nowrap;
 }
@@ -320,69 +428,78 @@
   clip-path: inset(50%);
 }
 
-@media (max-width: 1099px) {
-  .workspace {
-    max-width: none;
+@keyframes artwork-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
   }
 }
 
-@media (max-width: 420px) {
-  .identity {
+@container ficha (min-width: 420px) {
+  .summaryFacts,
+  .tileList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container ficha (max-width: 519px) {
+  .hero {
     grid-template-columns: minmax(0, 1fr);
-    justify-items: start;
+    justify-items: center;
+    text-align: center;
   }
 
-  .identityFacts {
-    max-width: 100%;
+  .identity {
+    justify-items: center;
+  }
+
+  .identityTypes,
+  .identityChips {
+    justify-content: center;
+  }
+
+  .workspace .heroArtwork > div {
+    width: 136px;
+    height: 136px;
   }
 }
 
 @media (max-width: 360px) {
-  .moveGroups,
   .rawMoveColumns {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
 @media (forced-colors: active) {
-  .workspace {
-    border-color: CanvasText;
+  .hero,
+  .summaryFacts > div,
+  .chip {
+    border: 1px solid CanvasText;
     background: Canvas;
+  }
+
+  .listState,
+  .summaryFacts dt,
+  .natureLine,
+  .captureFacts dt,
+  .provenanceList dt,
+  .sourceList li,
+  .provenanceList dd,
+  .moveCount {
     color: CanvasText;
   }
 
-  .identity,
-  .moveGroup,
-  .moveItem,
-  .attributeTableScroll,
   .attributeTable th,
   .attributeTable td,
   .captureSection {
     border-color: CanvasText;
   }
 
-  .identityFacts dt,
-  .summaryFacts dt,
-  .captureFacts dt,
-  .provenanceList dt,
-  .listState,
-  .moveFacts,
-  .sourceList li,
-  .provenanceList dd {
-    color: CanvasText;
-  }
-
-  .attributeTable thead th,
-  .attributeTable tbody th,
-  .attributeTable td,
   .captureFacts code,
   .sourceTitle,
   .sourceList code,
   .provenanceList code,
-  .rawMoveGroup code {
-    color: CanvasText;
-  }
-
+  .rawMoveGroup code,
   .warningList {
     color: CanvasText;
   }
