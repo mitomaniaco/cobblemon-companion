@@ -140,4 +140,4 @@ function pveOpponents(trainers, series, referenceLevel) {
   return {opponents, assumptions};
 }
 
-module.exports = {trainerOpponents, pveOpponents, lookup};
+module.exports = {trainerOpponents, pveOpponents, lookup, namedFromCatalog};

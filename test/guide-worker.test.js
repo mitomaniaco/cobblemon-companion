@@ -59,6 +59,18 @@ describe('guide-worker', () => {
     });
   });
 
+  it('task battle-plan monta o plano do treinador com o time pedido', async () => {
+    const request = {sources: [], trainerId: 'synthetic:fire', team: [{uuid: 'u-1', moveIds: ['cobblemon:surf'], itemId: null}]};
+    deliver({data: {type: 'run', task: 'battle-plan', jobId: 'job-plan', snapshot, request}});
+    await waitFor(() => sent.some((message) => message.jobId === 'job-plan'));
+    const message = sent.find((candidate) => candidate.jobId === 'job-plan');
+    expect(message.type).toBe('result');
+    expect(message.result).toMatchObject({
+      status: 'plano',
+      entries: [expect.objectContaining({responder: expect.objectContaining({uuid: 'u-1'})})],
+    });
+  });
+
   it('cancel durante a montagem responde cancelled e não devolve resultado', async () => {
     deliver({data: {type: 'run', jobId: 'job-cancel', snapshot, goal: {kind: 'trainer', trainerId: 'synthetic:fire'}}});
     deliver({data: {type: 'cancel', jobId: 'job-cancel'}});

@@ -1,0 +1,243 @@
+{
+  "trainers": [
+    {
+      "id": "synthetic:brock",
+      "name": "Brock Sintético",
+      "format": "singles",
+      "team": [
+        {
+          "speciesId": "cobblemon:geodude",
+          "level": 13,
+          "moves": [
+            "cobblemon:spark",
+            "cobblemon:rocktomb",
+            "cobblemon:bulldoze"
+          ],
+          "ability": "sturdy",
+          "nature": "hardy",
+          "heldItem": [
+            "cobblemon:custap_berry"
+          ],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "cobblemon:onix",
+          "level": 14,
+          "moves": [
+            "cobblemon:rocktomb",
+            "cobblemon:bulldoze",
+            "cobblemon:sleeptalk"
+          ],
+          "ability": "sturdy",
+          "nature": "hardy",
+          "heldItem": [
+            "cobblemon:berry_juice"
+          ],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "cobblemon:geodude",
+          "level": 13,
+          "moves": [
+            "cobblemon:rocktomb"
+          ],
+          "ability": "sturdy",
+          "nature": "hardy",
+          "heldItem": [
+            "cobblemon:custap_berry"
+          ],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": [
+            "alolan"
+          ]
+        }
+      ],
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      },
+      "ai": {
+        "type": "rct",
+        "data": {
+          "maxSelectMargin": 0.15
+        }
+      },
+      "battleRules": {
+        "maxItemUses": 2
+      },
+      "bag": [
+        {
+          "item": "cobblemon:potion",
+          "quantity": 1
+        }
+      ],
+      "mob": {
+        "type": "leader",
+        "signatureItem": "cobblemon:hard_stone",
+        "optional": false
+      }
+    },
+    {
+      "id": "synthetic:surge",
+      "name": "Surge Sintético",
+      "format": "singles",
+      "team": [
+        {
+          "speciesId": "cobblemon:raichu",
+          "level": 30,
+          "moves": [
+            "cobblemon:thunderbolt"
+          ],
+          "ability": "static",
+          "nature": "hardy",
+          "heldItem": [
+            "mega_showdown:manectite",
+            "cobblemon:expert_belt"
+          ],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "cobblemon:pikachu",
+          "level": 28,
+          "moves": [
+            "cobblemon:thunderbolt"
+          ],
+          "ability": "static",
+          "nature": "hardy",
+          "heldItem": [
+            "cobblemon:expert_belt",
+            "cobblemon:life_orb"
+          ],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "cobblemon:voltorb",
+          "level": 20,
+          "moves": [
+            "cobblemon:thunderbolt"
+          ],
+          "ability": "electricsurge",
+          "nature": "hardy",
+          "heldItem": [],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        },
+        {
+          "speciesId": "cobblemon:voltorb",
+          "level": 20,
+          "moves": [
+            "cobblemon:tackle"
+          ],
+          "ability": "voltabsorb",
+          "nature": "hardy",
+          "heldItem": [],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        }
+      ],
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      },
+      "ai": {
+        "type": "rct"
+      },
+      "battleRules": {},
+      "bag": []
+    },
+    {
+      "id": "synthetic:duo",
+      "name": "Dupla Sintética",
+      "format": "doubles",
+      "team": [
+        {
+          "speciesId": "cobblemon:pikachu",
+          "level": 28,
+          "moves": [
+            "cobblemon:thunderbolt"
+          ],
+          "ability": "static",
+          "nature": "hardy",
+          "heldItem": [],
+          "ivs": {
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {},
+          "aspects": []
+        }
+      ],
+      "source": {
+        "jar": "synthetic",
+        "sha256": "0",
+        "file": "synthetic"
+      }
+    }
+  ]
+}

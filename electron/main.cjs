@@ -31,6 +31,7 @@ const IPC_REAL_DAMAGE = 'companion:calculate-real-damage';
 const IPC_CANCEL = 'companion:cancel';
 const IPC_READ_PLAYER_SNAPSHOT = 'companion:read-player-snapshot';
 const IPC_GUIDE_BUILD = 'companion:guide-build';
+const IPC_BATTLE_PLAN_BUILD = 'companion:battle-plan-build';
 const IPC_GUIDE_TRAINERS = 'companion:guide-trainers';
 const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
 const IPC_AUTO_REFRESH = 'companion:auto-refresh';
@@ -280,6 +281,45 @@ function handleGuideBuild(event, request) {
       throw new Error('Treinador sintético não encontrado');
     return structuredClone({...TRAINER_UI_GUIDE.result, goal});
   }
+  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal});
+}
+function validateBattlePlanRequest(request) {
+  exactKeys(request, ['sources', 'trainerId', 'team', 'jobId'], 'request');
+  if (typeof request.trainerId !== 'string' || request.trainerId.length === 0 || request.trainerId.length > 200)
+    throw new TypeError('request.trainerId precisa ser texto não vazio');
+  if (!Array.isArray(request.team) || request.team.length < 1 || request.team.length > 6)
+    throw new TypeError('request.team precisa ter de 1 a 6 membros');
+  const team = request.team.map((member, index) => {
+    exactKeys(member, ['uuid', 'moveIds', 'itemId'], `request.team[${index}]`);
+    if (typeof member.uuid !== 'string' || member.uuid.length === 0 || member.uuid.length > 64)
+      throw new TypeError(`request.team[${index}].uuid precisa ser texto`);
+    if (
+      !Array.isArray(member.moveIds) ||
+      member.moveIds.length > 4 ||
+      member.moveIds.some((id) => typeof id !== 'string' || id.length > 100)
+    )
+      throw new TypeError(`request.team[${index}].moveIds precisa ter até 4 ids`);
+    if (member.itemId !== null && (typeof member.itemId !== 'string' || member.itemId.length > 100))
+      throw new TypeError(`request.team[${index}].itemId precisa ser texto ou null`);
+    return {uuid: member.uuid, moveIds: [...member.moveIds], itemId: member.itemId};
+  });
+  if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
+  const jobId = request.jobId ?? `plan-${Date.now()}-${++guideSequence}`;
+  if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
+  return {jobId, plan: {trainerId: request.trainerId, team}};
+}
+function handleBattlePlanBuild(event, request) {
+  requireSender(event);
+  const {jobId, plan} = validateBattlePlanRequest(request);
+  const snapshot = readSnapshotForRenderer();
+  assertFreshSources(request.sources, snapshot.sources);
+  if (TRAINER_UI_TEST_MODE) {
+    if (plan.trainerId !== TRAINER_UI_GUIDE.battlePlan.trainer.id) throw new Error('Treinador sintético não encontrado');
+    return structuredClone(TRAINER_UI_GUIDE.battlePlan);
+  }
+  return runGuideJob(jobId, {type: 'run', task: 'battle-plan', jobId, snapshot, request: {sources: request.sources, ...plan}});
+}
+function runGuideJob(jobId, message) {
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(GUIDE_WORKER_PATH, [], {cwd: ROOT, stdio: 'ignore', serviceName: 'Cobblemon Companion guide'});
     const job = {jobId, child, resolve, reject, settled: false, cancelRequested: false};
@@ -299,7 +339,7 @@ function handleGuideBuild(event, request) {
     );
     child.on('error', (error) => settleGuide(job, error));
     try {
-      child.postMessage({type: 'run', jobId, snapshot, goal});
+      child.postMessage(message);
     } catch (error) {
       settleGuide(job, error);
     }
@@ -467,6 +507,7 @@ function installIpc() {
   ipcMain.handle(IPC_READ_PLAYER_SNAPSHOT, handleReadPlayerSnapshot);
   ipcMain.handle(IPC_AUTO_REFRESH, handleSetAutoRefresh);
   ipcMain.handle(IPC_GUIDE_BUILD, handleGuideBuild);
+  ipcMain.handle(IPC_BATTLE_PLAN_BUILD, handleBattlePlanBuild);
   ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
   ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
   if (TRAINER_UI_TEST_MODE) ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);

@@ -1214,7 +1214,10 @@ async function exerciseGuideContract(contents) {
     const sources = snapshot.sources.map(({kind, sha256}) => ({kind, sha256}));
     const guide = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}});
     const stale = await api.buildGuide({sources: [], goal: {kind: 'pve'}}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, guide, stale};
+    const member = guide.team[0];
+    const battlePlan = await api.buildBattlePlan({sources, trainerId: trainers[0].id, team: [{uuid: member.uuid, moveIds: member.moves.map((move) => move.id), itemId: member.item.id}]});
+    const stalePlan = await api.buildBattlePlan({sources: [], trainerId: trainers[0].id, team: []}).then(() => 'built', (error) => error.message);
+    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan};
   })()`,
   );
   check(
@@ -1231,6 +1234,16 @@ async function exerciseGuideContract(contents) {
     result.guide.team.length <= 6 && result.guide.team.every((member) => member.moves.length <= 4),
     'O guia sintético passou de 6 membros ou 4 golpes.',
   );
+  const plan = result.battlePlan;
+  check(
+    plan.status === 'plano' && plan.entries.length === 2 && plan.entries[0].responder && plan.entries[1].status === 'bloqueado',
+    'O plano sintético não trouxe um confronto planejado e um bloqueado.',
+  );
+  check(
+    plan.entries[0].heldItemAlternatives.length === 2 && plan.assumptions.length > 0,
+    'O plano sintético perdeu as alternativas de item ou as hipóteses.',
+  );
+  check(result.stalePlan !== 'built', 'O plano aceitou um pedido inválido.');
   check(result.stale !== 'built', 'O guia aceitou fontes que não correspondem ao snapshot atual.');
   console.log('PASS contrato do guia no modo sintético (treinadores, próximo objetivo, card e fontes)');
 }
