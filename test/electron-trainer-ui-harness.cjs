@@ -1234,11 +1234,14 @@ async function exerciseGuideContract(contents) {
     const nextGoal = await api.guideNextGoal();
     const sources = snapshot.sources.map(({kind, sha256}) => ({kind, sha256}));
     const guide = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}});
+    // Rejeição intencional (loga no main): fontes que não correspondem ao snapshot atual devem ser recusadas.
     const stale = await api.buildGuide({sources: [], goal: {kind: 'pve'}}).then(() => 'built', (error) => error.message);
     const member = guide.team[0];
     const battlePlan = await api.buildBattlePlan({sources, trainerId: trainers[0].id, team: [{uuid: member.uuid, moveIds: member.moves.map((move) => move.id), itemId: member.item.id}]});
+    // Rejeição intencional (loga no main): pedido de plano com fontes e time vazios deve ser recusado.
     const stalePlan = await api.buildBattlePlan({sources: [], trainerId: trainers[0].id, team: []}).then(() => 'built', (error) => error.message);
     const evolution = await api.buildEvolutionPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: member.moves.map((move) => move.id)}], levelCap: null});
+    // Rejeição intencional (loga "request.team precisa ter de 1 a 6 membros" no main): pedido de evoluções inválido.
     const staleEvolution = await api.buildEvolutionPlan({sources: [], team: [], levelCap: null}).then(() => 'built', (error) => error.message);
     return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution};
   })()`,

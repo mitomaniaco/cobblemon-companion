@@ -118,7 +118,7 @@ function Body({result}: {result: EvolutionPlanResult}) {
   );
 }
 
-export function EvolutionSection({evolutions}: {evolutions: EvolutionPlanController}) {
+export function EvolutionSection({evolutions, hasTeam}: {evolutions: EvolutionPlanController; hasTeam: boolean}) {
   const capId = useId();
   const invalidCap = isInvalidLevelCapInput(evolutions.levelCapInput);
   const building = evolutions.phase === 'building';
@@ -154,11 +154,12 @@ export function EvolutionSection({evolutions}: {evolutions: EvolutionPlanControl
             Cancelar
           </Button>
         ) : (
-          <Button variant="secondary" onPress={evolutions.request}>
+          <Button variant="secondary" isDisabled={!hasTeam} onPress={evolutions.request}>
             {evolutions.phase === 'ready' ? 'Calcular de novo' : 'Ver evoluções do time'}
           </Button>
         )}
       </div>
+      {!hasTeam && <p className={styles.muted}>O guia não montou nenhum membro: não há o que evoluir.</p>}
 
       {building && (
         <div className={styles.building}>

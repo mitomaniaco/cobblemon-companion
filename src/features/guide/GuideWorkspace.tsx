@@ -427,8 +427,10 @@ export function GuideWorkspace({snapshot, guide, battlePlan, evolutions, loading
               planSlot={
                 building ? null : (
                   <>
-                    {guide.result.goal.kind === 'trainer' && <BattlePlanSection plan={battlePlan} individualName={planIndividualName} />}
-                    <EvolutionSection evolutions={evolutions} />
+                    {guide.result.goal.kind === 'trainer' && (
+                      <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
+                    )}
+                    <EvolutionSection evolutions={evolutions} hasTeam={guide.result.team.length > 0} />
                   </>
                 )
               }
