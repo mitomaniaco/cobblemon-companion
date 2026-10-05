@@ -153,6 +153,56 @@ async function chooseReactAriaOption(contents, label, optionName) {
   })()`);
 }
 
+async function pickListOption(contents, label, optionName) {
+  await contents.executeJavaScript(`(() => {
+    const planner = document.querySelector('.real-damage-planner');
+    const listbox = [...(planner?.querySelectorAll('[role="listbox"]') || [])]
+      .find(element => element.getAttribute('aria-label') === ${JSON.stringify(label)});
+    const options = [...(listbox?.querySelectorAll('[role="option"]') || [])]
+      .filter(option => option.getAttribute('aria-label') === ${JSON.stringify(optionName)});
+    if (options.length !== 1) throw new Error('Opção de golpe não encontrada de forma única.');
+    options[0].click();
+  })()`);
+  await waitFor(
+    contents,
+    `(() => {
+    const listbox = [...document.querySelectorAll('.real-damage-planner [role="listbox"]')]
+      .find(element => element.getAttribute('aria-label') === ${JSON.stringify(label)});
+    return [...(listbox?.querySelectorAll('[role="option"][aria-selected="true"]') || [])]
+      .some(option => option.getAttribute('aria-label') === ${JSON.stringify(optionName)});
+  })()`,
+    `seleção de ${optionName}`,
+  );
+}
+
+async function chooseComboBoxOption(contents, label, optionName) {
+  const listboxName = `${label} opções`;
+  await contents.executeJavaScript(`(() => {
+    const labels = [...document.querySelectorAll('.real-damage-planner label')]
+      .filter(element => element.textContent.trim() === ${JSON.stringify(label)});
+    if (labels.length !== 1) throw new Error('Campo de busca acessível não encontrado de forma única.');
+    const input = document.getElementById(labels[0].htmlFor);
+    if (!(input instanceof HTMLInputElement)) throw new Error('Campo acessível não é de texto.');
+    input.focus();
+    input.select();
+  })()`);
+  await contents.insertText(optionName);
+  await waitFor(
+    contents,
+    `(() => [...document.querySelectorAll('[role="listbox"]')].some(listbox =>
+    listbox.getAttribute('aria-label') === ${JSON.stringify(listboxName)} && listbox.getClientRects().length > 0))()`,
+    `opções de ${label}`,
+  );
+  await contents.executeJavaScript(`(() => {
+    const listbox = [...document.querySelectorAll('[role="listbox"]')]
+      .find(element => element.getAttribute('aria-label') === ${JSON.stringify(listboxName)});
+    const options = [...(listbox?.querySelectorAll('[role="option"]') || [])]
+      .filter(option => option.innerText.replace(/\\s+/g, ' ').trim() === ${JSON.stringify(optionName)});
+    if (options.length !== 1) throw new Error('Opção acessível não encontrada de forma única.');
+    options[0].click();
+  })()`);
+}
+
 async function setLabeledNumber(contents, label, value, statGroup = null) {
   await contents.executeJavaScript(`(() => {
     const expectedLabel = ${JSON.stringify(label)};
@@ -233,12 +283,12 @@ async function run() {
   })()`);
   check(initialGate, 'O perfil manual e as cinco confirmações precisam iniciar bloqueados, sem valores presumidos.');
 
-  await chooseReactAriaOption(webContents, 'Golpe aprendido para comparar', COMPATIBILITY.moves[probe.candidateMoveId].name);
+  await pickListOption(webContents, 'Golpe aprendido para comparar', COMPATIBILITY.moves[probe.candidateMoveId].name);
   const targetSpecies = COMPATIBILITY.species['cobblemon:abra'];
   const targetNature = COMPATIBILITY.natures['cobblemon:modest'];
   const targetAbility = COMPATIBILITY.abilities['cobblemon:synchronize'];
   check(targetSpecies && targetNature && targetAbility, 'O perfil de alvo do cenário de cálculo não está disponível.');
-  await chooseReactAriaOption(webContents, 'Espécie', targetSpecies.name);
+  await chooseComboBoxOption(webContents, 'Espécie', targetSpecies.name);
   await setLabeledNumber(webContents, 'Nível', '50');
   await chooseReactAriaOption(webContents, 'Natureza', targetNature);
   await chooseReactAriaOption(webContents, 'Habilidade', targetAbility);

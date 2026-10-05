@@ -2,11 +2,7 @@
   display: grid;
   min-width: 0;
   gap: var(--space-4);
-  padding: var(--space-5);
-  border-radius: var(--radius-panel);
   color: var(--color-text);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-raised);
   caret-color: var(--color-accent);
 }
 
@@ -88,11 +84,10 @@
   color: var(--color-control-border);
 }
 
-.form {
+.layout {
   display: grid;
   min-width: 0;
   grid-template-columns: minmax(0, 1fr);
-  align-items: start;
   gap: var(--space-4);
 }
 
@@ -103,21 +98,6 @@
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-.inputsLegend {
-  margin-bottom: var(--space-1);
-  color: var(--color-muted);
-  font-size: var(--text-caption);
-  font-weight: 600;
-  line-height: var(--line-caption);
-}
-
-.moveField {
-  display: grid;
-  min-width: 0;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
 }
 
 .targetProfile,
@@ -201,10 +181,134 @@
   gap: var(--space-3);
 }
 
-.side {
+.inputsColumn,
+.battle {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+
+.inputsColumn {
+  align-content: start;
+}
+
+.battle {
+  order: -1;
+  align-content: start;
+  gap: var(--space-3);
+}
+
+.moves {
   display: grid;
   min-width: 0;
   gap: var(--space-3);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 600;
+  line-height: var(--line-body);
+}
+
+.presets {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.presetButton {
+  min-height: 32px;
+  height: 32px;
+}
+
+.evTotal {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--line-caption);
+}
+
+.evTotal[data-over] {
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.planner .formField input[type="number"] {
+  appearance: textfield;
+}
+
+.planner .formField input[type="number"]::-webkit-inner-spin-button,
+.planner .formField input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.resultRegion {
+  min-width: 0;
+}
+
+.resultHeader {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.resultTarget {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
+}
+
+.skeleton {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.skeletonBar {
+  height: 72px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(90deg, var(--color-sunken) 25%, var(--color-raised) 50%, var(--color-sunken) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.placeholder {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-3);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-card);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.placeholder p {
+  margin: 0;
+  font-size: var(--text-label);
+}
+
+.placeholderMark {
+  width: 40px;
+  height: 40px;
+  color: var(--color-muted);
 }
 
 .confirmations {
@@ -276,7 +380,7 @@
 .ranges {
   display: grid;
   min-width: 0;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
 }
 
@@ -336,6 +440,11 @@
   background: color-mix(in oklab, var(--color-success) 14%, var(--color-raised));
 }
 
+.diff[data-tone="mixed"] {
+  color: var(--color-warning);
+  background: color-mix(in oklab, var(--color-warning) 14%, var(--color-raised));
+}
+
 .diff[data-tone="loss"] {
   color: var(--color-error);
   background: color-mix(in oklab, var(--color-error) 14%, var(--color-raised));
@@ -390,14 +499,29 @@
   font-variant-numeric: tabular-nums;
 }
 
-@container dano-workspace (min-width: 820px) {
-  .form {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+@container dano-workspace (min-width: 860px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
+    align-items: start;
   }
 
-  .side {
+  .battle {
+    order: 0;
     position: sticky;
     top: 0;
+    max-height: calc(100dvh - 150px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .battle .matchup {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .battle .versus {
+    width: 24px;
+    height: 24px;
+    justify-self: center;
   }
 }
 
@@ -416,7 +540,6 @@
     justify-self: center;
   }
 
-  .moveField,
   .ranges {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -432,7 +555,8 @@
 }
 
 @media (forced-colors: active) {
-  .planner,
+  .inputsColumn,
+  .battle,
   .combatant,
   .confirmations,
   .result,
