@@ -4,6 +4,7 @@ const {buildBattlePlan} = require('./lib/guide/battle-plan.cjs');
 const {buildCapturePlan} = require('./lib/guide/capture-plan.cjs');
 const {buildEvolutionPlan} = require('./lib/guide/evolution-plan.cjs');
 const {buildGuide} = require('./lib/guide/engine.cjs');
+const {buildTrainingPlan} = require('./lib/guide/training-plan.cjs');
 const {loadGuideData, loadSpawnData} = require('./lib/guide/data.cjs');
 
 const cancelled = new Set();
@@ -31,6 +32,7 @@ async function run(message) {
     let result;
     if (task === 'battle-plan') result = await buildBattlePlan({...input, request});
     else if (task === 'evolution-plan') result = await buildEvolutionPlan({...input, request});
+    else if (task === 'training-plan') result = await buildTrainingPlan({...input, request});
     else if (task === 'capture-plan') result = await buildCapturePlan({...input, data: {...input.data, spawns: loadSpawnData()}, request});
     else result = await buildGuide({...input, goal});
     post({type: 'result', jobId, result});
