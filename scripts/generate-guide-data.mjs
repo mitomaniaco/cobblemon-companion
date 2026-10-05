@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {loadMergedSpecies} from './lib/game-species.mjs';
-import {deriveEvolutions, deriveLearnset, deriveSeries, deriveTrainer} from './lib/guide-data.mjs';
+import {deriveCampaign, deriveEvolutions, deriveLearnset, deriveSeries, deriveTrainer} from './lib/guide-data.mjs';
 import {parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -114,6 +114,7 @@ function main() {
     ['evolutions.json', jsonText(evolutions)],
     ['trainers.json', jsonText(trainers)],
     ['series.json', jsonText(series)],
+    ['campaign.json', jsonText(deriveCampaign({series, trainers}))],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 
   if (options.write) {

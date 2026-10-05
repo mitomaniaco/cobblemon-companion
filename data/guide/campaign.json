@@ -1,0 +1,2811 @@
+{
+  "atm_team": {
+    "stages": [
+      {
+        "stageId": "atm_team:allthemods_trainer_lego",
+        "name": "Lego",
+        "type": "team_allthemods_trainer",
+        "order": 0,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:allthemods_trainer_lego",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:allthemods_trainer_nektar",
+        "name": "Nektar",
+        "type": "team_allthemods_trainer",
+        "order": 1,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:allthemods_trainer_nektar",
+            "format": "singles",
+            "maxLevel": 88,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_bored420",
+        "name": "Bored",
+        "type": "team_allthemods_wandering",
+        "order": 2,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_bored420",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_drackion",
+        "name": "Drack_ion",
+        "type": "team_allthemods_wandering",
+        "order": 3,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_drackion",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_dragondogemaster",
+        "name": "Toshiba Microwave",
+        "type": "team_allthemods_custom_gym",
+        "order": 4,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_dragondogemaster",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_helix_ranmaru",
+        "name": "Helix Ranmaru",
+        "type": "team_allthemods_wandering",
+        "order": 5,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_helix_ranmaru",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_joeychin01",
+        "name": "Joey",
+        "type": "team_allthemods_custom_gym",
+        "order": 6,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_joeychin01",
+            "format": "doubles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_mitchell52",
+        "name": "Mitchell52",
+        "type": "team_allthemods_wandering",
+        "order": 7,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_mitchell52",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_mutantgumdrop",
+        "name": "MutantGumdrop",
+        "type": "team_allthemods_wandering",
+        "order": 8,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_mutantgumdrop",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_oly2o6",
+        "name": "Oly2o6",
+        "type": "team_allthemods_custom_gym",
+        "order": 9,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_oly2o6",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_shinyporygon",
+        "name": "ShinyPorygon",
+        "type": "team_allthemods_wandering",
+        "order": 10,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_shinyporygon",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_toblerone0508",
+        "name": "Toblerone0508",
+        "type": "team_allthemods_custom_gym",
+        "order": 11,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_toblerone0508",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_ultramegaa",
+        "name": "UltraMegaa",
+        "type": "team_allthemods_wandering",
+        "order": 12,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_ultramegaa",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_lobsterjonn",
+        "name": "LobsterJonn",
+        "type": "team_allthemods_custom_gym",
+        "order": 13,
+        "requires": [
+          "atm_team:allthemods_trainer_lego",
+          "atm_team:allthemods_trainer_nektar"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_lobsterjonn",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_cesarzorak",
+        "name": "CesarZorak",
+        "type": "team_allthemods_elite_gym",
+        "order": 14,
+        "requires": [
+          "atm_team:team_allthemods_bored420",
+          "atm_team:team_allthemods_drackion",
+          "atm_team:team_allthemods_dragondogemaster",
+          "atm_team:team_allthemods_helix_ranmaru",
+          "atm_team:team_allthemods_joeychin01",
+          "atm_team:team_allthemods_lobsterjonn",
+          "atm_team:team_allthemods_mitchell52",
+          "atm_team:team_allthemods_mutantgumdrop",
+          "atm_team:team_allthemods_oly2o6",
+          "atm_team:team_allthemods_shinyporygon",
+          "atm_team:team_allthemods_toblerone0508",
+          "atm_team:team_allthemods_ultramegaa"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_cesarzorak",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_rosary",
+        "name": "_Rosary_",
+        "type": "team_allthemods_elite_gym",
+        "order": 15,
+        "requires": [
+          "atm_team:team_allthemods_cesarzorak"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_rosary",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_satherov",
+        "name": "Satherov",
+        "type": "team_allthemods_elite_gym",
+        "order": 16,
+        "requires": [
+          "atm_team:team_allthemods_rosary"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_satherov",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_uncandango",
+        "name": "Uncandango",
+        "type": "team_allthemods_elite_gym",
+        "order": 17,
+        "requires": [
+          "atm_team:team_allthemods_satherov"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_uncandango",
+            "format": "singles",
+            "maxLevel": 90,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_thevortex",
+        "name": "thevortex",
+        "type": "team_allthemods_elite_gym",
+        "order": 18,
+        "requires": [
+          "atm_team:team_allthemods_uncandango"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_thevortex",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_whatthedrunk",
+        "name": "Whatthedrunk",
+        "type": "team_allthemods_elite_gym",
+        "order": 19,
+        "requires": [
+          "atm_team:team_allthemods_thevortex"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_whatthedrunk",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "atm_team:team_allthemods_notch",
+        "name": "Notch",
+        "type": "team_allthemods_elite_gym",
+        "order": 20,
+        "requires": [
+          "atm_team:team_allthemods_whatthedrunk"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_allthemods_notch",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      }
+    ],
+    "optionalTrainerIds": []
+  },
+  "bdsp": {
+    "stages": [
+      {
+        "stageId": "bdsp:gym_leader_roark_0395",
+        "name": "Gym Leader Roark",
+        "type": "leader",
+        "order": 0,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_roark_0395",
+            "format": "singles",
+            "maxLevel": 14,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:commander_mars_03c2",
+        "name": "Commander Mars · 1º encontro",
+        "type": "team_galactic",
+        "order": 1,
+        "requires": [
+          "bdsp:gym_leader_roark_0395"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:commander_mars_03c2",
+            "format": "singles",
+            "maxLevel": 16,
+            "teamSize": 2,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:commander_jupiter_041d",
+        "name": "Commander Jupiter",
+        "type": "team_galactic",
+        "order": 2,
+        "requires": [
+          "bdsp:commander_mars_03c2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:commander_jupiter_041d",
+            "format": "singles",
+            "maxLevel": 20,
+            "teamSize": 2,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_gardenia_03d6",
+        "name": "Gym Leader Gardenia",
+        "type": "leader",
+        "order": 3,
+        "requires": [
+          "bdsp:commander_jupiter_041d"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_gardenia_03d6",
+            "format": "singles",
+            "maxLevel": 22,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:pokemon_trainer_cedric_0445",
+        "name": "Pokémon Trainer Cedric · 1º encontro",
+        "type": "rival",
+        "order": 4,
+        "requires": [
+          "bdsp:gym_leader_gardenia_03d6"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:pokemon_trainer_cedric_0445",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_0446",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_0447",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_maylene_03d8",
+        "name": "Gym Leader Maylene",
+        "type": "leader",
+        "order": 5,
+        "requires": [
+          "bdsp:pokemon_trainer_cedric_0445"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_maylene_03d8",
+            "format": "singles",
+            "maxLevel": 30,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_wake_03d7",
+        "name": "Gym Leader Wake",
+        "type": "leader",
+        "order": 6,
+        "requires": [
+          "bdsp:gym_leader_maylene_03d8"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_wake_03d7",
+            "format": "singles",
+            "maxLevel": 30,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:pokemon_trainer_cedric_0448",
+        "name": "Pokémon Trainer Cedric · 2º encontro",
+        "type": "rival",
+        "order": 7,
+        "requires": [
+          "bdsp:gym_leader_wake_03d7"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:pokemon_trainer_cedric_0448",
+            "format": "singles",
+            "maxLevel": 31,
+            "teamSize": 4,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_0449",
+            "format": "singles",
+            "maxLevel": 31,
+            "teamSize": 4,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_044a",
+            "format": "singles",
+            "maxLevel": 31,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_fantina_03d9",
+        "name": "Gym Leader Fantina",
+        "type": "leader",
+        "order": 8,
+        "requires": [
+          "bdsp:pokemon_trainer_cedric_0448"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_fantina_03d9",
+            "format": "singles",
+            "maxLevel": 36,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:pokemon_trainer_cedric_044b",
+        "name": "Pokémon Trainer Cedric · 3º encontro",
+        "type": "rival",
+        "order": 9,
+        "requires": [
+          "bdsp:gym_leader_fantina_03d9"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:pokemon_trainer_cedric_044b",
+            "format": "singles",
+            "maxLevel": 37,
+            "teamSize": 5,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_044c",
+            "format": "singles",
+            "maxLevel": 37,
+            "teamSize": 5,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_044d",
+            "format": "singles",
+            "maxLevel": 37,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_byron_0399",
+        "name": "Gym Leader Byron",
+        "type": "leader",
+        "order": 10,
+        "requires": [
+          "bdsp:pokemon_trainer_cedric_044b"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_byron_0399",
+            "format": "singles",
+            "maxLevel": 39,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:commander_saturn_041f",
+        "name": "Commander Saturn · 1º encontro",
+        "type": "team_galactic",
+        "order": 11,
+        "requires": [
+          "bdsp:gym_leader_byron_0399"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:commander_saturn_041f",
+            "format": "singles",
+            "maxLevel": 37,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:commander_mars_041c",
+        "name": "Commander Mars · 2º encontro",
+        "type": "team_galactic",
+        "order": 12,
+        "requires": [
+          "bdsp:commander_saturn_041f"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:commander_mars_041c",
+            "format": "singles",
+            "maxLevel": 39,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_candice_03da",
+        "name": "Gym Leader Candice",
+        "type": "leader",
+        "order": 13,
+        "requires": [
+          "bdsp:commander_mars_041c"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_candice_03da",
+            "format": "singles",
+            "maxLevel": 42,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:team_galactic_boss_cyrus_041a",
+        "name": "Team Galactic Boss Cyrus · 1º encontro",
+        "type": "team_galactic",
+        "order": 14,
+        "requires": [
+          "bdsp:gym_leader_candice_03da"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_galactic_boss_cyrus_041a",
+            "format": "singles",
+            "maxLevel": 43,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:commander_saturn_0420",
+        "name": "Commander Saturn · 2º encontro",
+        "type": "team_galactic",
+        "order": 15,
+        "requires": [
+          "bdsp:team_galactic_boss_cyrus_041a"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:commander_saturn_0420",
+            "format": "singles",
+            "maxLevel": 40,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:commander_mars_jupiter_m009",
+        "name": "Commanders Mars & Jupiter",
+        "type": "team_galactic",
+        "order": 16,
+        "requires": [
+          "bdsp:commander_saturn_0420"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:commander_mars_jupiter_m009",
+            "format": "doubles",
+            "maxLevel": 41,
+            "teamSize": 2,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:team_galactic_boss_cyrus_041b",
+        "name": "Team Galactic Boss Cyrus · 2º encontro",
+        "type": "team_galactic",
+        "order": 17,
+        "requires": [
+          "bdsp:commander_mars_jupiter_m009"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:team_galactic_boss_cyrus_041b",
+            "format": "singles",
+            "maxLevel": 48,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:gym_leader_volkner_03db",
+        "name": "Gym Leader Volkner",
+        "type": "leader",
+        "order": 18,
+        "requires": [
+          "bdsp:team_galactic_boss_cyrus_041b"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:gym_leader_volkner_03db",
+            "format": "singles",
+            "maxLevel": 49,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:pokemon_trainer_cedric_044e",
+        "name": "Pokémon Trainer Cedric · 4º encontro",
+        "type": "rival",
+        "order": 19,
+        "requires": [
+          "bdsp:gym_leader_volkner_03db"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:pokemon_trainer_cedric_044e",
+            "format": "singles",
+            "maxLevel": 55,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_044f",
+            "format": "singles",
+            "maxLevel": 55,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:pokemon_trainer_cedric_0450",
+            "format": "singles",
+            "maxLevel": 55,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_aaron_039f",
+        "name": "Elite Four Aaron",
+        "type": "e4",
+        "order": 20,
+        "requires": [
+          "bdsp:pokemon_trainer_cedric_044e"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_aaron_039f",
+            "format": "singles",
+            "maxLevel": 57,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_bertha_03a0",
+        "name": "Elite Four Bertha",
+        "type": "e4",
+        "order": 21,
+        "requires": [
+          "bdsp:elite_four_aaron_039f"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_bertha_03a0",
+            "format": "singles",
+            "maxLevel": 59,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_flint_03a1",
+        "name": "Elite Four Flint",
+        "type": "e4",
+        "order": 22,
+        "requires": [
+          "bdsp:elite_four_bertha_03a0"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_flint_03a1",
+            "format": "singles",
+            "maxLevel": 61,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_lucian_03a2",
+        "name": "Elite Four Lucian",
+        "type": "e4",
+        "order": 23,
+        "requires": [
+          "bdsp:elite_four_flint_03a1"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_lucian_03a2",
+            "format": "singles",
+            "maxLevel": 63,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:champion_cynthia_03a5",
+        "name": "Champion Cynthia",
+        "type": "champ",
+        "order": 24,
+        "requires": [
+          "bdsp:elite_four_lucian_03a2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:champion_cynthia_03a5",
+            "format": "singles",
+            "maxLevel": 66,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_aaron_059e",
+        "name": "Aaron · 1º encontro",
+        "type": "normal",
+        "order": 25,
+        "requires": [
+          "bdsp:champion_cynthia_03a5"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_aaron_059e",
+            "format": "singles",
+            "maxLevel": 69,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_bertha_059f",
+        "name": "Bertha · 1º encontro",
+        "type": "normal",
+        "order": 26,
+        "requires": [
+          "bdsp:elite_four_aaron_059e"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_bertha_059f",
+            "format": "singles",
+            "maxLevel": 71,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_flint_05a0",
+        "name": "Flint · 1º encontro",
+        "type": "normal",
+        "order": 27,
+        "requires": [
+          "bdsp:elite_four_bertha_059f"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_flint_05a0",
+            "format": "singles",
+            "maxLevel": 73,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_lucian_05a1",
+        "name": "Lucian · 1º encontro",
+        "type": "normal",
+        "order": 28,
+        "requires": [
+          "bdsp:elite_four_flint_05a0"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_lucian_05a1",
+            "format": "singles",
+            "maxLevel": 75,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:champion_cynthia_05a2",
+        "name": "Cynthia · 1º encontro",
+        "type": "normal",
+        "order": 29,
+        "requires": [
+          "bdsp:elite_four_lucian_05a1"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:champion_cynthia_05a2",
+            "format": "singles",
+            "maxLevel": 78,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_aaron_05a3",
+        "name": "Aaron · 2º encontro",
+        "type": "normal",
+        "order": 30,
+        "requires": [
+          "bdsp:champion_cynthia_05a2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_aaron_05a3",
+            "format": "singles",
+            "maxLevel": 79,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_bertha_05a4",
+        "name": "Bertha · 2º encontro",
+        "type": "normal",
+        "order": 31,
+        "requires": [
+          "bdsp:elite_four_aaron_05a3"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_bertha_05a4",
+            "format": "singles",
+            "maxLevel": 81,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_flint_05a5",
+        "name": "Flint · 2º encontro",
+        "type": "normal",
+        "order": 32,
+        "requires": [
+          "bdsp:elite_four_bertha_05a4"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_flint_05a5",
+            "format": "singles",
+            "maxLevel": 83,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:elite_four_lucian_05a6",
+        "name": "Lucian · 2º encontro",
+        "type": "normal",
+        "order": 33,
+        "requires": [
+          "bdsp:elite_four_flint_05a5"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_lucian_05a6",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "bdsp:champion_cynthia_05a7",
+        "name": "Cynthia · 2º encontro",
+        "type": "normal",
+        "order": 34,
+        "requires": [
+          "bdsp:elite_four_lucian_05a6"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:champion_cynthia_05a7",
+            "format": "singles",
+            "maxLevel": 88,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      }
+    ],
+    "optionalTrainerIds": [
+      "rctmod:commander_jupiter_041e",
+      "rctmod:commander_mars_0477",
+      "rctmod:gym_leader_byron_0590",
+      "rctmod:gym_leader_candice_058f",
+      "rctmod:gym_leader_fantina_058e",
+      "rctmod:gym_leader_gardenia_058b",
+      "rctmod:gym_leader_maylene_058d",
+      "rctmod:gym_leader_roark_058a",
+      "rctmod:gym_leader_volkner_0591",
+      "rctmod:gym_leader_wake_058c",
+      "rctmod:team_galactic_grunt_03c3",
+      "rctmod:team_galactic_grunt_03c4",
+      "rctmod:team_galactic_grunt_03c5",
+      "rctmod:team_galactic_grunt_03c6",
+      "rctmod:team_galactic_grunt_0421",
+      "rctmod:team_galactic_grunt_0422",
+      "rctmod:team_galactic_grunt_0423",
+      "rctmod:team_galactic_grunt_0424",
+      "rctmod:team_galactic_grunt_0425",
+      "rctmod:team_galactic_grunt_0426",
+      "rctmod:team_galactic_grunt_0427",
+      "rctmod:team_galactic_grunt_0428",
+      "rctmod:team_galactic_grunt_042a",
+      "rctmod:team_galactic_grunt_042b",
+      "rctmod:team_galactic_grunt_042c",
+      "rctmod:team_galactic_grunt_042d",
+      "rctmod:team_galactic_grunt_042e",
+      "rctmod:team_galactic_grunt_042f",
+      "rctmod:team_galactic_grunt_0430",
+      "rctmod:team_galactic_grunt_0431",
+      "rctmod:team_galactic_grunt_0463",
+      "rctmod:team_galactic_grunt_0464",
+      "rctmod:team_galactic_grunt_0465",
+      "rctmod:team_galactic_grunt_0466",
+      "rctmod:team_galactic_grunt_0467",
+      "rctmod:team_galactic_grunt_0468",
+      "rctmod:team_galactic_grunt_0469",
+      "rctmod:team_galactic_grunt_046a",
+      "rctmod:team_galactic_grunt_046b",
+      "rctmod:team_galactic_grunt_046c",
+      "rctmod:team_galactic_grunt_046d",
+      "rctmod:team_galactic_grunt_046e",
+      "rctmod:team_galactic_grunt_046f",
+      "rctmod:team_galactic_grunt_0470",
+      "rctmod:team_galactic_grunt_0471",
+      "rctmod:team_galactic_grunt_0472",
+      "rctmod:team_galactic_grunt_0473",
+      "rctmod:team_galactic_grunt_0474",
+      "rctmod:team_galactic_grunt_0475",
+      "rctmod:team_galactic_grunt_0476",
+      "rctmod:team_galactic_grunt_0579",
+      "rctmod:team_galactic_grunt_057a",
+      "rctmod:team_galactic_grunt_057b",
+      "rctmod:team_galactic_grunt_057c",
+      "rctmod:team_galactic_grunt_0583",
+      "rctmod:team_galactic_grunt_0587",
+      "rctmod:team_galactic_grunt_0588",
+      "rctmod:team_galactic_grunt_0589"
+    ]
+  },
+  "contentcreators": {
+    "stages": [
+      {
+        "stageId": "contentcreators:contentcreators_princessstellar",
+        "name": "PrincessStellar",
+        "type": "contentcreators",
+        "order": 0,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_princessstellar",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_mitinhoplayer",
+        "name": "MitinhoPlayer",
+        "type": "contentcreators",
+        "order": 1,
+        "requires": [
+          "contentcreators:contentcreators_princessstellar"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_mitinhoplayer",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_bucketst",
+        "name": "BucketSt",
+        "type": "contentcreators",
+        "order": 2,
+        "requires": [
+          "contentcreators:contentcreators_mitinhoplayer"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_bucketst",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_pilpoh",
+        "name": "Pilpoh",
+        "type": "contentcreators",
+        "order": 3,
+        "requires": [
+          "contentcreators:contentcreators_bucketst"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_pilpoh",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_virtuositas",
+        "name": "Virtuositas",
+        "type": "contentcreators",
+        "order": 4,
+        "requires": [
+          "contentcreators:contentcreators_pilpoh"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_virtuositas",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_danrique",
+        "name": "Danrique",
+        "type": "contentcreators",
+        "order": 5,
+        "requires": [
+          "contentcreators:contentcreators_virtuositas"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_danrique",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_direwolf20",
+        "name": "Direwolf20",
+        "type": "contentcreators",
+        "order": 6,
+        "requires": [
+          "contentcreators:contentcreators_danrique"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_direwolf20",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_chosenarchitect",
+        "name": "ChosenArchitect",
+        "type": "contentcreators",
+        "order": 7,
+        "requires": [
+          "contentcreators:contentcreators_direwolf20"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_chosenarchitect",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "contentcreators:contentcreators_nofaxu",
+        "name": "Nofaxu",
+        "type": "contentcreators",
+        "order": 8,
+        "requires": [
+          "contentcreators:contentcreators_chosenarchitect"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:contentcreators_nofaxu",
+            "format": "singles",
+            "maxLevel": 100,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      }
+    ],
+    "optionalTrainerIds": []
+  },
+  "radicalred": {
+    "stages": [
+      {
+        "stageId": "radicalred:leader_brock_019e",
+        "name": "Leader Brock",
+        "type": "leader",
+        "order": 0,
+        "requires": [],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_brock_019e",
+            "format": "singles",
+            "maxLevel": 14,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rocket_admin_archer_002e",
+        "name": "Rocket Admin Archer · 1º encontro",
+        "type": "team_rocket",
+        "order": 1,
+        "requires": [
+          "radicalred:leader_brock_019e"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:rocket_admin_archer_002e",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rival_terry_014c",
+        "name": "Rival Terry · 1º encontro",
+        "type": "rival",
+        "order": 2,
+        "requires": [
+          "radicalred:rocket_admin_archer_002e"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_terry_014c",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_terry_014d",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_terry_014e",
+            "format": "singles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_misty_019f",
+        "name": "Leader Misty",
+        "type": "leader",
+        "order": 3,
+        "requires": [
+          "radicalred:rival_terry_014c"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_misty_019f",
+            "format": "singles",
+            "maxLevel": 27,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:trainer_brendan_0032",
+        "name": "Trainer Brendan · 1º encontro",
+        "type": "rival",
+        "order": 4,
+        "requires": [
+          "radicalred:leader_misty_019f"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:trainer_brendan_0032",
+            "format": "singles",
+            "maxLevel": 29,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_lt_surge_01a0",
+        "name": "Leader Lt. Surge",
+        "type": "leader",
+        "order": 5,
+        "requires": [
+          "radicalred:trainer_brendan_0032"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_lt_surge_01a0",
+            "format": "singles",
+            "maxLevel": 34,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_erika_01a1",
+        "name": "Leader Erika",
+        "type": "leader",
+        "order": 6,
+        "requires": [
+          "radicalred:leader_lt_surge_01a0"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_erika_01a1",
+            "format": "singles",
+            "maxLevel": 44,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:boss_giovanni_015c",
+        "name": "Boss Giovanni · 1º encontro",
+        "type": "team_rocket",
+        "order": 7,
+        "requires": [
+          "radicalred:leader_erika_01a1"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:boss_giovanni_015c",
+            "format": "singles",
+            "maxLevel": 46,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rival_terry_01b0",
+        "name": "Rival Terry · 2º encontro",
+        "type": "rival",
+        "order": 8,
+        "requires": [
+          "radicalred:boss_giovanni_015c"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_terry_01b0",
+            "format": "singles",
+            "maxLevel": 55,
+            "teamSize": 5,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_terry_01b1",
+            "format": "singles",
+            "maxLevel": 55,
+            "teamSize": 5,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_terry_01b2",
+            "format": "singles",
+            "maxLevel": 55,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rocket_admin_archer_ariana_m000",
+        "name": "Rocket Admins Archer & Ariana",
+        "type": "team_rocket",
+        "order": 9,
+        "requires": [
+          "radicalred:rival_terry_01b0"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:rocket_admin_archer_ariana_m000",
+            "format": "doubles",
+            "maxLevel": 55,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:boss_giovanni_015d",
+        "name": "Boss Giovanni · 2º encontro",
+        "type": "team_rocket",
+        "order": 10,
+        "requires": [
+          "radicalred:rocket_admin_archer_ariana_m000"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:boss_giovanni_015d",
+            "format": "singles",
+            "maxLevel": 56,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_sabrina_01a4",
+        "name": "Leader Sabrina",
+        "type": "leader",
+        "order": 11,
+        "requires": [
+          "radicalred:boss_giovanni_015d"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_sabrina_01a4",
+            "format": "singles",
+            "maxLevel": 59,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:trainer_brendan_0039",
+        "name": "Trainer Brendan · 2º encontro",
+        "type": "rival",
+        "order": 12,
+        "requires": [
+          "radicalred:leader_sabrina_01a4"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:trainer_brendan_0039",
+            "format": "singles",
+            "maxLevel": 63,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_koga_01a2",
+        "name": "Leader Koga",
+        "type": "leader",
+        "order": 13,
+        "requires": [
+          "radicalred:trainer_brendan_0039"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_koga_01a2",
+            "format": "singles",
+            "maxLevel": 68,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:trainer_may_003d",
+        "name": "Trainer May",
+        "type": "rival",
+        "order": 14,
+        "requires": [
+          "radicalred:leader_koga_01a2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:trainer_may_003d",
+            "format": "singles",
+            "maxLevel": 73,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_blaine_01a3",
+        "name": "Leader Blaine",
+        "type": "leader",
+        "order": 15,
+        "requires": [
+          "radicalred:trainer_may_003d"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_blaine_01a3",
+            "format": "singles",
+            "maxLevel": 76,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rocket_admin_archer_0043",
+        "name": "Rocket Admin Archer · 2º encontro",
+        "type": "team_rocket",
+        "order": 16,
+        "requires": [
+          "radicalred:leader_blaine_01a3"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:rocket_admin_archer_0043",
+            "format": "singles",
+            "maxLevel": 79,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rocket_admin_ariana_0044",
+        "name": "Rocket Admin Ariana",
+        "type": "team_rocket",
+        "order": 17,
+        "requires": [
+          "radicalred:rocket_admin_archer_0043"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:rocket_admin_ariana_0044",
+            "format": "singles",
+            "maxLevel": 79,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:boss_giovanni_0045",
+        "name": "Boss Giovanni · 3º encontro",
+        "type": "team_rocket",
+        "order": 18,
+        "requires": [
+          "radicalred:rocket_admin_ariana_0044"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:boss_giovanni_0045",
+            "format": "doubles",
+            "maxLevel": 80,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:leader_clair_004a",
+        "name": "Leader Clair",
+        "type": "leader",
+        "order": 19,
+        "requires": [
+          "radicalred:boss_giovanni_0045"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_clair_004a",
+            "format": "singles",
+            "maxLevel": 81,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:rival_terry_01b3",
+        "name": "Rival Terry · 3º encontro",
+        "type": "rival",
+        "order": 20,
+        "requires": [
+          "radicalred:leader_clair_004a"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_terry_01b3",
+            "format": "singles",
+            "maxLevel": 81,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_terry_01b4",
+            "format": "singles",
+            "maxLevel": 81,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_terry_01b5",
+            "format": "singles",
+            "maxLevel": 81,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:trainer_brendan_001a",
+        "name": "Trainer Brendan · 3º encontro",
+        "type": "rival",
+        "order": 21,
+        "requires": [
+          "radicalred:rival_terry_01b3"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:trainer_brendan_001a",
+            "format": "singles",
+            "maxLevel": 82,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:elite_four_agatha_0053",
+        "name": "Elite Four Agatha",
+        "type": "e4",
+        "order": 22,
+        "requires": [
+          "radicalred:trainer_brendan_001a"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:elite_four_agatha_0053",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:elite_four_agatha_0054",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:elite_four_bruno_0050",
+        "name": "Elite Four Bruno",
+        "type": "e4",
+        "order": 23,
+        "requires": [
+          "radicalred:trainer_brendan_001a"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:elite_four_bruno_0050",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:elite_four_bruno_0051",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:elite_four_lance_0056",
+        "name": "Elite Four Lance",
+        "type": "e4",
+        "order": 24,
+        "requires": [
+          "radicalred:trainer_brendan_001a"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:elite_four_lance_0056",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:elite_four_lance_0057",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:elite_four_lorelei_004d",
+        "name": "Elite Four Lorelei",
+        "type": "e4",
+        "order": 25,
+        "requires": [
+          "radicalred:trainer_brendan_001a"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:elite_four_lorelei_004d",
+            "format": "doubles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:elite_four_lorelei_004e",
+            "format": "doubles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "radicalred:champion_terry_01b6",
+        "name": "Champion Terry",
+        "type": "champ",
+        "order": 26,
+        "requires": [
+          "radicalred:elite_four_agatha_0053",
+          "radicalred:elite_four_bruno_0050",
+          "radicalred:elite_four_lance_0056",
+          "radicalred:elite_four_lorelei_004d"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:champion_terry_01b6",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:champion_terry_01b7",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:champion_terry_01b8",
+            "format": "singles",
+            "maxLevel": 85,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      }
+    ],
+    "optionalTrainerIds": [
+      "rctmod:champion_terry_02e3",
+      "rctmod:champion_terry_02e4",
+      "rctmod:champion_terry_02e5",
+      "rctmod:leader_clair_0026",
+      "rctmod:leader_giovanni_015e",
+      "rctmod:rival_terry_0146",
+      "rctmod:rival_terry_0147",
+      "rctmod:rival_terry_0148",
+      "rctmod:rival_terry_0149",
+      "rctmod:rival_terry_014a",
+      "rctmod:rival_terry_014b",
+      "rctmod:rival_terry_01aa",
+      "rctmod:rival_terry_01ab",
+      "rctmod:rival_terry_01ac",
+      "rctmod:rival_terry_01ad",
+      "rctmod:rival_terry_01ae",
+      "rctmod:rival_terry_01af",
+      "rctmod:rocket_admin_archer_002a",
+      "rctmod:rocket_admin_archer_0035",
+      "rctmod:rocket_admin_ariana_0029",
+      "rctmod:rocket_admin_ariana_0036",
+      "rctmod:team_rocket_admin_021f",
+      "rctmod:team_rocket_admin_0220",
+      "rctmod:team_rocket_grunt_0046",
+      "rctmod:team_rocket_grunt_0047",
+      "rctmod:team_rocket_grunt_0048",
+      "rctmod:team_rocket_grunt_0049",
+      "rctmod:team_rocket_grunt_015f",
+      "rctmod:team_rocket_grunt_0160",
+      "rctmod:team_rocket_grunt_0161",
+      "rctmod:team_rocket_grunt_0162",
+      "rctmod:team_rocket_grunt_0163",
+      "rctmod:team_rocket_grunt_0164",
+      "rctmod:team_rocket_grunt_0165",
+      "rctmod:team_rocket_grunt_0166",
+      "rctmod:team_rocket_grunt_0167",
+      "rctmod:team_rocket_grunt_0168",
+      "rctmod:team_rocket_grunt_0169",
+      "rctmod:team_rocket_grunt_016a",
+      "rctmod:team_rocket_grunt_016b",
+      "rctmod:team_rocket_grunt_016c",
+      "rctmod:team_rocket_grunt_016d",
+      "rctmod:team_rocket_grunt_016e",
+      "rctmod:team_rocket_grunt_016f",
+      "rctmod:team_rocket_grunt_0170",
+      "rctmod:team_rocket_grunt_0171",
+      "rctmod:team_rocket_grunt_0172",
+      "rctmod:team_rocket_grunt_0173",
+      "rctmod:team_rocket_grunt_0174",
+      "rctmod:team_rocket_grunt_0175",
+      "rctmod:team_rocket_grunt_0176",
+      "rctmod:team_rocket_grunt_0177",
+      "rctmod:team_rocket_grunt_0178",
+      "rctmod:team_rocket_grunt_0179",
+      "rctmod:team_rocket_grunt_017a",
+      "rctmod:team_rocket_grunt_017b",
+      "rctmod:team_rocket_grunt_017c",
+      "rctmod:team_rocket_grunt_017d",
+      "rctmod:team_rocket_grunt_017e",
+      "rctmod:team_rocket_grunt_017f",
+      "rctmod:team_rocket_grunt_0180",
+      "rctmod:team_rocket_grunt_0181",
+      "rctmod:team_rocket_grunt_0182",
+      "rctmod:team_rocket_grunt_0183",
+      "rctmod:team_rocket_grunt_0184",
+      "rctmod:team_rocket_grunt_0185",
+      "rctmod:team_rocket_grunt_0186",
+      "rctmod:team_rocket_grunt_0187",
+      "rctmod:team_rocket_grunt_0204",
+      "rctmod:team_rocket_grunt_0219",
+      "rctmod:team_rocket_grunt_021a",
+      "rctmod:team_rocket_grunt_021b",
+      "rctmod:team_rocket_grunt_021c",
+      "rctmod:team_rocket_grunt_021d",
+      "rctmod:team_rocket_grunt_021e",
+      "rctmod:team_rocket_grunt_0237",
+      "rctmod:team_rocket_grunt_0238",
+      "rctmod:team_rocket_grunt_0239",
+      "rctmod:trainer_red_0003"
+    ]
+  },
+  "unbound": {
+    "stages": [
+      {
+        "stageId": "unbound:rival_2_player_chose_beldum_060a",
+        "name": "Rival Wayne · 1º encontro",
+        "type": "rival",
+        "order": 0,
+        "requires": [],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_2_player_chose_beldum_060a",
+            "format": "singles",
+            "maxLevel": 19,
+            "teamSize": 2,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_2_player_chose_gible_0609",
+            "format": "singles",
+            "maxLevel": 19,
+            "teamSize": 2,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_2_player_chose_larvitar_060b",
+            "format": "singles",
+            "maxLevel": 19,
+            "teamSize": 2,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_mirskle_05aa",
+        "name": "Leader Mirskle",
+        "type": "leader",
+        "order": 1,
+        "requires": [
+          "unbound:rival_2_player_chose_beldum_060a"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_mirskle_05aa",
+            "format": "doubles",
+            "maxLevel": 21,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:shadow_admin_marlon_grunt_m00e",
+        "name": "Shadow Admin Marlon & Grunt",
+        "type": "team_shadow",
+        "order": 2,
+        "requires": [
+          "unbound:leader_mirskle_05aa"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:shadow_admin_marlon_grunt_m00e",
+            "format": "doubles",
+            "maxLevel": 28,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_vega_05ab",
+        "name": "Leader Vega",
+        "type": "leader",
+        "order": 3,
+        "requires": [
+          "unbound:shadow_admin_marlon_grunt_m00e"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_vega_05ab",
+            "format": "singles",
+            "maxLevel": 27,
+            "teamSize": 4,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:shadow_admin_ivory_1_05ba",
+        "name": "Shadow Admin Ivory",
+        "type": "team_shadow",
+        "order": 4,
+        "requires": [
+          "unbound:leader_vega_05ab"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:shadow_admin_ivory_1_05ba",
+            "format": "singles",
+            "maxLevel": 34,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:boss_zeph_1_05bb",
+        "name": "Boss Zeph · 1º encontro",
+        "type": "team_shadow",
+        "order": 5,
+        "requires": [
+          "unbound:shadow_admin_ivory_1_05ba"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:boss_zeph_1_05bb",
+            "format": "singles",
+            "maxLevel": 33,
+            "teamSize": 1,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:rival_3_player_chose_beldum_05fb",
+        "name": "Rival Wayne · 2º encontro",
+        "type": "rival",
+        "order": 6,
+        "requires": [
+          "unbound:boss_zeph_1_05bb"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_3_player_chose_beldum_05fb",
+            "format": "singles",
+            "maxLevel": 33,
+            "teamSize": 3,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_3_player_chose_gible_05fa",
+            "format": "singles",
+            "maxLevel": 33,
+            "teamSize": 3,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_3_player_chose_larvitar_05fc",
+            "format": "singles",
+            "maxLevel": 33,
+            "teamSize": 3,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_alice_05ac",
+        "name": "Leader Alice",
+        "type": "leader",
+        "order": 7,
+        "requires": [
+          "unbound:rival_3_player_chose_beldum_05fb"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_alice_05ac",
+            "format": "singles",
+            "maxLevel": 33,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_mel_05ad",
+        "name": "Leader Mel",
+        "type": "leader",
+        "order": 8,
+        "requires": [
+          "unbound:leader_alice_05ac"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_mel_05ad",
+            "format": "singles",
+            "maxLevel": 37,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:shadow_admin_ivory_grunt_m00f",
+        "name": "Shadow Admin Ivory & Grunt",
+        "type": "team_shadow",
+        "order": 9,
+        "requires": [
+          "unbound:leader_mel_05ad"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:shadow_admin_ivory_grunt_m00f",
+            "format": "doubles",
+            "maxLevel": 38,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:sucessor_maxima_05ae",
+        "name": "Sucessor Maxima",
+        "type": "rival",
+        "order": 10,
+        "requires": [
+          "unbound:shadow_admin_ivory_grunt_m00f"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:sucessor_maxima_05ae",
+            "format": "singles",
+            "maxLevel": 41,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:shadow_admin_marlon_2_05be",
+        "name": "Shadow Admin Marlon",
+        "type": "team_shadow",
+        "order": 11,
+        "requires": [
+          "unbound:sucessor_maxima_05ae"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:shadow_admin_marlon_2_05be",
+            "format": "singles",
+            "maxLevel": 41,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:rival_4_player_chose_beldum_05fe",
+        "name": "Rival Wayne · 3º encontro",
+        "type": "rival",
+        "order": 12,
+        "requires": [
+          "unbound:shadow_admin_marlon_2_05be"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_4_player_chose_beldum_05fe",
+            "format": "singles",
+            "maxLevel": 47,
+            "teamSize": 5,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_4_player_chose_gible_05fd",
+            "format": "singles",
+            "maxLevel": 47,
+            "teamSize": 5,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_4_player_chose_larvitar_05ff",
+            "format": "singles",
+            "maxLevel": 47,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_galavan_05af",
+        "name": "Leader Galavan",
+        "type": "leader",
+        "order": 13,
+        "requires": [
+          "unbound:rival_4_player_chose_beldum_05fe"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_galavan_05af",
+            "format": "doubles",
+            "maxLevel": 46,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:light_of_ruin_vega_05c1",
+        "name": "Light of Ruin Vega",
+        "type": "ligh_of_ruin",
+        "order": 14,
+        "requires": [
+          "unbound:leader_galavan_05af"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:light_of_ruin_vega_05c1",
+            "format": "singles",
+            "maxLevel": 47,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:boss_zeph_2_05bf",
+        "name": "Boss Zeph · 2º encontro",
+        "type": "team_shadow",
+        "order": 15,
+        "requires": [
+          "unbound:light_of_ruin_vega_05c1"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:boss_zeph_2_05bf",
+            "format": "singles",
+            "maxLevel": 46,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:light_of_ruin_aklove_1_05c2",
+        "name": "Ruin Leader Aklove · 1º encontro",
+        "type": "ligh_of_ruin",
+        "order": 16,
+        "requires": [
+          "unbound:boss_zeph_2_05bf"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:light_of_ruin_aklove_1_05c2",
+            "format": "singles",
+            "maxLevel": 53,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_big_mo_05b0",
+        "name": "Leader Big Mo",
+        "type": "leader",
+        "order": 17,
+        "requires": [
+          "unbound:light_of_ruin_aklove_1_05c2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_big_mo_05b0",
+            "format": "singles",
+            "maxLevel": 53,
+            "teamSize": 5,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_tessy_05b1",
+        "name": "Leader Tessy",
+        "type": "leader",
+        "order": 18,
+        "requires": [
+          "unbound:leader_big_mo_05b0"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_tessy_05b1",
+            "format": "singles",
+            "maxLevel": 58,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:rival_5_player_chose_beldum_0601",
+        "name": "Rival Wayne · 4º encontro",
+        "type": "rival",
+        "order": 19,
+        "requires": [
+          "unbound:leader_tessy_05b1"
+        ],
+        "ambiguous": true,
+        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "variants": [
+          {
+            "id": "rctmod:rival_5_player_chose_beldum_0601",
+            "format": "singles",
+            "maxLevel": 65,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_5_player_chose_gible_0600",
+            "format": "singles",
+            "maxLevel": 65,
+            "teamSize": 6,
+            "optional": false
+          },
+          {
+            "id": "rctmod:rival_5_player_chose_larvitar_0602",
+            "format": "singles",
+            "maxLevel": 65,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:light_of_ruin_admin_ivory_3_05c3",
+        "name": "Ruin Admin Ivory",
+        "type": "ligh_of_ruin",
+        "order": 20,
+        "requires": [
+          "unbound:rival_5_player_chose_beldum_0601"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:light_of_ruin_admin_ivory_3_05c3",
+            "format": "singles",
+            "maxLevel": 62,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:light_of_ruin_aklove_2_05c4",
+        "name": "Ruin Leader Aklove · 2º encontro",
+        "type": "ligh_of_ruin",
+        "order": 21,
+        "requires": [
+          "unbound:light_of_ruin_admin_ivory_3_05c3"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:light_of_ruin_aklove_2_05c4",
+            "format": "singles",
+            "maxLevel": 62,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:shadow_admin_marlon_3_05c0",
+        "name": "Ex-Shadow Admin Marlon",
+        "type": "ligh_of_ruin",
+        "order": 22,
+        "requires": [
+          "unbound:light_of_ruin_aklove_2_05c4"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:shadow_admin_marlon_3_05c0",
+            "format": "singles",
+            "maxLevel": 62,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:leader_benjamin_05b2",
+        "name": "Leader Benjamin",
+        "type": "leader",
+        "order": 23,
+        "requires": [
+          "unbound:shadow_admin_marlon_3_05c0"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:leader_benjamin_05b2",
+            "format": "singles",
+            "maxLevel": 62,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:elite_four_arabella_05b5",
+        "name": "Elite Four Arabella",
+        "type": "e4",
+        "order": 24,
+        "requires": [
+          "unbound:leader_benjamin_05b2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_arabella_05b5",
+            "format": "singles",
+            "maxLevel": 76,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:elite_four_elias_05b4",
+        "name": "Elite Four Elias",
+        "type": "e4",
+        "order": 25,
+        "requires": [
+          "unbound:leader_benjamin_05b2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_elias_05b4",
+            "format": "singles",
+            "maxLevel": 76,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:elite_four_moleman_05b3",
+        "name": "Elite Four Moleman",
+        "type": "e4",
+        "order": 26,
+        "requires": [
+          "unbound:leader_benjamin_05b2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_moleman_05b3",
+            "format": "doubles",
+            "maxLevel": 76,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:elite_four_penny_05b6",
+        "name": "Elite Four Penny",
+        "type": "e4",
+        "order": 27,
+        "requires": [
+          "unbound:leader_benjamin_05b2"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:elite_four_penny_05b6",
+            "format": "doubles",
+            "maxLevel": 76,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:champion_jax_05b7",
+        "name": "Champion Jax",
+        "type": "champ",
+        "order": 28,
+        "requires": [
+          "unbound:elite_four_arabella_05b5",
+          "unbound:elite_four_elias_05b4",
+          "unbound:elite_four_moleman_05b3",
+          "unbound:elite_four_penny_05b6"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:champion_jax_05b7",
+            "format": "doubles",
+            "maxLevel": 76,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      },
+      {
+        "stageId": "unbound:light_of_ruin_aklove_3_05c5",
+        "name": "Ruin Leader Aklove · 3º encontro",
+        "type": "ligh_of_ruin",
+        "order": 29,
+        "requires": [
+          "unbound:champion_jax_05b7"
+        ],
+        "ambiguous": false,
+        "ambiguousReason": null,
+        "variants": [
+          {
+            "id": "rctmod:light_of_ruin_aklove_3_05c5",
+            "format": "singles",
+            "maxLevel": 84,
+            "teamSize": 6,
+            "optional": false
+          }
+        ]
+      }
+    ],
+    "optionalTrainerIds": [
+      "rctmod:battleground_alice_05f4",
+      "rctmod:battleground_benjamin_05f9",
+      "rctmod:battleground_big_mo_05f7",
+      "rctmod:battleground_mel_05f5",
+      "rctmod:battleground_mirskle_05f2",
+      "rctmod:battleground_tessy_05f8",
+      "rctmod:battleground_vega_05f3",
+      "rctmod:rival_1_player_chose_beldum_0607",
+      "rctmod:rival_1_player_chose_gible_0606",
+      "rctmod:rival_1_player_chose_larvitar_0608",
+      "rctmod:shadow_admin_ivory_2_05bc",
+      "rctmod:shadow_admin_marlon_1_05b8",
+      "rctmod:shadow_grunt_w_ivory_2_05bd",
+      "rctmod:shadow_grunt_w_marlon_1_05b9",
+      "rctmod:title_defense_jax_05ee",
+      "rctmod:title_defense_marlon_05eb",
+      "rctmod:title_defense_milo_05ed",
+      "rctmod:title_defense_rival_player_chose_beldum_05f0",
+      "rctmod:title_defense_rival_player_chose_gible_05ef",
+      "rctmod:title_defense_rival_player_chose_larvitar_05f1",
+      "rctmod:title_defense_solenk_05ec",
+      "rctmod:title_defense_zeph_05ea",
+      "rctmod:trainer_77_05f6",
+      "rctmod:trainer_92_0605"
+    ]
+  }
+}
