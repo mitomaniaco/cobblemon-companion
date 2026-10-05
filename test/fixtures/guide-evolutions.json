@@ -1,0 +1,41 @@
+{
+  "evolutions": {
+    "geodude": [{"to": "cobblemon:graveler", "method": "level_up", "requirement": "level(minLevel=25)"}],
+    "graveler": [{"to": "cobblemon:golem", "method": "trade", "requirement": ""}],
+    "golem": [],
+    "eevee": [
+      {"to": "cobblemon:vaporeon", "method": "item_interact", "requirement": "requiredContext=cobblemon:water_stone"},
+      {"to": "cobblemon:espeon", "method": "level_up", "requirement": "friendship(amount=160); time_range(range=day)"},
+      {"to": "cobblemon:sylveon", "method": "level_up", "requirement": "friendship(amount=160); has_move_type(type=fairy)"}
+    ],
+    "toxel": [
+      {"to": "cobblemon:toxtricity", "method": "level_up", "requirement": "level(minLevel=30); properties(target=toxel nature=hardy)"},
+      {"to": "cobblemon:toxtricity", "method": "level_up", "requirement": "level(minLevel=30); properties(target=toxel nature=brave)"}
+    ],
+    "pikachu": [
+      {"to": "cobblemon:raichu", "method": "item_interact", "requirement": "requiredContext=cobblemon:thunder_stone; biome(biomeAnticondition=#cobblemon:evolution/regional/pikachu_alolabiome)"},
+      {"to": "cobblemon:raichu", "method": "item_interact", "requirement": "requiredContext=cobblemon:thunder_stone; biome(biomeCondition=#cobblemon:evolution/regional/pikachu_alolabiome)"}
+    ],
+    "scyther": [{"to": "cobblemon:scizor", "method": "trade", "requirement": "held_item(itemCondition=cobblemon:metal_coat)"}],
+    "kirlia": [{"to": "cobblemon:gallade", "method": "item_interact", "requirement": "requiredContext=cobblemon:dawn_stone; properties(target=gender=male)"}],
+    "slowpoke": [{"to": "cobblemon:slowbro", "method": "level_up", "requirement": "level(minLevel=37)"}]
+  },
+  "learnsets": {
+    "geodude": {
+      "levelUp": [
+        {"level": 1, "moveId": "cobblemon:tackle"},
+        {"level": 30, "moveId": "cobblemon:rockslide"},
+        {"level": 34, "moveId": "cobblemon:earthquake"},
+        {"level": 40, "moveId": "cobblemon:stoneedge"}
+      ]
+    },
+    "graveler": {
+      "levelUp": [
+        {"level": 1, "moveId": "cobblemon:tackle"},
+        {"level": 36, "moveId": "cobblemon:rockslide"},
+        {"level": 38, "moveId": "cobblemon:stoneedge"},
+        {"level": 28, "moveId": "cobblemon:earthquake"}
+      ]
+    }
+  }
+}

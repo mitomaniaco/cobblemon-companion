@@ -10,7 +10,7 @@ let cached = null;
 function loadGuideData(directory = DATA_DIR) {
   if (directory === DATA_DIR && cached) return cached;
   const read = (name) => JSON.parse(fs.readFileSync(path.join(directory, `${name}.json`), 'utf8'));
-  const data = {trainers: read('trainers'), series: read('series'), learnsets: read('learnsets')};
+  const data = {trainers: read('trainers'), series: read('series'), learnsets: read('learnsets'), evolutions: read('evolutions')};
   if (directory === DATA_DIR) cached = data;
   return data;
 }

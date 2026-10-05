@@ -59,4 +59,4 @@ function assessEligibility(individuals) {
   return {eligible, excluded};
 }
 
-module.exports = {assessEligibility};
+module.exports = {assessEligibility, knownMoves};

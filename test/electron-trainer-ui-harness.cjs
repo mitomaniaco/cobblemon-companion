@@ -1218,7 +1218,9 @@ async function exerciseGuideContract(contents) {
     const member = guide.team[0];
     const battlePlan = await api.buildBattlePlan({sources, trainerId: trainers[0].id, team: [{uuid: member.uuid, moveIds: member.moves.map((move) => move.id), itemId: member.item.id}]});
     const stalePlan = await api.buildBattlePlan({sources: [], trainerId: trainers[0].id, team: []}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan};
+    const evolution = await api.buildEvolutionPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: member.moves.map((move) => move.id)}], levelCap: null});
+    const staleEvolution = await api.buildEvolutionPlan({sources: [], team: [], levelCap: null}).then(() => 'built', (error) => error.message);
+    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution};
   })()`,
   );
   check(
@@ -1244,6 +1246,16 @@ async function exerciseGuideContract(contents) {
     plan.entries[0].heldItemAlternatives.length === 2 && plan.assumptions.length > 0,
     'O plano sintético perdeu as alternativas de item ou as hipóteses.',
   );
+  const evolved = result.evolution.members;
+  check(
+    result.evolution.levelCap === null && evolved.some((member) => member.status === 'evolui' && member.options[0].withinCap === null),
+    'O plano de evoluções sintético não deixou o alcance não verificado sem level cap.',
+  );
+  check(
+    evolved.some((member) => member.status === 'bloqueado' && member.blockedReason),
+    'O plano de evoluções sintético não bloqueou a forma regional com motivo.',
+  );
+  check(result.staleEvolution !== 'built', 'O plano de evoluções aceitou um pedido inválido.');
   check(result.stalePlan !== 'built', 'O plano aceitou um pedido inválido.');
   check(result.stale !== 'built', 'O guia aceitou fontes que não correspondem ao snapshot atual.');
   console.log('PASS contrato do guia no modo sintético (treinadores, próximo objetivo, card e fontes)');

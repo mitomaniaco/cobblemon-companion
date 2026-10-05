@@ -187,5 +187,67 @@
       "Singles; sem simulação de turnos, IA do RCT nem golpes de status; HP e PP cheios; sem status; campo neutro; sem críticos ou precisão.",
       "O plano mostra números e riscos declarados; não estima chance de resultado."
     ]
+  },
+  "evolutionPlan": {
+    "levelCap": null,
+    "members": [
+      {
+        "uuid": "00000000-0000-4000-8000-000000000001",
+        "speciesId": "cobblemon:gardevoir",
+        "formId": "normal",
+        "level": 30,
+        "status": "sem-evolução",
+        "blockedReason": null,
+        "options": []
+      },
+      {
+        "uuid": "00000000-0000-4000-8000-000000000002",
+        "speciesId": "cobblemon:geodude",
+        "formId": "normal",
+        "level": 20,
+        "status": "evolui",
+        "blockedReason": null,
+        "options": [
+          {
+            "toSpeciesId": "cobblemon:graveler",
+            "method": "level_up",
+            "requirements": [
+              {
+                "kind": "nível",
+                "text": "nível 25",
+                "status": "pendente"
+              }
+            ],
+            "withinCap": null,
+            "reachText": "o app não conhece o level cap; alcance não verificado",
+            "moveChanges": [
+              {
+                "moveId": "cobblemon:rockslide",
+                "useful": true,
+                "kind": "atrasado",
+                "levelWithoutEvolving": 30,
+                "levelAfterEvolving": 36,
+                "note": "aprende Rock Slide no nível 30 sem evoluir; evoluído, só no 36"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uuid": "00000000-0000-4000-8000-000000000003",
+        "speciesId": "cobblemon:geodude",
+        "formId": "alola",
+        "level": 20,
+        "status": "bloqueado",
+        "blockedReason": "evoluções da forma alola não estão nos dados (só a forma normal)",
+        "options": []
+      }
+    ],
+    "assumptions": [
+      "O app não lê inventário: item de evolução aparece como requisito, sem dizer se você o tem."
+    ],
+    "limits": [
+      "Amizade, item de evolução, horário, bioma e troca não vêm do save: aparecem como não verificados."
+    ]
   }
 }
