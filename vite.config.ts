@@ -1,8 +1,9 @@
 import react from '@vitejs/plugin-react';
 import {defineConfig} from 'vitest/config';
+import {displayDex} from './vite.display-dex';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), displayDex()],
   build: {
     outDir: 'dist/renderer',
     emptyOutDir: true,

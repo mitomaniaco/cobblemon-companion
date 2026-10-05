@@ -1,5 +1,6 @@
 import {useId, useState} from 'react';
-import {itemLabel, moveLabel, titleCaseId} from '../../domain/catalog-labels';
+import {itemLabel, moveLabel} from '../../domain/catalog-labels';
+import {titleCaseId} from '../../domain/dex';
 import type {MoveSwapPlan} from '../../domain/move-swap';
 import {MovePreparation} from '../damage/MovePreparation';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from '../../platform/api';

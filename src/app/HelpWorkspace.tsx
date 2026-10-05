@@ -52,6 +52,10 @@ export default function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
           <li>Aparência, apelido, HP atual e stats totais não são capturados nem inventados.</li>
           <li>O cálculo usa o slot escolhido, um golpe aprendido e condições confirmadas por você.</li>
           <li>A ilustração representa a espécie na forma normal.</li>
+          <li>
+            Tipos, nomes e poder dos golpes vêm dos dados da espécie e do golpe (Showdown), não do indivíduo; formas alternativas aparecem
+            sem tipo.
+          </li>
         </ul>
       </section>
 

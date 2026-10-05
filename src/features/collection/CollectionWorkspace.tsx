@@ -1,7 +1,9 @@
-import {useId} from 'react';
+import {type CSSProperties, useId} from 'react';
 import {ListBox, ListBoxItem} from 'react-aria-components';
+import {locationLabel} from '../../domain/location-label';
+import {speciesDisplay} from '../../domain/dex';
 import type {PlayerIndividual, PlayerSnapshot} from '../../platform/api';
-import {Button, PokemonArtwork, SearchField, Select} from '../../ui';
+import {Button, PokeBallMark, PokemonArtwork, SearchField, Select, TypeBadge, typeColorVar} from '../../ui';
 import type {SelectOption} from '../../ui';
 import styles from './CollectionWorkspace.module.css';
 
@@ -20,27 +22,17 @@ export interface CollectionWorkspaceProps {
 }
 
 type BoxOption = SelectOption;
+type PcBox = {box: number; boxName: string | null; individuals: PlayerIndividual[]};
 
-function speciesLabel(id: string) {
-  return id
-    .replace(/^[^:]+:/, '')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
-}
-
-function locationLabel(individual: PlayerIndividual) {
-  const {location} = individual;
-  if (location.container === 'party') return `Equipe · posição ${location.slot}`;
-  const boxName = location.boxName ? ` · ${location.boxName}` : '';
-  return `PC · caixa ${location.box}${boxName} · posição ${location.slot}`;
-}
+const BOX_COLUMNS = 6;
+const MIN_BOX_ROWS = 5;
+const BOX_CAPACITY = 30;
 
 function locationSearchText(individual: PlayerIndividual) {
   const {location} = individual;
-  if (location.container === 'party') {
-    return `${locationLabel(individual)} party equipe slot ${location.slot} posição ${location.slot}`;
-  }
-  return `${locationLabel(individual)} pc box caixa ${location.box} ${location.boxName ?? ''} slot ${location.slot} posição ${location.slot}`;
+  const common = `${locationLabel(location)} slot posição ${location.slot + 1}`;
+  if (location.container === 'party') return `${common} party equipe`;
+  return `${common} pc box caixa ${location.box} ${location.boxName ?? ''}`;
 }
 
 function normalizeSearch(value: string) {
@@ -50,9 +42,13 @@ function normalizeSearch(value: string) {
     .toLowerCase();
 }
 
+function levelLabel(individual: PlayerIndividual) {
+  return individual.level === null ? 'Nv. ?' : `Nv. ${individual.level}`;
+}
+
 function individualTextValue(individual: PlayerIndividual) {
   const level = individual.level === null ? 'nível não capturado' : `nível ${individual.level}`;
-  return `${speciesLabel(individual.speciesId)} · ${locationLabel(individual)} · ${level}`;
+  return `${speciesDisplay(individual.speciesId, individual.formId).name} · ${locationLabel(individual.location)} · ${level}`;
 }
 
 function getBoxOptions(individuals: readonly PlayerIndividual[]): BoxOption[] {
@@ -96,6 +92,169 @@ function getUniquePartySlots(individuals: readonly PlayerIndividual[]) {
   return new Set([...counts.entries()].filter(([, count]) => count === 1).map(([slot]) => slot));
 }
 
+function groupByBox(individuals: readonly PlayerIndividual[]): PcBox[] {
+  const boxes = new Map<number, PcBox>();
+  for (const individual of individuals) {
+    if (individual.location.container !== 'pc') continue;
+    const existing = boxes.get(individual.location.box);
+    if (existing) {
+      existing.individuals.push(individual);
+      existing.boxName ??= individual.location.boxName;
+    } else {
+      boxes.set(individual.location.box, {box: individual.location.box, boxName: individual.location.boxName, individuals: [individual]});
+    }
+  }
+  return [...boxes.values()].sort((first, second) => first.box - second.box);
+}
+
+function selectionHandler(onSelect: (uuid: string) => void) {
+  return (keys: 'all' | Set<unknown>) => {
+    if (keys === 'all') return;
+    const selection = keys.values().next();
+    if (!selection.done) onSelect(String(selection.value));
+  };
+}
+
+function TeamCard({
+  individual,
+  slot,
+  index,
+  onSelect,
+}: {
+  individual: PlayerIndividual;
+  slot?: number;
+  index: number;
+  onSelect(uuid: string): void;
+}) {
+  const display = speciesDisplay(individual.speciesId, individual.formId);
+  const textValue = individualTextValue(individual);
+  const style = {'--type-a': typeColorVar(display.types[0] ?? null), '--i': index, '--slot': slot} as CSSProperties;
+  return (
+    <ListBoxItem
+      id={individual.uuid}
+      textValue={textValue}
+      aria-label={textValue}
+      onAction={() => onSelect(individual.uuid)}
+      data-slot={slot}
+      data-individual-id={individual.uuid}
+      className={styles.teamCard}
+      style={style}
+    >
+      <span className={styles.socket}>
+        <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="collection" />
+      </span>
+      <span className={styles.cardBody}>
+        <span className={styles.cardTitle}>
+          <span className={styles.speciesName}>{display.name}</span>
+          <span className={styles.levelChip}>{levelLabel(individual)}</span>
+        </span>
+        <span className={styles.cardTypes}>
+          {display.types.map((type) => (
+            <TypeBadge key={type} type={type} size="sm" />
+          ))}
+        </span>
+      </span>
+    </ListBoxItem>
+  );
+}
+
+function EmptySlot({slot, index, positioned}: {slot: number; index: number; positioned: boolean}) {
+  const style = {'--slot': positioned ? slot : undefined, '--i': index} as CSSProperties;
+  return (
+    <div className={styles.emptySlot} data-slot={slot} style={style}>
+      <span className={styles.emptySocket}>
+        <PokeBallMark className={styles.emptyMark} />
+      </span>
+      <span>Vazio</span>
+    </div>
+  );
+}
+
+function BoxSection({
+  box,
+  fixedSlots,
+  total,
+  selectedUuid,
+  onSelect,
+}: {
+  box: PcBox;
+  fixedSlots: boolean;
+  total: number | null;
+  selectedUuid: string | null;
+  onSelect(uuid: string): void;
+}) {
+  const headingId = useId();
+  const maxSlot = Math.max(...box.individuals.map((individual) => individual.location.slot));
+  const rows = Math.max(MIN_BOX_ROWS, Math.ceil((maxSlot + 1) / BOX_COLUMNS));
+  const occupied = new Set(box.individuals.map((individual) => individual.location.slot));
+  const emptySlots = fixedSlots ? Array.from({length: rows * BOX_COLUMNS}, (_, slot) => slot).filter((slot) => !occupied.has(slot)) : [];
+  const selectedKeys =
+    selectedUuid !== null && box.individuals.some((individual) => individual.uuid === selectedUuid) ? [selectedUuid] : [];
+  const title = box.boxName ? `Caixa ${box.box} · ${box.boxName}` : `Caixa ${box.box}`;
+
+  return (
+    <section className={styles.boxSection} aria-labelledby={headingId}>
+      <header className={styles.boxHeader}>
+        <h3 id={headingId}>{title}</h3>
+        {total !== null && (
+          <span className={styles.boxCount}>
+            {total}/{BOX_CAPACITY}
+          </span>
+        )}
+      </header>
+      <div className={styles.boxGrid}>
+        {emptySlots.map((slot) => (
+          <span
+            key={slot}
+            className={styles.boxSocket}
+            aria-hidden="true"
+            style={{gridColumn: (slot % BOX_COLUMNS) + 1, gridRow: Math.floor(slot / BOX_COLUMNS) + 1}}
+          />
+        ))}
+        <ListBox
+          aria-label={`Caixa ${box.box}`}
+          layout="grid"
+          className={styles.boxItems}
+          items={box.individuals}
+          selectedKeys={selectedKeys}
+          selectionMode="single"
+          selectionBehavior="replace"
+          onSelectionChange={selectionHandler(onSelect)}
+        >
+          {(individual) => {
+            const display = speciesDisplay(individual.speciesId, individual.formId);
+            const textValue = individualTextValue(individual);
+            const slot = individual.location.slot;
+            const style = fixedSlots
+              ? ({
+                  '--type-a': typeColorVar(display.types[0] ?? null),
+                  gridColumn: (slot % BOX_COLUMNS) + 1,
+                  gridRow: Math.floor(slot / BOX_COLUMNS) + 1,
+                } as CSSProperties)
+              : ({'--type-a': typeColorVar(display.types[0] ?? null)} as CSSProperties);
+            return (
+              <ListBoxItem
+                id={individual.uuid}
+                textValue={textValue}
+                aria-label={textValue}
+                onAction={() => onSelect(individual.uuid)}
+                data-individual-id={individual.uuid}
+                data-name={display.name}
+                data-col={fixedSlots ? slot % BOX_COLUMNS : undefined}
+                className={styles.boxItem}
+                style={style}
+              >
+                <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="slot" />
+                <span className={styles.levelBadge}>{individual.level ?? '?'}</span>
+              </ListBoxItem>
+            );
+          }}
+        </ListBox>
+      </div>
+    </section>
+  );
+}
+
 export function CollectionWorkspace({
   snapshot,
   view,
@@ -116,7 +275,7 @@ export function CollectionWorkspace({
     if (view === 'pc' && boxFilter !== null && individual.location.container === 'pc' && String(individual.location.box) !== boxFilter)
       return false;
     if (!normalizedSearch) return true;
-    const candidates = [speciesLabel(individual.speciesId), individual.speciesId, locationSearchText(individual)];
+    const candidates = [speciesDisplay(individual.speciesId, individual.formId).name, individual.speciesId, locationSearchText(individual)];
     return candidates.some((candidate) => normalizeSearch(candidate).includes(normalizedSearch));
   });
   const selectedIndividualIsHidden =
@@ -128,17 +287,20 @@ export function CollectionWorkspace({
   const heading = view === 'team' ? 'Equipe' : 'PC';
   const countLabel = view === 'team' ? 'na equipe' : 'no PC';
   const uniquePartySlots = view === 'team' ? getUniquePartySlots(allInView) : new Set<number>();
-  const emptyPartySlots =
-    view === 'team'
-      ? Array.from({length: 6}, (_, slot) => slot).filter(
-          (slot) => !allInView.some((individual) => individual.location.container === 'party' && individual.location.slot === slot),
-        )
-      : [];
   const searchOrBoxFilterActive = normalizedSearch.length > 0 || (view === 'pc' && boxFilter !== null);
+  const fixedTeamLayout = view === 'team' && !searchOrBoxFilterActive;
+  const emptyPartySlots = fixedTeamLayout
+    ? Array.from({length: 6}, (_, slot) => slot).filter(
+        (slot) => !allInView.some((individual) => individual.location.container === 'party' && individual.location.slot === slot),
+      )
+    : [];
   const hasVisibleIndividuals = visibleIndividuals.length > 0;
   const noResults = snapshot !== null && searchOrBoxFilterActive && visibleIndividuals.length === 0;
   const emptyTeam = snapshot !== null && view === 'team' && allInView.length === 0 && !searchOrBoxFilterActive;
   const emptyPc = snapshot !== null && view === 'pc' && allInView.length === 0 && !searchOrBoxFilterActive;
+  const boxTotals = new Map(groupByBox(allInView).map((box) => [box.box, box.individuals.length]));
+  const pcBoxes = view === 'pc' ? groupByBox(visibleIndividuals) : [];
+  const fixedPcLayout = !searchOrBoxFilterActive;
 
   return (
     <section className={styles.root} data-testid="collection" aria-labelledby={headingId}>
@@ -158,7 +320,7 @@ export function CollectionWorkspace({
           label="Buscar Pokémon"
           value={search}
           onChange={onSearchChange}
-          placeholder="Espécie, ID ou localização"
+          placeholder="Nome, caixa ou slot"
           isDisabled={!snapshot}
           className={styles.search}
         />
@@ -186,24 +348,21 @@ export function CollectionWorkspace({
 
       {!snapshot ? (
         <p className={styles.emptyState} role="status">
-          Nenhuma captura disponível. Importe uma captura para consultar a coleção.
+          Nenhuma captura disponível.
         </p>
       ) : noResults ? (
         <p className={styles.emptyState} role="status">
-          Nenhum Pokémon corresponde à busca
+          Nenhum Pokémon corresponde à busca.
         </p>
       ) : emptyPc ? (
         <p className={styles.emptyState} role="status">
-          Nenhum Pokémon capturado no PC nesta captura.
+          PC vazio nesta captura.
         </p>
       ) : emptyTeam ? (
         <fieldset className={styles.teamGrid} aria-label="Posições da equipe">
           {Array.from({length: 6}, (_, slot) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static empty team positions with fixed count of 6, never reorders
-            <div className={styles.emptyPosition} data-slot={slot} key={slot}>
-              <span className={styles.emptyPositionTitle}>Posição vazia</span>
-              <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>
-            </div>
+            <EmptySlot key={slot} slot={slot} index={slot} positioned />
           ))}
         </fieldset>
       ) : hasVisibleIndividuals && view === 'team' ? (
@@ -215,91 +374,39 @@ export function CollectionWorkspace({
             selectedKeys={selectedVisibleKeys}
             selectionMode="single"
             selectionBehavior="replace"
-            onSelectionChange={(keys) => {
-              if (keys === 'all') return;
-              const selection = keys.values().next();
-              if (!selection.done) onSelect(String(selection.value));
-            }}
+            onSelectionChange={selectionHandler(onSelect)}
           >
             {(individual) => {
-              const hasUniqueSlot = uniquePartySlots.has(individual.location.container === 'party' ? individual.location.slot : -1);
-              const slot = individual.location.container === 'party' ? individual.location.slot : undefined;
-              const dataSlot = hasUniqueSlot && slot !== undefined && slot >= 0 && slot < 6 ? slot : undefined;
-              const textValue = individualTextValue(individual);
+              const slot = individual.location.container === 'party' ? individual.location.slot : -1;
+              const positioned = fixedTeamLayout && uniquePartySlots.has(slot) && slot >= 0 && slot < 6;
               return (
-                <ListBoxItem
-                  id={individual.uuid}
+                <TeamCard
                   key={individual.uuid}
-                  textValue={textValue}
-                  aria-label={textValue}
-                  onAction={() => onSelect(individual.uuid)}
-                  data-slot={dataSlot}
-                  data-individual-id={individual.uuid}
-                  className={`${styles.unit} ${styles.teamUnit}`}
-                >
-                  <PokemonArtwork
-                    speciesId={individual.speciesId}
-                    formId={individual.formId}
-                    variant="collection"
-                    className={styles.artwork}
-                  />
-                  <span className={styles.unitContent}>
-                    <span className={styles.speciesName}>{speciesLabel(individual.speciesId)}</span>
-                    <span className={styles.location}>{locationLabel(individual)}</span>
-                    <span className={styles.level}>{individual.level === null ? 'Nível não capturado' : `Nível ${individual.level}`}</span>
-                  </span>
-                </ListBoxItem>
+                  individual={individual}
+                  slot={positioned ? slot : undefined}
+                  index={Math.max(slot, 0)}
+                  onSelect={onSelect}
+                />
               );
             }}
           </ListBox>
           {emptyPartySlots.map((slot) => (
-            <div className={styles.emptyPosition} data-slot={slot} key={slot}>
-              <span className={styles.emptyPositionTitle}>Posição vazia</span>
-              <span className={styles.emptyPositionIndex}>Posição {slot + 1}</span>
-            </div>
+            <EmptySlot key={slot} slot={slot} index={slot} positioned />
           ))}
         </fieldset>
       ) : hasVisibleIndividuals ? (
-        <ListBox
-          aria-label="Pokémon no PC"
-          className={styles.pcList}
-          items={visibleIndividuals}
-          selectedKeys={selectedVisibleKeys}
-          selectionMode="single"
-          selectionBehavior="replace"
-          onSelectionChange={(keys) => {
-            if (keys === 'all') return;
-            const selection = keys.values().next();
-            if (!selection.done) onSelect(String(selection.value));
-          }}
-        >
-          {(individual) => {
-            const textValue = individualTextValue(individual);
-            return (
-              <ListBoxItem
-                id={individual.uuid}
-                key={individual.uuid}
-                textValue={textValue}
-                aria-label={textValue}
-                onAction={() => onSelect(individual.uuid)}
-                data-individual-id={individual.uuid}
-                className={`${styles.unit} ${styles.pcUnit}`}
-              >
-                <PokemonArtwork
-                  speciesId={individual.speciesId}
-                  formId={individual.formId}
-                  variant="collection"
-                  className={styles.artwork}
-                />
-                <span className={styles.unitContent}>
-                  <span className={styles.speciesName}>{speciesLabel(individual.speciesId)}</span>
-                  <span className={styles.location}>{locationLabel(individual)}</span>
-                  <span className={styles.level}>{individual.level === null ? 'Nível não capturado' : `Nível ${individual.level}`}</span>
-                </span>
-              </ListBoxItem>
-            );
-          }}
-        </ListBox>
+        <div className={styles.boxes}>
+          {pcBoxes.map((box) => (
+            <BoxSection
+              key={box.box}
+              box={box}
+              fixedSlots={fixedPcLayout}
+              total={fixedPcLayout ? (boxTotals.get(box.box) ?? box.individuals.length) : null}
+              selectedUuid={selectedUuid}
+              onSelect={onSelect}
+            />
+          ))}
+        </div>
       ) : null}
     </section>
   );
