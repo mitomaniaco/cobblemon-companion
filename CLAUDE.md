@@ -6,7 +6,7 @@ Este repositório é um aplicativo desktop local para Cobblemon. Leia este arqui
 
 ## Regras de trabalho obrigatórias
 
-- **Privacidade:** não leia, imprima, copie ou distribua `config.json`, saves Cobblemon, `.runtime` ou logs locais que possam conter dados do jogador sem autorização explícita. O `config.json` desta instalação é privado. Não peça que o usuário o envie. Fixtures sob `test/fixtures/` são sintéticas.
+- **Privacidade:** o dono do projeto autorizou (05/10/2026, D15) a leitura **somente leitura** de tudo o que estiver no diretório do Minecraft (cliente, servidor, mundo e modpack) para as funções do app e para investigação dos agentes: progresso de treinadores do RCT, advancements (Pika Star), level cap, party/PC. Continua proibido: gravar no save, enviar comandos ao servidor, versionar saves, UUIDs de jogador reais, `config.json`, `.runtime` ou logs locais, e imprimir esses dados em Issues, PRs ou commits (cite só nomes de arquivo e chaves; valores reais ficam fora). Fixtures sob `test/fixtures/` são sintéticas. Não peça que o usuário envie o `config.json`.
 - **Servidor:** não instale scripts/mods, execute comandos de jogo, faça reload/restart, nem grave no save. Qualquer instrumentação ou intervenção no servidor precisa de autorização própria.
 - **Integridade Medium:** não execute `run-medium-check.cmd`, `test/electron-medium-launcher.cjs` nem testes que o launcher dispara sem autorização explícita. Medium não está aprovado.
 - **Compatibilidade:** preserve o fail-closed. Não adicione IDs ao catálogo por semelhança com Showdown, não mapeie namespace/forma implicitamente e não suprima bloqueios para produzir números. Consulte `docs/preflight/IMPORTACAO-PARTY.md` antes de alterar o cálculo real.
