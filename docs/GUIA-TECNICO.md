@@ -15,7 +15,7 @@ A fonte dos scripts é `package.json`:
 | Script | Efeito |
 |---|---|
 | `npm run build` | Build Vite em `dist/renderer`. |
-| `npm run prepare:ui-assets` | Preparação explícita de recursos visuais; acessa URLs fixadas (PokéAPI/sprites: renders do Pokémon HOME e itens; duiker101/pokemon-type-svg-icons: tipos; Pokémon Showdown: categorias) e cria `public/{pokemon,types,categories,items}`, `src/data/species-artwork.json` e `src/data/ui-icons.json`, tudo fora do git. É opcional e não roda durante o uso normal; sem ele a interface usa ícones neutros. |
+| `npm run prepare:ui-assets` | Preparação explícita de recursos visuais; acessa a rede (PokéAPI/sprites: renders do Pokémon HOME e itens; duiker101/pokemon-type-svg-icons: tipos, ambos com revisão fixada; Pokémon Showdown: categorias, sem revisão fixada, só SHA-256 na proveniência) e cria `public/{pokemon,types,categories,items}`, `src/data/species-artwork.json` e `src/data/ui-icons.json`, tudo fora do git. É opcional e não roda durante o uso normal; sem ele a interface usa ícones neutros. |
 | `npm run typecheck` | `tsc --noEmit`. |
 | `npm test` | Vitest (`vitest run`). Os testes de importação usam fontes sintéticas temporárias. |
 | `npm run check` | Typecheck, Vitest e build, nessa ordem. |
@@ -123,7 +123,7 @@ Também são excluídos golpes/habilidades que dependem de histórico, estado, f
 - `config.json` e os arquivos party/PC do servidor contêm informações privadas. Não ler, publicar, copiar para fixtures, imprimir valores ou anexar em relatórios sem autorização explícita.
 - `.runtime/` contém perfis Electron, logs e screenshots locais; pode revelar dados. Não distribua nem use como corpus de documentação. As imagens citadas abaixo são da fixture sintética.
 - `dist/`, `node_modules/`, `.runtime/` e saídas/manifests de artwork não pertencem ao pacote mínimo; confira `.gitignore`/`HANDOFF.md` antes de copiar uma instalação.
-- `npm run prepare:ui-assets` é a exceção intencional de rede: baixa artefatos de URLs fixadas quando executado manualmente. O app não busca artwork a cada uso.
+- `npm run prepare:ui-assets` é a exceção intencional de rede: baixa artefatos quando executado manualmente (revisões fixadas, exceto os ícones de categoria do Pokémon Showdown, cuja URL não é versionada; o SHA-256 de cada um fica em `public/pokemon/provenance.json`). O app não busca artwork a cada uso.
 - Não há banco SQLite implementado no app portátil, embora decisões/propostas antigas mencionem essa arquitetura.
 
 ## 9. Testes e risco de cada harness

@@ -15,7 +15,7 @@ npm run check
 npm run start
 ```
 
-Prefira `npm ci`, que instala conforme o `package-lock.json`. `prepare:ui-assets` baixa recursos de fontes fixadas (renders do Pokémon HOME, ícones de tipo, categoria e item) e requer rede, mas é opcional; sem ele, a interface mostra “Imagem indisponível”, ícones neutros e não busca imagens durante o uso. `check` executa typecheck, testes e build. `start` também constrói a interface e abre o Electron. O build gera `dist/`; essa saída não precisa ser copiada.
+Prefira `npm ci`, que instala conforme o `package-lock.json`. `prepare:ui-assets` baixa recursos de fontes externas (renders do Pokémon HOME, ícones de tipo, categoria e item; revisões fixadas, exceto os ícones de categoria do Pokémon Showdown) e requer rede, mas é opcional; sem ele, a interface mostra “Imagem indisponível”, ícones neutros e não busca imagens durante o uso. `check` executa typecheck, testes e build. `start` também constrói a interface e abre o Electron. O build gera `dist/`; essa saída não precisa ser copiada.
 
 Prova standalone registrada em 24/09/2026 em `D:\Dev\cobblemon-companion`: `npm ci` instalou 119 pacotes e `npm run check` passou em typecheck, build e 20 testes. A leitura local, somente leitura e best-effort, encontrou 6 indivíduos na party e 62 no PC. Esses totais pertencem àquela captura, não descrevem permanentemente o save.
 
