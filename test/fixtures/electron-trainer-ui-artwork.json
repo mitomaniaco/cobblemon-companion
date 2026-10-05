@@ -1,0 +1,14 @@
+{
+  "cobblemon:gardevoir": {
+    "dexNumber": 282,
+    "artworkPath": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+  },
+  "cobblemon:bulbasaur": {
+    "dexNumber": 1,
+    "artworkPath": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+  },
+  "cobblemon:mr-mime": {
+    "dexNumber": 122,
+    "artworkPath": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+  }
+}

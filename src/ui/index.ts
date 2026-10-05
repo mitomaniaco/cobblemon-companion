@@ -16,6 +16,8 @@ export {MoveChip} from './MoveChip';
 export type {MoveChipProps, MoveChipCategory} from './MoveChip';
 export {PokemonArtwork} from './PokemonArtwork';
 export type {PokemonArtworkProps, PokemonArtworkVariant} from './PokemonArtwork';
+export {setArtworkManifest} from './artwork-store';
+export type {ArtworkManifest} from './artwork';
 export {PokeBallMark} from './PokeBallMark';
 export type {PokeBallMarkProps} from './PokeBallMark';
 export {SearchField} from './SearchField';

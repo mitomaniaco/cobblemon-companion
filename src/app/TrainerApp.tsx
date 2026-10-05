@@ -14,7 +14,7 @@ import {useCapturePlan} from '../features/guide/useCapturePlan';
 import {useTrainingPlan} from '../features/guide/useTrainingPlan';
 import {parseLevelCap} from '../features/guide/evolution-model';
 import {useTrainerSession} from './useTrainerSession';
-import {Button, Dialog, PokeBallMark, StatusMessage, Switch} from '../ui';
+import {Button, Dialog, PokeBallMark, setArtworkManifest, StatusMessage, Switch, type ArtworkManifest} from '../ui';
 import styles from './TrainerApp.module.css';
 
 const DamageWorkspace = lazy(() => import('../features/damage/DamageWorkspace').then((module) => ({default: module.DamageWorkspace})));
@@ -293,6 +293,13 @@ export function TrainerApp() {
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
   const guide = useGuide(api, session.snapshot, workspace === 'guide');
+
+  // Modo de teste da UI: a ponte de teste entrega um manifesto de artwork sintético (a produção não tem essa ponte).
+  useEffect(() => {
+    const testBridge = (window.cobblemonCompanion as {test?: {getArtworkManifest?: () => Promise<ArtworkManifest>}} | undefined)?.test;
+    if (!testBridge?.getArtworkManifest) return;
+    void testBridge.getArtworkManifest().then(setArtworkManifest, () => undefined);
+  }, []);
   const battlePlan = useBattlePlan(api, session.snapshot, guide.result);
   const [levelCapInput, setLevelCapInput] = useState('');
   const levelCap = parseLevelCap(levelCapInput);

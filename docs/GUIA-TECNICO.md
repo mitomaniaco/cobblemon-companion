@@ -108,6 +108,10 @@ A coleção mantém seleção por UUID. A ficha individual separa resumo, golpes
 
 `src/domain/move-swap.ts` faz uma operação estrutural: seleciona um slot equipado e um golpe observado em `learnedMoves` do mesmo indivíduo; a prévia substitui só esse slot e preserva os outros. Ela não ensina nem equipa nada no jogo. O botão `Abrir cálculo de dano` abre direto o cálculo contextual com o mesmo indivíduo/UUID, sem caixa de confirmação; não equivale a recomendar que a troca seja feita.
 
+### Imagem do Pokémon
+
+`PokemonArtwork` resolve a imagem em `src/ui/artwork.ts`: arte exata da espécie no manifesto → arte pelo nome normalizado (ids do catálogo que divergem do manifesto, como `mrmime` × `mr-mime`). Forma que não é a normal (alternativa ou desconhecida) mostra a arte da forma normal **marcada** (selo “N” e legenda “Arte da forma normal”, `data-artwork="base-form"`); nunca mostra outra espécie. Sem arte nenhuma, o placeholder mostra o nome derivado do id (3 letras no slot do PC), não um ícone igual para todos, e mantém `role="img"` “Imagem indisponível”. O relatório de cobertura por espécie/forma e a fonte local melhor (assets do modpack) são da Issue #130 (dados).
+
 ### Dano real
 
 O indivíduo selecionado é o atacante; o cálculo compara o golpe do slot escolhido com um golpe aprendido compatível ainda não equipado. Stats/natureza/habilidade vêm da captura; IV desconhecido, EV desconhecido, item fora do catálogo compatível ou campos inválidos bloqueiam; um item segurado do catálogo entra no cálculo. `heldItem: null` é desconhecido (o importador não prova ausência de item): a UI diz “Item não registrado no save” e a confirmação do atacante do checklist passa a exigir atestar que o Pokémon está sem item (Issue #75). O alvo é um perfil manual completo, não é lido da batalha. O formulário exige cinco confirmações porque versão e estado do combate não são detectados automaticamente.
