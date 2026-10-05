@@ -30,6 +30,10 @@ const screenshotPaths = Object.freeze({
   battlePlan800: path.join(runDirectory, 'battle-plan-800.png'),
   captures: path.join(runDirectory, 'captures.png'),
   evolutions: path.join(runDirectory, 'evolutions.png'),
+  evolutions1200: path.join(runDirectory, 'evolutions-1200.png'),
+  evolutions800: path.join(runDirectory, 'evolutions-800.png'),
+  captures1200: path.join(runDirectory, 'captures-1200.png'),
+  captures800: path.join(runDirectory, 'captures-800.png'),
   damageCompact: path.join(runDirectory, 'damage-800.png'),
   damageDefaultViewport: path.join(runDirectory, 'damage-default-viewport.png'),
   layout1440: path.join(runDirectory, 'layout-1440.png'),
@@ -1403,6 +1407,19 @@ async function exerciseGuideWorkspace(window) {
     'O que o jogador já tem deve aparecer antes dos candidatos de captura.',
   );
   await capture(window, screenshotPaths.captures, 'ol[aria-label="Lacunas do time"]');
+  for (const layout of [
+    {width: 1200, evolutions: 'evolutions1200', captures: 'captures1200'},
+    {width: 800, evolutions: 'evolutions800', captures: 'captures800'},
+  ]) {
+    window.setContentSize(layout.width, 1000);
+    await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport de evoluções e capturas em ${layout.width}px`);
+    const overflow = await evaluate(contents, '(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)()');
+    check(!overflow, `Evoluções e capturas em ${layout.width}px geraram rolagem horizontal.`);
+    await capture(window, screenshotPaths[layout.evolutions], 'ol[aria-label="Evoluções por membro"]');
+    await capture(window, screenshotPaths[layout.captures], 'ol[aria-label="Lacunas do time"]');
+  }
+  window.setContentSize(1440, 1000);
+  await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após evoluções e capturas');
   await evaluate(
     contents,
     `(() => {
