@@ -1,5 +1,5 @@
 import {useEffect, useId, useMemo, useState} from 'react';
-import type {CSSProperties} from 'react';
+import type {CSSProperties, ReactNode} from 'react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
@@ -17,6 +17,8 @@ import {
 } from '../../ui';
 import {guideComparisonRows, guideOpponentTurnsLabel, guideTrainerOptions, type GuideMode} from './guide-model';
 import type {GuideController} from './useGuide';
+import type {BattlePlanController} from './useBattlePlan';
+import {BattlePlanSection} from './BattlePlanSection';
 import styles from './GuideWorkspace.module.css';
 
 const NOTICE_DURATION_MS = 4000;
@@ -36,6 +38,7 @@ export interface GuideWorkspaceProps {
   loading: boolean;
   onRefresh(): void;
   onOpenCalculation(uuid: string, move: GuideTeamMember['moves'][number]): void;
+  battlePlan: BattlePlanController;
 }
 
 type Lookup = {
@@ -194,12 +197,14 @@ function GuideResultView({
   lookup,
   onOpenCalculation,
   stale,
+  planSlot,
 }: {
   result: GuideResult;
   snapshot: PlayerSnapshot;
   lookup: Lookup;
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
   stale: boolean;
+  planSlot: ReactNode;
 }) {
   const [infoExpanded, setInfoExpanded] = useState(false);
   const comparison = guideComparisonRows(result.currentPartyComparison);
@@ -246,6 +251,8 @@ function GuideResultView({
           />
         ))}
       </ol>
+
+      {planSlot}
 
       <section className={styles.acquire} aria-labelledby="guide-acquire-title">
         <h3 id="guide-acquire-title" className={styles.sectionTitle}>
@@ -308,7 +315,7 @@ function GuideResultView({
   );
 }
 
-export function GuideWorkspace({snapshot, guide, loading, onRefresh, onOpenCalculation}: GuideWorkspaceProps) {
+export function GuideWorkspace({snapshot, guide, battlePlan, loading, onRefresh, onOpenCalculation}: GuideWorkspaceProps) {
   const headingId = useId();
   const [trainerQuery, setTrainerQuery] = useState('');
   const trainerOptions = useMemo(() => guideTrainerOptions(guide.trainers.items), [guide.trainers.items]);
@@ -319,6 +326,10 @@ export function GuideWorkspace({snapshot, guide, loading, onRefresh, onOpenCalcu
     }),
     [snapshot, guide.result],
   );
+  const planIndividualName = (uuid: string, fallbackSpeciesId: string) => {
+    const individual = lookup.individuals.get(uuid);
+    return speciesDisplay(individual?.speciesId ?? fallbackSpeciesId, individual?.formId ?? 'normal').name;
+  };
   const {trainerId, trainers, dismissNotice, notice} = guide;
 
   useEffect(() => {
@@ -410,6 +421,11 @@ export function GuideWorkspace({snapshot, guide, loading, onRefresh, onOpenCalcu
               lookup={lookup}
               onOpenCalculation={onOpenCalculation}
               stale={building}
+              planSlot={
+                guide.result.goal.kind === 'trainer' && !building ? (
+                  <BattlePlanSection plan={battlePlan} individualName={planIndividualName} />
+                ) : null
+              }
             />
           ) : (
             building && <TeamSkeleton />
