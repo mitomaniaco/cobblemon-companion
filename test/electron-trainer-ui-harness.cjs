@@ -1146,12 +1146,32 @@ async function exerciseDetailContainment(window, snapshot) {
   console.log('PASS ficha do indivíduo contém a lista de golpes em 1186×852');
 }
 
+async function setViewport(window, width, height, description) {
+  const contents = window.webContents;
+  window.setContentSize(width, height);
+  try {
+    await waitFor(contents, `window.innerWidth === ${width}`, description);
+  } catch (error) {
+    const inner = await evaluate(contents, '({width: window.innerWidth, height: window.innerHeight, dpr: window.devicePixelRatio})');
+    const display = require('electron').screen.getDisplayMatching(window.getBounds());
+    throw new Error(
+      `${error.message} Observado: ${JSON.stringify({
+        inner,
+        contentSize: window.getContentSize(),
+        bounds: window.getBounds(),
+        maximized: window.isMaximized(),
+        workArea: display.workArea,
+        scaleFactor: display.scaleFactor,
+      })}.`,
+    );
+  }
+}
+
 async function exerciseShellScrollLock(window, snapshot) {
   const contents = window.webContents;
   const member = snapshot.individuals.find((individual) => individual.location.container === 'party');
   check(member, 'A fixture não tem indivíduo na equipe para o teste de rolagem da casca.');
-  window.setContentSize(1568, 839);
-  await waitFor(contents, 'window.innerWidth === 1568', 'viewport 1568×839 para a casca');
+  await setViewport(window, 1568, 839, 'viewport 1568×839 para a casca');
   await navigate(contents, 'Equipe');
   await selectIndividual(contents, member.uuid);
   await clickTab(contents, 'Golpes');
@@ -1169,8 +1189,7 @@ async function exerciseShellScrollLock(window, snapshot) {
     geometry.doc === 0 && geometry.main === 0 && geometry.shellTop === 0 && geometry.collectionTop >= geometry.mainTop - 1,
     'A casca rolou e escondeu a coleção em 1568×839.',
   );
-  window.setContentSize(1440, 1000);
-  await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport desktop');
+  await setViewport(window, 1440, 1000, 'retorno ao viewport desktop');
   console.log('PASS casca fixa sem rolagem fantasma em 1568×839');
 }
 
