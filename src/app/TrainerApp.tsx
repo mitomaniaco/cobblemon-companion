@@ -10,6 +10,7 @@ import {guideCalculationTarget} from '../features/guide/guide-model';
 import {useGuide} from '../features/guide/useGuide';
 import {useBattlePlan} from '../features/guide/useBattlePlan';
 import {useEvolutionPlan} from '../features/guide/useEvolutionPlan';
+import {useCapturePlan} from '../features/guide/useCapturePlan';
 import {useTrainerSession} from './useTrainerSession';
 import {Button, Dialog, PokeBallMark, StatusMessage, Switch} from '../ui';
 import styles from './TrainerApp.module.css';
@@ -292,6 +293,7 @@ export function TrainerApp() {
   const guide = useGuide(api, session.snapshot, workspace === 'guide');
   const battlePlan = useBattlePlan(api, session.snapshot, guide.result);
   const evolutions = useEvolutionPlan(api, session.snapshot, guide.result);
+  const captures = useCapturePlan(api, session.snapshot, guide.result);
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -511,6 +513,7 @@ export function TrainerApp() {
                   guide={guide}
                   battlePlan={battlePlan}
                   evolutions={evolutions}
+                  captures={captures}
                   loading={session.phase === 'loading'}
                   onRefresh={() => void refreshSnapshot()}
                   onOpenCalculation={openGuideCalculation}
