@@ -1,13 +1,40 @@
 import {createHash} from 'node:crypto';
 import {lstat, mkdir, mkdtemp, rename, rm, rmdir, writeFile} from 'node:fs/promises';
 import path from 'node:path';
+import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 
 const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPECIES_CSV_REVISION = 'bc92d3b6029ef1abe9e7ad424c400b338f3c11fe';
 const SPRITES_REVISION = '1aa1b0ca273d0e096469a9846155484920b11b45';
 const SPECIES_CSV_URL = `https://raw.githubusercontent.com/PokeAPI/pokeapi/${SPECIES_CSV_REVISION}/data/v2/csv/pokemon_species.csv`;
-const ARTWORK_URL = `https://raw.githubusercontent.com/PokeAPI/sprites/${SPRITES_REVISION}/sprites/pokemon/other/official-artwork`;
+const ARTWORK_URL = `https://raw.githubusercontent.com/PokeAPI/sprites/${SPRITES_REVISION}/sprites/pokemon/other/home`;
+const ITEMS_URL = `https://raw.githubusercontent.com/PokeAPI/sprites/${SPRITES_REVISION}/sprites/items`;
+const TYPE_ICONS_REVISION = '5781623f147f1bf850f426cfe1874ba56a9b75ee';
+const TYPE_ICONS_URL = `https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/${TYPE_ICONS_REVISION}/icons`;
+const CATEGORY_ICONS_URL = 'https://play.pokemonshowdown.com/sprites/categories';
+const CATEGORY_NAMES = ['Physical', 'Special', 'Status'];
+const MAX_SVG_BYTES = 20_000;
+const POKEMON_TYPE_SLUGS = [
+  'normal',
+  'fire',
+  'water',
+  'electric',
+  'grass',
+  'ice',
+  'fighting',
+  'poison',
+  'ground',
+  'flying',
+  'psychic',
+  'bug',
+  'rock',
+  'ghost',
+  'dragon',
+  'dark',
+  'steel',
+  'fairy',
+];
 const LICENSE_URL = `https://raw.githubusercontent.com/PokeAPI/sprites/${SPRITES_REVISION}/LICENCE.txt`;
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -180,8 +207,8 @@ async function readSpeciesCsv() {
   return {species: parseSpecies(text), csvSha256: sha256(bytes)};
 }
 
-async function stageArtwork(species, pokemonStageDirectory) {
-  const results = new Array(species.length);
+async function stageFiles(entries, {describe, toUrl, toFile, allow404}) {
+  const results = new Array(entries.length);
   let nextIndex = 0;
   let failed = false;
   let firstFailure;
@@ -190,38 +217,38 @@ async function stageArtwork(species, pokemonStageDirectory) {
     while (!failed) {
       const index = nextIndex;
       nextIndex += 1;
-      if (index >= species.length) return;
+      if (index >= entries.length) return;
 
       try {
-        const entry = species[index];
-        const url = `${ARTWORK_URL}/${entry.dexNumber}.png`;
-        const response = await fetchChecked(url, `Artwork de ${entry.speciesId}`);
-        if (response.status === 404) {
-          results[index] = {...entry, artworkPath: null, url, sha256: null, omitted404: true};
+        const entry = entries[index];
+        const label = describe(entry);
+        const url = toUrl(entry);
+        const response = await fetchChecked(url, label);
+        if (response.status === 404 && allow404) {
+          results[index] = {url, sha256: null, omitted404: true};
           continue;
         }
         if (!response.ok) {
-          throw new Error(`Artwork de ${entry.speciesId}: HTTP ${response.status} em ${url}; somente 404 individual pode ser omitido.`);
+          throw new Error(`${label}: HTTP ${response.status} em ${url}${allow404 ? '; somente 404 individual pode ser omitido' : ''}.`);
         }
 
         let bytes;
         try {
           bytes = Buffer.from(await response.arrayBuffer());
         } catch (error) {
-          throw new Error(`Artwork de ${entry.speciesId}: resposta ilegível em ${url}: ${errorMessage(error)}`, {cause: error});
+          throw new Error(`${label}: resposta ilegível em ${url}: ${errorMessage(error)}`, {cause: error});
         }
         if (bytes.length < PNG_SIGNATURE.length || !bytes.subarray(0, PNG_SIGNATURE.length).equals(PNG_SIGNATURE)) {
-          throw new Error(`Artwork de ${entry.speciesId}: assinatura PNG inválida em ${url}.`);
+          throw new Error(`${label}: assinatura PNG inválida em ${url}.`);
         }
 
-        const artworkPath = `/pokemon/${entry.dexNumber}.png`;
-        const filePath = path.join(pokemonStageDirectory, `${entry.dexNumber}.png`);
+        const filePath = toFile(entry);
         try {
           await writeFile(filePath, bytes, {flag: 'wx'});
         } catch (error) {
-          throw new Error(`Artwork de ${entry.speciesId}: não foi possível preparar ${filePath}: ${errorMessage(error)}`, {cause: error});
+          throw new Error(`${label}: não foi possível preparar ${filePath}: ${errorMessage(error)}`, {cause: error});
         }
-        results[index] = {...entry, artworkPath, url, sha256: sha256(bytes), omitted404: false};
+        results[index] = {url, sha256: sha256(bytes), omitted404: false};
       } catch (error) {
         if (!failed) firstFailure = error;
         failed = true;
@@ -230,9 +257,54 @@ async function stageArtwork(species, pokemonStageDirectory) {
     }
   }
 
-  await Promise.all(Array.from({length: Math.min(MAX_CONCURRENCY, species.length)}, () => worker()));
+  await Promise.all(Array.from({length: Math.min(MAX_CONCURRENCY, entries.length)}, () => worker()));
   if (failed) throw firstFailure;
   return results;
+}
+
+async function stageTypeIcons(typeStageDirectory) {
+  const icons = [];
+  for (const slug of POKEMON_TYPE_SLUGS) {
+    const url = `${TYPE_ICONS_URL}/${slug}.svg`;
+    const response = await fetchChecked(url, `Ícone de tipo ${slug}`);
+    if (!response.ok) throw new Error(`Ícone de tipo ${slug}: HTTP ${response.status} em ${url}.`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    let text;
+    try {
+      text = new TextDecoder('utf-8', {fatal: true}).decode(bytes);
+    } catch {
+      throw new Error(`Ícone de tipo ${slug}: conteúdo não é UTF-8 válido.`);
+    }
+    if (!text.trimStart().startsWith('<svg') || bytes.length > MAX_SVG_BYTES || /<script/i.test(text)) {
+      throw new Error(`Ícone de tipo ${slug}: SVG inválido, grande demais ou com script.`);
+    }
+    await writeFile(path.join(typeStageDirectory, `${slug}.svg`), bytes, {flag: 'wx'});
+    icons.push({slug, path: `/types/${slug}.svg`, url, sha256: sha256(bytes)});
+  }
+  return icons;
+}
+
+function itemSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/['’.]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function listItems() {
+  const require = createRequire(import.meta.url);
+  const {Generations} = require('@smogon/calc');
+  const items = [];
+  const seen = new Set();
+  for (const item of Generations.get(9).items) {
+    const slug = itemSlug(item.name);
+    const dexId = item.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!SLUG_PATTERN.test(slug) || seen.has(slug)) continue;
+    seen.add(slug);
+    items.push({name: item.name, slug, dexId});
+  }
+  return items;
 }
 
 function createSpeciesManifest(results) {
@@ -246,18 +318,32 @@ function createSpeciesManifest(results) {
   return manifest;
 }
 
-function createProvenance(results, csvSha256) {
+function createUiIconsManifest({typeIcons, categoryIcons, itemIcons}) {
+  return {
+    types: Object.fromEntries(typeIcons.map((icon) => [icon.slug, icon.path])),
+    categories: Object.fromEntries(categoryIcons.map((icon) => [icon.name, icon.path])),
+    items: Object.fromEntries(itemIcons.filter((icon) => !icon.omitted404).map((icon) => [icon.dexId, icon.path])),
+  };
+}
+
+function createProvenance(results, csvSha256, {typeIcons, categoryIcons, itemIcons}) {
   return {
     pinnedRevisions: {
       pokemonSpeciesCsv: SPECIES_CSV_REVISION,
       pokemonSprites: SPRITES_REVISION,
+      typeIcons: TYPE_ICONS_REVISION,
     },
     sources: {
       speciesCsv: SPECIES_CSV_URL,
       artworkBase: ARTWORK_URL,
+      homeArtworkBase: ARTWORK_URL,
+      typeIcons: TYPE_ICONS_URL,
+      categoryIcons: CATEGORY_ICONS_URL,
+      itemsBase: ITEMS_URL,
       license: LICENSE_URL,
     },
-    credit: 'Artwork Pokémon: The Pokémon Company; arquivos-fonte obtidos do repositório PokéAPI/sprites.',
+    credit:
+      'Renders do Pokémon HOME e sprites de itens: PokéAPI/sprites; ícones de tipo: duiker101/pokemon-type-svg-icons (README: "for any use"); ícones de categoria: Pokémon Showdown. Imagens © The Pokémon Company.',
     copyrightWarning:
       'As imagens são © The Pokémon Company. A declaração CC0 do repositório de sprites não concede direitos sobre obras de terceiros.',
     licenseWarning:
@@ -283,14 +369,22 @@ function createProvenance(results, csvSha256) {
         url: result.url,
         status: 404,
       })),
+    typeIconFiles: typeIcons.map(({path: filePath, url, sha256: hash}) => ({path: filePath, url, sha256: hash})),
+    categoryIconFiles: categoryIcons.map(({path: filePath, url, sha256: hash}) => ({path: filePath, url, sha256: hash})),
+    itemFiles: itemIcons
+      .filter((item) => !item.omitted404)
+      .map(({path: filePath, url, sha256: hash}) => ({path: filePath, url, sha256: hash})),
+    omitted404Items: itemIcons.filter((item) => item.omitted404).map((item) => ({name: item.name, url: item.url, status: 404})),
   };
 }
 
-async function writeStagedOutputs(results, csvSha256, stageManifest, pokemonStageDirectory) {
+async function writeStagedOutputs(results, csvSha256, ui, stageManifest, stageUiIcons, pokemonStageDirectory) {
   const manifest = `${JSON.stringify(createSpeciesManifest(results), null, 2)}\n`;
-  const provenance = `${JSON.stringify(createProvenance(results, csvSha256), null, 2)}\n`;
+  const uiIcons = `${JSON.stringify(createUiIconsManifest(ui), null, 2)}\n`;
+  const provenance = `${JSON.stringify(createProvenance(results, csvSha256, ui), null, 2)}\n`;
   try {
     await writeFile(stageManifest, manifest, {encoding: 'utf8', flag: 'wx'});
+    await writeFile(stageUiIcons, uiIcons, {encoding: 'utf8', flag: 'wx'});
     await writeFile(path.join(pokemonStageDirectory, 'provenance.json'), provenance, {encoding: 'utf8', flag: 'wx'});
   } catch (error) {
     throw new Error(`Não foi possível gravar os manifestos temporários: ${errorMessage(error)}`, {cause: error});
@@ -328,57 +422,38 @@ async function cleanupCreatedDirectories(directories) {
   }
 }
 
-async function publishOutputs({
-  stageRoot,
-  stageManifest,
-  pokemonStageDirectory,
-  manifestDestination,
-  pokemonDestination,
-  createdDirectories,
-}) {
-  const manifestParent = path.dirname(manifestDestination);
-  const pokemonParent = path.dirname(pokemonDestination);
-  await ensureOutputDirectory(manifestParent, createdDirectories);
-  await ensureOutputDirectory(pokemonParent, createdDirectories);
+async function publishOutputs({stageRoot, outputs, createdDirectories}) {
+  for (const output of outputs) await ensureOutputDirectory(path.dirname(output.destination), createdDirectories);
 
   const stagingStats = await lstat(stageRoot);
-  const manifestParentStats = await lstat(manifestParent);
-  const pokemonParentStats = await lstat(pokemonParent);
-  if (stagingStats.dev !== manifestParentStats.dev || stagingStats.dev !== pokemonParentStats.dev) {
-    throw new Error('Publicação recusada: staging e destinos não estão no mesmo volume.');
-  }
-
-  const manifestType = await getPathType(manifestDestination);
-  const pokemonType = await getPathType(pokemonDestination);
-  if (manifestType !== 'missing' && manifestType !== 'file') {
-    throw new Error(`Destino do manifesto não é um arquivo regular: ${manifestDestination}.`);
-  }
-  if (pokemonType !== 'missing' && pokemonType !== 'directory') {
-    throw new Error(`Destino de artwork não é um diretório regular: ${pokemonDestination}.`);
+  for (const output of outputs) {
+    const parentStats = await lstat(path.dirname(output.destination));
+    if (stagingStats.dev !== parentStats.dev) {
+      throw new Error('Publicação recusada: staging e destinos não estão no mesmo volume.');
+    }
   }
 
   const backupDirectory = path.join(stageRoot, 'backups');
   await mkdir(backupDirectory, {recursive: true});
-  const manifestBackup = path.join(backupDirectory, 'species-artwork.json');
-  const pokemonBackup = path.join(backupDirectory, 'pokemon');
-  let oldManifestMoved = false;
-  let oldPokemonMoved = false;
-  let newManifestPublished = false;
-  let newPokemonPublished = false;
+  const states = [];
+  for (const [index, output] of outputs.entries()) {
+    const type = await getPathType(output.destination);
+    if (type !== 'missing' && type !== output.kind) {
+      throw new Error(`Destino de saída não é ${output.kind === 'file' ? 'um arquivo' : 'um diretório'} regular: ${output.destination}.`);
+    }
+    states.push({...output, type, backup: path.join(backupDirectory, String(index)), oldMoved: false, published: false});
+  }
 
   try {
-    if (manifestType === 'file') {
-      await rename(manifestDestination, manifestBackup);
-      oldManifestMoved = true;
+    for (const state of states) {
+      if (state.type === 'missing') continue;
+      await rename(state.destination, state.backup);
+      state.oldMoved = true;
     }
-    if (pokemonType === 'directory') {
-      await rename(pokemonDestination, pokemonBackup);
-      oldPokemonMoved = true;
+    for (const state of states) {
+      await rename(state.stage, state.destination);
+      state.published = true;
     }
-    await rename(stageManifest, manifestDestination);
-    newManifestPublished = true;
-    await rename(pokemonStageDirectory, pokemonDestination);
-    newPokemonPublished = true;
   } catch (error) {
     const rollbackErrors = [];
     const attemptRollback = async (description, action) => {
@@ -389,11 +464,14 @@ async function publishOutputs({
       }
     };
 
-    if (newPokemonPublished)
-      await attemptRollback('remover novo diretório public/pokemon', () => rm(pokemonDestination, {recursive: true, force: true}));
-    if (newManifestPublished) await attemptRollback('remover novo manifesto', () => rm(manifestDestination, {force: true}));
-    if (oldPokemonMoved) await attemptRollback('restaurar diretório public/pokemon', () => rename(pokemonBackup, pokemonDestination));
-    if (oldManifestMoved) await attemptRollback('restaurar manifesto anterior', () => rename(manifestBackup, manifestDestination));
+    for (const state of [...states].reverse()) {
+      if (state.published)
+        await attemptRollback(`remover nova saída ${state.destination}`, () => rm(state.destination, {recursive: true, force: true}));
+    }
+    for (const state of [...states].reverse()) {
+      if (state.oldMoved)
+        await attemptRollback(`restaurar saída anterior ${state.destination}`, () => rename(state.backup, state.destination));
+    }
 
     if (rollbackErrors.length > 0) {
       throw new Error(
@@ -407,36 +485,71 @@ async function publishOutputs({
 
 async function main() {
   const {species, csvSha256} = await readSpeciesCsv();
+  const items = listItems();
   const stageRoot = await mkdtemp(path.join(PROJECT_ROOT, '.prepare-ui-assets-'));
   const stageManifest = path.join(stageRoot, 'src', 'data', 'species-artwork.json');
-  const pokemonStageDirectory = path.join(stageRoot, 'public', 'pokemon');
-  const manifestDestination = path.join(PROJECT_ROOT, 'src', 'data', 'species-artwork.json');
-  const pokemonDestination = path.join(PROJECT_ROOT, 'public', 'pokemon');
+  const stageUiIcons = path.join(stageRoot, 'src', 'data', 'ui-icons.json');
+  const stagePublic = (name) => path.join(stageRoot, 'public', name);
+  const pokemonStageDirectory = stagePublic('pokemon');
   const createdDirectories = [];
   let preserveStageForRecovery = false;
 
   try {
     await mkdir(path.dirname(stageManifest), {recursive: true});
-    await mkdir(pokemonStageDirectory, {recursive: true});
-    const results = await stageArtwork(species, pokemonStageDirectory);
-    await writeStagedOutputs(results, csvSha256, stageManifest, pokemonStageDirectory);
+    for (const name of ['pokemon', 'types', 'categories', 'items']) await mkdir(stagePublic(name), {recursive: true});
+
+    const artworkFiles = await stageFiles(species, {
+      describe: (entry) => `Artwork de ${entry.speciesId}`,
+      toUrl: (entry) => `${ARTWORK_URL}/${entry.dexNumber}.png`,
+      toFile: (entry) => path.join(pokemonStageDirectory, `${entry.dexNumber}.png`),
+      allow404: true,
+    });
+    const results = species.map((entry, index) => ({
+      ...entry,
+      ...artworkFiles[index],
+      artworkPath: artworkFiles[index].omitted404 ? null : `/pokemon/${entry.dexNumber}.png`,
+    }));
+
+    const typeIcons = await stageTypeIcons(stagePublic('types'));
+    const categoryFiles = await stageFiles(CATEGORY_NAMES, {
+      describe: (name) => `Ícone de categoria ${name}`,
+      toUrl: (name) => `${CATEGORY_ICONS_URL}/${name}.png`,
+      toFile: (name) => path.join(stagePublic('categories'), `${name}.png`),
+      allow404: false,
+    });
+    const categoryIcons = CATEGORY_NAMES.map((name, index) => ({name, path: `/categories/${name}.png`, ...categoryFiles[index]}));
+    const itemFiles = await stageFiles(items, {
+      describe: (item) => `Sprite do item ${item.name}`,
+      toUrl: (item) => `${ITEMS_URL}/${item.slug}.png`,
+      toFile: (item) => path.join(stagePublic('items'), `${item.slug}.png`),
+      allow404: true,
+    });
+    const itemIcons = items.map((item, index) => ({...item, path: `/items/${item.slug}.png`, ...itemFiles[index]}));
+    const ui = {typeIcons, categoryIcons, itemIcons};
+
+    await writeStagedOutputs(results, csvSha256, ui, stageManifest, stageUiIcons, pokemonStageDirectory);
 
     try {
       await publishOutputs({
         stageRoot,
-        stageManifest,
-        pokemonStageDirectory,
-        manifestDestination,
-        pokemonDestination,
+        outputs: [
+          {stage: stageManifest, destination: path.join(PROJECT_ROOT, 'src', 'data', 'species-artwork.json'), kind: 'file'},
+          {stage: stageUiIcons, destination: path.join(PROJECT_ROOT, 'src', 'data', 'ui-icons.json'), kind: 'file'},
+          {stage: pokemonStageDirectory, destination: path.join(PROJECT_ROOT, 'public', 'pokemon'), kind: 'directory'},
+          {stage: stagePublic('types'), destination: path.join(PROJECT_ROOT, 'public', 'types'), kind: 'directory'},
+          {stage: stagePublic('categories'), destination: path.join(PROJECT_ROOT, 'public', 'categories'), kind: 'directory'},
+          {stage: stagePublic('items'), destination: path.join(PROJECT_ROOT, 'public', 'items'), kind: 'directory'},
+        ],
         createdDirectories,
       });
     } catch (error) {
-      if (error instanceof Error && error.message.includes('backups preserved in')) preserveStageForRecovery = true;
+      if (error instanceof Error && error.message.includes('backups preservados em')) preserveStageForRecovery = true;
       throw error;
     }
 
+    const keptItems = itemIcons.filter((item) => !item.omitted404).length;
     console.log(
-      `Artwork local preparado: ${results.length} espécies, ${results.filter((result) => !result.omitted404).length} PNGs, ${results.filter((result) => result.omitted404).length} omissões HTTP 404.`,
+      `Recursos locais preparados: ${results.length} espécies (${results.filter((result) => !result.omitted404).length} PNGs, ${results.filter((result) => result.omitted404).length} omissões 404), ${typeIcons.length} ícones de tipo, ${categoryIcons.length} de categoria, ${keptItems} itens (${itemIcons.length - keptItems} omissões 404).`,
     );
   } finally {
     if (!preserveStageForRecovery) {

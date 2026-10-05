@@ -28,6 +28,21 @@
   white-space: nowrap;
 }
 
+.badge {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--move-ink);
+  background: var(--move-type);
+}
+
+.badgeIcon {
+  font-size: 11px;
+}
+
 .tile {
   display: grid;
   min-width: 0;
@@ -47,6 +62,30 @@
   border-radius: var(--radius-control);
   background: color-mix(in oklab, var(--move-type) 30%, var(--color-sunken));
   font-size: 20px;
+}
+
+.tileIcon[data-mode="type"] {
+  color: var(--move-ink);
+  background: var(--move-type);
+}
+
+.tileTypeIcon {
+  font-size: 20px;
+}
+
+.power {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .tileBody {

@@ -4,6 +4,15 @@ import styles from './HelpWorkspace.module.css';
 
 const STEPS: Array<{title: string; body: ReactNode}> = [
   {
+    title: 'Imagens (opcional)',
+    body: (
+      <>
+        Rode <code>npm run prepare:ui-assets</code> uma vez e reinicie o app para ver renders do Pokémon HOME e ícones. Sem isso, o app usa
+        ícones neutros.
+      </>
+    ),
+  },
+  {
     title: 'Atualizar do save',
     body: (
       <>
@@ -62,8 +71,9 @@ export default function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
       <section className={styles.block} aria-labelledby="artwork-credit-title">
         <h3 id="artwork-credit-title">Ilustrações</h3>
         <p>
-          PokéAPI/sprites, revisão <code>1aa1b0ca273d0e096469a9846155484920b11b45</code>; CSV de espécies, revisão{' '}
-          <code>bc92d3b6029ef1abe9e7ad424c400b338f3c11fe</code>. Imagens © The Pokémon Company, preparadas só localmente; não distribua.
+          Renders do Pokémon HOME e sprites de itens: PokéAPI/sprites, revisão <code>1aa1b0ca273d0e096469a9846155484920b11b45</code>. Ícones
+          de tipo: duiker101/pokemon-type-svg-icons, revisão <code>5781623f147f1bf850f426cfe1874ba56a9b75ee</code>. Ícones de categoria:
+          Pokémon Showdown. Imagens © The Pokémon Company, preparadas só localmente; não distribua.
         </p>
       </section>
     </section>

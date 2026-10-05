@@ -15,7 +15,7 @@ A fonte dos scripts é `package.json`:
 | Script | Efeito |
 |---|---|
 | `npm run build` | Build Vite em `dist/renderer`. |
-| `npm run prepare:ui-assets` | Preparação explícita de artwork; acessa URLs fixadas do PokeAPI/Sprites e cria recursos locais. É opcional e não roda durante o uso normal. |
+| `npm run prepare:ui-assets` | Preparação explícita de recursos visuais; acessa URLs fixadas (PokéAPI/sprites: renders do Pokémon HOME e itens; duiker101/pokemon-type-svg-icons: tipos; Pokémon Showdown: categorias) e cria `public/{pokemon,types,categories,items}`, `src/data/species-artwork.json` e `src/data/ui-icons.json`, tudo fora do git. É opcional e não roda durante o uso normal; sem ele a interface usa ícones neutros. |
 | `npm run typecheck` | `tsc --noEmit`. |
 | `npm test` | Vitest (`vitest run`). Os testes de importação usam fontes sintéticas temporárias. |
 | `npm run check` | Typecheck, Vitest e build, nessa ordem. |

@@ -76,6 +76,12 @@
   line-height: var(--line-caption);
 }
 
+.itemText {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
 .versus {
   width: 32px;
   height: 32px;

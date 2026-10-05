@@ -116,11 +116,17 @@
 
 @container help (min-width: 720px) {
   .steps {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .steps li {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container help (min-width: 1000px) {
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

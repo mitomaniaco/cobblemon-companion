@@ -10,3 +10,7 @@ coverage/
 reports/
 .stryker-tmp/
 .stryker-tmp-*/
+public/types/*.svg
+public/categories/*.png
+public/items/*.png
+src/data/ui-icons.json

@@ -40,7 +40,7 @@ export function titleCaseId(id: string): string {
 }
 
 /** Id do dex do Showdown: sem namespace até `:`, minúsculas e só alfanuméricos. */
-function dexId(id: string): string {
+export function dexId(id: string): string {
   return id
     .replace(/^[^:]+:/, '')
     .toLowerCase()

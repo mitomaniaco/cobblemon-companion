@@ -9,6 +9,7 @@ export type {DialogControls, DialogProps} from './Dialog';
 export {Disclosure} from './Disclosure';
 export type {DisclosureProps} from './Disclosure';
 export {HpBar} from './HpBar';
+export {ItemIcon} from './ItemIcon';
 export type {HpBarProps} from './HpBar';
 export {MoveChip} from './MoveChip';
 export type {MoveChipProps, MoveChipCategory} from './MoveChip';
