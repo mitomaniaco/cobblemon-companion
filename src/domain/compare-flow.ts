@@ -1,13 +1,9 @@
 export const SUPPORTED_TARGET = 'cobblemon:floatzel' as const;
-export const CURRENT_MOVE = 'cobblemon:spark' as const;
-export const SUPPORTED_CANDIDATE_MOVES = ['cobblemon:thunderbolt'] as const;
-
-export type CandidateMove = (typeof SUPPORTED_CANDIDATE_MOVES)[number];
 
 export type ComparisonForm = {
   targetSpecies: typeof SUPPORTED_TARGET;
   targetLevel: number;
-  candidateMove: CandidateMove | string;
+  candidateMove: string;
 };
 
 export type ComparisonRequest = {

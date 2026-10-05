@@ -494,7 +494,6 @@ function publicPlayerImportError(error) {
 }
 
 module.exports = {
-  MAX_SOURCE_BYTES,
   PlayerImportError,
   publicPlayerImportError,
   readPlayerSnapshotFromConfig,

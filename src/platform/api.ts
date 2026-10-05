@@ -4,7 +4,7 @@ export type PlayerLocation = {container: 'party'; slot: number} | {container: 'p
 
 export type PlayerStat = 'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe';
 
-export type PlayerStatProvenance = {
+type PlayerStatProvenance = {
   sourceKind: 'party' | 'pc';
   nbtPath: string;
 };
@@ -94,7 +94,7 @@ export type RealDamageResult = {
   inputDigest: string;
 };
 
-export type RealDamageResponse = {status: 'calculated'; result: RealDamageResult};
+type RealDamageResponse = {status: 'calculated'; result: RealDamageResult};
 
 export type CompanionApi = {
   calculate(request: ComparisonRequest): Promise<FlowResponse>;
