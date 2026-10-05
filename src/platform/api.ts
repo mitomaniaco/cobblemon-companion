@@ -320,6 +320,67 @@ export type CapturePlanResult = {
   limits: string[];
 };
 
+/** Origem do level cap usado no treino: `desconhecida` quando o app não sabe o cap (nada é inferido do arquivo de configuração). */
+export type TrainingCapOrigin = 'informado' | 'desconhecida';
+
+export type TrainingPlanMember = {uuid: string; usefulMoveIds: string[]};
+
+export type TrainingPlanRequest = {
+  sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
+  team: TrainingPlanMember[];
+  /** Level cap aplicável ao próximo objetivo; nulo quando não determinado. */
+  levelCap: number | null;
+  capOrigin: TrainingCapOrigin;
+  /** Identificador opcional para cancelar com `cancel(jobId)`. */
+  jobId?: string;
+};
+
+/** Golpe aprendido por nível entre o nível atual (exclusive) e o alvo (inclusive). */
+export type TrainingMove = {moveId: string; level: number; useful: boolean};
+
+export type TrainingStatKey = 'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe';
+
+/** Espécie que rende o EV da sugestão, com onde aparece (mesma forma de `CaptureSpawn`, só spawns naturais conhecidos). */
+export type TrainingEvSource = {speciesId: string; stat: TrainingStatKey; amount: number; spawns: CaptureSpawn[]};
+
+export type TrainingEvPlan = {
+  /** Papel do membro no time: define quais atributos recebem EV. */
+  role: 'atacante-físico' | 'atacante-especial' | 'velocidade' | 'resistência';
+  /**
+   * `sugerido`: distribuição fechada; `não-determinado`: algum EV atual é desconhecido, e desconhecido nunca vira zero,
+   * então não há distribuição fechada (`reason` explica). Respeita 252 por atributo e 510 no total.
+   */
+  status: 'sugerido' | 'não-determinado';
+  reason: string;
+  /** EVs atuais do snapshot; `null` é desconhecido. */
+  currentEvs: Record<TrainingStatKey, number | null>;
+  /** EVs sugeridos em cada atributo; vazio quando `não-determinado`. */
+  suggestedEvs: Partial<Record<TrainingStatKey, number>>;
+  /** De 1 a 3 espécies que rendem os EVs sugeridos; vazio quando não há rendimento conhecido ou não-determinado. */
+  sources: TrainingEvSource[];
+};
+
+export type TrainingPlanMemberResult = {
+  uuid: string;
+  speciesId: string;
+  level: number;
+  /** Nulo quando o cap não é determinado. */
+  levelCap: number | null;
+  capOrigin: TrainingCapOrigin;
+  /** Nível-alvo: nunca acima do cap; nulo quando o cap não é determinado (`targetNote` mostra "cap não determinado"). */
+  targetLevel: number | null;
+  targetNote: string;
+  /** Golpes por nível no caminho até o alvo; vazio quando não há alvo. */
+  moves: TrainingMove[];
+  evs: TrainingEvPlan;
+};
+
+export type TrainingPlanResult = {
+  members: TrainingPlanMemberResult[];
+  assumptions: string[];
+  limits: string[];
+};
+
 /** Próximo objetivo sugerido. `nível`: pelo maior nível da party, sem ler o progresso de treinadores do save. */
 export type GuideNextGoal = {trainerId: string | null; basis: 'progresso' | 'nível'; reason: string};
 
@@ -344,6 +405,8 @@ export type CompanionApi = {
   buildEvolutionPlan(request: EvolutionPlanRequest): Promise<EvolutionPlanResult>;
   /** Capturas recomendadas para as lacunas do time: antes, o que já existe no PC. Cancelável por `cancel(request.jobId)`. */
   buildCapturePlan(request: CapturePlanRequest): Promise<CapturePlanResult>;
+  /** Treino até o level cap: nível-alvo, golpes no caminho e EVs por papel. Cancelável por `cancel(request.jobId)`. */
+  buildTrainingPlan(request: TrainingPlanRequest): Promise<TrainingPlanResult>;
 };
 
 declare global {
