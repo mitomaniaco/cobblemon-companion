@@ -140,6 +140,60 @@ export type GuideResult = {
   limits: string[];
 };
 
+/** Membro do time de 6 do guia que vai à batalha: os golpes e o item que o guia recomendou para ele. */
+export type BattlePlanMember = {uuid: string; moveIds: string[]; itemId: string | null};
+
+export type BattlePlanRequest = {
+  sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
+  trainerId: string;
+  team: BattlePlanMember[];
+  /** Identificador opcional para cancelar a montagem com `cancel(jobId)`. */
+  jobId?: string;
+};
+
+/** Dano dos 16 rolls de um golpe: mínimo e máximo em HP, e o HP máximo de quem recebe. */
+export type BattlePlanDamage = {moveId: string; min: number; max: number; targetHP: number};
+
+/**
+ * Risco declarado na definição do treinador ou do Pokémon, com o texto pronto para a tela
+ * (por exemplo "Geodude aguenta um golpe com Sturdy e pode agir antes com Custap Berry").
+ */
+export type BattlePlanRisk = {kind: 'habilidade' | 'item' | 'bolsa' | 'campo' | 'ia'; text: string};
+
+export type BattlePlanEntry = {
+  opponentId: string;
+  speciesId: string;
+  level: number;
+  ability: string;
+  /** Alternativas do `heldItem` do adversário. Várias alternativas ficam todas listadas; o plano nunca escolhe uma. */
+  heldItemAlternatives: string[];
+  /** `bloqueado`: alguma mecânica deste confronto está fora do catálogo ou do adaptador; `blockedReason` diz qual. */
+  status: 'planejado' | 'bloqueado';
+  blockedReason: string | null;
+  /** Quem responde a este adversário, e com qual golpe. Nulo quando o confronto está bloqueado. */
+  responder: {uuid: string; speciesId: string; moveId: string} | null;
+  /** O que o respondedor causa ao adversário e o que recebe do melhor golpe dele. Nulos quando bloqueado. */
+  dealt: BattlePlanDamage | null;
+  received: BattlePlanDamage | null;
+  /** `incerto`: prioridade ou item de prioridade (como Custap Berry) pode inverter a ordem; o texto explica em `actReason`. */
+  firstToAct: 'jogador' | 'adversário' | 'incerto' | null;
+  actReason: string | null;
+  risks: BattlePlanRisk[];
+};
+
+export type BattlePlanResult = {
+  trainer: {id: string; name: string; maxItemUses: number | null; bag: Array<{itemId: string; quantity: number}>};
+  /** `fora-do-escopo`: treinador em dupla; sem entradas nem lead, só o motivo em `scopeReason`. */
+  status: 'plano' | 'fora-do-escopo';
+  scopeReason: string | null;
+  lead: {uuid: string; speciesId: string; reason: string} | null;
+  entries: BattlePlanEntry[];
+  /** Riscos do treinador como um todo: bolsa × `maxItemUses`, IA não modelada. */
+  trainerRisks: BattlePlanRisk[];
+  assumptions: string[];
+  limits: string[];
+};
+
 /** Próximo objetivo sugerido. `nível`: pelo maior nível da party, sem ler o progresso de treinadores do save. */
 export type GuideNextGoal = {trainerId: string | null; basis: 'progresso' | 'nível'; reason: string};
 
@@ -158,6 +212,8 @@ export type CompanionApi = {
   /** Treinadores disponíveis como objetivo (radicalred primeiro, na ordem da campanha). */
   listGuideTrainers(): Promise<GuideTrainer[]>;
   guideNextGoal(): Promise<GuideNextGoal>;
+  /** Plano de batalha contra um treinador RCT singles para o time de 6 do guia. Cancelável por `cancel(request.jobId)`. */
+  buildBattlePlan(request: BattlePlanRequest): Promise<BattlePlanResult>;
 };
 
 declare global {

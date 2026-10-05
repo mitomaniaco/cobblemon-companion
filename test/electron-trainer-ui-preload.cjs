@@ -20,6 +20,7 @@ const bridge = {
   buildGuide: (request) => ipcRenderer.invoke('companion:guide-build', request),
   listGuideTrainers: () => ipcRenderer.invoke('companion:guide-trainers'),
   guideNextGoal: () => ipcRenderer.invoke('companion:guide-next-goal'),
+  buildBattlePlan: (request) => ipcRenderer.invoke('companion:battle-plan-build', request),
 };
 
 if (window.location.search === '?runtime-test') {
