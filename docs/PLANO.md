@@ -10,7 +10,7 @@ Detalhamento de 19/09/2026: [casos de comparação](CASOS-COMPARACAO.md) têm 27
 
 ## 1. Produto e limite da promessa
 
-App desktop local para configurar a party e recomendar conjuntos de até quatro golpes utilizáveis no estágio atual de progressão. Foco em exploração PvE e encontros da campanha Radical Red instalada no All the Mons, inicialmente na versão 1.2.0 informada pelo usuário.
+App desktop local, guia de progressão para a parte Pokémon do modpack: lê party e PC, sugere o próximo objetivo e monta o time de 6 (golpes conhecidos, item sugerido e golpes a adquirir) para PvE geral ou para um líder RCT. Foco na campanha Radical Red instalada no All the Mons, inicialmente na versão 1.2.0 informada pelo usuário. A visão e o roadmap atuais estão em [VISAO.md](VISAO.md); as revisões de D05 e da exclusão de monitoramento estão em D12–D14 de [DECISOES.md](DECISOES.md). Onde este plano ainda descreve um Pokémon por vez, sem monitoramento ou sem recomendação de time de 6, vale a visão.
 
 O resultado compara a build atual com uma recomendação e alternativas materialmente diferentes. Explica ganhos, perdas, requisitos e hipóteses usando fatos calculados e regras explícitas, sem LLM.
 

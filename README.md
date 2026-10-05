@@ -1,6 +1,6 @@
 # Companion local de movesets Cobblemon
 
-Aplicativo desktop Electron/React para ler a party e o PC do jogador e rascunhar uma troca de golpe em um indivíduo identificado por UUID. Este diretório é a raiz do app: a pasta que contém `package.json` é onde os comandos abaixo devem ser executados.
+Aplicativo desktop Electron/React que funciona como guia de progressão da parte Pokémon do modpack (campanha Radical Red via RCT): lê a party e o PC do jogador, sugere o próximo objetivo e monta o time de 6 (golpes já conhecidos, item sugerido e golpes a adquirir) para PvE geral ou para um líder, explicando cada escolha. Os planejadores de troca e de dano seguem como ferramentas de apoio. A visão e o roadmap estão em [docs/VISAO.md](./docs/VISAO.md). Este diretório é a raiz do app: a pasta que contém `package.json` é onde os comandos abaixo devem ser executados.
 
 Documentação completa: [índice do projeto](./docs/README.md), [guia técnico para agentes](./docs/GUIA-TECNICO.md), [contexto automático do Claude](./CLAUDE.md), [plano](./docs/PLANO.md), [decisões](./docs/DECISOES.md), [validação](./docs/VALIDACAO.md), [changelog](./CHANGELOG.md), [contrato do cálculo real](./docs/preflight/IMPORTACAO-PARTY.md) e [handoff para outro agente](./HANDOFF.md).
 
@@ -37,7 +37,7 @@ Essa configuração não escolhe treinador, cap ou tipos. O save continua sendo 
 - A demonstração offline continua fixa em Pikachu/Floatzel: Spark contra Thunderbolt, um alvo e uma ação. O formulário e a fixture são independentes da seleção do save e do rascunho de troca.
 - `src/main.tsx` monta `TrainerApp`, com workspaces próprios de Equipe, PC, Dano, Demonstração e Ajuda/diagnóstico. As ilustrações locais são opcionais e usam fontes/revisões fixadas; os avisos de direitos estão na interface.
 
-O app não recomenda uma build geral, não simula a luta inteira nem prevê a IA adversária. A rota real apresenta apenas rolls se o golpe acertar, dentro do subconjunto e das condições declaradas; não estima precisão, críticos, nocaute ou ranking. A importação não grava no save, não envia comandos ao servidor, não executa scripts de mods e não persiste snapshots em banco.
+O Guia monta o time de 6 por objetivo com cálculo de dano e confrontos (singles, HP cheio, campo neutro), mas não promete uma build ou equipe universal, não simula a luta inteira nem prevê a IA adversária. A rota real de Dano apresenta apenas rolls se o golpe acertar, dentro do subconjunto e das condições declaradas; não estima precisão, críticos, nocaute ou ranking. O app só lê o save (importação manual e monitoramento de party/PC com `fs.watch`): não grava no save, não envia comandos ao servidor, não executa scripts de mods e não persiste snapshots em banco.
 
 ## Portabilidade e limites
 
