@@ -1405,6 +1405,54 @@ async function exerciseGuideWorkspace(window) {
   console.log('PASS tela Guia: objetivo sugerido, time com explicações, Ver cálculo no Dano e layouts 1200/800');
 }
 
+async function exerciseGuideAutoRecalculation(window) {
+  const contents = window.webContents;
+  await navigate(contents, 'Guia');
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
+    'time do guia antes do recálculo automático',
+  );
+  const toast = `[...document.querySelectorAll('[role="status"]')].some(node => node.textContent.includes('Save mudou · time recalculado'))`;
+  const autoLabel = `[...document.querySelectorAll('label')].find(node => node.textContent.includes('Atualizar automaticamente'))`;
+  const autoInput = `${autoLabel}?.querySelector('input[role="switch"]')`;
+  const toggleAuto = async () => {
+    const point = await evaluate(
+      contents,
+      `(() => {
+      const label = ${autoLabel};
+      if (!label) throw new Error('O switch Atualizar automaticamente não foi encontrado.');
+      const rect = label.getBoundingClientRect();
+      return {x: Math.round(rect.left + rect.width / 2), y: Math.round(rect.top + rect.height / 2)};
+    })()`,
+    );
+    contents.sendInputEvent({type: 'mouseDown', x: point.x, y: point.y, button: 'left', clickCount: 1});
+    contents.sendInputEvent({type: 'mouseUp', x: point.x, y: point.y, button: 'left', clickCount: 1});
+  };
+
+  check(await evaluate(contents, `${autoInput}?.checked === true`), 'O switch Atualizar automaticamente deveria começar ligado.');
+  check(!(await evaluate(contents, toast)), 'O aviso de recálculo apareceu antes de qualquer mudança do save.');
+
+  await toggleAuto();
+  await waitFor(contents, `${autoInput}?.checked === false`, 'switch Atualizar automaticamente desligado');
+  const off = await evaluate(contents, 'window.cobblemonCompanion.test.simulateSnapshotChange()');
+  await delay(500);
+  check(off.sent === false, 'Com o switch desligado, o main ainda emitiu snapshot-changed.');
+  check(!(await evaluate(contents, toast)), 'Com o switch desligado, o guia avisou recálculo.');
+
+  await toggleAuto();
+  await waitFor(contents, `${autoInput}?.checked === true`, 'switch Atualizar automaticamente religado');
+  const on = await evaluate(contents, 'window.cobblemonCompanion.test.simulateSnapshotChange()');
+  check(on.sent === true, 'Com o switch ligado, o main não emitiu snapshot-changed.');
+  await waitFor(contents, toast, 'aviso "Save mudou · time recalculado"');
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1 && !document.querySelector('[role="progressbar"][aria-label="Montando o time"]')`,
+    'time recalculado após a mudança do save',
+  );
+  console.log('PASS Guia: mudança do save recalcula com toast e o switch desligado não recalcula');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1436,6 +1484,15 @@ async function run() {
   );
   await exerciseGuideContract(contents);
   await exerciseGuideWorkspace(window);
+  await exerciseGuideAutoRecalculation(window);
+  // O snapshot simulado (hash 'c…') passou a ser o da sessão. Volta à captura da fixture.
+  await clickButton(contents, 'Atualizar do save');
+  await delay(150);
+  await waitFor(
+    contents,
+    "document.querySelector('[data-testid=\"refresh-snapshot\"]')?.textContent.trim() === 'Atualizar do save'",
+    'recarga da fixture depois do recálculo do guia',
+  );
   await exerciseShellScrollLock(window, snapshot);
   await exerciseDemo(contents);
   await exerciseRealDamage(contents);
