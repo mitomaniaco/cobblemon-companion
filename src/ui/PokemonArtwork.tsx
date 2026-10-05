@@ -1,16 +1,8 @@
 import {useState} from 'react';
-import {artworkFallbackName, buildArtworkIndex, resolveArtwork, type ArtworkManifest} from './artwork';
+import {artworkFallbackName, resolveArtwork} from './artwork';
+import {useArtwork} from './artwork-store';
 import styles from './PokemonArtwork.module.css';
 import {PokeBallMark} from './PokeBallMark';
-
-// O manifesto é gerado por `npm run prepare:ui-assets` e não é versionado. Sem ele, toda espécie mostra o placeholder
-// com o nome da espécie (nunca um ícone igual para todas).
-const manifests = import.meta.glob<ArtworkManifest>('../data/species-artwork.json', {
-  eager: true,
-  import: 'default',
-});
-const speciesArtwork: ArtworkManifest = Object.values(manifests)[0] ?? {};
-const artworkIndex = buildArtworkIndex(speciesArtwork);
 
 export type PokemonArtworkVariant = 'collection' | 'slot' | 'detail';
 
@@ -28,7 +20,8 @@ const baseFormCaption = 'Arte da forma normal';
 const SLOT_INITIALS = 3;
 
 export function PokemonArtwork({speciesId, formId, variant, loading, className}: PokemonArtworkProps) {
-  const resolved = resolveArtwork(speciesArtwork, artworkIndex, speciesId, formId);
+  const {manifest, index} = useArtwork();
+  const resolved = resolveArtwork(manifest, index, speciesId, formId);
   const artworkPath = resolved.path;
   const artworkKey = `${speciesId}\u0000${formId}\u0000${artworkPath ?? ''}`;
   const [failedArtworkKey, setFailedArtworkKey] = useState<string | null>(null);

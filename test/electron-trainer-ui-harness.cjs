@@ -700,6 +700,21 @@ async function exerciseRealDamage(contents) {
   );
 
   await chooseComboBox(contents, 'Espécie', 'Abra');
+  const abraArtwork = await evaluate(
+    contents,
+    `(() => {
+    const figure = [...document.querySelectorAll('.real-damage-planner figure[data-artwork]')].find(node => node.querySelector('[title="Abra"]'));
+    return {
+      source: figure?.dataset.artwork || null,
+      label: figure?.querySelector('[role="img"]')?.getAttribute('aria-label') || null,
+      name: figure?.querySelector('[title="Abra"]')?.innerText.trim() || null,
+    };
+  })()`,
+  );
+  check(
+    abraArtwork.source === 'none' && abraArtwork.label === 'Imagem indisponível' && abraArtwork.name === 'Abra',
+    'Espécie sem arte nenhuma deve mostrar o placeholder com o próprio nome.',
+  );
   await setLabeledInput(contents, 'Nível', '50');
   await chooseSelect(contents, 'Natureza', 'Modest');
   await chooseSelect(contents, 'Habilidade', 'Synchronize');

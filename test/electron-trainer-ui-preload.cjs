@@ -31,6 +31,7 @@ if (window.location.search === '?runtime-test') {
     simulateSnapshotChange: () => ipcRenderer.invoke('companion:test:simulate-snapshot-change'),
     setBehavior: (behavior) => ipcRenderer.invoke('companion:test:behavior', behavior),
     getResponses: () => ipcRenderer.invoke('companion:test:responses'),
+    getArtworkManifest: () => ipcRenderer.invoke('companion:test:artwork-manifest'),
   });
 }
 

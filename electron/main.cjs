@@ -16,6 +16,9 @@ const PLAYER_IMPORT_PATH = path.resolve(__dirname, 'player-import.cjs');
 const TRAINER_UI_SNAPSHOT_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-snapshot.json');
 const TRAINER_UI_GUIDE_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-guide.json');
 const TRAINER_UI_GUIDE = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_GUIDE_PATH, 'utf8')) : null;
+// Manifesto de artwork sintético: só o modo de teste da UI o lê; produção nunca carrega fixture.
+const TRAINER_UI_ARTWORK_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-artwork.json');
+const TRAINER_UI_ARTWORK = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_ARTWORK_PATH, 'utf8')) : null;
 const GUIDE_WORKER_PATH = path.resolve(__dirname, 'guide-worker.cjs');
 const GUIDE_TIMEOUT_MS = 180000;
 const TRAINER_UI_SNAPSHOT = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_SNAPSHOT_PATH, 'utf8')) : null;
@@ -42,6 +45,7 @@ const IPC_SNAPSHOT_CHANGED = 'companion:snapshot-changed';
 const IPC_TEST_SIMULATE_CHANGE = 'companion:test:simulate-snapshot-change';
 const IPC_TEST_BEHAVIOR = 'companion:test:behavior';
 const IPC_TEST_RESPONSES = 'companion:test:responses';
+const IPC_TEST_ARTWORK_MANIFEST = 'companion:test:artwork-manifest';
 const CURRENT_MOVE = 'cobblemon:spark';
 const SUPPORTED_TARGET = 'cobblemon:floatzel';
 const SUPPORTED_CANDIDATE = 'cobblemon:thunderbolt';
@@ -239,6 +243,10 @@ function handleCancel(event, request) {
     settle(job, {status: 'failed', jobId, error: `Cancelamento falhou: ${error.message}`});
   }
   return {status: 'cancel-requested', jobId};
+}
+function handleTestArtworkManifest(event) {
+  requireSender(event);
+  return structuredClone(TRAINER_UI_ARTWORK);
 }
 function readSnapshotForRenderer() {
   try {
@@ -611,7 +619,10 @@ function installIpc() {
   ipcMain.handle(IPC_TRAINING_PLAN_BUILD, handleTrainingPlanBuild);
   ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
   ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
-  if (TRAINER_UI_TEST_MODE) ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);
+  if (TRAINER_UI_TEST_MODE) {
+    ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);
+    ipcMain.handle(IPC_TEST_ARTWORK_MANIFEST, handleTestArtworkManifest);
+  }
   if (RUNTIME_TEST_MODE) {
     ipcMain.handle(IPC_TEST_BEHAVIOR, handleSetTestBehavior);
     ipcMain.handle(IPC_TEST_RESPONSES, handleReadTestResponses);
