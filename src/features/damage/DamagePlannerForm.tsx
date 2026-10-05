@@ -1,8 +1,19 @@
 import {useId, type FormEvent} from 'react';
 import {itemLabel, moveLabel} from '../../domain/catalog-labels';
-import {moveDisplay, speciesDisplay} from '../../domain/dex';
+import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {PlayerIndividual} from '../../platform/api';
-import {Button, Checkbox, HpBar, PokeBallMark, PokemonArtwork, Select, StatusMessage, TypeBadge, type SelectOption} from '../../ui';
+import {
+  Button,
+  Checkbox,
+  HpBar,
+  ItemIcon,
+  PokeBallMark,
+  PokemonArtwork,
+  Select,
+  StatusMessage,
+  TypeBadge,
+  type SelectOption,
+} from '../../ui';
 import type {DamagePlannerController} from './controller';
 import {
   DAMAGE_CONFIRMATION_COPY,
@@ -89,9 +100,12 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
               <span className={styles.levelText}>{individual.level === null ? 'Nv. ?' : `Nv. ${individual.level}`}</span>
             </span>
             <span className={styles.itemText}>
-              {individual.observed.heldItem === null
-                ? 'Item: nenhum'
-                : `Item: ${itemLabel(individual.observed.heldItem)} · entra no cálculo`}
+              {individual.observed.heldItem !== null && <ItemIcon itemDexId={dexId(individual.observed.heldItem)} />}
+              <span>
+                {individual.observed.heldItem === null
+                  ? 'Item: nenhum'
+                  : `Item: ${itemLabel(individual.observed.heldItem)} · entra no cálculo`}
+              </span>
             </span>
           </div>
         </div>

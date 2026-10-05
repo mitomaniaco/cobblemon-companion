@@ -2,12 +2,17 @@
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
+  gap: 4px;
   padding: 0 var(--space-2);
   border-radius: var(--radius-pill);
   font-size: var(--text-caption);
   font-weight: 600;
   line-height: var(--line-caption);
   white-space: nowrap;
+}
+
+.icon {
+  font-size: 12px;
 }
 
 .md {

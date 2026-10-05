@@ -2,7 +2,7 @@ import {useId, useState} from 'react';
 import type {CSSProperties} from 'react';
 import {ArrowLeft, CaretDown, CaretUp} from '@phosphor-icons/react';
 import {itemLabel} from '../../domain/catalog-labels';
-import {abilityName, moveDisplay, natureDisplay, speciesDisplay, titleCaseId} from '../../domain/dex';
+import {abilityName, dexId, moveDisplay, natureDisplay, speciesDisplay, titleCaseId} from '../../domain/dex';
 import {locationLabel} from '../../domain/location-label';
 import type {MoveSwapPlan} from '../../domain/move-swap';
 import {MovePreparation} from '../damage/MovePreparation';
@@ -19,6 +19,7 @@ import {
   TabPanels,
   Tabs,
   TypeBadge,
+  ItemIcon,
   typeColorVar,
 } from '../../ui';
 import {IvRadar} from './IvRadar';
@@ -417,7 +418,10 @@ export function IndividualWorkspace({
               </div>
               <div>
                 <dt>Item</dt>
-                <dd>{individual.observed.heldItem === null ? 'Nenhum' : itemLabel(individual.observed.heldItem)}</dd>
+                <dd className={styles.itemFact}>
+                  {individual.observed.heldItem !== null && <ItemIcon itemDexId={dexId(individual.observed.heldItem)} />}
+                  {individual.observed.heldItem === null ? 'Nenhum' : itemLabel(individual.observed.heldItem)}
+                </dd>
               </div>
               <div>
                 <dt>Forma</dt>
