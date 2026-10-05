@@ -1,0 +1,7282 @@
+{
+  "abomasnow": {
+    "nationalDex": 460,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "abra": {
+    "nationalDex": 63,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "absol": {
+    "nationalDex": 359,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "accelgor": {
+    "nationalDex": 617,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "aegislash": {
+    "nationalDex": 681,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Blade",
+        "aspects": [
+          "blade-forme"
+        ]
+      }
+    ]
+  },
+  "aerodactyl": {
+    "nationalDex": 142,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "aggron": {
+    "nationalDex": 306,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "aipom": {
+    "nationalDex": 190,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "alakazam": {
+    "nationalDex": 65,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "alcremie": {
+    "nationalDex": 869,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Ruby-Cream",
+        "aspects": [
+          "cream-ruby"
+        ]
+      },
+      {
+        "name": "Matcha-Cream",
+        "aspects": [
+          "cream-matcha"
+        ]
+      },
+      {
+        "name": "Mint-Cream",
+        "aspects": [
+          "cream-mint"
+        ]
+      },
+      {
+        "name": "Lemon-Cream",
+        "aspects": [
+          "cream-lemon"
+        ]
+      },
+      {
+        "name": "Salted-Cream",
+        "aspects": [
+          "cream-salted"
+        ]
+      },
+      {
+        "name": "Ruby-Swirl",
+        "aspects": [
+          "cream-ruby_swirl"
+        ]
+      },
+      {
+        "name": "Caramel-Swirl",
+        "aspects": [
+          "cream-caramel_swirl"
+        ]
+      },
+      {
+        "name": "Rainbow-Swirl",
+        "aspects": [
+          "cream-rainbow_swirl"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "alomomola": {
+    "nationalDex": 594,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "altaria": {
+    "nationalDex": 334,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "amaura": {
+    "nationalDex": 698,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ambipom": {
+    "nationalDex": 424,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "amoonguss": {
+    "nationalDex": 591,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ampharos": {
+    "nationalDex": 181,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "annihilape": {
+    "nationalDex": 979,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "anorith": {
+    "nationalDex": 347,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "appletun": {
+    "nationalDex": 842,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "applin": {
+    "nationalDex": 840,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "araquanid": {
+    "nationalDex": 752,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arbok": {
+    "nationalDex": 24,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arboliva": {
+    "nationalDex": 930,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arcanine": {
+    "nationalDex": 59,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "arceus": {
+    "nationalDex": 493,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "archaludon": {
+    "nationalDex": 1018,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "archen": {
+    "nationalDex": 566,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "archeops": {
+    "nationalDex": 567,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arctibax": {
+    "nationalDex": 997,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arctovish": {
+    "nationalDex": 883,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arctozolt": {
+    "nationalDex": 881,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ariados": {
+    "nationalDex": 168,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "armaldo": {
+    "nationalDex": 348,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "armarouge": {
+    "nationalDex": 936,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "aromatisse": {
+    "nationalDex": 683,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "aron": {
+    "nationalDex": 304,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "arrokuda": {
+    "nationalDex": 846,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "articuno": {
+    "nationalDex": 144,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "audino": {
+    "nationalDex": 531,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "aurorus": {
+    "nationalDex": 699,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "avalugg": {
+    "nationalDex": 713,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "axew": {
+    "nationalDex": 610,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "azelf": {
+    "nationalDex": 482,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "azumarill": {
+    "nationalDex": 184,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "azurill": {
+    "nationalDex": 298,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bagon": {
+    "nationalDex": 371,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "baltoy": {
+    "nationalDex": 343,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "banette": {
+    "nationalDex": 354,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "barbaracle": {
+    "nationalDex": 689,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "barboach": {
+    "nationalDex": 339,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "barraskewda": {
+    "nationalDex": 847,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "basculegion": {
+    "nationalDex": 902,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "F",
+        "aspects": [
+          "female"
+        ]
+      }
+    ]
+  },
+  "basculin": {
+    "nationalDex": 550,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Blue-Striped",
+        "aspects": [
+          "bluestriped"
+        ]
+      },
+      {
+        "name": "White-Striped",
+        "aspects": [
+          "whitestriped"
+        ]
+      }
+    ]
+  },
+  "bastiodon": {
+    "nationalDex": 411,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "baxcalibur": {
+    "nationalDex": 998,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bayleef": {
+    "nationalDex": 153,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "beartic": {
+    "nationalDex": 614,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "beautifly": {
+    "nationalDex": 267,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "beedrill": {
+    "nationalDex": 15,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "beheeyem": {
+    "nationalDex": 606,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "beldum": {
+    "nationalDex": 374,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bellibolt": {
+    "nationalDex": 939,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bellossom": {
+    "nationalDex": 182,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bellsprout": {
+    "nationalDex": 69,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bergmite": {
+    "nationalDex": 712,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bewear": {
+    "nationalDex": 760,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bibarel": {
+    "nationalDex": 400,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bidoof": {
+    "nationalDex": 399,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "binacle": {
+    "nationalDex": 688,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bisharp": {
+    "nationalDex": 625,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "blacephalon": {
+    "nationalDex": 806,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "blastoise": {
+    "nationalDex": 9,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "blaziken": {
+    "nationalDex": 257,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "blipbug": {
+    "nationalDex": 824,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "blissey": {
+    "nationalDex": 242,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "blitzle": {
+    "nationalDex": 522,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "boldore": {
+    "nationalDex": 525,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "boltund": {
+    "nationalDex": 836,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bombirdier": {
+    "nationalDex": 962,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bonsly": {
+    "nationalDex": 438,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bouffalant": {
+    "nationalDex": 626,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bounsweet": {
+    "nationalDex": 761,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "braixen": {
+    "nationalDex": 654,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "brambleghast": {
+    "nationalDex": 947,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bramblin": {
+    "nationalDex": 946,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "braviary": {
+    "nationalDex": 628,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "breloom": {
+    "nationalDex": 286,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "brionne": {
+    "nationalDex": 729,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bronzong": {
+    "nationalDex": 437,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bronzor": {
+    "nationalDex": 436,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "brutebonnet": {
+    "nationalDex": 986,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bruxish": {
+    "nationalDex": 779,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "budew": {
+    "nationalDex": 406,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "buizel": {
+    "nationalDex": 418,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bulbasaur": {
+    "nationalDex": 1,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "buneary": {
+    "nationalDex": 427,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "bunnelby": {
+    "nationalDex": 659,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "burmy": {
+    "nationalDex": 412,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Sandy",
+        "aspects": [
+          "sandy-cloak"
+        ]
+      },
+      {
+        "name": "Trash",
+        "aspects": [
+          "trash-cloak"
+        ]
+      }
+    ]
+  },
+  "butterfree": {
+    "nationalDex": 12,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "buzzwole": {
+    "nationalDex": 794,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cacnea": {
+    "nationalDex": 331,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cacturne": {
+    "nationalDex": 332,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "calyrex": {
+    "nationalDex": 898,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Ice",
+        "aspects": [
+          "ice-rider"
+        ]
+      },
+      {
+        "name": "Shadow",
+        "aspects": [
+          "shadow-rider"
+        ]
+      }
+    ]
+  },
+  "camerupt": {
+    "nationalDex": 323,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "capsakid": {
+    "nationalDex": 951,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "carbink": {
+    "nationalDex": 703,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "carkol": {
+    "nationalDex": 838,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "carnivine": {
+    "nationalDex": 455,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "carracosta": {
+    "nationalDex": 565,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "carvanha": {
+    "nationalDex": 318,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cascoon": {
+    "nationalDex": 268,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "castform": {
+    "nationalDex": 351,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Sunny",
+        "aspects": [
+          "sunny-form"
+        ]
+      },
+      {
+        "name": "Rainy",
+        "aspects": [
+          "rainy-form"
+        ]
+      },
+      {
+        "name": "Snowy",
+        "aspects": [
+          "snowy-form"
+        ]
+      }
+    ]
+  },
+  "caterpie": {
+    "nationalDex": 10,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "celebi": {
+    "nationalDex": 251,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "celesteela": {
+    "nationalDex": 797,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "centiskorch": {
+    "nationalDex": 851,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "ceruledge": {
+    "nationalDex": 937,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cetitan": {
+    "nationalDex": 975,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cetoddle": {
+    "nationalDex": 974,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chandelure": {
+    "nationalDex": 609,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chansey": {
+    "nationalDex": 113,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "charcadet": {
+    "nationalDex": 935,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "charizard": {
+    "nationalDex": 6,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega-X",
+        "aspects": [
+          "mega_x"
+        ]
+      },
+      {
+        "name": "Mega-Y",
+        "aspects": [
+          "mega_y"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "charjabug": {
+    "nationalDex": 737,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "charmander": {
+    "nationalDex": 4,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "charmeleon": {
+    "nationalDex": 5,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chatot": {
+    "nationalDex": 441,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cherrim": {
+    "nationalDex": 421,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Sunshine",
+        "aspects": [
+          "sunshine-form"
+        ]
+      }
+    ]
+  },
+  "cherubi": {
+    "nationalDex": 420,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chesnaught": {
+    "nationalDex": 652,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chespin": {
+    "nationalDex": 650,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chewtle": {
+    "nationalDex": 833,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chienpao": {
+    "nationalDex": 1002,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chikorita": {
+    "nationalDex": 152,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chimchar": {
+    "nationalDex": 390,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chimecho": {
+    "nationalDex": 358,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chinchou": {
+    "nationalDex": 170,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chingling": {
+    "nationalDex": 433,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "chiyu": {
+    "nationalDex": 1004,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cinccino": {
+    "nationalDex": 573,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cinderace": {
+    "nationalDex": 815,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "clamperl": {
+    "nationalDex": 366,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "clauncher": {
+    "nationalDex": 692,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "clawitzer": {
+    "nationalDex": 693,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "claydol": {
+    "nationalDex": 344,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "clefable": {
+    "nationalDex": 36,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "clefairy": {
+    "nationalDex": 35,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cleffa": {
+    "nationalDex": 173,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "clobbopus": {
+    "nationalDex": 852,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "clodsire": {
+    "nationalDex": 980,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cloyster": {
+    "nationalDex": 91,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "coalossal": {
+    "nationalDex": 839,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "cobalion": {
+    "nationalDex": 638,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cofagrigus": {
+    "nationalDex": 563,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "combee": {
+    "nationalDex": 415,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "combusken": {
+    "nationalDex": 256,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "comfey": {
+    "nationalDex": 764,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "conkeldurr": {
+    "nationalDex": 534,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "copperajah": {
+    "nationalDex": 879,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "corphish": {
+    "nationalDex": 341,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "corsola": {
+    "nationalDex": 222,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "corviknight": {
+    "nationalDex": 823,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "corvisquire": {
+    "nationalDex": 822,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cosmoem": {
+    "nationalDex": 790,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cosmog": {
+    "nationalDex": 789,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cottonee": {
+    "nationalDex": 546,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "crabominable": {
+    "nationalDex": 740,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "crabrawler": {
+    "nationalDex": 739,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cradily": {
+    "nationalDex": 346,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cramorant": {
+    "nationalDex": 845,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gulping",
+        "aspects": [
+          "gulping-form"
+        ]
+      },
+      {
+        "name": "Gorging",
+        "aspects": [
+          "gorging-form"
+        ]
+      }
+    ]
+  },
+  "cranidos": {
+    "nationalDex": 408,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "crawdaunt": {
+    "nationalDex": 342,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cresselia": {
+    "nationalDex": 488,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "croagunk": {
+    "nationalDex": 453,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "crobat": {
+    "nationalDex": 169,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "crocalor": {
+    "nationalDex": 910,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "croconaw": {
+    "nationalDex": 159,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "crustle": {
+    "nationalDex": 558,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cryogonal": {
+    "nationalDex": 615,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cubchoo": {
+    "nationalDex": 613,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cubone": {
+    "nationalDex": 104,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola-Bias",
+        "aspects": [
+          "region-bias-alola"
+        ]
+      }
+    ]
+  },
+  "cufant": {
+    "nationalDex": 878,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cursola": {
+    "nationalDex": 864,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cutiefly": {
+    "nationalDex": 742,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cyclizar": {
+    "nationalDex": 967,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "cyndaquil": {
+    "nationalDex": 155,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "dachsbun": {
+    "nationalDex": 927,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "darkrai": {
+    "nationalDex": 491,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "darmanitan": {
+    "nationalDex": 555,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Zen",
+        "aspects": [
+          "zen-mode"
+        ]
+      },
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian",
+          "standard-mode"
+        ]
+      },
+      {
+        "name": "Galar-Zen",
+        "aspects": [
+          "galarian",
+          "zen-mode"
+        ]
+      }
+    ]
+  },
+  "dartrix": {
+    "nationalDex": 723,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "darumaka": {
+    "nationalDex": 554,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "decidueye": {
+    "nationalDex": 724,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "dedenne": {
+    "nationalDex": 702,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "deerling": {
+    "nationalDex": 585,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Summer",
+        "aspects": [
+          "summer"
+        ]
+      },
+      {
+        "name": "Autumn",
+        "aspects": [
+          "autumn"
+        ]
+      },
+      {
+        "name": "Winter",
+        "aspects": [
+          "winter"
+        ]
+      }
+    ]
+  },
+  "deino": {
+    "nationalDex": 633,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "delcatty": {
+    "nationalDex": 301,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "delibird": {
+    "nationalDex": 225,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "delphox": {
+    "nationalDex": 655,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "deoxys": {
+    "nationalDex": 386,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Attack",
+        "aspects": [
+          "attack-forme"
+        ]
+      },
+      {
+        "name": "Defense",
+        "aspects": [
+          "defense-forme"
+        ]
+      },
+      {
+        "name": "Speed",
+        "aspects": [
+          "speed-forme"
+        ]
+      }
+    ]
+  },
+  "dewgong": {
+    "nationalDex": 87,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dewott": {
+    "nationalDex": 502,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "dewpider": {
+    "nationalDex": 751,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dhelmise": {
+    "nationalDex": 781,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dialga": {
+    "nationalDex": 483,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "diancie": {
+    "nationalDex": 719,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "diggersby": {
+    "nationalDex": 660,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "diglett": {
+    "nationalDex": 50,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "dipplin": {
+    "nationalDex": 1011,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ditto": {
+    "nationalDex": 132,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dodrio": {
+    "nationalDex": 85,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "doduo": {
+    "nationalDex": 84,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dolliv": {
+    "nationalDex": 929,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dondozo": {
+    "nationalDex": 977,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "donphan": {
+    "nationalDex": 232,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dottler": {
+    "nationalDex": 825,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "doublade": {
+    "nationalDex": 680,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dracovish": {
+    "nationalDex": 882,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dracozolt": {
+    "nationalDex": 880,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dragalge": {
+    "nationalDex": 691,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dragapult": {
+    "nationalDex": 887,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dragonair": {
+    "nationalDex": 148,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dragonite": {
+    "nationalDex": 149,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drakloak": {
+    "nationalDex": 886,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drampa": {
+    "nationalDex": 780,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drapion": {
+    "nationalDex": 452,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dratini": {
+    "nationalDex": 147,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drednaw": {
+    "nationalDex": 834,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "dreepy": {
+    "nationalDex": 885,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drifblim": {
+    "nationalDex": 426,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drifloon": {
+    "nationalDex": 425,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drilbur": {
+    "nationalDex": 529,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drizzile": {
+    "nationalDex": 817,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "drowzee": {
+    "nationalDex": 96,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "druddigon": {
+    "nationalDex": 621,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dubwool": {
+    "nationalDex": 832,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ducklett": {
+    "nationalDex": 580,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dudunsparce": {
+    "nationalDex": 982,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Three-Segment",
+        "aspects": [
+          "three-segment-form"
+        ]
+      }
+    ]
+  },
+  "dugtrio": {
+    "nationalDex": 51,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "dunsparce": {
+    "nationalDex": 206,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "duosion": {
+    "nationalDex": 578,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "duraludon": {
+    "nationalDex": 884,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "durant": {
+    "nationalDex": 632,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dusclops": {
+    "nationalDex": 356,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dusknoir": {
+    "nationalDex": 477,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "duskull": {
+    "nationalDex": 355,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dustox": {
+    "nationalDex": 269,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "dwebble": {
+    "nationalDex": 557,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "eelektrik": {
+    "nationalDex": 603,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "eelektross": {
+    "nationalDex": 604,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "eevee": {
+    "nationalDex": 133,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "eiscue": {
+    "nationalDex": 875,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Noice-Face",
+        "aspects": [
+          "noice_face"
+        ]
+      }
+    ]
+  },
+  "ekans": {
+    "nationalDex": 23,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "eldegoss": {
+    "nationalDex": 830,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "electabuzz": {
+    "nationalDex": 125,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "electivire": {
+    "nationalDex": 466,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "electrike": {
+    "nationalDex": 309,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "electrode": {
+    "nationalDex": 101,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "elekid": {
+    "nationalDex": 239,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "elgyem": {
+    "nationalDex": 605,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "emboar": {
+    "nationalDex": 500,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "emolga": {
+    "nationalDex": 587,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "empoleon": {
+    "nationalDex": 395,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "enamorus": {
+    "nationalDex": 905,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Therian",
+        "aspects": [
+          "therian-forme"
+        ]
+      }
+    ]
+  },
+  "entei": {
+    "nationalDex": 244,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "escavalier": {
+    "nationalDex": 589,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "espathra": {
+    "nationalDex": 956,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "espeon": {
+    "nationalDex": 196,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "espurr": {
+    "nationalDex": 677,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "eternatus": {
+    "nationalDex": 890,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Eternamax",
+        "aspects": [
+          "eternamax"
+        ]
+      }
+    ]
+  },
+  "excadrill": {
+    "nationalDex": 530,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "exeggcute": {
+    "nationalDex": 102,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola-Bias",
+        "aspects": [
+          "region-bias-alola"
+        ]
+      }
+    ]
+  },
+  "exeggutor": {
+    "nationalDex": 103,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "exploud": {
+    "nationalDex": 295,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "falinks": {
+    "nationalDex": 870,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "farfetchd": {
+    "nationalDex": 83,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "farigiraf": {
+    "nationalDex": 981,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fearow": {
+    "nationalDex": 22,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "feebas": {
+    "nationalDex": 349,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fennekin": {
+    "nationalDex": 653,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "feraligatr": {
+    "nationalDex": 160,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ferroseed": {
+    "nationalDex": 597,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ferrothorn": {
+    "nationalDex": 598,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fezandipiti": {
+    "nationalDex": 1016,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fidough": {
+    "nationalDex": 926,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "finizen": {
+    "nationalDex": 963,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "finneon": {
+    "nationalDex": 456,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "flaaffy": {
+    "nationalDex": 180,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "flabebe": {
+    "nationalDex": 669,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Yellow",
+        "aspects": [
+          "flower-yellow"
+        ]
+      },
+      {
+        "name": "Orange",
+        "aspects": [
+          "flower-orange"
+        ]
+      },
+      {
+        "name": "Blue",
+        "aspects": [
+          "flower-blue"
+        ]
+      },
+      {
+        "name": "White",
+        "aspects": [
+          "flower-white"
+        ]
+      }
+    ]
+  },
+  "flamigo": {
+    "nationalDex": 973,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "flapple": {
+    "nationalDex": 841,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "flareon": {
+    "nationalDex": 136,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fletchinder": {
+    "nationalDex": 662,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fletchling": {
+    "nationalDex": 661,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "flittle": {
+    "nationalDex": 955,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "floatzel": {
+    "nationalDex": 419,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "floette": {
+    "nationalDex": 670,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Yellow",
+        "aspects": [
+          "flower-yellow"
+        ]
+      },
+      {
+        "name": "Orange",
+        "aspects": [
+          "flower-orange"
+        ]
+      },
+      {
+        "name": "Blue",
+        "aspects": [
+          "flower-blue"
+        ]
+      },
+      {
+        "name": "White",
+        "aspects": [
+          "flower-white"
+        ]
+      },
+      {
+        "name": "Eternal",
+        "aspects": [
+          "flower-eternal"
+        ]
+      }
+    ]
+  },
+  "floragato": {
+    "nationalDex": 907,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "florges": {
+    "nationalDex": 671,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Yellow",
+        "aspects": [
+          "flower-yellow"
+        ]
+      },
+      {
+        "name": "Orange",
+        "aspects": [
+          "flower-orange"
+        ]
+      },
+      {
+        "name": "Blue",
+        "aspects": [
+          "flower-blue"
+        ]
+      },
+      {
+        "name": "White",
+        "aspects": [
+          "flower-white"
+        ]
+      }
+    ]
+  },
+  "fluttermane": {
+    "nationalDex": 987,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "flygon": {
+    "nationalDex": 330,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fomantis": {
+    "nationalDex": 753,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "foongus": {
+    "nationalDex": 590,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "forretress": {
+    "nationalDex": 205,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fraxure": {
+    "nationalDex": 611,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "frigibax": {
+    "nationalDex": 996,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "frillish": {
+    "nationalDex": 592,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "froakie": {
+    "nationalDex": 656,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "frogadier": {
+    "nationalDex": 657,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "froslass": {
+    "nationalDex": 478,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "frosmoth": {
+    "nationalDex": 873,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "fuecoco": {
+    "nationalDex": 909,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "furfrou": {
+    "nationalDex": 676,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Heart",
+        "aspects": [
+          "heart-trim"
+        ]
+      },
+      {
+        "name": "Star",
+        "aspects": [
+          "star-trim"
+        ]
+      },
+      {
+        "name": "Diamond",
+        "aspects": [
+          "diamond-trim"
+        ]
+      },
+      {
+        "name": "Debutante",
+        "aspects": [
+          "debutante-trim"
+        ]
+      },
+      {
+        "name": "Matron",
+        "aspects": [
+          "matron-trim"
+        ]
+      },
+      {
+        "name": "Dandy",
+        "aspects": [
+          "dandy-trim"
+        ]
+      },
+      {
+        "name": "La-Reine",
+        "aspects": [
+          "la_reine-trim"
+        ]
+      },
+      {
+        "name": "Kabuki",
+        "aspects": [
+          "kabuki-trim"
+        ]
+      },
+      {
+        "name": "Pharaoh",
+        "aspects": [
+          "pharaoh-trim"
+        ]
+      },
+      {
+        "name": "Matcha",
+        "aspects": [
+          "matcha-trim"
+        ]
+      },
+      {
+        "name": "Lavender",
+        "aspects": [
+          "lavender-trim"
+        ]
+      },
+      {
+        "name": "Cinnamon",
+        "aspects": [
+          "cinnamon-trim"
+        ]
+      },
+      {
+        "name": "Crusader",
+        "aspects": [
+          "crusader-trim"
+        ]
+      },
+      {
+        "name": "Rocker",
+        "aspects": [
+          "rocker-trim"
+        ]
+      },
+      {
+        "name": "Mourner",
+        "aspects": [
+          "mourner-trim"
+        ]
+      }
+    ]
+  },
+  "furret": {
+    "nationalDex": 162,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gabite": {
+    "nationalDex": 444,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gallade": {
+    "nationalDex": 475,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "galvantula": {
+    "nationalDex": 596,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "garbodor": {
+    "nationalDex": 569,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "garchomp": {
+    "nationalDex": 445,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "gardevoir": {
+    "nationalDex": 282,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "garganacl": {
+    "nationalDex": 934,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gastly": {
+    "nationalDex": 92,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gastrodon": {
+    "nationalDex": 423,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "East",
+        "aspects": [
+          "east-sea"
+        ]
+      }
+    ]
+  },
+  "genesect": {
+    "nationalDex": 649,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Douse",
+        "aspects": [
+          "douse-drive"
+        ]
+      },
+      {
+        "name": "Shock",
+        "aspects": [
+          "shock-drive"
+        ]
+      },
+      {
+        "name": "Burn",
+        "aspects": [
+          "burn-drive"
+        ]
+      },
+      {
+        "name": "Chill",
+        "aspects": [
+          "chill-drive"
+        ]
+      }
+    ]
+  },
+  "gengar": {
+    "nationalDex": 94,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "geodude": {
+    "nationalDex": 74,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "gholdengo": {
+    "nationalDex": 1000,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gible": {
+    "nationalDex": 443,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gigalith": {
+    "nationalDex": 526,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gimmighoul": {
+    "nationalDex": 999,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Roaming",
+        "aspects": [
+          "roaming"
+        ]
+      }
+    ]
+  },
+  "girafarig": {
+    "nationalDex": 203,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "giratina": {
+    "nationalDex": 487,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "glaceon": {
+    "nationalDex": 471,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "glalie": {
+    "nationalDex": 362,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "glameow": {
+    "nationalDex": 431,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "glastrier": {
+    "nationalDex": 896,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gligar": {
+    "nationalDex": 207,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "glimmet": {
+    "nationalDex": 969,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "glimmora": {
+    "nationalDex": 970,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gliscor": {
+    "nationalDex": 472,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gloom": {
+    "nationalDex": 44,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gogoat": {
+    "nationalDex": 673,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "golbat": {
+    "nationalDex": 42,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "goldeen": {
+    "nationalDex": 118,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "golduck": {
+    "nationalDex": 55,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "golem": {
+    "nationalDex": 76,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "golett": {
+    "nationalDex": 622,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "golisopod": {
+    "nationalDex": 768,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "golurk": {
+    "nationalDex": 623,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "goodra": {
+    "nationalDex": 706,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "goomy": {
+    "nationalDex": 704,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "gorebyss": {
+    "nationalDex": 368,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gossifleur": {
+    "nationalDex": 829,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gothita": {
+    "nationalDex": 574,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gothitelle": {
+    "nationalDex": 576,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gothorita": {
+    "nationalDex": 575,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gougingfire": {
+    "nationalDex": 1020,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gourgeist": {
+    "nationalDex": 711,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Small",
+        "aspects": [
+          "pumpkin-size-small"
+        ]
+      },
+      {
+        "name": "Large",
+        "aspects": [
+          "pumpkin-size-large"
+        ]
+      },
+      {
+        "name": "Super",
+        "aspects": [
+          "pumpkin-size-super"
+        ]
+      }
+    ]
+  },
+  "grafaiai": {
+    "nationalDex": 945,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "granbull": {
+    "nationalDex": 210,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "grapploct": {
+    "nationalDex": 853,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "graveler": {
+    "nationalDex": 75,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "greattusk": {
+    "nationalDex": 984,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "greavard": {
+    "nationalDex": 971,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "greedent": {
+    "nationalDex": 820,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "greninja": {
+    "nationalDex": 658,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Bond",
+        "aspects": [
+          "bond"
+        ]
+      },
+      {
+        "name": "Ash",
+        "aspects": [
+          "ash"
+        ]
+      }
+    ]
+  },
+  "grimer": {
+    "nationalDex": 88,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "grimmsnarl": {
+    "nationalDex": 861,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "grookey": {
+    "nationalDex": 810,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "grotle": {
+    "nationalDex": 388,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "groudon": {
+    "nationalDex": 383,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Primal",
+        "aspects": [
+          "primal"
+        ]
+      }
+    ]
+  },
+  "grovyle": {
+    "nationalDex": 253,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "growlithe": {
+    "nationalDex": 58,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "grubbin": {
+    "nationalDex": 736,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "grumpig": {
+    "nationalDex": 326,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gulpin": {
+    "nationalDex": 316,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gumshoos": {
+    "nationalDex": 735,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gurdurr": {
+    "nationalDex": 533,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "guzzlord": {
+    "nationalDex": 799,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "gyarados": {
+    "nationalDex": 130,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "hakamoo": {
+    "nationalDex": 783,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "happiny": {
+    "nationalDex": 440,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hariyama": {
+    "nationalDex": 297,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hatenna": {
+    "nationalDex": 856,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hatterene": {
+    "nationalDex": 858,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "hattrem": {
+    "nationalDex": 857,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "haunter": {
+    "nationalDex": 93,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hawlucha": {
+    "nationalDex": 701,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "haxorus": {
+    "nationalDex": 612,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "heatmor": {
+    "nationalDex": 631,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "heatran": {
+    "nationalDex": 485,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "heliolisk": {
+    "nationalDex": 695,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "helioptile": {
+    "nationalDex": 694,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "heracross": {
+    "nationalDex": 214,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "herdier": {
+    "nationalDex": 507,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hippopotas": {
+    "nationalDex": 449,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hippowdon": {
+    "nationalDex": 450,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hitmonchan": {
+    "nationalDex": 107,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hitmonlee": {
+    "nationalDex": 106,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hitmontop": {
+    "nationalDex": 237,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "honchkrow": {
+    "nationalDex": 430,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "honedge": {
+    "nationalDex": 679,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hooh": {
+    "nationalDex": 250,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hoopa": {
+    "nationalDex": 720,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Unbound",
+        "aspects": [
+          "unbound"
+        ]
+      }
+    ]
+  },
+  "hoothoot": {
+    "nationalDex": 163,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hoppip": {
+    "nationalDex": 187,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "horsea": {
+    "nationalDex": 116,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "houndoom": {
+    "nationalDex": 229,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "houndour": {
+    "nationalDex": 228,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "houndstone": {
+    "nationalDex": 972,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "huntail": {
+    "nationalDex": 367,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hydrapple": {
+    "nationalDex": 1019,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hydreigon": {
+    "nationalDex": 635,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "hypno": {
+    "nationalDex": 97,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "igglybuff": {
+    "nationalDex": 174,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "illumise": {
+    "nationalDex": 314,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "impidimp": {
+    "nationalDex": 859,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "incineroar": {
+    "nationalDex": 727,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "indeedee": {
+    "nationalDex": 876,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "F",
+        "aspects": [
+          "female"
+        ]
+      }
+    ]
+  },
+  "infernape": {
+    "nationalDex": 392,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "inkay": {
+    "nationalDex": 686,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "inteleon": {
+    "nationalDex": 818,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "ironboulder": {
+    "nationalDex": 1022,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironbundle": {
+    "nationalDex": 991,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironcrown": {
+    "nationalDex": 1023,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironhands": {
+    "nationalDex": 992,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironjugulis": {
+    "nationalDex": 993,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironleaves": {
+    "nationalDex": 1010,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironmoth": {
+    "nationalDex": 994,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironthorns": {
+    "nationalDex": 995,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "irontreads": {
+    "nationalDex": 990,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ironvaliant": {
+    "nationalDex": 1006,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ivysaur": {
+    "nationalDex": 2,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jangmoo": {
+    "nationalDex": 782,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jellicent": {
+    "nationalDex": 593,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jigglypuff": {
+    "nationalDex": 39,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jirachi": {
+    "nationalDex": 385,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jolteon": {
+    "nationalDex": 135,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "joltik": {
+    "nationalDex": 595,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jumpluff": {
+    "nationalDex": 189,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "jynx": {
+    "nationalDex": 124,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kabuto": {
+    "nationalDex": 140,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kabutops": {
+    "nationalDex": 141,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kadabra": {
+    "nationalDex": 64,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kakuna": {
+    "nationalDex": 14,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kangaskhan": {
+    "nationalDex": 115,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "karrablast": {
+    "nationalDex": 588,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kartana": {
+    "nationalDex": 798,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kecleon": {
+    "nationalDex": 352,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "keldeo": {
+    "nationalDex": 647,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Resolute",
+        "aspects": [
+          "resolute-form"
+        ]
+      }
+    ]
+  },
+  "kilowattrel": {
+    "nationalDex": 941,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kingambit": {
+    "nationalDex": 983,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kingdra": {
+    "nationalDex": 230,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kingler": {
+    "nationalDex": 99,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "kirlia": {
+    "nationalDex": 281,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "klang": {
+    "nationalDex": 600,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "klawf": {
+    "nationalDex": 950,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kleavor": {
+    "nationalDex": 900,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "klefki": {
+    "nationalDex": 707,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "klink": {
+    "nationalDex": 599,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "klinklang": {
+    "nationalDex": 601,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "koffing": {
+    "nationalDex": 109,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar-Bias",
+        "aspects": [
+          "region-bias-galar"
+        ]
+      }
+    ]
+  },
+  "komala": {
+    "nationalDex": 775,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kommoo": {
+    "nationalDex": 784,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "koraidon": {
+    "nationalDex": 1007,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "krabby": {
+    "nationalDex": 98,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kricketot": {
+    "nationalDex": 401,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kricketune": {
+    "nationalDex": 402,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "krokorok": {
+    "nationalDex": 552,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "krookodile": {
+    "nationalDex": 553,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kubfu": {
+    "nationalDex": 891,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "kyogre": {
+    "nationalDex": 382,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Primal",
+        "aspects": [
+          "primal"
+        ]
+      }
+    ]
+  },
+  "kyurem": {
+    "nationalDex": 646,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "White",
+        "aspects": [
+          "white-fusion"
+        ]
+      },
+      {
+        "name": "Black",
+        "aspects": [
+          "black-fusion"
+        ]
+      }
+    ]
+  },
+  "lairon": {
+    "nationalDex": 305,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lampent": {
+    "nationalDex": 608,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "landorus": {
+    "nationalDex": 645,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Therian",
+        "aspects": [
+          "therian-forme"
+        ]
+      }
+    ]
+  },
+  "lanturn": {
+    "nationalDex": 171,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lapras": {
+    "nationalDex": 131,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "larvesta": {
+    "nationalDex": 636,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "larvitar": {
+    "nationalDex": 246,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "latias": {
+    "nationalDex": 380,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "latios": {
+    "nationalDex": 381,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "leafeon": {
+    "nationalDex": 470,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "leavanny": {
+    "nationalDex": 542,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lechonk": {
+    "nationalDex": 915,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ledian": {
+    "nationalDex": 166,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ledyba": {
+    "nationalDex": 165,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lickilicky": {
+    "nationalDex": 463,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lickitung": {
+    "nationalDex": 108,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "liepard": {
+    "nationalDex": 510,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lileep": {
+    "nationalDex": 345,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lilligant": {
+    "nationalDex": 549,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "lillipup": {
+    "nationalDex": 506,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "linoone": {
+    "nationalDex": 264,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "litleo": {
+    "nationalDex": 667,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "litten": {
+    "nationalDex": 725,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "litwick": {
+    "nationalDex": 607,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lokix": {
+    "nationalDex": 920,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lombre": {
+    "nationalDex": 271,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lopunny": {
+    "nationalDex": 428,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "lotad": {
+    "nationalDex": 270,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "loudred": {
+    "nationalDex": 294,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lucario": {
+    "nationalDex": 448,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "ludicolo": {
+    "nationalDex": 272,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lugia": {
+    "nationalDex": 249,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lumineon": {
+    "nationalDex": 457,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lunala": {
+    "nationalDex": 792,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lunatone": {
+    "nationalDex": 337,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lurantis": {
+    "nationalDex": 754,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "luvdisc": {
+    "nationalDex": 370,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "luxio": {
+    "nationalDex": 404,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "luxray": {
+    "nationalDex": 405,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "lycanroc": {
+    "nationalDex": 745,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Midnight",
+        "aspects": [
+          "midnight-form"
+        ]
+      },
+      {
+        "name": "Dusk",
+        "aspects": [
+          "dusk-form"
+        ]
+      }
+    ]
+  },
+  "mabosstiff": {
+    "nationalDex": 943,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "machamp": {
+    "nationalDex": 68,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "machoke": {
+    "nationalDex": 67,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "machop": {
+    "nationalDex": 66,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magby": {
+    "nationalDex": 240,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magcargo": {
+    "nationalDex": 219,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magearna": {
+    "nationalDex": 801,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Original",
+        "aspects": [
+          "original-color"
+        ]
+      }
+    ]
+  },
+  "magikarp": {
+    "nationalDex": 129,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magmar": {
+    "nationalDex": 126,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magmortar": {
+    "nationalDex": 467,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magnemite": {
+    "nationalDex": 81,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magneton": {
+    "nationalDex": 82,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "magnezone": {
+    "nationalDex": 462,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "makuhita": {
+    "nationalDex": 296,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "malamar": {
+    "nationalDex": 687,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mamoswine": {
+    "nationalDex": 473,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "manaphy": {
+    "nationalDex": 490,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mandibuzz": {
+    "nationalDex": 630,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "manectric": {
+    "nationalDex": 310,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "mankey": {
+    "nationalDex": 56,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mantine": {
+    "nationalDex": 226,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mantyke": {
+    "nationalDex": 458,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "maractus": {
+    "nationalDex": 556,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mareanie": {
+    "nationalDex": 747,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mareep": {
+    "nationalDex": 179,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "marill": {
+    "nationalDex": 183,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "marowak": {
+    "nationalDex": 105,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "marshadow": {
+    "nationalDex": 802,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "marshtomp": {
+    "nationalDex": 259,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "maschiff": {
+    "nationalDex": 942,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "masquerain": {
+    "nationalDex": 284,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "maushold": {
+    "nationalDex": 925,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Four",
+        "aspects": [
+          "maushold-family-four"
+        ]
+      }
+    ]
+  },
+  "mawile": {
+    "nationalDex": 303,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "medicham": {
+    "nationalDex": 308,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "meditite": {
+    "nationalDex": 307,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "meganium": {
+    "nationalDex": 154,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "melmetal": {
+    "nationalDex": 809,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "meloetta": {
+    "nationalDex": 648,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Pirouette",
+        "aspects": [
+          "pirouette-forme"
+        ]
+      }
+    ]
+  },
+  "meltan": {
+    "nationalDex": 808,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "meowscarada": {
+    "nationalDex": 908,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "meowstic": {
+    "nationalDex": 678,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "F",
+        "aspects": [
+          "female"
+        ]
+      }
+    ]
+  },
+  "meowth": {
+    "nationalDex": 52,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      },
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "mesprit": {
+    "nationalDex": 481,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "metagross": {
+    "nationalDex": 376,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "metang": {
+    "nationalDex": 375,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "metapod": {
+    "nationalDex": 11,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mew": {
+    "nationalDex": 151,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mewtwo": {
+    "nationalDex": 150,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega-X",
+        "aspects": [
+          "mega_x"
+        ]
+      },
+      {
+        "name": "Mega-Y",
+        "aspects": [
+          "mega_y"
+        ]
+      }
+    ]
+  },
+  "mienfoo": {
+    "nationalDex": 619,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mienshao": {
+    "nationalDex": 620,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mightyena": {
+    "nationalDex": 262,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "milcery": {
+    "nationalDex": 868,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "milotic": {
+    "nationalDex": 350,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "miltank": {
+    "nationalDex": 241,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mimejr": {
+    "nationalDex": 439,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar-Bias",
+        "aspects": [
+          "region-bias-galar"
+        ]
+      }
+    ]
+  },
+  "mimikyu": {
+    "nationalDex": 778,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Busted",
+        "aspects": [
+          "busted-form"
+        ]
+      }
+    ]
+  },
+  "minccino": {
+    "nationalDex": 572,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "minior": {
+    "nationalDex": 774,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Meteor",
+        "aspects": [
+          "meteor-form"
+        ]
+      }
+    ]
+  },
+  "minun": {
+    "nationalDex": 312,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "miraidon": {
+    "nationalDex": 1008,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "misdreavus": {
+    "nationalDex": 200,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mismagius": {
+    "nationalDex": 429,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "moltres": {
+    "nationalDex": 146,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "monferno": {
+    "nationalDex": 391,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "morelull": {
+    "nationalDex": 755,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "morgrem": {
+    "nationalDex": 860,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "morpeko": {
+    "nationalDex": 877,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hangry",
+        "aspects": [
+          "hangry-mode"
+        ]
+      }
+    ]
+  },
+  "mothim": {
+    "nationalDex": 414,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mrmime": {
+    "nationalDex": 122,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "mrrime": {
+    "nationalDex": 866,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mudbray": {
+    "nationalDex": 749,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mudkip": {
+    "nationalDex": 258,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "mudsdale": {
+    "nationalDex": 750,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "muk": {
+    "nationalDex": 89,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "munchlax": {
+    "nationalDex": 446,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "munkidori": {
+    "nationalDex": 1015,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "munna": {
+    "nationalDex": 517,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "murkrow": {
+    "nationalDex": 198,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "musharna": {
+    "nationalDex": 518,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nacli": {
+    "nationalDex": 932,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "naclstack": {
+    "nationalDex": 933,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "naganadel": {
+    "nationalDex": 804,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "natu": {
+    "nationalDex": 177,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "necrozma": {
+    "nationalDex": 800,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Dusk-Mane",
+        "aspects": [
+          "dusk-fusion"
+        ]
+      },
+      {
+        "name": "Dawn-Wings",
+        "aspects": [
+          "dawn-fusion"
+        ]
+      },
+      {
+        "name": "Ultra",
+        "aspects": [
+          "ultra-fusion"
+        ]
+      }
+    ]
+  },
+  "nickit": {
+    "nationalDex": 827,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nidoking": {
+    "nationalDex": 34,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nidoqueen": {
+    "nationalDex": 31,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nidoranf": {
+    "nationalDex": 29,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nidoranm": {
+    "nationalDex": 32,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nidorina": {
+    "nationalDex": 30,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nidorino": {
+    "nationalDex": 33,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nihilego": {
+    "nationalDex": 793,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nincada": {
+    "nationalDex": 290,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ninetales": {
+    "nationalDex": 38,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "ninjask": {
+    "nationalDex": 291,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "noctowl": {
+    "nationalDex": 164,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "noibat": {
+    "nationalDex": 714,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "noivern": {
+    "nationalDex": 715,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nosepass": {
+    "nationalDex": 299,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "numel": {
+    "nationalDex": 322,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nuzleaf": {
+    "nationalDex": 274,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "nymble": {
+    "nationalDex": 919,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "obstagoon": {
+    "nationalDex": 862,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "octillery": {
+    "nationalDex": 224,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "oddish": {
+    "nationalDex": 43,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ogerpon": {
+    "nationalDex": 1017,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "oinkologne": {
+    "nationalDex": 916,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "F",
+        "aspects": [
+          "female"
+        ]
+      }
+    ]
+  },
+  "okidogi": {
+    "nationalDex": 1014,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "omanyte": {
+    "nationalDex": 138,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "omastar": {
+    "nationalDex": 139,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "onix": {
+    "nationalDex": 95,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "oranguru": {
+    "nationalDex": 765,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "orbeetle": {
+    "nationalDex": 826,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "oricorio": {
+    "nationalDex": 741,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Pom-Pom",
+        "aspects": [
+          "pom-pom-style"
+        ]
+      },
+      {
+        "name": "Pa’u",
+        "aspects": [
+          "pau-style"
+        ]
+      },
+      {
+        "name": "Sensu",
+        "aspects": [
+          "sensu-style"
+        ]
+      }
+    ]
+  },
+  "orthworm": {
+    "nationalDex": 968,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "oshawott": {
+    "nationalDex": 501,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "overqwil": {
+    "nationalDex": 904,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pachirisu": {
+    "nationalDex": 417,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "palafin": {
+    "nationalDex": 964,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hero",
+        "aspects": [
+          "hero-form"
+        ]
+      }
+    ]
+  },
+  "palkia": {
+    "nationalDex": 484,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "palossand": {
+    "nationalDex": 770,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "palpitoad": {
+    "nationalDex": 536,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pancham": {
+    "nationalDex": 674,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pangoro": {
+    "nationalDex": 675,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "panpour": {
+    "nationalDex": 515,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pansage": {
+    "nationalDex": 511,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pansear": {
+    "nationalDex": 513,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "paras": {
+    "nationalDex": 46,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "parasect": {
+    "nationalDex": 47,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "passimian": {
+    "nationalDex": 766,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "patrat": {
+    "nationalDex": 504,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pawmi": {
+    "nationalDex": 921,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pawmo": {
+    "nationalDex": 922,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pawmot": {
+    "nationalDex": 923,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pawniard": {
+    "nationalDex": 624,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pecharunt": {
+    "nationalDex": 1025,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pelipper": {
+    "nationalDex": 279,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "perrserker": {
+    "nationalDex": 863,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "persian": {
+    "nationalDex": 53,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "petilil": {
+    "nationalDex": 548,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "phanpy": {
+    "nationalDex": 231,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "phantump": {
+    "nationalDex": 708,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pheromosa": {
+    "nationalDex": 795,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "phione": {
+    "nationalDex": 489,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pichu": {
+    "nationalDex": 172,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola-Bias",
+        "aspects": [
+          "region-bias-alola"
+        ]
+      }
+    ]
+  },
+  "pidgeot": {
+    "nationalDex": 18,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "pidgeotto": {
+    "nationalDex": 17,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pidgey": {
+    "nationalDex": 16,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pidove": {
+    "nationalDex": 519,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pignite": {
+    "nationalDex": 499,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pikachu": {
+    "nationalDex": 25,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Partner",
+        "aspects": [
+          "partner-cap"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      },
+      {
+        "name": "Alola-Bias",
+        "aspects": [
+          "region-bias-alola"
+        ]
+      }
+    ]
+  },
+  "pikipek": {
+    "nationalDex": 731,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "piloswine": {
+    "nationalDex": 221,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pincurchin": {
+    "nationalDex": 871,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pineco": {
+    "nationalDex": 204,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pinsir": {
+    "nationalDex": 127,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "piplup": {
+    "nationalDex": 393,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "plusle": {
+    "nationalDex": 311,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "poipole": {
+    "nationalDex": 803,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "politoed": {
+    "nationalDex": 186,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "poliwag": {
+    "nationalDex": 60,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "poliwhirl": {
+    "nationalDex": 61,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "poliwrath": {
+    "nationalDex": 62,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "poltchageist": {
+    "nationalDex": 1012,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Artisan",
+        "aspects": [
+          "artisan"
+        ]
+      }
+    ]
+  },
+  "polteageist": {
+    "nationalDex": 855,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Antique",
+        "aspects": [
+          "antique"
+        ]
+      }
+    ]
+  },
+  "ponyta": {
+    "nationalDex": 77,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "poochyena": {
+    "nationalDex": 261,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "popplio": {
+    "nationalDex": 728,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "porygon": {
+    "nationalDex": 137,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "porygon2": {
+    "nationalDex": 233,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "porygonz": {
+    "nationalDex": 474,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "primarina": {
+    "nationalDex": 730,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "primeape": {
+    "nationalDex": 57,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "prinplup": {
+    "nationalDex": 394,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "probopass": {
+    "nationalDex": 476,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "psyduck": {
+    "nationalDex": 54,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pumpkaboo": {
+    "nationalDex": 710,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Small",
+        "aspects": [
+          "pumpkin-size-small"
+        ]
+      },
+      {
+        "name": "Large",
+        "aspects": [
+          "pumpkin-size-large"
+        ]
+      },
+      {
+        "name": "Super",
+        "aspects": [
+          "pumpkin-size-super"
+        ]
+      }
+    ]
+  },
+  "pupitar": {
+    "nationalDex": 247,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "purrloin": {
+    "nationalDex": 509,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "purugly": {
+    "nationalDex": 432,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pyroar": {
+    "nationalDex": 668,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "pyukumuku": {
+    "nationalDex": 771,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "quagsire": {
+    "nationalDex": 195,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "quaquaval": {
+    "nationalDex": 914,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "quaxly": {
+    "nationalDex": 912,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "quaxwell": {
+    "nationalDex": 913,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "quilava": {
+    "nationalDex": 156,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "quilladin": {
+    "nationalDex": 651,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "qwilfish": {
+    "nationalDex": 211,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "raboot": {
+    "nationalDex": 814,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rabsca": {
+    "nationalDex": 954,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ragingbolt": {
+    "nationalDex": 1021,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "raichu": {
+    "nationalDex": 26,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "raikou": {
+    "nationalDex": 243,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ralts": {
+    "nationalDex": 280,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rampardos": {
+    "nationalDex": 409,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rapidash": {
+    "nationalDex": 78,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "raticate": {
+    "nationalDex": 20,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "rattata": {
+    "nationalDex": 19,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "rayquaza": {
+    "nationalDex": 384,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "regice": {
+    "nationalDex": 378,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "regidrago": {
+    "nationalDex": 895,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "regieleki": {
+    "nationalDex": 894,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "regigigas": {
+    "nationalDex": 486,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "regirock": {
+    "nationalDex": 377,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "registeel": {
+    "nationalDex": 379,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "relicanth": {
+    "nationalDex": 369,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rellor": {
+    "nationalDex": 953,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "remoraid": {
+    "nationalDex": 223,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "reshiram": {
+    "nationalDex": 643,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "reuniclus": {
+    "nationalDex": 579,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "revavroom": {
+    "nationalDex": 966,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rhydon": {
+    "nationalDex": 112,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rhyhorn": {
+    "nationalDex": 111,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rhyperior": {
+    "nationalDex": 464,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "ribombee": {
+    "nationalDex": 743,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rillaboom": {
+    "nationalDex": 812,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "riolu": {
+    "nationalDex": 447,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "roaringmoon": {
+    "nationalDex": 1005,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rockruff": {
+    "nationalDex": 744,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Dusk",
+        "aspects": [
+          "dusk-form"
+        ]
+      }
+    ]
+  },
+  "roggenrola": {
+    "nationalDex": 524,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rolycoly": {
+    "nationalDex": 837,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rookidee": {
+    "nationalDex": 821,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "roselia": {
+    "nationalDex": 315,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "roserade": {
+    "nationalDex": 407,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "rotom": {
+    "nationalDex": 479,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Heat",
+        "aspects": [
+          "heat-appliance"
+        ]
+      },
+      {
+        "name": "Wash",
+        "aspects": [
+          "wash-appliance"
+        ]
+      },
+      {
+        "name": "Frost",
+        "aspects": [
+          "frost-appliance"
+        ]
+      },
+      {
+        "name": "Fan",
+        "aspects": [
+          "fan-appliance"
+        ]
+      },
+      {
+        "name": "Mow",
+        "aspects": [
+          "mow-appliance"
+        ]
+      }
+    ]
+  },
+  "rowlet": {
+    "nationalDex": 722,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "rufflet": {
+    "nationalDex": 627,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui-Bias",
+        "aspects": [
+          "region-bias-hisui"
+        ]
+      }
+    ]
+  },
+  "runerigus": {
+    "nationalDex": 867,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sableye": {
+    "nationalDex": 302,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "salamence": {
+    "nationalDex": 373,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "salandit": {
+    "nationalDex": 757,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "salazzle": {
+    "nationalDex": 758,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "samurott": {
+    "nationalDex": 503,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "sandaconda": {
+    "nationalDex": 844,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "sandile": {
+    "nationalDex": 551,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sandshrew": {
+    "nationalDex": 27,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "sandslash": {
+    "nationalDex": 28,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "sandygast": {
+    "nationalDex": 769,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sandyshocks": {
+    "nationalDex": 989,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sawk": {
+    "nationalDex": 539,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sawsbuck": {
+    "nationalDex": 586,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Summer",
+        "aspects": [
+          "summer"
+        ]
+      },
+      {
+        "name": "Autumn",
+        "aspects": [
+          "autumn"
+        ]
+      },
+      {
+        "name": "Winter",
+        "aspects": [
+          "winter"
+        ]
+      }
+    ]
+  },
+  "scatterbug": {
+    "nationalDex": 664,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sceptile": {
+    "nationalDex": 254,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "scizor": {
+    "nationalDex": 212,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "scolipede": {
+    "nationalDex": 545,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "scorbunny": {
+    "nationalDex": 813,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "scovillain": {
+    "nationalDex": 952,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "scrafty": {
+    "nationalDex": 560,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "scraggy": {
+    "nationalDex": 559,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "screamtail": {
+    "nationalDex": 985,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "scyther": {
+    "nationalDex": 123,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "seadra": {
+    "nationalDex": 117,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "seaking": {
+    "nationalDex": 119,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sealeo": {
+    "nationalDex": 364,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "seedot": {
+    "nationalDex": 273,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "seel": {
+    "nationalDex": 86,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "seismitoad": {
+    "nationalDex": 537,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sentret": {
+    "nationalDex": 161,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "serperior": {
+    "nationalDex": 497,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "servine": {
+    "nationalDex": 496,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "seviper": {
+    "nationalDex": 336,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sewaddle": {
+    "nationalDex": 540,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sharpedo": {
+    "nationalDex": 319,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "shaymin": {
+    "nationalDex": 492,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Sky",
+        "aspects": [
+          "sky-forme"
+        ]
+      }
+    ]
+  },
+  "shedinja": {
+    "nationalDex": 292,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shelgon": {
+    "nationalDex": 372,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shellder": {
+    "nationalDex": 90,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shellos": {
+    "nationalDex": 422,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "East",
+        "aspects": [
+          "east-sea"
+        ]
+      }
+    ]
+  },
+  "shelmet": {
+    "nationalDex": 616,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shieldon": {
+    "nationalDex": 410,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shiftry": {
+    "nationalDex": 275,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shiinotic": {
+    "nationalDex": 756,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shinx": {
+    "nationalDex": 403,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shroodle": {
+    "nationalDex": 944,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shroomish": {
+    "nationalDex": 285,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shuckle": {
+    "nationalDex": 213,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "shuppet": {
+    "nationalDex": 353,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sigilyph": {
+    "nationalDex": 561,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "silcoon": {
+    "nationalDex": 266,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "silicobra": {
+    "nationalDex": 843,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "silvally": {
+    "nationalDex": 773,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "simipour": {
+    "nationalDex": 516,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "simisage": {
+    "nationalDex": 512,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "simisear": {
+    "nationalDex": 514,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sinistcha": {
+    "nationalDex": 1013,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Masterpiece",
+        "aspects": [
+          "masterpiece"
+        ]
+      }
+    ]
+  },
+  "sinistea": {
+    "nationalDex": 854,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Antique",
+        "aspects": [
+          "antique"
+        ]
+      }
+    ]
+  },
+  "sirfetchd": {
+    "nationalDex": 865,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sizzlipede": {
+    "nationalDex": 850,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skarmory": {
+    "nationalDex": 227,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skeledirge": {
+    "nationalDex": 911,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skiddo": {
+    "nationalDex": 672,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skiploom": {
+    "nationalDex": 188,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skitty": {
+    "nationalDex": 300,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skorupi": {
+    "nationalDex": 451,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skrelp": {
+    "nationalDex": 690,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skuntank": {
+    "nationalDex": 435,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "skwovet": {
+    "nationalDex": 819,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "slaking": {
+    "nationalDex": 289,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "slakoth": {
+    "nationalDex": 287,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sliggoo": {
+    "nationalDex": 705,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "slitherwing": {
+    "nationalDex": 988,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "slowbro": {
+    "nationalDex": 80,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      },
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "slowking": {
+    "nationalDex": 199,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "slowpoke": {
+    "nationalDex": 79,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "slugma": {
+    "nationalDex": 218,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "slurpuff": {
+    "nationalDex": 685,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "smeargle": {
+    "nationalDex": 235,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "smoliv": {
+    "nationalDex": 928,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "smoochum": {
+    "nationalDex": 238,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sneasel": {
+    "nationalDex": 215,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "sneasler": {
+    "nationalDex": 903,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "snivy": {
+    "nationalDex": 495,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "snom": {
+    "nationalDex": 872,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "snorlax": {
+    "nationalDex": 143,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "snorunt": {
+    "nationalDex": 361,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "snover": {
+    "nationalDex": 459,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "snubbull": {
+    "nationalDex": 209,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sobble": {
+    "nationalDex": 816,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "solgaleo": {
+    "nationalDex": 791,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "solosis": {
+    "nationalDex": 577,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "solrock": {
+    "nationalDex": 338,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spearow": {
+    "nationalDex": 21,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spectrier": {
+    "nationalDex": 897,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spewpa": {
+    "nationalDex": 665,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spheal": {
+    "nationalDex": 363,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spidops": {
+    "nationalDex": 918,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spinarak": {
+    "nationalDex": 167,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spinda": {
+    "nationalDex": 327,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spiritomb": {
+    "nationalDex": 442,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spoink": {
+    "nationalDex": 325,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sprigatito": {
+    "nationalDex": 906,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "spritzee": {
+    "nationalDex": 682,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "squawkabilly": {
+    "nationalDex": 931,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Blue",
+        "aspects": [
+          "squawkabilly-color-blue"
+        ]
+      },
+      {
+        "name": "Yellow",
+        "aspects": [
+          "squawkabilly-color-yellow"
+        ]
+      },
+      {
+        "name": "White",
+        "aspects": [
+          "squawkabilly-color-gray"
+        ]
+      }
+    ]
+  },
+  "squirtle": {
+    "nationalDex": 7,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "stakataka": {
+    "nationalDex": 805,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "stantler": {
+    "nationalDex": 234,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "staraptor": {
+    "nationalDex": 398,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "staravia": {
+    "nationalDex": 397,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "starly": {
+    "nationalDex": 396,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "starmie": {
+    "nationalDex": 121,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "staryu": {
+    "nationalDex": 120,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "steelix": {
+    "nationalDex": 208,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "steenee": {
+    "nationalDex": 762,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "stonjourner": {
+    "nationalDex": 874,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "stoutland": {
+    "nationalDex": 508,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "stufful": {
+    "nationalDex": 759,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "stunfisk": {
+    "nationalDex": 618,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "stunky": {
+    "nationalDex": 434,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sudowoodo": {
+    "nationalDex": 185,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "suicune": {
+    "nationalDex": 245,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sunflora": {
+    "nationalDex": 192,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sunkern": {
+    "nationalDex": 191,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "surskit": {
+    "nationalDex": 283,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swablu": {
+    "nationalDex": 333,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swadloon": {
+    "nationalDex": 541,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swalot": {
+    "nationalDex": 317,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swampert": {
+    "nationalDex": 260,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "swanna": {
+    "nationalDex": 581,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swellow": {
+    "nationalDex": 277,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swinub": {
+    "nationalDex": 220,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swirlix": {
+    "nationalDex": 684,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "swoobat": {
+    "nationalDex": 528,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "sylveon": {
+    "nationalDex": 700,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tadbulb": {
+    "nationalDex": 938,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "taillow": {
+    "nationalDex": 276,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "talonflame": {
+    "nationalDex": 663,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tandemaus": {
+    "nationalDex": 924,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tangela": {
+    "nationalDex": 114,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tangrowth": {
+    "nationalDex": 465,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tapubulu": {
+    "nationalDex": 787,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tapufini": {
+    "nationalDex": 788,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tapukoko": {
+    "nationalDex": 785,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tapulele": {
+    "nationalDex": 786,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tarountula": {
+    "nationalDex": 917,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tatsugiri": {
+    "nationalDex": 978,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Droopy",
+        "aspects": [
+          "tatsugiri-texture-droopy"
+        ]
+      },
+      {
+        "name": "Stretchy",
+        "aspects": [
+          "tatsugiri-texture-stretchy"
+        ]
+      }
+    ]
+  },
+  "tauros": {
+    "nationalDex": 128,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Paldea-Combat",
+        "aspects": [
+          "paldean"
+        ]
+      },
+      {
+        "name": "Paldea-Blaze",
+        "aspects": [
+          "blaze-breed",
+          "paldean"
+        ]
+      },
+      {
+        "name": "Paldea-Aqua",
+        "aspects": [
+          "aqua-breed",
+          "paldean"
+        ]
+      }
+    ]
+  },
+  "teddiursa": {
+    "nationalDex": 216,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tentacool": {
+    "nationalDex": 72,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tentacruel": {
+    "nationalDex": 73,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tepig": {
+    "nationalDex": 498,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "terapagos": {
+    "nationalDex": 1024,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Terastal",
+        "aspects": [
+          "terastal-form"
+        ]
+      },
+      {
+        "name": "Stellar",
+        "aspects": [
+          "stellar-form"
+        ]
+      }
+    ]
+  },
+  "terrakion": {
+    "nationalDex": 639,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "thievul": {
+    "nationalDex": 828,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "throh": {
+    "nationalDex": 538,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "thundurus": {
+    "nationalDex": 642,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Therian",
+        "aspects": [
+          "therian-forme"
+        ]
+      }
+    ]
+  },
+  "thwackey": {
+    "nationalDex": 811,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "timburr": {
+    "nationalDex": 532,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tinglu": {
+    "nationalDex": 1003,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tinkatink": {
+    "nationalDex": 957,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tinkaton": {
+    "nationalDex": 959,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tinkatuff": {
+    "nationalDex": 958,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tirtouga": {
+    "nationalDex": 564,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toedscool": {
+    "nationalDex": 948,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toedscruel": {
+    "nationalDex": 949,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "togedemaru": {
+    "nationalDex": 777,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "togekiss": {
+    "nationalDex": 468,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "togepi": {
+    "nationalDex": 175,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "togetic": {
+    "nationalDex": 176,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "torchic": {
+    "nationalDex": 255,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "torkoal": {
+    "nationalDex": 324,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tornadus": {
+    "nationalDex": 641,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Therian",
+        "aspects": [
+          "therian-forme"
+        ]
+      }
+    ]
+  },
+  "torracat": {
+    "nationalDex": 726,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "torterra": {
+    "nationalDex": 389,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "totodile": {
+    "nationalDex": 158,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toucannon": {
+    "nationalDex": 733,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toxapex": {
+    "nationalDex": 748,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toxel": {
+    "nationalDex": 848,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toxicroak": {
+    "nationalDex": 454,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "toxtricity": {
+    "nationalDex": 849,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Low-Key",
+        "aspects": [
+          "low_key-form"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "amped-form",
+          "gmax"
+        ]
+      },
+      {
+        "name": "Low-Key-Gmax",
+        "aspects": [
+          "gmax",
+          "low_key-form"
+        ]
+      }
+    ]
+  },
+  "tranquill": {
+    "nationalDex": 520,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "trapinch": {
+    "nationalDex": 328,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "treecko": {
+    "nationalDex": 252,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "trevenant": {
+    "nationalDex": 709,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tropius": {
+    "nationalDex": 357,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "trubbish": {
+    "nationalDex": 568,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "trumbeak": {
+    "nationalDex": 732,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tsareena": {
+    "nationalDex": 763,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "turtonator": {
+    "nationalDex": 776,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "turtwig": {
+    "nationalDex": 387,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tympole": {
+    "nationalDex": 535,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tynamo": {
+    "nationalDex": 602,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "typenull": {
+    "nationalDex": 772,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "typhlosion": {
+    "nationalDex": 157,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "tyranitar": {
+    "nationalDex": 248,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      }
+    ]
+  },
+  "tyrantrum": {
+    "nationalDex": 697,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tyrogue": {
+    "nationalDex": 236,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "tyrunt": {
+    "nationalDex": 696,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "umbreon": {
+    "nationalDex": 197,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "unfezant": {
+    "nationalDex": 521,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "unown": {
+    "nationalDex": 201,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "B",
+        "aspects": [
+          "character-b"
+        ]
+      },
+      {
+        "name": "C",
+        "aspects": [
+          "character-c"
+        ]
+      },
+      {
+        "name": "D",
+        "aspects": [
+          "character-d"
+        ]
+      },
+      {
+        "name": "E",
+        "aspects": [
+          "character-e"
+        ]
+      },
+      {
+        "name": "F",
+        "aspects": [
+          "character-f"
+        ]
+      },
+      {
+        "name": "G",
+        "aspects": [
+          "character-g"
+        ]
+      },
+      {
+        "name": "H",
+        "aspects": [
+          "character-h"
+        ]
+      },
+      {
+        "name": "I",
+        "aspects": [
+          "character-i"
+        ]
+      },
+      {
+        "name": "J",
+        "aspects": [
+          "character-j"
+        ]
+      },
+      {
+        "name": "K",
+        "aspects": [
+          "character-k"
+        ]
+      },
+      {
+        "name": "L",
+        "aspects": [
+          "character-l"
+        ]
+      },
+      {
+        "name": "M",
+        "aspects": [
+          "character-m"
+        ]
+      },
+      {
+        "name": "N",
+        "aspects": [
+          "character-n"
+        ]
+      },
+      {
+        "name": "O",
+        "aspects": [
+          "character-o"
+        ]
+      },
+      {
+        "name": "P",
+        "aspects": [
+          "character-p"
+        ]
+      },
+      {
+        "name": "Q",
+        "aspects": [
+          "character-q"
+        ]
+      },
+      {
+        "name": "R",
+        "aspects": [
+          "character-r"
+        ]
+      },
+      {
+        "name": "S",
+        "aspects": [
+          "character-s"
+        ]
+      },
+      {
+        "name": "T",
+        "aspects": [
+          "character-t"
+        ]
+      },
+      {
+        "name": "U",
+        "aspects": [
+          "character-u"
+        ]
+      },
+      {
+        "name": "V",
+        "aspects": [
+          "character-v"
+        ]
+      },
+      {
+        "name": "W",
+        "aspects": [
+          "character-w"
+        ]
+      },
+      {
+        "name": "X",
+        "aspects": [
+          "character-x"
+        ]
+      },
+      {
+        "name": "Y",
+        "aspects": [
+          "character-y"
+        ]
+      },
+      {
+        "name": "Z",
+        "aspects": [
+          "character-z"
+        ]
+      },
+      {
+        "name": "!",
+        "aspects": [
+          "character-!"
+        ]
+      },
+      {
+        "name": "?",
+        "aspects": [
+          "character-?"
+        ]
+      }
+    ]
+  },
+  "ursaluna": {
+    "nationalDex": 901,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Bloodmoon",
+        "aspects": [
+          "bloodmoon"
+        ]
+      }
+    ]
+  },
+  "ursaring": {
+    "nationalDex": 217,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "urshifu": {
+    "nationalDex": 892,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Rapid-Strike",
+        "aspects": [
+          "rapid_strike-style"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax",
+          "single_strike-style"
+        ]
+      },
+      {
+        "name": "Rapid-Strike-Gmax",
+        "aspects": [
+          "gmax",
+          "rapid_strike-style"
+        ]
+      }
+    ]
+  },
+  "uxie": {
+    "nationalDex": 480,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vanillish": {
+    "nationalDex": 583,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vanillite": {
+    "nationalDex": 582,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vanilluxe": {
+    "nationalDex": 584,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vaporeon": {
+    "nationalDex": 134,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "varoom": {
+    "nationalDex": 965,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "veluza": {
+    "nationalDex": 976,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "venipede": {
+    "nationalDex": 543,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "venomoth": {
+    "nationalDex": 49,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "venonat": {
+    "nationalDex": 48,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "venusaur": {
+    "nationalDex": 3,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ]
+      },
+      {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ]
+      }
+    ]
+  },
+  "vespiquen": {
+    "nationalDex": 416,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vibrava": {
+    "nationalDex": 329,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "victini": {
+    "nationalDex": 494,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "victreebel": {
+    "nationalDex": 71,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vigoroth": {
+    "nationalDex": 288,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vikavolt": {
+    "nationalDex": 738,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vileplume": {
+    "nationalDex": 45,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "virizion": {
+    "nationalDex": 640,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vivillon": {
+    "nationalDex": 666,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Pokeball",
+        "aspects": [
+          "vivillon-wings-poke-ball"
+        ]
+      }
+    ]
+  },
+  "volbeat": {
+    "nationalDex": 313,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "volcanion": {
+    "nationalDex": 721,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "volcarona": {
+    "nationalDex": 637,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "voltorb": {
+    "nationalDex": 100,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "vullaby": {
+    "nationalDex": 629,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "vulpix": {
+    "nationalDex": 37,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Alola",
+        "aspects": [
+          "alolan"
+        ]
+      }
+    ]
+  },
+  "wailmer": {
+    "nationalDex": 320,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wailord": {
+    "nationalDex": 321,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "walkingwake": {
+    "nationalDex": 1009,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "walrein": {
+    "nationalDex": 365,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wartortle": {
+    "nationalDex": 8,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "watchog": {
+    "nationalDex": 505,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wattrel": {
+    "nationalDex": 940,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "weavile": {
+    "nationalDex": 461,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "weedle": {
+    "nationalDex": 13,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "weepinbell": {
+    "nationalDex": 70,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "weezing": {
+    "nationalDex": 110,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "whimsicott": {
+    "nationalDex": 547,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "whirlipede": {
+    "nationalDex": 544,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "whiscash": {
+    "nationalDex": 340,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "whismur": {
+    "nationalDex": 293,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wigglytuff": {
+    "nationalDex": 40,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wiglett": {
+    "nationalDex": 960,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wimpod": {
+    "nationalDex": 767,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wingull": {
+    "nationalDex": 278,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wishiwashi": {
+    "nationalDex": 746,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "School",
+        "aspects": [
+          "school-form"
+        ]
+      }
+    ]
+  },
+  "wobbuffet": {
+    "nationalDex": 202,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wochien": {
+    "nationalDex": 1001,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "woobat": {
+    "nationalDex": 527,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wooloo": {
+    "nationalDex": 831,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wooper": {
+    "nationalDex": 194,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Paldea",
+        "aspects": [
+          "paldean"
+        ]
+      }
+    ]
+  },
+  "wormadam": {
+    "nationalDex": 413,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Sandy",
+        "aspects": [
+          "sandy-cloak"
+        ]
+      },
+      {
+        "name": "Trash",
+        "aspects": [
+          "trash-cloak"
+        ]
+      }
+    ]
+  },
+  "wugtrio": {
+    "nationalDex": 961,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wurmple": {
+    "nationalDex": 265,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wynaut": {
+    "nationalDex": 360,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "wyrdeer": {
+    "nationalDex": 899,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "xatu": {
+    "nationalDex": 178,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "xerneas": {
+    "nationalDex": 716,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Active",
+        "aspects": [
+          "active-mode"
+        ]
+      }
+    ]
+  },
+  "xurkitree": {
+    "nationalDex": 796,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "yamask": {
+    "nationalDex": 562,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "yamper": {
+    "nationalDex": 835,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "yanma": {
+    "nationalDex": 193,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "yanmega": {
+    "nationalDex": 469,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "yungoos": {
+    "nationalDex": 734,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "yveltal": {
+    "nationalDex": 717,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zacian": {
+    "nationalDex": 888,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Crowned",
+        "aspects": [
+          "crowned"
+        ]
+      }
+    ]
+  },
+  "zamazenta": {
+    "nationalDex": 889,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Crowned",
+        "aspects": [
+          "crowned"
+        ]
+      }
+    ]
+  },
+  "zangoose": {
+    "nationalDex": 335,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zapdos": {
+    "nationalDex": 145,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "zarude": {
+    "nationalDex": 893,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Dada",
+        "aspects": [
+          "dada-cape"
+        ]
+      }
+    ]
+  },
+  "zebstrika": {
+    "nationalDex": 523,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zekrom": {
+    "nationalDex": 644,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zeraora": {
+    "nationalDex": 807,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zigzagoon": {
+    "nationalDex": 263,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Galar",
+        "aspects": [
+          "galarian"
+        ]
+      }
+    ]
+  },
+  "zoroark": {
+    "nationalDex": 571,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "zorua": {
+    "nationalDex": 570,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "Hisui",
+        "aspects": [
+          "hisuian"
+        ]
+      }
+    ]
+  },
+  "zubat": {
+    "nationalDex": 41,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zweilous": {
+    "nationalDex": 634,
+    "source": "pokeapi-home-dex",
+    "forms": []
+  },
+  "zygarde": {
+    "nationalDex": 718,
+    "source": "pokeapi-home-dex",
+    "forms": [
+      {
+        "name": "10%",
+        "aspects": [
+          "10-percent"
+        ]
+      },
+      {
+        "name": "10%-C",
+        "aspects": [
+          "10-percent",
+          "power-construct"
+        ]
+      },
+      {
+        "name": "50%-C",
+        "aspects": [
+          "50-percent",
+          "power-construct"
+        ]
+      },
+      {
+        "name": "Complete",
+        "aspects": [
+          "complete-percent"
+        ]
+      },
+      {
+        "name": "Core",
+        "aspects": [
+          "core-percent"
+        ]
+      }
+    ]
+  }
+}
