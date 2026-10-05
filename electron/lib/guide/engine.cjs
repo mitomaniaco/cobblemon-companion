@@ -432,4 +432,4 @@ async function buildGuide({snapshot, goal, data, checkpoint = async () => {}}) {
   };
 }
 
-module.exports = {buildGuide, LIMITS};
+module.exports = {buildGuide, LIMITS, averagePercent, effectiveSpeed, matchupOutcome};

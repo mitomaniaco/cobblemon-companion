@@ -1,5 +1,6 @@
 'use strict';
 
+const {buildBattlePlan} = require('./lib/guide/battle-plan.cjs');
 const {buildGuide} = require('./lib/guide/engine.cjs');
 const {loadGuideData} = require('./lib/guide/data.cjs');
 
@@ -21,10 +22,11 @@ async function checkpoint(jobId) {
 }
 
 async function run(message) {
-  const {jobId, snapshot, goal} = message;
+  const {jobId, snapshot, goal, request, task} = message;
   running = jobId;
   try {
-    const result = await buildGuide({snapshot, goal, data: loadGuideData(), checkpoint: () => checkpoint(jobId)});
+    const input = {snapshot, data: loadGuideData(), checkpoint: () => checkpoint(jobId)};
+    const result = task === 'battle-plan' ? await buildBattlePlan({...input, request}) : await buildGuide({...input, goal});
     post({type: 'result', jobId, result});
   } catch (error) {
     if (error?.code === 'CANCELLED') post({type: 'cancelled', jobId});
