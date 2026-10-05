@@ -23,6 +23,18 @@ const trainers: {
 type SeriesNode = {type: string | null; optional: boolean; requires: string[][]; via: string};
 const series: Record<string, {trainerIds: string[]; order: string[]; graph: Record<string, SeriesNode>}> = read('series.json');
 
+type Stage = {
+  stageId: string;
+  name: string;
+  type: string | null;
+  order: number;
+  requires: string[];
+  ambiguous: boolean;
+  ambiguousReason: string | null;
+  variants: {id: string; format: string; maxLevel: number; teamSize: number; optional: boolean}[];
+};
+const campaign: Record<string, {stages: Stage[]; optionalTrainerIds: string[]}> = read('campaign.json');
+
 const namespaced = /^[a-z0-9_.-]+:[a-z0-9_/.-]+$/;
 
 describe('dados do guia', () => {
@@ -119,5 +131,46 @@ describe('dados do guia', () => {
       }
     }
     expect(series.radicalred.trainerIds).toContain('rctmod:leader_brock_019e');
+  });
+
+  it('campanha: etapas ordenadas, variantes existentes e dependências só para trás', () => {
+    const known = new Set(trainers.map((trainer) => trainer.id));
+    expect(Object.keys(campaign)).toEqual(expect.arrayContaining(['radicalred']));
+    for (const [seriesId, entry] of Object.entries(campaign)) {
+      const index = new Map(entry.stages.map((stage, position) => [stage.stageId, position]));
+      expect(index.size, seriesId).toBe(entry.stages.length);
+      entry.stages.forEach((stage, position) => {
+        expect(stage.order, stage.stageId).toBe(position);
+        expect(stage.variants.length, stage.stageId).toBeGreaterThan(0);
+        expect(stage.ambiguous, stage.stageId).toBe(stage.variants.length > 1);
+        expect(stage.ambiguousReason === null, stage.stageId).toBe(!stage.ambiguous);
+        for (const variant of stage.variants) {
+          expect(known.has(variant.id), variant.id).toBe(true);
+          expect(variant.maxLevel >= 1 && variant.maxLevel <= 100 && variant.teamSize > 0, variant.id).toBe(true);
+        }
+        for (const required of stage.requires)
+          expect(index.get(required) ?? Number.POSITIVE_INFINITY, stage.stageId).toBeLessThan(position);
+      });
+      const staged = entry.stages.flatMap((stage) => stage.variants.map((variant) => variant.id));
+      expect(new Set([...staged, ...entry.optionalTrainerIds]).size, seriesId).toBe(staged.length + entry.optionalTrainerIds.length);
+    }
+  });
+
+  it('campanha radicalred: Brock abre, Misty exige o rival (3 variantes) e o campeão exige a Elite 4', () => {
+    const stages = campaign.radicalred.stages;
+    expect(stages[0].variants.map((variant) => variant.id)).toEqual(['rctmod:leader_brock_019e']);
+    const rival = stages.find((stage) => stage.name === 'Rival Terry · 1º encontro');
+    expect(rival?.variants.map((variant) => variant.id)).toEqual([
+      'rctmod:rival_terry_014c',
+      'rctmod:rival_terry_014d',
+      'rctmod:rival_terry_014e',
+    ]);
+    expect(rival?.ambiguous).toBe(true);
+    expect(stages.find((stage) => stage.name === 'Leader Misty')?.requires).toEqual([rival?.stageId]);
+    const champion = stages.find((stage) => stage.type === 'champ');
+    expect(champion?.requires.length).toBe(4);
+    expect(stages.find((stage) => stage.name === 'Elite Four Lorelei')?.variants.every((variant) => variant.format === 'doubles')).toBe(
+      true,
+    );
   });
 });

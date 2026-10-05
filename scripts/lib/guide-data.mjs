@@ -164,3 +164,103 @@ function topologicalOrder(graph, seriesId) {
   }
   return order;
 }
+
+/**
+ * Campanha por série: uma etapa por treinador "lógico". Os membros de um mesmo grupo de `requiredDefeats` são irmãos no RCT
+ * (vencer um conta como vencer todos), então formam uma única etapa com várias variantes. Qual variante aparece é um sorteio
+ * ponderado no spawn (TrainerSpawner.computeWeight), sem regra por escolha inicial/dificuldade: variantes ficam `ambiguous`.
+ * Etapas só opcionais saem de `stages` e ficam em `optionalTrainerIds`.
+ */
+export function deriveCampaign({series, trainers}) {
+  const byId = new Map(trainers.map((trainer) => [trainer.id, trainer]));
+  const result = {};
+  for (const [seriesId, entry] of Object.entries(series)) {
+    const position = new Map(entry.order.map((id, index) => [id, index]));
+    const parent = new Map(entry.trainerIds.map((id) => [id, id]));
+    const find = (id) => {
+      let root = id;
+      while (parent.get(root) !== root) root = parent.get(root);
+      parent.set(id, root);
+      return root;
+    };
+    for (const id of entry.trainerIds) {
+      for (const group of entry.graph[id].requires) {
+        const members = group.filter((member) => parent.has(member));
+        for (const member of members.slice(1)) parent.set(find(member), find(members[0]));
+      }
+    }
+    const classes = new Map();
+    for (const id of [...entry.trainerIds].sort((a, b) => position.get(a) - position.get(b))) {
+      const root = find(id);
+      if (!classes.has(root)) classes.set(root, []);
+      classes.get(root).push(id);
+    }
+    const stageOf = new Map();
+    const draft = [];
+    for (const members of classes.values()) {
+      const stageId = `${seriesId}:${members[0].split(':')[1]}`;
+      for (const member of members) stageOf.set(member, stageId);
+      draft.push({stageId, members});
+    }
+    const optionalTrainerIds = [];
+    const main = [];
+    for (const stage of draft) {
+      const nodes = stage.members.map((id) => entry.graph[id]);
+      if (nodes.every((node) => node.optional)) optionalTrainerIds.push(...stage.members);
+      else main.push(stage);
+    }
+    const mainIds = new Set(main.map((stage) => stage.stageId));
+    const requiresOf = (stage) =>
+      [
+        ...new Set(
+          stage.members.flatMap((id) => entry.graph[id].requires.map((group) => stageOf.get(group.find((member) => stageOf.has(member))))),
+        ),
+      ].filter((stageId) => stageId && stageId !== stage.stageId && mainIds.has(stageId));
+    const stages = main.map((stage) => ({stage, requires: requiresOf(stage).sort()}));
+    const placed = new Set();
+    const ordered = [];
+    while (ordered.length < stages.length) {
+      const next = stages.find((item) => !placed.has(item.stage.stageId) && item.requires.every((required) => placed.has(required)));
+      if (!next) throw new Error(`dependência cíclica entre etapas da série ${seriesId}`);
+      placed.add(next.stage.stageId);
+      ordered.push(next);
+    }
+    const seen = new Map();
+    const totals = new Map();
+    for (const {stage} of ordered) {
+      const name = byId.get(stage.members[0])?.name ?? stage.members[0];
+      totals.set(name, (totals.get(name) ?? 0) + 1);
+    }
+    result[seriesId] = {
+      stages: ordered.map(({stage, requires}, index) => {
+        const first = byId.get(stage.members[0]);
+        const baseName = first?.name ?? stage.members[0];
+        const n = (seen.get(baseName) ?? 0) + 1;
+        seen.set(baseName, n);
+        const variants = stage.members.map((id) => {
+          const trainer = byId.get(id);
+          return {
+            id,
+            format: trainer?.format ?? 'unknown',
+            maxLevel: Math.max(...(trainer?.team ?? []).map((pokemon) => pokemon.level)),
+            teamSize: trainer?.team.length ?? 0,
+            optional: entry.graph[id].optional,
+          };
+        });
+        const ambiguous = variants.length > 1;
+        return {
+          stageId: stage.stageId,
+          name: totals.get(baseName) > 1 ? `${baseName} · ${n}º encontro` : baseName,
+          type: entry.graph[stage.members[0]].type,
+          order: index,
+          requires,
+          ambiguous,
+          ambiguousReason: ambiguous ? 'sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos' : null,
+          variants,
+        };
+      }),
+      optionalTrainerIds: optionalTrainerIds.sort(),
+    };
+  }
+  return result;
+}
