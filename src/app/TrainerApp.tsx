@@ -8,6 +8,7 @@ import type {IndividualWorkspaceTab} from '../features/individual/IndividualWork
 import {getCompanionApi, type GuideTeamMember, type PlayerSnapshot} from '../platform/api';
 import {guideCalculationTarget} from '../features/guide/guide-model';
 import {useGuide} from '../features/guide/useGuide';
+import {useBattlePlan} from '../features/guide/useBattlePlan';
 import {useTrainerSession} from './useTrainerSession';
 import {Button, Dialog, PokeBallMark, StatusMessage, Switch} from '../ui';
 import styles from './TrainerApp.module.css';
@@ -288,6 +289,7 @@ export function TrainerApp() {
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
   const guide = useGuide(api, session.snapshot, workspace === 'guide');
+  const battlePlan = useBattlePlan(api, session.snapshot, guide.result);
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -505,6 +507,7 @@ export function TrainerApp() {
                 <GuideWorkspace
                   snapshot={session.snapshot}
                   guide={guide}
+                  battlePlan={battlePlan}
                   loading={session.phase === 'loading'}
                   onRefresh={() => void refreshSnapshot()}
                   onOpenCalculation={openGuideCalculation}
