@@ -255,9 +255,9 @@ async function pickOption(contents, listboxLabel, optionLabel) {
     return { x: Math.round(rect.left + rect.width / 2), y: Math.round(rect.top + rect.height / 2) };
   })()`,
   );
-  contents.sendInputEvent({ type: 'mouseMove', x: point.x, y: point.y });
-  contents.sendInputEvent({ type: 'mouseDown', x: point.x, y: point.y, button: 'left', clickCount: 1 });
-  contents.sendInputEvent({ type: 'mouseUp', x: point.x, y: point.y, button: 'left', clickCount: 1 });
+  contents.sendInputEvent({type: 'mouseMove', x: point.x, y: point.y});
+  contents.sendInputEvent({type: 'mouseDown', x: point.x, y: point.y, button: 'left', clickCount: 1});
+  contents.sendInputEvent({type: 'mouseUp', x: point.x, y: point.y, button: 'left', clickCount: 1});
   await waitFor(contents, `${findOption}?.getAttribute('aria-selected') === 'true'`, `seleção de ${optionLabel}`);
 }
 
