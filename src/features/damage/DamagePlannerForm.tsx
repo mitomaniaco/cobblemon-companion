@@ -322,7 +322,9 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
                   </span>
                 );
               })()}
-              <p className={`${styles.limits} real-damage-limits`}>Sem precisão, crítico ou efeitos secundários.</p>
+              <p className={`${styles.limits} real-damage-limits`}>
+                Sem precisão, crítico, efeitos secundários, nocaute, turnos futuros, ranking ou recomendação.
+              </p>
               <details className={`${styles.trace} real-damage-trace`}>
                 <summary>Versões e vínculo da captura</summary>
                 <dl>

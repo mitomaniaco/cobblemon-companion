@@ -95,7 +95,7 @@ A coleção mantém seleção por UUID. A ficha individual separa resumo, golpes
 
 ### Prévia de troca
 
-`src/domain/move-swap.ts` faz uma operação estrutural: seleciona um slot equipado e um golpe observado em `learnedMoves` do mesmo indivíduo; a prévia substitui só esse slot e preserva os outros. Ela não ensina nem equipa nada no jogo. A confirmação abre o cálculo contextual com o mesmo indivíduo/UUID; não equivale a recomendar que a troca seja feita.
+`src/domain/move-swap.ts` faz uma operação estrutural: seleciona um slot equipado e um golpe observado em `learnedMoves` do mesmo indivíduo; a prévia substitui só esse slot e preserva os outros. Ela não ensina nem equipa nada no jogo. O botão `Abrir cálculo de dano` abre direto o cálculo contextual com o mesmo indivíduo/UUID, sem caixa de confirmação; não equivale a recomendar que a troca seja feita.
 
 ### Dano real
 

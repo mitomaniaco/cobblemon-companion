@@ -87,7 +87,7 @@ export const DAMAGE_CONFIRMATION_COPY: Record<DamageConfirmationKey, {label: str
     label: 'Seu Pokémon com HP cheio',
     detail: 'Necessário para habilidades e golpes que dependem do HP.',
   },
-  targetBaselineConfirmed: {label: 'Alvo na forma normal, sem item ou status, com HP cheio'},
+  targetBaselineConfirmed: {label: 'Alvo na forma normal, sem aspectos, item ou status, com HP cheio'},
   fieldBaselineConfirmed: {
     label: 'Campo neutro',
     detail: 'Sem clima, terreno, telas, salas, trocas de habilidade, boosts ou Terastal.',
