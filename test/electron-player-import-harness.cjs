@@ -118,7 +118,11 @@ function importedLabel(id) {
 }
 
 function moveLabel(id) {
-  return COMPATIBILITY.moves[id]?.name ?? importedLabel(id);
+  const dexId = id
+    .replace(/^[^:]+:/, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+  return COMPATIBILITY.moves[id]?.name ?? require('@smogon/calc').Generations.get(9).moves.get(dexId)?.name ?? importedLabel(id);
 }
 
 function moveKey(id) {

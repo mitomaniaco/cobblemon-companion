@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import styles from './PokemonArtwork.module.css';
+import {PokeBallMark} from './PokeBallMark';
 
 type SpeciesArtworkRecord = {
   readonly dexNumber: number;
@@ -14,7 +15,7 @@ const manifests = import.meta.glob<Readonly<Record<string, SpeciesArtworkRecord>
 });
 const speciesArtwork: Readonly<Record<string, SpeciesArtworkRecord>> = Object.values(manifests)[0] ?? {};
 
-export type PokemonArtworkVariant = 'collection' | 'detail';
+export type PokemonArtworkVariant = 'collection' | 'slot' | 'detail';
 
 export interface PokemonArtworkProps {
   speciesId: string;
@@ -25,7 +26,7 @@ export interface PokemonArtworkProps {
 }
 
 const unavailableLabel = 'Imagem indisponível';
-const detailCaption = 'Ilustração da espécie; aparência do indivíduo não capturada';
+const detailCaption = 'Ilustração da espécie';
 
 export function PokemonArtwork({speciesId, formId, variant, loading, className}: PokemonArtworkProps) {
   const record = formId === 'normal' ? speciesArtwork[speciesId] : undefined;
@@ -33,7 +34,7 @@ export function PokemonArtwork({speciesId, formId, variant, loading, className}:
   const artworkKey = `${speciesId}\u0000${formId}\u0000${artworkPath ?? ''}`;
   const [failedArtworkKey, setFailedArtworkKey] = useState<string | null>(null);
   const imageLoading = loading ?? (variant === 'detail' ? 'eager' : 'lazy');
-  const size = variant === 'collection' ? 88 : 160;
+  const size = variant === 'collection' ? 64 : variant === 'slot' ? 52 : 168;
   const unavailable = artworkPath === null || failedArtworkKey === artworkKey;
 
   return (
@@ -41,7 +42,7 @@ export function PokemonArtwork({speciesId, formId, variant, loading, className}:
       <div className={styles.frame}>
         {unavailable ? (
           <span className={styles.unavailable} role="img" aria-label={unavailableLabel}>
-            {unavailableLabel}
+            <PokeBallMark className={styles.unavailableMark} />
           </span>
         ) : (
           <img
@@ -51,6 +52,7 @@ export function PokemonArtwork({speciesId, formId, variant, loading, className}:
             width={size}
             height={size}
             alt=""
+            decoding="async"
             loading={imageLoading}
             onError={() => setFailedArtworkKey(artworkKey)}
           />

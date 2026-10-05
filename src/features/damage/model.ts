@@ -1,5 +1,6 @@
 import catalogJson from '../../../electron/lib/combat-compatibility.json';
-import {heldItemCatalogName, titleCaseId} from '../../domain/catalog-labels';
+import {heldItemCatalogName} from '../../domain/catalog-labels';
+import {titleCaseId} from '../../domain/dex';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, RealDamageRequest, RealDamageResult} from '../../platform/api';
 
 export type DamageTargetDraft = {

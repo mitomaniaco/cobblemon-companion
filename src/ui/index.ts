@@ -20,3 +20,6 @@ export {StatusMessage} from './StatusMessage';
 export type {StatusMessageProps, StatusTone} from './StatusMessage';
 export {Tab, TabList, TabPanel, TabPanels, Tabs} from './Tabs';
 export type {TabListProps, TabPanelProps, TabPanelsProps, TabsProps, TabProps} from './Tabs';
+export {TypeBadge} from './TypeBadge';
+export type {TypeBadgeProps} from './TypeBadge';
+export {typeColorVar, typeInkVar, typeLabel} from './types';

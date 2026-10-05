@@ -1,0 +1,25 @@
+.badge {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  line-height: var(--line-caption);
+  white-space: nowrap;
+}
+
+.md {
+  height: 20px;
+}
+
+.sm {
+  height: 18px;
+}
+
+@media (forced-colors: active) {
+  .badge {
+    border: 1px solid CanvasText;
+  }
+}

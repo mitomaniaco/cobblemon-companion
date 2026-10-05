@@ -1,5 +1,7 @@
 import {useId, useState} from 'react';
-import {itemLabel, moveLabel, titleCaseId} from '../../domain/catalog-labels';
+import {itemLabel, moveLabel} from '../../domain/catalog-labels';
+import {titleCaseId} from '../../domain/dex';
+import {locationLabel} from '../../domain/location-label';
 import type {MoveSwapPlan} from '../../domain/move-swap';
 import {MovePreparation} from '../damage/MovePreparation';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from '../../platform/api';
@@ -32,12 +34,6 @@ const STAT_ROWS: ReadonlyArray<{key: PlayerStat; label: string}> = [
 
 type MoveEntry = {id: string; pp?: number | null; ppUps: number | null};
 type NumericFact = PlayerStatFact<number> | PlayerStatFact<number | null>;
-
-function locationLabel(location: PlayerIndividual['location']) {
-  if (location.container === 'party') return `Equipe · posição ${location.slot}`;
-  const boxName = location.boxName === null ? ' · nome não capturado' : ` · ${location.boxName}`;
-  return `PC · caixa ${location.box}${boxName} · posição ${location.slot}`;
-}
 
 function timestampLabel(value: string) {
   const timestamp = Date.parse(value);

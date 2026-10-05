@@ -322,6 +322,12 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await selectIndividual(contents, alternate.uuid);
   await openCaptureDetails(contents);
   check((await selectedUuid(contents)) === alternate.uuid, 'A ficha exibiu outro UUID para a espécie repetida.');
+  const expectedLocation = alternate.location.container === 'party' ? `Equipe · slot ${alternate.location.slot + 1}` : null;
+  const detailText = await evaluate(contents, 'document.querySelector(\'[data-testid="individual-details"]\').innerText');
+  check(
+    expectedLocation !== null && detailText.includes(expectedLocation) && !/posição \d/.test(detailText),
+    'A ficha não mostra o slot em numeração a partir de 1.',
+  );
   const alternateArtworkFallback = await evaluate(
     contents,
     'Boolean(document.querySelector(\'[data-testid="individual-details"] [role="img"][aria-label="Imagem indisponível"]\'))',
