@@ -10,7 +10,6 @@ import {
   evolutionReachLabel,
   evolutionRequirementStatusLabel,
   evolutionSummary,
-  isInvalidLevelCapInput,
 } from './evolution-model';
 import type {EvolutionPlanController} from './useEvolutionPlan';
 import styles from './EvolutionSection.module.css';
@@ -119,36 +118,15 @@ function Body({result}: {result: EvolutionPlanResult}) {
 }
 
 export function EvolutionSection({evolutions, hasTeam}: {evolutions: EvolutionPlanController; hasTeam: boolean}) {
-  const capId = useId();
-  const invalidCap = isInvalidLevelCapInput(evolutions.levelCapInput);
+  const titleId = useId();
   const building = evolutions.phase === 'building';
   return (
-    <section className={styles.section} aria-labelledby={`${capId}-title`}>
-      <h3 id={`${capId}-title`} className={styles.title}>
+    <section className={styles.section} aria-labelledby={titleId}>
+      <h3 id={titleId} className={styles.title}>
         Evoluções do time
       </h3>
 
       <div className={styles.controls}>
-        <div className={styles.capField}>
-          <label htmlFor={capId}>Level cap atual (opcional)</label>
-          <input
-            id={capId}
-            type="number"
-            inputMode="numeric"
-            min="1"
-            max="100"
-            value={evolutions.levelCapInput}
-            onChange={(event) => evolutions.setLevelCapInput(event.target.value)}
-            aria-invalid={invalidCap}
-            aria-describedby={`${capId}-hint`}
-            disabled={building}
-          />
-          <span id={`${capId}-hint`} className={invalidCap ? styles.invalid : styles.muted}>
-            {invalidCap
-              ? 'Use um inteiro de 1 a 100; sem cap, o alcance fica não verificado.'
-              : 'O app não detecta o cap: sem ele, o alcance fica não verificado.'}
-          </span>
-        </div>
         {building ? (
           <Button variant="secondary" onPress={evolutions.cancel}>
             Cancelar
