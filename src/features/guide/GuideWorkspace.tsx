@@ -21,6 +21,9 @@ import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
 import {EvolutionSection} from './EvolutionSection';
 import type {EvolutionPlanController} from './useEvolutionPlan';
+import {CaptureSection} from './CaptureSection';
+import {guideGapOpponentIds} from './capture-model';
+import type {CapturePlanController} from './useCapturePlan';
 import styles from './GuideWorkspace.module.css';
 
 const NOTICE_DURATION_MS = 4000;
@@ -42,6 +45,7 @@ export interface GuideWorkspaceProps {
   onOpenCalculation(uuid: string, move: GuideTeamMember['moves'][number]): void;
   battlePlan: BattlePlanController;
   evolutions: EvolutionPlanController;
+  captures: CapturePlanController;
 }
 
 type Lookup = {
@@ -318,7 +322,16 @@ function GuideResultView({
   );
 }
 
-export function GuideWorkspace({snapshot, guide, battlePlan, evolutions, loading, onRefresh, onOpenCalculation}: GuideWorkspaceProps) {
+export function GuideWorkspace({
+  snapshot,
+  guide,
+  battlePlan,
+  evolutions,
+  captures,
+  loading,
+  onRefresh,
+  onOpenCalculation,
+}: GuideWorkspaceProps) {
   const headingId = useId();
   const [trainerQuery, setTrainerQuery] = useState('');
   const trainerOptions = useMemo(() => guideTrainerOptions(guide.trainers.items), [guide.trainers.items]);
@@ -431,6 +444,7 @@ export function GuideWorkspace({snapshot, guide, battlePlan, evolutions, loading
                       <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
                     )}
                     <EvolutionSection evolutions={evolutions} hasTeam={guide.result.team.length > 0} />
+                    <CaptureSection captures={captures} gapCount={guideGapOpponentIds(guide.result).length} />
                   </>
                 )
               }

@@ -39,7 +39,7 @@
         "uuid": "00000000-0000-4000-8000-000000000001",
         "speciesId": "cobblemon:gardevoir",
         "level": 30,
-        "reason": "Gardevoir entra porque vence 2 de 2 adversários (melhor contra Floatzel, Bulbasaur).",
+        "reason": "Gardevoir entra porque vence 1 de 2 adversários (melhor contra Bulbasaur); contra Floatzel perde.",
         "moves": [
           {
             "id": "cobblemon:psychic",
@@ -60,9 +60,9 @@
         "matchups": [
           {
             "opponentId": "synthetic:trainer#0",
-            "outcome": "vence",
-            "ourTurns": 2,
-            "theirTurns": 3
+            "outcome": "perde",
+            "ourTurns": 3,
+            "theirTurns": 2
           },
           {
             "opponentId": "synthetic:trainer#1",
