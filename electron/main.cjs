@@ -34,6 +34,7 @@ const IPC_GUIDE_BUILD = 'companion:guide-build';
 const IPC_BATTLE_PLAN_BUILD = 'companion:battle-plan-build';
 const IPC_EVOLUTION_PLAN_BUILD = 'companion:evolution-plan-build';
 const IPC_CAPTURE_PLAN_BUILD = 'companion:capture-plan-build';
+const IPC_TRAINING_PLAN_BUILD = 'companion:training-plan-build';
 const IPC_GUIDE_TRAINERS = 'companion:guide-trainers';
 const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
 const IPC_AUTO_REFRESH = 'companion:auto-refresh';
@@ -376,6 +377,46 @@ function handleCapturePlanBuild(event, request) {
   if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.capturePlan);
   return runGuideJob(jobId, {type: 'run', task: 'capture-plan', jobId, snapshot, request: {sources: request.sources, ...plan}});
 }
+function validateTrainingPlanRequest(request) {
+  exactKeys(request, ['sources', 'team', 'levelCap', 'capOrigin', 'jobId'], 'request');
+  if (!Array.isArray(request.team) || request.team.length < 1 || request.team.length > 6)
+    throw new TypeError('request.team precisa ter de 1 a 6 membros');
+  const team = request.team.map((member, index) => {
+    exactKeys(member, ['uuid', 'usefulMoveIds'], `request.team[${index}]`);
+    if (typeof member.uuid !== 'string' || member.uuid.length === 0 || member.uuid.length > 64)
+      throw new TypeError(`request.team[${index}].uuid precisa ser texto`);
+    if (
+      !Array.isArray(member.usefulMoveIds) ||
+      member.usefulMoveIds.length > 40 ||
+      member.usefulMoveIds.some((id) => typeof id !== 'string' || id.length > 100)
+    )
+      throw new TypeError(`request.team[${index}].usefulMoveIds precisa ter até 40 ids`);
+    return {uuid: member.uuid, usefulMoveIds: [...member.usefulMoveIds]};
+  });
+  if (request.levelCap !== null) integer(request.levelCap, 'request.levelCap', 1, 100);
+  if (request.capOrigin !== 'informado' && request.capOrigin !== 'desconhecida') throw new TypeError('request.capOrigin inválido');
+  if ((request.capOrigin === 'informado') !== (request.levelCap !== null))
+    throw new TypeError('request.capOrigin e request.levelCap não combinam');
+  if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
+  const jobId = request.jobId ?? `training-${Date.now()}-${++guideSequence}`;
+  if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
+  return {jobId, plan: {team, levelCap: request.levelCap, capOrigin: request.capOrigin}};
+}
+function handleTrainingPlanBuild(event, request) {
+  requireSender(event);
+  const {jobId, plan} = validateTrainingPlanRequest(request);
+  const snapshot = readSnapshotForRenderer();
+  assertFreshSources(request.sources, snapshot.sources);
+  if (TRAINER_UI_TEST_MODE) {
+    const result = structuredClone(TRAINER_UI_GUIDE.trainingPlan);
+    if (plan.levelCap === null) {
+      for (const member of result.members)
+        Object.assign(member, {levelCap: null, capOrigin: 'desconhecida', targetLevel: null, targetNote: 'cap não determinado', moves: []});
+    }
+    return result;
+  }
+  return runGuideJob(jobId, {type: 'run', task: 'training-plan', jobId, snapshot, request: {sources: request.sources, ...plan}});
+}
 function runGuideJob(jobId, message) {
   return new Promise((resolve, reject) => {
     const child = utilityProcess.fork(GUIDE_WORKER_PATH, [], {cwd: ROOT, stdio: 'ignore', serviceName: 'Cobblemon Companion guide'});
@@ -568,6 +609,7 @@ function installIpc() {
   ipcMain.handle(IPC_BATTLE_PLAN_BUILD, handleBattlePlanBuild);
   ipcMain.handle(IPC_EVOLUTION_PLAN_BUILD, handleEvolutionPlanBuild);
   ipcMain.handle(IPC_CAPTURE_PLAN_BUILD, handleCapturePlanBuild);
+  ipcMain.handle(IPC_TRAINING_PLAN_BUILD, handleTrainingPlanBuild);
   ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
   ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
   if (TRAINER_UI_TEST_MODE) ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);

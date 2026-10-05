@@ -99,6 +99,15 @@ describe('guide-worker', () => {
     expect(message.result.gaps).toHaveLength(1);
   });
 
+  it('task training-plan devolve o plano de treino do time', async () => {
+    const request = {sources: [], team: [{uuid: 'u-1', usefulMoveIds: []}], levelCap: 50, capOrigin: 'informado'};
+    deliver({data: {type: 'run', task: 'training-plan', jobId: 'job-train', snapshot, request}});
+    await waitFor(() => sent.some((message) => message.jobId === 'job-train'));
+    const message = sent.find((candidate) => candidate.jobId === 'job-train');
+    expect(message.type).toBe('result');
+    expect(message.result.members[0]).toMatchObject({uuid: 'u-1', targetLevel: 50});
+  });
+
   it('cancel durante a montagem responde cancelled e não devolve resultado', async () => {
     deliver({data: {type: 'run', jobId: 'job-cancel', snapshot, goal: {kind: 'trainer', trainerId: 'synthetic:fire'}}});
     deliver({data: {type: 'cancel', jobId: 'job-cancel'}});

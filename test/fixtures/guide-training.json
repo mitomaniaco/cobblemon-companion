@@ -1,0 +1,14 @@
+{
+  "learnsets": {
+    "blastoise": {
+      "levelUp": [
+        {"level": 1, "moveId": "cobblemon:tackle"},
+        {"level": 25, "moveId": "cobblemon:surf"},
+        {"level": 30, "moveId": "cobblemon:icebeam"},
+        {"level": 40, "moveId": "cobblemon:hydropump"},
+        {"level": 30, "moveId": "cobblemon:nao_existe"}
+      ]
+    },
+    "gardevoir": {"levelUp": [{"level": 20, "moveId": "cobblemon:psychic"}]}
+  }
+}

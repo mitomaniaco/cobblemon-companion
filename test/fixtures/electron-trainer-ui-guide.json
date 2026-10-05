@@ -309,5 +309,55 @@
     "limits": [
       "O app não lê inventário (Poké Balls) nem o advancement Pika Star do save: esses requisitos ficam como não verificados."
     ]
+  },
+  "trainingPlan": {
+    "members": [
+      {
+        "uuid": "00000000-0000-4000-8000-000000000001",
+        "speciesId": "cobblemon:gardevoir",
+        "level": 24,
+        "levelCap": 30,
+        "capOrigin": "informado",
+        "targetLevel": 30,
+        "targetNote": "subir do nível 24 até o cap 30 (informado)",
+        "moves": [
+          {
+            "moveId": "cobblemon:psychic",
+            "level": 26,
+            "useful": true
+          },
+          {
+            "moveId": "cobblemon:moonblast",
+            "level": 29,
+            "useful": false
+          }
+        ],
+        "evs": {
+          "role": "atacante-especial",
+          "status": "sugerido",
+          "reason": "Sugestão para o papel atacante-especial: 252 em Ataque Especial, 252 em Velocidade, 6 em HP; o rendimento de EV por espécie (evYield) ainda não está nos dados do jogo, então não há espécies para treinar EVs.",
+          "currentEvs": {
+            "hp": 0,
+            "atk": 0,
+            "def": 0,
+            "spa": 0,
+            "spd": 0,
+            "spe": 0
+          },
+          "suggestedEvs": {
+            "spa": 252,
+            "spe": 252,
+            "hp": 6
+          },
+          "sources": []
+        }
+      }
+    ],
+    "assumptions": [
+      "EVs sugeridos são o total desejado por atributo (252 por atributo, 510 no total), não o que falta somar."
+    ],
+    "limits": [
+      "O nível-alvo nunca passa do level cap informado; sem cap, não há nível-alvo."
+    ]
   }
 }

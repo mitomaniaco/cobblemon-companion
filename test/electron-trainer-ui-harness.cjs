@@ -1252,7 +1252,10 @@ async function exerciseGuideContract(contents) {
     const staleEvolution = await api.buildEvolutionPlan({sources: [], team: [], levelCap: null}).then(() => 'built', (error) => error.message);
     const capture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id)});
     const staleCapture = await api.buildCapturePlan({sources: [], goal: {kind: 'pve'}, teamUuids: [], gapOpponentIds: []}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture};
+    const training = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: 30, capOrigin: 'informado'});
+    const noCap = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: null, capOrigin: 'desconhecida'});
+    const staleTraining = await api.buildTrainingPlan({sources: [], team: [], levelCap: null, capOrigin: 'desconhecida'}).then(() => 'built', (error) => error.message);
+    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, training, noCap, staleTraining};
   })()`,
   );
   check(
@@ -1296,6 +1299,13 @@ async function exerciseGuideContract(contents) {
     gap.candidates[0].requirements.some((requirement) => requirement.kind === 'pika-star' && requirement.status === 'não verificado'),
     'O requisito Pika Star não saiu como não verificado.',
   );
+  const trained = result.training.members[0];
+  check(trained.targetLevel !== null && trained.targetLevel <= trained.levelCap, 'O plano de treino sintético sugeriu nível acima do cap.');
+  check(
+    result.noCap.members[0].targetLevel === null && result.noCap.members[0].targetNote === 'cap não determinado',
+    'O plano de treino sem cap calculou um nível-alvo.',
+  );
+  check(result.staleTraining !== 'built', 'O plano de treino aceitou um pedido inválido.');
   check(result.staleCapture !== 'built', 'O plano de capturas aceitou fontes que não correspondem ao snapshot atual.');
   check(result.staleEvolution !== 'built', 'O plano de evoluções aceitou um pedido inválido.');
   check(result.stalePlan !== 'built', 'O plano aceitou um pedido inválido.');
