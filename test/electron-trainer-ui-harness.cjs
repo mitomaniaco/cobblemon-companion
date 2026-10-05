@@ -194,6 +194,49 @@ async function chooseSelect(contents, labelText, optionText) {
   );
 }
 
+async function chooseComboBox(contents, labelText, optionText) {
+  const listboxName = `${labelText} opções`;
+  await evaluate(
+    contents,
+    `(() => {
+    const label = [...document.querySelectorAll('.real-damage-planner label')]
+      .find(node => node.textContent.trim() === ${JSON.stringify(labelText)});
+    const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+    if (!(input instanceof HTMLInputElement)) throw new Error('O campo de busca acessível não foi encontrado.');
+    input.focus();
+    input.select();
+  })()`,
+  );
+  await contents.insertText(optionText);
+  await waitFor(
+    contents,
+    `(() => [...document.querySelectorAll('[role="listbox"]')]
+    .some(listbox => listbox.getAttribute('aria-label') === ${JSON.stringify(listboxName)}
+      && listbox.getClientRects().length > 0))()`,
+    `opções de ${labelText}`,
+  );
+  await evaluate(
+    contents,
+    `(() => {
+    const listbox = [...document.querySelectorAll('[role="listbox"]')]
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(listboxName)});
+    const option = [...(listbox?.querySelectorAll('[role="option"]') || [])]
+      .find(item => item.textContent.trim() === ${JSON.stringify(optionText)});
+    if (!option) throw new Error('A opção acessível não foi encontrada.');
+    option.click();
+  })()`,
+  );
+  await waitFor(
+    contents,
+    `(() => {
+    const label = [...document.querySelectorAll('.real-damage-planner label')]
+      .find(node => node.textContent.trim() === ${JSON.stringify(labelText)});
+    return document.getElementById(label?.htmlFor || '')?.value === ${JSON.stringify(optionText)};
+  })()`,
+    `valor de ${labelText}`,
+  );
+}
+
 async function pickOption(contents, listboxLabel, optionLabel) {
   const findOption = `(() => {
     const listbox = [...document.querySelectorAll('[role="listbox"]')]
@@ -581,7 +624,7 @@ async function exerciseRealDamage(contents) {
   );
   check(initialGate, 'O cálculo real não começou bloqueado pelas cinco confirmações acessíveis.');
 
-  await chooseSelect(contents, 'Espécie', 'Abra');
+  await chooseComboBox(contents, 'Espécie', 'Abra');
   await setLabeledInput(contents, 'Nível', '50');
   await chooseSelect(contents, 'Natureza', 'Modest');
   await chooseSelect(contents, 'Habilidade', 'Synchronize');
