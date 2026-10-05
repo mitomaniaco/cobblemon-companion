@@ -13,6 +13,16 @@ Leia também `CLAUDE.md` (regras de privacidade, escopo e estado do projeto) e `
 - O deploy acontece pelo merge do PR na `main`, somente com o CI verde.
 - Commits seguem Conventional Commits.
 
+## Papéis dos worktrees
+
+- `revisor`: orquestra, despacha Issues aos agentes, revisa e aprova PRs e propostas; não codifica features.
+- `D:\Dev\cobblemon-companion` (código): `electron/**` (exceto UI), motor do guia `electron/lib/guide/**`, IPC/preload.
+- `frontend`: `src/app/**`, `src/features/**`, `src/ui/**`, CSS.
+- `dados`: `scripts/**`, `data/**`, geradores e leitura de dados do jogo/modpack (nunca saves de jogador, salvo autorização explícita).
+- `qa`: `test/**` (harnesses, fixtures sintéticas, testes de regressão), mutação; corrige só bugs pequenos que reproduziu.
+- `produto`: não escreve código. Estuda app, docs e modpack e abre Issues com label `proposta` (problema, valor para o jogador, dados necessários, esforço, critério de aceite). O revisor aprova trocando a label para `feature`/`enhancement` e despachando, ou fecha com o motivo.
+- Arquivo fora da área do agente só com aviso do revisor.
+
 ## Padrões de qualidade
 
 - Lint/format: Biome. Código morto: Knip. Contratos de arquitetura: dependency-cruiser. Commits: Commitlint. Mutação: Stryker.
