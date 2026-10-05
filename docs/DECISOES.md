@@ -17,6 +17,9 @@ Referência: [plano consolidado](PLANO.md). Data: 07/09/2026. Decisões de proje
 | D09 | Regras contextuais e sequências curtas para efeitos suportados. | Etiquetas isoladas não demonstram valor de preparação, status ou recuperação. Motor e profundidade ainda dependem da prova. | Cobertura e custo medidos. |
 | D10 | Desconhecimento e incompatibilidade são resultados válidos. | Não preencher atributos perfeitos nem esconder mecânicas ausentes para gerar recomendações. | Somente quando nova evidência resolver a lacuna. |
 | D11 | Separar captura de dados, identificação de código e validação mecânica. | A exportação JSON instalada omite funções. Hashes de funções também não capturam todo o ambiente de execução; importação não aprova compatibilidade. | Novas evidências permitirem capturar e validar dependências hoje desconhecidas. |
+| D12 | Time de 6 por objetivo, escolhido em party + PC (05/10/2026, [visão](VISAO.md)). | Revisa D05 e a exclusão de “otimizar seis builds” do plano: o guia monta o time para um líder RCT ou PvE geral e explica cada membro. Não promete ótimo global nem time universal. | Resultados do motor contra casos de validação. |
+| D13 | Monitoramento read-only de party/PC (05/10/2026, [visão](VISAO.md)). | Revisa a exclusão de monitoramento/polling: o app relê sozinho ao detectar mudança, com as garantias da leitura manual. Ler outros arquivos do save (ex.: progresso RCT) continua exigindo autorização explícita. | Custo medido com o jogo aberto ou problema de concorrência com o servidor. |
+| D14 | Fora até nova decisão: simulação de batalha, duplas e leitura de inventário (05/10/2026, [visão](VISAO.md)). | Plano de batalha (v2) é confronto a confronto; duplas aparecem como fora do escopo; itens são sugeridos sem verificar posse. Capturas recomendadas entram na v3. | Decisão explícita do dono do projeto. |
 
 ## Propostas arquiteturais da revisão inicial — 19/09/2026
 
