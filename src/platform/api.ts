@@ -101,6 +101,9 @@ export type CompanionApi = {
   calculateRealDamage(request: RealDamageRequest): Promise<RealDamageResponse>;
   cancel(jobId: string): Promise<{status: string; jobId: string}>;
   readPlayerSnapshot(): Promise<PlayerSnapshot>;
+  /** Recebe o snapshot novo quando os arquivos do save mudam; devolve a função que cancela a inscrição. */
+  onSnapshotChanged(callback: (snapshot: PlayerSnapshot) => void): () => void;
+  setAutoRefresh(enabled: boolean): Promise<{enabled: boolean}>;
 };
 
 declare global {

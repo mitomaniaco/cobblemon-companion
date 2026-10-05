@@ -7,7 +7,7 @@ import {createRequire} from 'node:module';
 import {afterAll, test} from 'vitest';
 
 const require = createRequire(import.meta.url);
-const {readPlayerSnapshotFromConfig, readStableSource} = require('../electron/player-import.cjs');
+const {readPlayerSnapshotFromConfig, readStableSource, resolvePlayerSourcePaths} = require('../electron/player-import.cjs');
 const {parseNbt} = require('../electron/lib/nbt.cjs');
 
 const temporaryRoots = [];
@@ -1235,4 +1235,18 @@ test('explica cabeçalho corrompido do .dat de party e do PC sem confundir com N
     () => readPlayerSnapshotFromConfig({configPath: truncated.configPath}),
     (error) => error?.code === 'ERR_IMPORT_NBT' && error.message === 'Não foi possível interpretar os dados NBT de party.',
   );
+});
+
+test('resolvePlayerSourcePaths devolve os quatro arquivos observados e recusa config inexistente com erro público', () => {
+  const fixture = makeWorld();
+  const paths = resolvePlayerSourcePaths({configPath: fixture.configPath});
+  assert.deepEqual(paths, {
+    configPath: fixture.configPath,
+    propertiesPath: path.join(fs.realpathSync(fixture.serverRoot), 'server.properties'),
+    partyPath: fs.realpathSync(fixture.partyPath),
+    pcPath: fs.realpathSync(fixture.pcPath),
+  });
+  assert.throws(() => resolvePlayerSourcePaths({configPath: path.join(fixture.root, 'inexistente.json')}), {
+    code: 'ERR_IMPORT_CONFIG',
+  });
 });

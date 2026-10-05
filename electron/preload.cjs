@@ -10,6 +10,13 @@ const bridge = {
     if (args.length !== 0) return Promise.reject(new TypeError('A leitura do snapshot não aceita argumentos'));
     return ipcRenderer.invoke('companion:read-player-snapshot');
   },
+  onSnapshotChanged: (callback) => {
+    if (typeof callback !== 'function') throw new TypeError('onSnapshotChanged precisa de uma função');
+    const listener = (_event, snapshot) => callback(snapshot);
+    ipcRenderer.on('companion:snapshot-changed', listener);
+    return () => ipcRenderer.removeListener('companion:snapshot-changed', listener);
+  },
+  setAutoRefresh: (enabled) => ipcRenderer.invoke('companion:auto-refresh', enabled),
 };
 
 if (window.location.search === '?runtime-test') {

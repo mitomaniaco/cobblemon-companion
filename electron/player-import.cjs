@@ -420,26 +420,53 @@ function assertConfig(config) {
   return {serverRoot: path.resolve(config.serverRoot), playerUuid: config.playerUuid.toLowerCase()};
 }
 
-function readPlayerSnapshotFromConfig(options = {}) {
+/** Localiza e valida as fontes do jogador (config, server.properties, party e PC) sem lê-las além do necessário. */
+function locateSources(options) {
   const configPath = options.configPath || DEFAULT_CONFIG_PATH;
   const readSource = options.readSource || readStableSource;
+  const initialConfigSource = readSource(configPath, 'config', MAX_CONFIG_BYTES);
+  const config = assertConfig(parseJson(initialConfigSource.bytes, 'config.json'));
+
+  const serverRoot = fs.realpathSync(config.serverRoot);
+  const propertiesPath = path.join(serverRoot, 'server.properties');
+  const initialProperties = readSource(propertiesPath, 'server.properties', MAX_PROPERTIES_BYTES);
+  const worldName = parseWorldName(initialProperties.bytes);
+  const worldPath = path.resolve(serverRoot, worldName);
+  ensureWithin(serverRoot, worldPath, 'O mundo ativo');
+  const {candidateReal: worldRoot} = realDirectory(serverRoot, worldPath, 'O mundo ativo');
+
+  const shard = config.playerUuid.slice(0, 2);
+  const playerStem = `${config.playerUuid}.dat`;
+  const partyPath = containedFile(worldRoot, ['pokemon', 'playerpartystore', shard, playerStem], 'party');
+  const pcPath = containedFile(worldRoot, ['pokemon', 'pcstore', shard, playerStem], 'PC');
+  return {configPath, propertiesPath, partyPath, pcPath, readSource, initialConfigSource, initialProperties, worldName};
+}
+
+function publicImportFailure(error) {
+  if (error instanceof PlayerImportError) return error;
+  if (error?.code === 'ENOENT')
+    return new PlayerImportError('ERR_IMPORT_SOURCE_MISSING', 'Não foi possível encontrar uma fonte necessária do mundo ativo.');
+  return new PlayerImportError(
+    'ERR_IMPORT_FAILED',
+    'A importação da party/PC falhou. Confirme que os dados foram salvos e tente novamente.',
+  );
+}
+
+/** Caminhos dos quatro arquivos que compõem o snapshot, para monitoramento. Lança PlayerImportError. */
+function resolvePlayerSourcePaths(options = {}) {
+  try {
+    const {configPath, propertiesPath, partyPath, pcPath} = locateSources(options);
+    return {configPath, propertiesPath, partyPath, pcPath};
+  } catch (error) {
+    throw publicImportFailure(error);
+  }
+}
+
+function readPlayerSnapshotFromConfig(options = {}) {
   const now = options.now || (() => new Date());
   try {
-    const initialConfigSource = readSource(configPath, 'config', MAX_CONFIG_BYTES);
-    const config = assertConfig(parseJson(initialConfigSource.bytes, 'config.json'));
-
-    const serverRoot = fs.realpathSync(config.serverRoot);
-    const propertiesPath = path.join(serverRoot, 'server.properties');
-    const initialProperties = readSource(propertiesPath, 'server.properties', MAX_PROPERTIES_BYTES);
-    const worldName = parseWorldName(initialProperties.bytes);
-    const worldPath = path.resolve(serverRoot, worldName);
-    ensureWithin(serverRoot, worldPath, 'O mundo ativo');
-    const {candidateReal: worldRoot} = realDirectory(serverRoot, worldPath, 'O mundo ativo');
-
-    const shard = config.playerUuid.slice(0, 2);
-    const playerStem = `${config.playerUuid}.dat`;
-    const partyPath = containedFile(worldRoot, ['pokemon', 'playerpartystore', shard, playerStem], 'party');
-    const pcPath = containedFile(worldRoot, ['pokemon', 'pcstore', shard, playerStem], 'PC');
+    const {configPath, propertiesPath, partyPath, pcPath, readSource, initialConfigSource, initialProperties, worldName} =
+      locateSources(options);
 
     const partyFirst = readSource(partyPath, 'party', MAX_SOURCE_BYTES);
     const pcFirst = readSource(pcPath, 'pc', MAX_SOURCE_BYTES);
@@ -481,9 +508,7 @@ function readPlayerSnapshotFromConfig(options = {}) {
     }
     return snapshot;
   } catch (error) {
-    if (error instanceof PlayerImportError) throw error;
-    if (error?.code === 'ENOENT') fail('ERR_IMPORT_SOURCE_MISSING', 'Não foi possível encontrar uma fonte necessária do mundo ativo.');
-    fail('ERR_IMPORT_FAILED', 'A importação da party/PC falhou. Confirme que os dados foram salvos e tente novamente.');
+    throw publicImportFailure(error);
   }
 }
 
@@ -497,5 +522,6 @@ module.exports = {
   PlayerImportError,
   publicPlayerImportError,
   readPlayerSnapshotFromConfig,
+  resolvePlayerSourcePaths,
   readStableSource,
 };

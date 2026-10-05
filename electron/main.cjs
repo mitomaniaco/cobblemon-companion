@@ -15,7 +15,8 @@ const WORKER_PATH = path.resolve(__dirname, 'worker.cjs');
 const PLAYER_IMPORT_PATH = path.resolve(__dirname, 'player-import.cjs');
 const TRAINER_UI_SNAPSHOT_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-snapshot.json');
 const TRAINER_UI_SNAPSHOT = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_SNAPSHOT_PATH, 'utf8')) : null;
-const {readPlayerSnapshotFromConfig, publicPlayerImportError} = require(PLAYER_IMPORT_PATH);
+const {readPlayerSnapshotFromConfig, resolvePlayerSourcePaths, publicPlayerImportError} = require(PLAYER_IMPORT_PATH);
+const {createSaveWatcher} = require('./lib/save-watcher.cjs');
 const {calculateRealDamage} = require('./lib/real-damage.cjs');
 const PROTOCOL = 'cobblemon';
 const ORIGIN = `${PROTOCOL}://app`;
@@ -23,6 +24,9 @@ const IPC_CALCULATE = 'companion:calculate';
 const IPC_REAL_DAMAGE = 'companion:calculate-real-damage';
 const IPC_CANCEL = 'companion:cancel';
 const IPC_READ_PLAYER_SNAPSHOT = 'companion:read-player-snapshot';
+const IPC_AUTO_REFRESH = 'companion:auto-refresh';
+const IPC_SNAPSHOT_CHANGED = 'companion:snapshot-changed';
+const IPC_TEST_SIMULATE_CHANGE = 'companion:test:simulate-snapshot-change';
 const IPC_TEST_BEHAVIOR = 'companion:test:behavior';
 const IPC_TEST_RESPONSES = 'companion:test:responses';
 const CURRENT_MOVE = 'cobblemon:spark';
@@ -38,6 +42,8 @@ let nextTestBehavior = 'normal';
 const testResponses = [];
 const jobs = new Map();
 let shutdownStarted = false;
+let autoRefreshEnabled = true;
+let firstReadDone = false;
 let allowQuitAfterWorkerStop = false;
 
 function isRecord(value) {
@@ -220,11 +226,47 @@ function handleRealDamageCalculation(event, request) {
   return {status: 'calculated', result: calculateRealDamage(snapshot, request)};
 }
 
+function notifySnapshotChanged(snapshot) {
+  if (windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_SNAPSHOT_CHANGED, snapshot);
+}
+// Monitoramento somente leitura do save; no modo de teste da UI o snapshot é sintético e não há arquivo a observar.
+const saveWatcher = TRAINER_UI_TEST_MODE
+  ? null
+  : createSaveWatcher({
+      watch: (file, listener) => fs.watch(file, listener),
+      resolvePaths: resolvePlayerSourcePaths,
+      readSnapshot: readPlayerSnapshotFromConfig,
+      onChange: notifySnapshotChanged,
+    });
+function handleSetAutoRefresh(event, enabled) {
+  requireSender(event);
+  if (typeof enabled !== 'boolean') throw new TypeError('O auto-refresh precisa ser verdadeiro ou falso');
+  autoRefreshEnabled = enabled;
+  if (!saveWatcher) return {enabled};
+  if (!enabled) saveWatcher.stop();
+  else if (firstReadDone) saveWatcher.start();
+  return {enabled};
+}
+function handleSimulateSnapshotChange(event) {
+  requireSender(event);
+  if (!TRAINER_UI_TEST_MODE) throw new Error('Harness de UI indisponível');
+  if (!autoRefreshEnabled) return {sent: false};
+  const snapshot = structuredClone(TRAINER_UI_SNAPSHOT);
+  snapshot.capturedAt = new Date().toISOString();
+  snapshot.sources[0].sha256 = 'c'.repeat(64);
+  notifySnapshotChanged(snapshot);
+  return {sent: true};
+}
 function handleReadPlayerSnapshot(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('A leitura do snapshot não aceita argumentos');
   try {
-    return TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_SNAPSHOT) : readPlayerSnapshotFromConfig();
+    if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_SNAPSHOT);
+    const snapshot = readPlayerSnapshotFromConfig();
+    firstReadDone = true;
+    saveWatcher.acknowledge(snapshot);
+    if (autoRefreshEnabled) saveWatcher.start();
+    return snapshot;
   } catch (error) {
     throw new Error(publicPlayerImportError(error));
   }
@@ -318,6 +360,8 @@ function installIpc() {
   ipcMain.handle(IPC_REAL_DAMAGE, handleRealDamageCalculation);
   ipcMain.handle(IPC_CANCEL, handleCancel);
   ipcMain.handle(IPC_READ_PLAYER_SNAPSHOT, handleReadPlayerSnapshot);
+  ipcMain.handle(IPC_AUTO_REFRESH, handleSetAutoRefresh);
+  if (TRAINER_UI_TEST_MODE) ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);
   if (RUNTIME_TEST_MODE) {
     ipcMain.handle(IPC_TEST_BEHAVIOR, handleSetTestBehavior);
     ipcMain.handle(IPC_TEST_RESPONSES, handleReadTestResponses);
@@ -330,6 +374,7 @@ app.whenReady().then(async () => {
   createWindow();
 });
 app.on('before-quit', (event) => {
+  saveWatcher?.stop();
   if (allowQuitAfterWorkerStop) return;
   event.preventDefault();
   if (shutdownStarted) return;
