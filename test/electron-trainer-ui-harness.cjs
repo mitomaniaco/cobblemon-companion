@@ -26,6 +26,7 @@ const screenshotPaths = Object.freeze({
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
+  evolutions: path.join(runDirectory, 'evolutions.png'),
   damageCompact: path.join(runDirectory, 'damage-800.png'),
   damageDefaultViewport: path.join(runDirectory, 'damage-default-viewport.png'),
   layout1440: path.join(runDirectory, 'layout-1440.png'),
@@ -1233,11 +1234,14 @@ async function exerciseGuideContract(contents) {
     const nextGoal = await api.guideNextGoal();
     const sources = snapshot.sources.map(({kind, sha256}) => ({kind, sha256}));
     const guide = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}});
+    // Rejeição intencional (loga no main): fontes que não correspondem ao snapshot atual devem ser recusadas.
     const stale = await api.buildGuide({sources: [], goal: {kind: 'pve'}}).then(() => 'built', (error) => error.message);
     const member = guide.team[0];
     const battlePlan = await api.buildBattlePlan({sources, trainerId: trainers[0].id, team: [{uuid: member.uuid, moveIds: member.moves.map((move) => move.id), itemId: member.item.id}]});
+    // Rejeição intencional (loga no main): pedido de plano com fontes e time vazios deve ser recusado.
     const stalePlan = await api.buildBattlePlan({sources: [], trainerId: trainers[0].id, team: []}).then(() => 'built', (error) => error.message);
     const evolution = await api.buildEvolutionPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: member.moves.map((move) => move.id)}], levelCap: null});
+    // Rejeição intencional (loga "request.team precisa ter de 1 a 6 membros" no main): pedido de evoluções inválido.
     const staleEvolution = await api.buildEvolutionPlan({sources: [], team: [], levelCap: null}).then(() => 'built', (error) => error.message);
     return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution};
   })()`,
@@ -1318,6 +1322,30 @@ async function exerciseGuideWorkspace(window) {
   }
   check(!/vit[óo]ria garantida|vai vencer|voc[êe] vence|garant/i.test(planText), 'O plano de batalha contém texto que promete vitória.');
   await capture(window, screenshotPaths.battlePlan, '[aria-label="Plano de batalha"]');
+
+  await clickButton(contents, 'Ver evoluções do time');
+  await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Evoluções por membro"] > li'))`, 'evoluções do motor sintético');
+  const evolutionText = await evaluate(
+    contents,
+    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Evoluções do time')?.closest('section')?.innerText) || ''`,
+  );
+  for (const expected of ['Evoluções do time', 'Alcance não verificado', 'não verificado', 'Hipóteses', 'Limites']) {
+    check(evolutionText.includes(expected), `A seção de evoluções não mostrou "${expected}".`);
+  }
+  await capture(window, screenshotPaths.evolutions, 'ol[aria-label="Evoluções por membro"]');
+  await evaluate(
+    contents,
+    `(() => {
+    const label = [...document.querySelectorAll('label')].find(node => node.textContent.trim() === 'Level cap atual (opcional)');
+    const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+    if (!(input instanceof HTMLInputElement)) throw new Error('Campo do level cap não encontrado.');
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    setter.call(input, '15');
+    input.dispatchEvent(new Event('input', {bubbles: true}));
+  })()`,
+  );
+  await clickButton(contents, 'Calcular de novo');
+  await waitFor(contents, `document.body.innerText.includes('Level cap usado: 15.')`, 'evoluções recalculadas com o level cap informado');
 
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');

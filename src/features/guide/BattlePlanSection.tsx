@@ -14,6 +14,8 @@ import type {BattlePlanController} from './useBattlePlan';
 import styles from './BattlePlanSection.module.css';
 
 export interface BattlePlanSectionProps {
+  /** Sem membros no time do guia não há o que planejar; o pedido nem sai. */
+  hasTeam: boolean;
   plan: BattlePlanController;
   /** Nome do indivíduo do time pelo UUID, para o respondedor e o lead. */
   individualName(uuid: string, fallbackSpeciesId: string): string;
@@ -172,15 +174,19 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
   );
 }
 
-export function BattlePlanSection({plan, individualName}: BattlePlanSectionProps) {
+export function BattlePlanSection({plan, individualName, hasTeam}: BattlePlanSectionProps) {
   return (
     <section className={styles.section} aria-label="Plano de batalha">
       {plan.phase === 'idle' && (
         <div className={styles.offer}>
-          <Button variant="secondary" onPress={plan.request}>
+          <Button variant="secondary" isDisabled={!hasTeam} onPress={plan.request}>
             Ver plano de batalha
           </Button>
-          <p className={styles.muted}>Lead, respondedor por adversário e riscos do líder. As hipóteses aparecem junto do plano.</p>
+          <p className={styles.muted}>
+            {hasTeam
+              ? 'Lead, respondedor por adversário e riscos do líder. As hipóteses aparecem junto do plano.'
+              : 'O guia não montou nenhum membro: não há plano de batalha para este objetivo.'}
+          </p>
         </div>
       )}
 
