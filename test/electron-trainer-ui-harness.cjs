@@ -425,11 +425,21 @@ async function exerciseCollectionAndDamage(window, snapshot) {
     expectedLocation !== null && detailText.includes(expectedLocation) && !/posição \d/.test(detailText),
     'A ficha não mostra o slot em numeração a partir de 1.',
   );
-  const alternateArtworkFallback = await evaluate(
+  const alternateArtwork = await evaluate(
     contents,
-    'Boolean(document.querySelector(\'[data-testid="individual-details"] [role="img"][aria-label="Imagem indisponível"]\'))',
+    `(() => {
+    const figure = document.querySelector('[data-testid="individual-details"] figure[data-artwork]');
+    return {
+      source: figure?.dataset.artwork || null,
+      marked: Boolean(figure?.querySelector('[role="img"][aria-label="Arte da forma normal"]')),
+      caption: figure?.querySelector('figcaption')?.textContent.trim() || null,
+    };
+  })()`,
   );
-  check(alternateArtworkFallback, 'A forma alternativa não usou o fallback acessível de artwork.');
+  check(
+    alternateArtwork.source === 'base-form' && alternateArtwork.marked && alternateArtwork.caption === 'Arte da forma normal',
+    'A forma alternativa não mostrou a arte da forma normal marcada como tal.',
+  );
   await clickTab(contents, 'Atributos');
   const unknownStats = await evaluate(
     contents,
@@ -1339,6 +1349,14 @@ async function exerciseGuideWorkspace(window) {
     check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
   }
   await capture(window, screenshotPaths.guide1440, '[aria-label="Time recomendado"]');
+  const guideArtwork = await evaluate(
+    contents,
+    `[...document.querySelectorAll('ol[aria-label="Time recomendado"] figure[data-artwork]')].map(node => node.dataset.artwork)`,
+  );
+  check(
+    guideArtwork.length > 0 && guideArtwork.every((source) => source !== 'none'),
+    'Alguma espécie das fixtures do Guia apareceu sem imagem (ícone neutro).',
+  );
 
   await clickButton(contents, 'Ver plano de batalha');
   await waitFor(
