@@ -13,10 +13,11 @@ const snapshot = (party, pc = 'pc-1') => ({
 });
 
 function setup({reads, paths = () => PATHS, watchFails = []} = {}) {
+  const missing = new Set(watchFails);
   const listeners = new Map();
   const closed = [];
   const watch = vi.fn((file, listener) => {
-    if (watchFails.includes(file)) throw Object.assign(new Error('gone'), {code: 'ENOENT'});
+    if (missing.has(file)) throw Object.assign(new Error('gone'), {code: 'ENOENT'});
     listeners.set(file, listener);
     return {on: vi.fn(), close: () => closed.push(file)};
   });
@@ -28,7 +29,16 @@ function setup({reads, paths = () => PATHS, watchFails = []} = {}) {
   });
   const onChange = vi.fn();
   const watcher = createSaveWatcher({watch, resolvePaths: paths, readSnapshot, onChange});
-  return {watcher, watch, listeners, closed, readSnapshot, onChange, fire: (file = '/party') => listeners.get(file)('change')};
+  return {
+    watcher,
+    watch,
+    listeners,
+    closed,
+    missing,
+    readSnapshot,
+    onChange,
+    fire: (file = '/party', eventType = 'change') => listeners.get(file)(eventType, file),
+  };
 }
 
 const changedError = () => Object.assign(new Error('mudou'), {code: 'ERR_IMPORT_CHANGED'});
@@ -149,5 +159,52 @@ describe('monitoramento do save', () => {
     const partial = setup({reads: [], watchFails: ['/pc']});
     expect(partial.watcher.start()).toBe(true);
     expect([...partial.listeners.keys()]).not.toContain('/pc');
+  });
+
+  it('evento rename (servidor troca o .dat por arquivo temporário) rearma o watcher e a mudança seguinte ainda notifica', () => {
+    const t = setup({reads: [snapshot('new-1'), snapshot('new-2')]});
+    t.watcher.acknowledge(snapshot('old'));
+    t.watcher.start();
+    const before = t.listeners.get('/party');
+
+    t.fire('/party', 'rename');
+    expect(t.closed).toEqual(['/party']);
+    expect(t.watch).toHaveBeenCalledTimes(5);
+    expect(t.listeners.get('/party')).not.toBe(before);
+    vi.advanceTimersByTime(2000);
+    expect(t.onChange).toHaveBeenCalledWith(snapshot('new-1'));
+
+    t.fire('/party', 'change');
+    vi.advanceTimersByTime(2000);
+    expect(t.onChange).toHaveBeenLastCalledWith(snapshot('new-2'));
+  });
+
+  it('rename com o arquivo ainda ausente rearma no ciclo de releitura seguinte', () => {
+    const t = setup({reads: [snapshot('new'), snapshot('new')]});
+    t.watcher.acknowledge(snapshot('old'));
+    t.watcher.start();
+    t.missing.add('/party');
+
+    t.fire('/party', 'rename');
+    expect(t.watch).toHaveBeenCalledTimes(5);
+    t.missing.delete('/party');
+    vi.advanceTimersByTime(2000);
+    expect(t.watch).toHaveBeenCalledTimes(6);
+    expect(t.onChange).toHaveBeenCalledWith(snapshot('new'));
+
+    t.fire('/party', 'change');
+    vi.advanceTimersByTime(2000);
+    expect(t.readSnapshot).toHaveBeenCalledTimes(2);
+  });
+
+  it('se o arquivo continua ausente depois da releitura, tenta rearmar de novo após 5 s, no máximo 3 vezes', () => {
+    const t = setup({reads: Array.from({length: 6}, () => snapshot('same'))});
+    t.watcher.acknowledge(snapshot('same'));
+    t.watcher.start();
+    t.missing.add('/party');
+    t.fire('/party', 'rename');
+    vi.advanceTimersByTime(2000 + 5000 * 10);
+    // 1 tentativa no rename + 1 no ciclo do debounce + 3 nas novas tentativas
+    expect(t.watch.mock.calls.filter(([file]) => file === '/party')).toHaveLength(1 + 1 + 1 + 3);
   });
 });
