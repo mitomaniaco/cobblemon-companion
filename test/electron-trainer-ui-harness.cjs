@@ -26,6 +26,7 @@ const screenshotPaths = Object.freeze({
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
+  captures: path.join(runDirectory, 'captures.png'),
   evolutions: path.join(runDirectory, 'evolutions.png'),
   damageCompact: path.join(runDirectory, 'damage-800.png'),
   damageDefaultViewport: path.join(runDirectory, 'damage-default-viewport.png'),
@@ -1311,7 +1312,7 @@ async function exerciseGuideWorkspace(window) {
   for (const expected of [
     'Próximo objetivo sugerido',
     'Sugestão pelo nível da sua party',
-    'Gardevoir entra porque vence 2 de 2 adversários',
+    'Gardevoir entra porque vence 1 de 2 adversários',
     'Choice Specs aumenta as vitórias de 1 para 2.',
     'obter',
     'Comparado à sua party',
@@ -1345,6 +1346,35 @@ async function exerciseGuideWorkspace(window) {
     check(evolutionText.includes(expected), `A seção de evoluções não mostrou "${expected}".`);
   }
   await capture(window, screenshotPaths.evolutions, 'ol[aria-label="Evoluções por membro"]');
+
+  await clickButton(contents, 'Ver capturas recomendadas');
+  await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Lacunas do time"] > li'))`, 'capturas do motor sintético');
+  const captureText = await evaluate(
+    contents,
+    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Capturas recomendadas')?.closest('section')?.innerText) || ''`,
+  );
+  for (const expected of [
+    'Lacuna contra Floatzel',
+    'Você já tem',
+    'Blastoise',
+    'Candidatos de captura',
+    'Swampert',
+    'River',
+    'com chuva',
+    'Nv. 25–30',
+    'incomum',
+    'Captura liberada',
+    'não verificado',
+    'Hipóteses',
+    'Limites',
+  ]) {
+    check(captureText.includes(expected), `A seção de capturas não mostrou "${expected}".`);
+  }
+  check(
+    captureText.indexOf('Você já tem') < captureText.indexOf('Candidatos de captura'),
+    'O que o jogador já tem deve aparecer antes dos candidatos de captura.',
+  );
+  await capture(window, screenshotPaths.captures, 'ol[aria-label="Lacunas do time"]');
   await evaluate(
     contents,
     `(() => {

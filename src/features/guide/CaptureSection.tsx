@@ -73,8 +73,10 @@ function GapRow({gap, index}: {gap: CaptureGap; index: number}) {
           <ul className={styles.ownedList}>
             {gap.owned.map((owned) => (
               <li key={owned.uuid}>
-                <strong>{speciesDisplay(owned.speciesId, 'normal').name}</strong> Nv. {owned.level}{' '}
-                <span className={styles.muted}>({captureOwnedWhereLabel(owned.container)})</span>
+                <span>
+                  <strong>{speciesDisplay(owned.speciesId, 'normal').name}</strong> Nv. {owned.level}{' '}
+                  <span className={styles.muted}>({captureOwnedWhereLabel(owned.container)})</span>
+                </span>
                 <span className={styles.text}>{owned.reason}</span>
               </li>
             ))}
