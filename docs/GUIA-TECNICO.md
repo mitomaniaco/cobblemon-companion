@@ -90,6 +90,10 @@ O importador usa limites de tamanho, hashes SHA-256 e rechecagem de metadata/has
 
 ## 6. Workspaces
 
+### Guia (tela inicial)
+
+`src/features/guide/` (lazy, como o Dano). `guideNextGoal()` pré-seleciona o objetivo ao abrir com captura; a pessoa alterna entre “PvE geral” e “Líder ou treinador” (treinadores em dupla aparecem desabilitados, “duplas: não suportado”). O time de 6 é montado por `buildGuide` ao abrir e a cada mudança de objetivo ou de fontes do save, com progresso e cancelamento (`cancel(jobId)`); “Montar de novo” força o cálculo. O estado vive em `useGuide` (no `TrainerApp`), então sobrevive à ida ao Dano pelo “Ver cálculo”. O `TrainerApp` assina `onSnapshotChanged`, aplica o snapshot recebido (invalidando o Dano) e recalcula o guia; o switch “Atualizar automaticamente” chama `setAutoRefresh`. A lógica pura está em `guide-model.ts` (testada em `test/guide-model.test.ts`). O resultado mostra, por membro, a explicação, os golpes (`evaluated:false` como “status, não avaliado”), o item (`já segura`/`obter`; a posse não é verificada) e os confrontos; a lista “Vale adquirir”, as exclusões, as hipóteses e os limites vêm do motor.
+
 ### Equipe/PC e ficha
 
 A coleção mantém seleção por UUID. A ficha individual separa resumo, golpes e atributos, exibindo procedência e desconhecidos em vez de preencher valores. Um refresh remove o estado derivado antigo imediatamente; falha de leitura não deve deixar análise/prévia de outro snapshot aparentando estar atual.

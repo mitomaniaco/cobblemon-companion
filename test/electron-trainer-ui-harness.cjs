@@ -22,6 +22,9 @@ const screenshotPaths = Object.freeze({
   preview: path.join(runDirectory, 'move-preview.png'),
   demo: path.join(runDirectory, 'offline-demo-result.png'),
   gardevoirDamage: path.join(runDirectory, 'gardevoir-damage-result.png'),
+  guide1440: path.join(runDirectory, 'guide-1440.png'),
+  guide1200: path.join(runDirectory, 'guide-1200.png'),
+  guide800: path.join(runDirectory, 'guide-800.png'),
   damageCompact: path.join(runDirectory, 'damage-800.png'),
   damageDefaultViewport: path.join(runDirectory, 'damage-default-viewport.png'),
   layout1440: path.join(runDirectory, 'layout-1440.png'),
@@ -1232,6 +1235,78 @@ async function exerciseGuideContract(contents) {
   console.log('PASS contrato do guia no modo sintético (treinadores, próximo objetivo, card e fontes)');
 }
 
+async function exerciseGuideWorkspace(window) {
+  const contents = window.webContents;
+  await navigate(contents, 'Guia');
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
+    'time do guia montado com o motor sintético',
+  );
+  const text = await evaluate(
+    contents,
+    "document.querySelector('[aria-labelledby]')?.closest('main')?.innerText || document.body.innerText",
+  );
+  for (const expected of [
+    'Próximo objetivo sugerido',
+    'Sugestão pelo nível da sua party',
+    'Gardevoir entra porque vence 2 de 2 adversários',
+    'Choice Specs aumenta as vitórias de 1 para 2.',
+    'obter',
+    'Comparado à sua party',
+    'Vale adquirir',
+    'Moonblast',
+  ]) {
+    check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
+  }
+  await capture(window, screenshotPaths.guide1440, '[aria-label="Time recomendado"]');
+
+  await clickButton(contents, 'Ver detalhes');
+  await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
+  await evaluate(
+    contents,
+    `(() => {
+    const item = [...document.querySelectorAll('ul li')].find(node => node.textContent.includes('Confusion') && node.querySelector('button'));
+    if (!item) throw new Error('Linha de cálculo do golpe não encontrada.');
+    item.querySelector('button').click();
+  })()`,
+  );
+  await waitFor(contents, "Boolean(document.querySelector('.real-damage-planner'))", 'Dano aberto pelo Ver cálculo do guia');
+  check(
+    await evaluate(
+      contents,
+      `(() => {
+      const listbox = [...document.querySelectorAll('.real-damage-planner [role="listbox"]')]
+        .find(item => item.getAttribute('aria-label') === '2. Golpe aprendido para comparar');
+      return listbox?.querySelector('[role="option"][aria-selected="true"]')?.getAttribute('aria-label') === 'Confusion';
+    })()`,
+    ),
+    'Ver cálculo não pré-selecionou o golpe aprendido do guia no Dano.',
+  );
+  // Confusion está fora do subconjunto compatível do Dano; devolve um candidato calculável para os fluxos seguintes.
+  await pickOption(contents, '2. Golpe aprendido para comparar', 'Seed Bomb');
+  await clickButton(contents, 'Voltar ao guia');
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
+    'retorno ao guia sem perder o time',
+  );
+
+  for (const layout of [
+    {width: 1200, shot: screenshotPaths.guide1200},
+    {width: 800, shot: screenshotPaths.guide800},
+  ]) {
+    window.setContentSize(layout.width, 1000);
+    await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport do guia em ${layout.width}px`);
+    const overflow = await evaluate(contents, '(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)()');
+    check(!overflow, `A tela Guia em ${layout.width}px gerou rolagem horizontal.`);
+    await capture(window, layout.shot, '[aria-label="Time recomendado"]');
+  }
+  window.setContentSize(1440, 1000);
+  await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após o guia');
+  console.log('PASS tela Guia: objetivo sugerido, time com explicações, Ver cálculo no Dano e layouts 1200/800');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1262,6 +1337,7 @@ async function run() {
     'recarga da fixture depois do snapshot simulado',
   );
   await exerciseGuideContract(contents);
+  await exerciseGuideWorkspace(window);
   await exerciseShellScrollLock(window, snapshot);
   await exerciseDemo(contents);
   await exerciseRealDamage(contents);
