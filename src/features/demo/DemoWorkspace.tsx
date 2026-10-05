@@ -1,3 +1,4 @@
+import {ArrowRight} from '@phosphor-icons/react';
 import {useEffect, useId, useRef, useState, type FormEvent} from 'react';
 import {
   applyResponse,
@@ -10,8 +11,10 @@ import {
   type FlowState,
   type ProductResult,
 } from '../../domain/compare-flow';
+import {moveLabel} from '../../domain/catalog-labels';
+import {moveDisplay, speciesDisplay} from '../../domain/dex';
 import {getCompanionApi} from '../../platform/api';
-import {Button, Select} from '../../ui';
+import {Button, HpBar, PokeBallMark, Select, TypeBadge} from '../../ui';
 import type {SelectOption} from '../../ui';
 import styles from './DemoWorkspace.module.css';
 
@@ -28,11 +31,8 @@ const CONDITION_LABELS: Record<string, string> = {
   'minimum-roll': 'Roll mínimo',
 };
 
-function moveLabel(id: string) {
-  if (id === 'cobblemon:spark') return 'Spark';
-  if (id === 'cobblemon:thunderbolt') return 'Thunderbolt';
-  return id.replace(/^[^:]+:/, '').replace(/[_-]+/g, ' ');
-}
+const PIKACHU = speciesDisplay('cobblemon:pikachu', 'normal');
+const FLOATZEL = speciesDisplay('cobblemon:floatzel', 'normal');
 
 function resultStatusLabel(status: ProductResult['status']) {
   if (status === 'condicional') return 'Condicional';
@@ -59,21 +59,26 @@ function statusAnnouncement(flow: FlowState) {
   if (flow.revision > 0) return 'Entradas atualizadas. Execute a comparação para calcular novamente.';
   return 'Demonstração pronta para analisar.';
 }
-function DamageSide({label, move}: {label: string; move: ProductResult['current']}) {
-  const percentage = move.targetHP > 0 ? Math.min(100, (move.min / move.targetHP) * 100) : 0;
+
+function DamageRow({label, move}: {label: string; move: ProductResult['current']}) {
+  const display = moveDisplay(move.moveId);
   return (
     <article className={styles.damageSide}>
       <div className={styles.moveHeading}>
-        <span>{label}</span>
-        <strong>{moveLabel(move.moveId)}</strong>
+        <span className={styles.sideLabel}>{label}</span>
+        <strong>{display.name}</strong>
+        {display.type && <TypeBadge type={display.type} size="sm" />}
       </div>
       <p className={styles.damageValue}>
         <strong>{move.min}</strong>
         <span>–{move.max} dano</span>
       </p>
-      <div className={styles.damageTrack} aria-hidden="true">
-        <span style={{width: `${percentage}%`}} />
-      </div>
+      <HpBar
+        total={move.targetHP}
+        minDamage={move.min}
+        maxDamage={move.max}
+        label={`Floatzel: ${move.remainingHP} HP restantes de ${move.targetHP} no roll mínimo`}
+      />
       <p className={styles.damageMeta}>
         {move.remainingHP} HP restantes de {move.targetHP}
       </p>
@@ -85,12 +90,7 @@ function ResultPanel({result}: {result: ProductResult}) {
   return (
     <section className={styles.result} aria-labelledby="demo-result-title">
       <header className={styles.resultHeading}>
-        <div>
-          <h3 id="demo-result-title">Dano em uma ação</h3>
-          <p>
-            {moveLabel(result.current.moveId)} e {moveLabel(result.candidate.moveId)} contra Floatzel.
-          </p>
-        </div>
+        <h3 id="demo-result-title">Dano em uma ação</h3>
         <span className={styles.resultBadge}>{resultStatusLabel(result.status)}</span>
       </header>
 
@@ -100,8 +100,8 @@ function ResultPanel({result}: {result: ProductResult}) {
       </p>
 
       <fieldset className={styles.damageCompare} aria-label="Dano mínimo e HP restante, golpe atual e proposto">
-        <DamageSide label="Atual" move={result.current} />
-        <DamageSide label="Proposta" move={result.candidate} />
+        <DamageRow label="Atual" move={result.current} />
+        <DamageRow label="Proposta" move={result.candidate} />
       </fieldset>
       <div className={styles.evidence}>
         <section className={styles.detailSection} aria-labelledby="demo-gains-title">
@@ -218,7 +218,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
   flowRef.current = flow;
 
   useEffect(() => {
-    if (isActive) headingRef.current?.focus();
+    if (isActive) headingRef.current?.focus({preventScroll: true});
   }, [isActive]);
 
   function commit(next: FlowState) {
@@ -281,17 +281,13 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
   return (
     <section className={styles.workspace} aria-labelledby={headingId}>
       <header className={styles.heading}>
-        <div>
-          <h2 id={headingId} ref={headingRef} tabIndex={-1}>
-            Demonstração offline
-          </h2>
-          <p>Uma comparação fixa de Pikachu → Floatzel, nível 20, separada dos dados do save e da seleção em Equipe ou PC.</p>
-        </div>
+        <h2 id={headingId} ref={headingRef} tabIndex={-1}>
+          Demonstração offline
+        </h2>
         <div className={styles.statusBlock}>
-          <span className={styles.statusLabel}>Estado da comparação</span>
-          <strong className={styles.statusValue} data-phase={flow.phase}>
+          <span className={styles.statusValue} data-phase={flow.phase}>
             {status}
-          </strong>
+          </span>
           <span className={styles.visuallyHidden} role="status" aria-live="polite" aria-atomic="true">
             {statusAnnouncement(flow)}
           </span>
@@ -300,68 +296,49 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
 
       <div className={styles.contentGrid}>
         <section className={styles.formSection} aria-labelledby="demo-form-title">
-          <h3 id="demo-form-title">Compare um golpe observado com uma proposta</h3>
-          <p className={styles.sectionIntro}>
-            O Pokémon e as condições vêm da fixture offline. Confirme o golpe proposto para executar a comparação.
-          </p>
+          <h3 id="demo-form-title">Comparação fixa</h3>
 
           <form className={styles.form} onSubmit={(event) => void submit(event)} noValidate>
-            <fieldset className={styles.fixedFacts} aria-label="Dados fixos da demonstração">
-              <div>
-                <span>Pokémon observado</span>
-                <strong>Pikachu</strong>
-                <small>Fixture fixa · observado</small>
+            <fieldset className={styles.matchup} aria-label="Dados fixos da demonstração">
+              <div className={styles.combatant}>
+                <strong>{PIKACHU.name}</strong>
+                {PIKACHU.types.map((type) => (
+                  <TypeBadge key={type} type={type} />
+                ))}
               </div>
-              <div>
-                <span>Alvo</span>
-                <strong>Floatzel · nível 20</strong>
-                <small>Espécie e nível fixos neste recorte</small>
+              <ArrowRight className={styles.matchupArrow} aria-hidden="true" weight="bold" />
+              <div className={styles.combatant}>
+                <strong>{FLOATZEL.name}</strong>
+                {FLOATZEL.types.map((type) => (
+                  <TypeBadge key={type} type={type} />
+                ))}
               </div>
-              <div>
-                <span>Golpe atual</span>
-                <strong>Spark</strong>
-                <small>Preservado como observado</small>
-              </div>
+              <span className={styles.matchupLevel}>Nível 20</span>
             </fieldset>
 
-            <div className={styles.formFields}>
-              <div ref={candidateFieldRef}>
-                <Select
-                  label="Golpe proposto"
-                  options={CANDIDATE_OPTIONS}
-                  value={flow.form.candidateMove}
-                  onChange={(value) => edit({candidateMove: value ?? ''})}
-                  description="O recorte permite comparar Thunderbolt com o Spark atual."
-                  errorMessage={errors.candidateMove}
-                  isInvalid={Boolean(errors.candidateMove)}
-                />
-              </div>
+            <div ref={candidateFieldRef}>
+              <Select
+                label="Golpe proposto"
+                options={CANDIDATE_OPTIONS}
+                value={flow.form.candidateMove}
+                onChange={(value) => edit({candidateMove: value ?? ''})}
+                description="O recorte permite comparar Thunderbolt com o Spark atual."
+                errorMessage={errors.candidateMove}
+                isInvalid={Boolean(errors.candidateMove)}
+              />
             </div>
 
-            <fieldset className={styles.contextStrip} aria-label="Condições fixas do cálculo">
-              <div>
-                <span>Horizonte</span>
-                <strong>1 ação</strong>
-              </div>
-              <div>
-                <span>Roll</span>
-                <strong>mínimo</strong>
-              </div>
-              <div>
-                <span>Item</span>
-                <strong>nenhum</strong>
-              </div>
-              <div>
-                <span>Formato</span>
-                <strong>singles</strong>
-              </div>
+            <fieldset className={styles.conditionChips} aria-label="Condições fixas do cálculo">
+              <span>1 ação</span>
+              <span>Roll mínimo</span>
+              <span>Sem item</span>
+              <span>Singles</span>
             </fieldset>
 
             {flow.error && (
               <div className={styles.errorMessage} role="alert">
                 <strong>Comparação não concluída</strong>
                 <p>{flow.error}</p>
-                <p>Revise os campos destacados ou execute novamente para tentar recuperar.</p>
               </div>
             )}
 
@@ -374,79 +351,39 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
                   Cancelar
                 </Button>
               )}
-              <p>Uma alteração invalida o resultado anterior. Execute a comparação novamente para atualizar a evidência.</p>
             </div>
           </form>
+          <p className={styles.frozenNote}>Recorte congelado · fora dele: party completa, IA, trocas e batalha inteira.</p>
         </section>
 
-        <aside className={styles.context} aria-labelledby="demo-context-title">
-          <h3 id="demo-context-title">Recorte congelado</h3>
-          <p>
-            Pikachu → Floatzel usa o snapshot offline versionado. Esta demonstração não acompanha a seleção em “Meus Pokémon” nem consulta o
-            save.
-          </p>
-          <span className={styles.demoLabel}>Demonstração · não é um recomendador geral</span>
-
-          <section className={styles.scope} aria-labelledby="demo-scope-title">
-            <h4 id="demo-scope-title">Escopo</h4>
-            <dl>
-              <div>
-                <dt>Geração</dt>
-                <dd>9</dd>
-              </div>
-              <div>
-                <dt>Alvo</dt>
-                <dd>Floatzel · nível 20</dd>
-              </div>
-              <div>
-                <dt>Ação</dt>
-                <dd>1 golpe</dd>
-              </div>
-              <div>
-                <dt>Dados</dt>
-                <dd>snapshot offline</dd>
-              </div>
-            </dl>
-          </section>
-
-          <section className={styles.boundary} aria-labelledby="demo-boundary-title">
-            <h4 id="demo-boundary-title">Fora desta fatia</h4>
-            <ul>
-              <li>Party completa e ranking de builds</li>
-              <li>IA, trocas e batalha inteira</li>
-              <li>Golpes, formas e condições fora do subconjunto versionado</li>
-            </ul>
-          </section>
-        </aside>
+        <div className={styles.resultColumn}>
+          {flow.result ? (
+            <ResultPanel result={flow.result} />
+          ) : (
+            <section className={styles.awaiting} aria-labelledby="demo-awaiting-title">
+              <PokeBallMark className={styles.awaitingMark} />
+              <h3 id="demo-awaiting-title">
+                {flow.phase === 'cancelled'
+                  ? 'Comparação cancelada'
+                  : flow.phase === 'error'
+                    ? 'O resultado não foi atualizado'
+                    : flow.revision > 0
+                      ? 'Entradas atualizadas'
+                      : 'O resultado aparecerá aqui'}
+              </h3>
+              <p>
+                {flow.phase === 'cancelled'
+                  ? 'Execute a comparação novamente quando quiser retomar.'
+                  : flow.phase === 'error'
+                    ? 'Corrija os dados ou tente executar novamente.'
+                    : flow.revision > 0
+                      ? 'Execute a comparação para calcular com as entradas atuais.'
+                      : 'Execute a mudança para ver dano, ganhos, perdas e rastreabilidade.'}
+              </p>
+            </section>
+          )}
+        </div>
       </div>
-
-      {flow.result ? (
-        <ResultPanel result={flow.result} />
-      ) : (
-        <section className={styles.awaiting} aria-labelledby="demo-awaiting-title">
-          <div>
-            <h3 id="demo-awaiting-title">
-              {flow.phase === 'cancelled'
-                ? 'Comparação cancelada'
-                : flow.phase === 'error'
-                  ? 'O resultado não foi atualizado'
-                  : flow.revision > 0
-                    ? 'Entradas atualizadas'
-                    : 'O resultado aparecerá aqui'}
-            </h3>
-            <p>
-              {flow.phase === 'cancelled'
-                ? 'Execute a comparação novamente quando quiser retomar.'
-                : flow.phase === 'error'
-                  ? 'O erro permanece visível acima. Corrija os dados ou tente executar novamente.'
-                  : flow.revision > 0
-                    ? 'Execute a comparação para calcular com as entradas atuais.'
-                    : 'Execute a mudança para ver dano, ganhos, perdas, condições, rastreabilidade e limites.'}
-            </p>
-          </div>
-          <span className={styles.awaitingState}>{status}</span>
-        </section>
-      )}
     </section>
   );
 }

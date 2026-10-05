@@ -1,0 +1,67 @@
+.track {
+  --hp-color: var(--hp-high);
+
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-sunken);
+}
+
+.track[data-level="mid"] {
+  --hp-color: var(--hp-mid);
+}
+
+.track[data-level="low"] {
+  --hp-color: var(--hp-low);
+}
+
+.solid,
+.range {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.solid {
+  left: 0;
+  width: 100%;
+  background: var(--hp-color);
+  transform: scaleX(var(--hp-solid));
+  transform-origin: left;
+  animation: hp-drain var(--duration-hp) var(--ease-out);
+}
+
+.range {
+  left: calc(var(--hp-solid) * 100%);
+  width: calc(var(--hp-range) * 100%);
+  background: repeating-linear-gradient(45deg, color-mix(in oklab, var(--hp-color) 45%, transparent) 0 4px, transparent 4px 8px);
+  animation: hp-range-in var(--duration-enter) var(--ease-out) both;
+  animation-delay: var(--duration-hp);
+}
+
+@keyframes hp-drain {
+  from {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hp-range-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .track {
+    border: 1px solid CanvasText;
+  }
+
+  .solid {
+    background: Highlight;
+  }
+
+  .range {
+    background: repeating-linear-gradient(45deg, GrayText 0 4px, transparent 4px 8px);
+  }
+}

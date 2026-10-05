@@ -7,6 +7,7 @@
 - Redesign temático (fase A): novos tokens (azul-noite, cor por tipo, Rubik), `PokeBallMark`, primitivos restilizados, nova casca com sidebar agrupada, detalhes da captura em diálogo, Ajuda e Dano carregados sob demanda e contenção de rolagem da casca (`overflow: clip`, `focus({preventScroll})`).
 - Redesign temático (fase B): equipe em seis slots e PC em grade de caixa de 6 colunas, com tipos, nomes e poder dos golpes exibidos a partir dos dados do `@smogon/calc` (módulo virtual `virtual:display-dex`, só exibição). Golpes fora do catálogo passam a mostrar o nome do Showdown (`Calm Mind`). Slots passam a ser exibidos a partir de 1.
 - Redesign temático (fase C): ficha do indivíduo com hero colorido pelo tipo, resumo com natureza (aumento/redução), golpes como tiles e chips por tipo (`MoveChip`) e radar de IVs (`IvRadar`) com barras decorativas na tabela de atributos.
+- Redesign temático (fase D): demonstração como prévia de batalha, com faixa de confronto Pikachu → Floatzel (tipos), duas colunas por container query e `HpBar` (HP restante, faixa hachurada entre dano mínimo e máximo) no resultado.
 
 ## 2026-10-02 — R1: Central de treinador
 
