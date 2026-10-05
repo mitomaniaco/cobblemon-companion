@@ -194,6 +194,69 @@ export type BattlePlanResult = {
   limits: string[];
 };
 
+/** Membro do time de 6 do guia: os golpes que o guia considera úteis para o objetivo (equipados e a adquirir). */
+export type EvolutionPlanMember = {uuid: string; usefulMoveIds: string[]};
+
+export type EvolutionPlanRequest = {
+  sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
+  team: EvolutionPlanMember[];
+  /** Nível máximo permitido agora (level cap). Nulo: o app não sabe o cap e o alcance fica "não verificado". */
+  levelCap: number | null;
+  /** Identificador opcional para cancelar com `cancel(jobId)`. */
+  jobId?: string;
+};
+
+/**
+ * Um requisito da evolução em texto legível. `cumprido` e `pendente` só saem de dado capturado (nível, natureza,
+ * golpes conhecidos); amizade, item, horário, bioma, troca e o restante são sempre `não verificado`, nunca cumpridos.
+ */
+export type EvolutionRequirement = {
+  kind: 'nível' | 'amizade' | 'item' | 'troca' | 'horário' | 'bioma' | 'golpe' | 'natureza' | 'outro';
+  text: string;
+  status: 'cumprido' | 'pendente' | 'não verificado';
+};
+
+/** Golpe que muda de nível ou some ao evoluir. `note` vem pronto, por exemplo "aprende Surf no nível 30 sem evoluir; evoluído, só no 36". */
+export type EvolutionMoveChange = {
+  moveId: string;
+  /** O guia considera o golpe útil para o objetivo. */
+  useful: boolean;
+  kind: 'atrasado' | 'perdido' | 'adiantado';
+  /** Nível em que a forma atual aprende o golpe sem evoluir; nulo se não aprende por nível. */
+  levelWithoutEvolving: number | null;
+  /** Nível em que a evolução aprende o golpe; nulo se não aprende por nível. */
+  levelAfterEvolving: number | null;
+  note: string;
+};
+
+export type EvolutionOption = {
+  toSpeciesId: string;
+  method: 'level_up' | 'item_interact' | 'trade';
+  requirements: EvolutionRequirement[];
+  /** `true`: o nível exigido cabe no cap; `false`: passa do cap; `null`: sem exigência de nível ou cap desconhecido. */
+  withinCap: boolean | null;
+  reachText: string;
+  moveChanges: EvolutionMoveChange[];
+};
+
+export type EvolutionPlanMemberResult = {
+  uuid: string;
+  speciesId: string;
+  formId: string;
+  level: number;
+  /** `bloqueado`: forma desconhecida ou sem dados de evolução da forma; `blockedReason` diz o motivo. Várias opções para a mesma espécie são alternativas ("ou"). */
+  status: 'evolui' | 'sem-evolução' | 'bloqueado';
+  blockedReason: string | null;
+  options: EvolutionOption[];
+};
+
+export type EvolutionPlanResult = {
+  levelCap: number | null;
+  members: EvolutionPlanMemberResult[];
+  assumptions: string[];
+  limits: string[];
+};
+
 /** Próximo objetivo sugerido. `nível`: pelo maior nível da party, sem ler o progresso de treinadores do save. */
 export type GuideNextGoal = {trainerId: string | null; basis: 'progresso' | 'nível'; reason: string};
 
@@ -214,6 +277,8 @@ export type CompanionApi = {
   guideNextGoal(): Promise<GuideNextGoal>;
   /** Plano de batalha contra um treinador RCT singles para o time de 6 do guia. Cancelável por `cancel(request.jobId)`. */
   buildBattlePlan(request: BattlePlanRequest): Promise<BattlePlanResult>;
+  /** Evoluções possíveis de cada membro do time, com requisitos, alcance no cap e golpes ganhos ou perdidos. Cancelável por `cancel(request.jobId)`. */
+  buildEvolutionPlan(request: EvolutionPlanRequest): Promise<EvolutionPlanResult>;
 };
 
 declare global {
