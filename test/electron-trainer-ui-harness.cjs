@@ -1243,7 +1243,9 @@ async function exerciseGuideContract(contents) {
     const evolution = await api.buildEvolutionPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: member.moves.map((move) => move.id)}], levelCap: null});
     // Rejeição intencional (loga "request.team precisa ter de 1 a 6 membros" no main): pedido de evoluções inválido.
     const staleEvolution = await api.buildEvolutionPlan({sources: [], team: [], levelCap: null}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution};
+    const capture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id)});
+    const staleCapture = await api.buildCapturePlan({sources: [], goal: {kind: 'pve'}, teamUuids: [], gapOpponentIds: []}).then(() => 'built', (error) => error.message);
+    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture};
   })()`,
   );
   check(
@@ -1278,6 +1280,16 @@ async function exerciseGuideContract(contents) {
     evolved.some((member) => member.status === 'bloqueado' && member.blockedReason),
     'O plano de evoluções sintético não bloqueou a forma regional com motivo.',
   );
+  const gap = result.capture.gaps[0];
+  check(
+    gap && gap.owned.length > 0 && gap.candidates.length > 0,
+    'O plano de capturas sintético não trouxe um indivíduo possuído e um candidato.',
+  );
+  check(
+    gap.candidates[0].requirements.some((requirement) => requirement.kind === 'pika-star' && requirement.status === 'não verificado'),
+    'O requisito Pika Star não saiu como não verificado.',
+  );
+  check(result.staleCapture !== 'built', 'O plano de capturas aceitou fontes que não correspondem ao snapshot atual.');
   check(result.staleEvolution !== 'built', 'O plano de evoluções aceitou um pedido inválido.');
   check(result.stalePlan !== 'built', 'O plano aceitou um pedido inválido.');
   check(result.stale !== 'built', 'O guia aceitou fontes que não correspondem ao snapshot atual.');

@@ -1,0 +1,326 @@
+{
+  "spawns": {
+    "pools": {
+      "species": {
+        "blastoise": [
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "rare",
+            "weight": 1,
+            "level": {
+              "min": 38,
+              "max": 45
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "#cobblemon:is_ocean"
+              ],
+              "timeRange": "night",
+              "canSeeSky": true
+            }
+          },
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "common",
+            "weight": 5,
+            "level": {
+              "min": 38,
+              "max": 45
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "minecraft:deep_ocean"
+              ]
+            }
+          }
+        ],
+        "swampert": [
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "uncommon",
+            "weight": 2,
+            "level": {
+              "min": 36,
+              "max": 40
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "#cobblemon:is_freshwater"
+              ],
+              "isRaining": true
+            }
+          }
+        ],
+        "walkingwake": [
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "ultra-rare",
+            "weight": 1,
+            "level": {
+              "min": 50,
+              "max": 60
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "#cobblemon:is_overworld"
+              ]
+            }
+          }
+        ],
+        "golem": [
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "common",
+            "weight": 5,
+            "level": {
+              "min": 20,
+              "max": 30
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "#cobblemon:is_mountain"
+              ]
+            }
+          }
+        ],
+        "articuno": [
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "ultra-rare",
+            "weight": 1,
+            "level": {
+              "min": 50,
+              "max": 50
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "#cobblemon:is_snowy"
+              ]
+            }
+          }
+        ],
+        "venusaur": [
+          {
+            "id": "x",
+            "pool": "synthetic",
+            "source": "synthetic",
+            "features": [
+              "alolan"
+            ],
+            "type": "pokemon",
+            "position": "grounded",
+            "bucket": "common",
+            "weight": 5,
+            "level": {
+              "min": 20,
+              "max": 30
+            },
+            "presets": [],
+            "condition": {
+              "biomes": [
+                "#cobblemon:is_forest"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "biomes": {
+      "tags": {
+        "cobblemon:is_ocean": [
+          "minecraft:ocean",
+          "minecraft:deep_ocean"
+        ],
+        "cobblemon:is_freshwater": [
+          "minecraft:river"
+        ],
+        "cobblemon:is_overworld": [
+          "minecraft:b0",
+          "minecraft:b1",
+          "minecraft:b2",
+          "minecraft:b3",
+          "minecraft:b4",
+          "minecraft:b5",
+          "minecraft:b6",
+          "minecraft:b7",
+          "minecraft:b8",
+          "minecraft:b9",
+          "minecraft:b10",
+          "minecraft:b11",
+          "minecraft:b12",
+          "minecraft:b13",
+          "minecraft:b14",
+          "minecraft:b15",
+          "minecraft:b16",
+          "minecraft:b17",
+          "minecraft:b18",
+          "minecraft:b19",
+          "minecraft:b20",
+          "minecraft:b21",
+          "minecraft:b22",
+          "minecraft:b23",
+          "minecraft:b24",
+          "minecraft:b25",
+          "minecraft:b26",
+          "minecraft:b27",
+          "minecraft:b28",
+          "minecraft:b29"
+        ]
+      },
+      "incompleteTags": {
+        "cobblemon:is_snowy": [
+          "minecraft:is_snowy"
+        ]
+      },
+      "names": {
+        "minecraft:ocean": "Ocean",
+        "minecraft:deep_ocean": "Deep Ocean",
+        "minecraft:river": "River"
+      }
+    },
+    "rules": {
+      "outOfBattle": {
+        "noLeaderMaxLevel": 15,
+        "guaranteedBallIgnoresLevel": true
+      },
+      "species": {
+        "blastoise": {
+          "labels": [
+            "gen1"
+          ],
+          "pikaStarRegions": null
+        },
+        "swampert": {
+          "labels": [
+            "gen1"
+          ],
+          "pikaStarRegions": null
+        },
+        "walkingwake": {
+          "labels": [
+            "gen9",
+            "paradox"
+          ],
+          "pikaStarRegions": [
+            "paldea"
+          ]
+        },
+        "golem": {
+          "labels": [
+            "gen1"
+          ],
+          "pikaStarRegions": null
+        },
+        "articuno": {
+          "labels": [
+            "gen1",
+            "legendary"
+          ],
+          "pikaStarRegions": [
+            "kanto"
+          ]
+        },
+        "venusaur": {
+          "labels": [
+            "gen1"
+          ],
+          "pikaStarRegions": null
+        }
+      }
+    }
+  },
+  "learnsets": {
+    "blastoise": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:surf"
+        }
+      ]
+    },
+    "swampert": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:surf"
+        }
+      ]
+    },
+    "walkingwake": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:surf"
+        }
+      ]
+    },
+    "golem": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:earthquake"
+        }
+      ]
+    },
+    "articuno": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:icebeam"
+        }
+      ]
+    },
+    "venusaur": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:energyball"
+        }
+      ]
+    },
+    "lapras": {
+      "levelUp": [
+        {
+          "level": 1,
+          "moveId": "cobblemon:surf"
+        }
+      ]
+    }
+  }
+}
