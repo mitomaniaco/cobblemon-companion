@@ -381,8 +381,40 @@ export type TrainingPlanResult = {
   limits: string[];
 };
 
+/**
+ * Progresso do jogador na campanha, lido do diretório do mundo (somente leitura, D15). Cada campo desconhecido é
+ * `null` (arquivo ausente, ilegível ou fora do formato esperado): desconhecido nunca é zero nem falso.
+ */
+export type GuideProgress = {
+  /** Ids RCT dos treinadores vencidos (`defeatedTrainerIds`). */
+  defeated: string[] | null;
+  /** Série em andamento (por exemplo `radicalred`). */
+  currentSeries: string | null;
+  /** Séries concluídas. */
+  completedSeries: string[] | null;
+  /** Level cap atual do jogador. */
+  levelCap: number | null;
+  /** Advancement `allthemons:<região>_pika_star` por região: `true` lido como concedido, `false` lido como não concedido, `null` desconhecido. */
+  pikaStar: Record<string, boolean | null>;
+  /** Arquivos lidos e o SHA-256 de cada um (o conteúdo não sai do processo principal). */
+  sources: Array<{kind: string; sha256: string}>;
+};
+
+/** Variante RCT de uma etapa da campanha. `ambiguous`: o app não sabe qual delas vale para o jogador, e nenhuma é escolhida em silêncio. */
+export type GuideStageVariant = {trainerId: string; maxLevel: number; teamSize: number; ambiguous: boolean; rule: string | null};
+
+export type GuideStage = {stageId: string; name: string; variants: GuideStageVariant[]};
+
 /** Próximo objetivo sugerido. `nível`: pelo maior nível da party, sem ler o progresso de treinadores do save. */
-export type GuideNextGoal = {trainerId: string | null; basis: 'progresso' | 'nível'; reason: string};
+export type GuideNextGoal = {
+  trainerId: string | null;
+  basis: 'progresso' | 'nível';
+  reason: string;
+  /** Só com `basis: 'progresso'`: a etapa da campanha e suas variantes RCT (todas, marcadas `ambiguous` quando não se sabe qual vale). */
+  stage?: GuideStage;
+  /** Só com `basis: 'progresso'`: as próximas etapas depois da atual. */
+  upcoming?: GuideStage[];
+};
 
 type RealDamageResponse = {status: 'calculated'; result: RealDamageResult};
 
@@ -399,6 +431,10 @@ export type CompanionApi = {
   /** Treinadores disponíveis como objetivo (radicalred primeiro, na ordem da campanha). */
   listGuideTrainers(): Promise<GuideTrainer[]>;
   guideNextGoal(): Promise<GuideNextGoal>;
+  /** Lê o progresso do mundo (somente leitura). Campos que não puderem ser lidos vêm `null`. */
+  readGuideProgress(): Promise<GuideProgress>;
+  /** Avisa quando os arquivos de progresso mudam; devolve a função que cancela a inscrição. */
+  onProgressChanged(callback: (progress: GuideProgress) => void): () => void;
   /** Plano de batalha contra um treinador RCT singles para o time de 6 do guia. Cancelável por `cancel(request.jobId)`. */
   buildBattlePlan(request: BattlePlanRequest): Promise<BattlePlanResult>;
   /** Evoluções possíveis de cada membro do time, com requisitos, alcance no cap e golpes ganhos ou perdidos. Cancelável por `cancel(request.jobId)`. */
