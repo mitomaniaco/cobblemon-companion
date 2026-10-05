@@ -6,9 +6,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {deriveEvolutions, deriveLearnset, deriveSeries, deriveTrainer, mergeSpecies} from './lib/guide-data.mjs';
-import {classifyProviderEntries, collectDirectoryProviders, collectJarProvider, parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
-import {speciesSlug} from './lib/compat-catalog.mjs';
+import {loadMergedSpecies} from './lib/game-species.mjs';
+import {deriveEvolutions, deriveLearnset, deriveSeries, deriveTrainer} from './lib/guide-data.mjs';
+import {parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
@@ -50,24 +50,7 @@ function main() {
   const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
   const slugs = Object.keys(manifest.species).sort();
   const jars = fs.readdirSync(modsDirectory).filter((name) => name.endsWith('.jar'));
-  const cobblemonJars = jars.filter((name) => /^Cobblemon-neoforge-.+\.jar$/.test(name));
-  if (cobblemonJars.length !== 1) fail(`esperado exatamente um JAR do Cobblemon, encontrado ${cobblemonJars.length}`);
-  const cobblemonFile = path.join(modsDirectory, cobblemonJars[0]);
-  if (sha256(fs.readFileSync(cobblemonFile)) !== manifest.sources.cobblemonJar.sha256)
-    fail('o JAR do Cobblemon não é o fixado em data/compat/manifest.json');
-
-  const baseSpecies = {};
-  for (const [name, bytes] of Object.entries(unzipSelected(cobblemonFile, (entry) => /^data\/cobblemon\/species\/.+\.json$/.test(entry)))) {
-    baseSpecies[speciesSlug(name)] = parseJsonBytes(bytes, name);
-  }
-
-  // Mesma ordem do gerador do catálogo: base, JARs em ordem alfabética, pastas de dados.
-  const providers = jars
-    .filter((name) => name !== cobblemonJars[0])
-    .sort()
-    .map((jar) => classifyProviderEntries(collectJarProvider(path.join(modsDirectory, jar)), jar));
-  providers.push(...collectDirectoryProviders(instance));
-  const species = mergeSpecies(baseSpecies, providers);
+  const species = loadMergedSpecies({instance, modsDirectory, jars, pinnedCobblemonSha256: manifest.sources.cobblemonJar.sha256});
 
   const learnsets = {};
   const evolutions = {};
