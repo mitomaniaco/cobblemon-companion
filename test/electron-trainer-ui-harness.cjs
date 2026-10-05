@@ -29,6 +29,7 @@ const screenshotPaths = Object.freeze({
   battlePlan1200: path.join(runDirectory, 'battle-plan-1200.png'),
   battlePlan800: path.join(runDirectory, 'battle-plan-800.png'),
   captures: path.join(runDirectory, 'captures.png'),
+  training: path.join(runDirectory, 'training.png'),
   evolutions: path.join(runDirectory, 'evolutions.png'),
   evolutions1200: path.join(runDirectory, 'evolutions-1200.png'),
   evolutions800: path.join(runDirectory, 'evolutions-800.png'),
@@ -1389,6 +1390,18 @@ async function exerciseGuideWorkspace(window) {
   }
   await capture(window, screenshotPaths.evolutions, 'ol[aria-label="Evoluções por membro"]');
 
+  // Treino sem level cap informado: não há nível-alvo, e a tela não presume cap nem inventa EV.
+  await clickButton(contents, 'Ver treino do time');
+  await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Treino por membro"] > li'))`, 'treino do motor sintético');
+  const unknownTraining = await evaluate(
+    contents,
+    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
+  );
+  for (const expected of ['Gardevoir', 'cap não determinado', 'nível-alvo não determinado', 'Hipóteses', 'Limites']) {
+    check(unknownTraining.includes(expected), `O treino sem cap não mostrou "${expected}".`);
+  }
+  check(!/Nv\. 24 → /.test(unknownTraining), 'O treino sem cap exibiu um nível-alvo.');
+
   await clickButton(contents, 'Ver capturas recomendadas');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Lacunas do time"] > li'))`, 'capturas do motor sintético');
   const captureText = await evaluate(
@@ -1443,6 +1456,38 @@ async function exerciseGuideWorkspace(window) {
   );
   await clickButton(contents, 'Calcular de novo');
   await waitFor(contents, `document.body.innerText.includes('Level cap usado: 15.')`, 'evoluções recalculadas com o level cap informado');
+
+  // Treino com cap informado: recalcula só a seção de treino (os botões "Calcular de novo" das outras seções ficam intactos).
+  await evaluate(
+    contents,
+    `(() => {
+    const section = [...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section');
+    const button = [...(section?.querySelectorAll('button') || [])].find(node => node.textContent.trim() === 'Calcular de novo');
+    if (!button) throw new Error('Botão de recálculo do treino não encontrado.');
+    button.click();
+  })()`,
+  );
+  await waitFor(contents, `document.body.innerText.includes('cap informado por você')`, 'treino recalculado com o level cap informado');
+  const informedTraining = await evaluate(
+    contents,
+    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
+  );
+  for (const expected of [
+    'Nv. 24 → 30 (cap 30)',
+    'Psychic',
+    'Moonblast',
+    'útil para o objetivo',
+    'Atacante especial',
+    'Soma sugerida 510/510',
+    'não há espécies para treinar EVs',
+  ]) {
+    check(informedTraining.includes(expected), `O treino com cap informado não mostrou "${expected}".`);
+  }
+  check(
+    informedTraining.indexOf('Psychic') < informedTraining.indexOf('Moonblast') && !/nível-alvo não determinado/.test(informedTraining),
+    'O treino com cap informado deve listar os golpes por nível e ter nível-alvo.',
+  );
+  await capture(window, screenshotPaths.training, 'ol[aria-label="Treino por membro"]');
 
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
