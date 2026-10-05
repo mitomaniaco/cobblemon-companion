@@ -22,6 +22,7 @@ const screenshotPaths = Object.freeze({
   preview: path.join(runDirectory, 'move-preview.png'),
   demo: path.join(runDirectory, 'offline-demo-result.png'),
   gardevoirDamage: path.join(runDirectory, 'gardevoir-damage-result.png'),
+  damageCompact: path.join(runDirectory, 'damage-800.png'),
   damageDefaultViewport: path.join(runDirectory, 'damage-default-viewport.png'),
   layout1440: path.join(runDirectory, 'layout-1440.png'),
   layout1440Result: path.join(runDirectory, 'layout-1440-result.png'),
@@ -698,6 +699,25 @@ async function exerciseRealDamage(contents) {
   );
   await capture(BrowserWindow.getAllWindows()[0], screenshotPaths.gardevoirDamage, '.real-damage-result');
   console.log('PASS cálculo real Gardevoir via snapshot sintético e screenshot em diagnostics');
+  window.setContentSize(800, 1000);
+  await waitFor(contents, 'window.innerWidth === 800', 'viewport compacto de 800px na rota Dano');
+  const compact = await evaluate(
+    contents,
+    `(() => {
+    const root = document.documentElement;
+    const battle = document.querySelector('[aria-label="Painel de batalha"]');
+    const inputs = document.querySelector('.real-damage-inputs');
+    return {
+      overflow: root.scrollWidth > root.clientWidth,
+      battleFirst: Boolean(battle && inputs
+        && battle.getBoundingClientRect().top < inputs.getBoundingClientRect().top),
+    };
+  })()`,
+  );
+  check(!compact.overflow, 'A rota Dano em 800px gerou rolagem horizontal.');
+  check(compact.battleFirst, 'No layout compacto o painel de batalha deve vir antes das entradas.');
+  await capture(window, screenshotPaths.damageCompact, '.real-damage-planner');
+  console.log('PASS rota Dano em 800px: painel de batalha antes das entradas, sem overflow horizontal');
   window.setContentSize(1440, 1000);
   contents.setZoomFactor(1);
   await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão do harness');
