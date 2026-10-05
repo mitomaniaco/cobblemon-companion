@@ -22,6 +22,7 @@ const bridge = {
   guideNextGoal: () => ipcRenderer.invoke('companion:guide-next-goal'),
   buildBattlePlan: (request) => ipcRenderer.invoke('companion:battle-plan-build', request),
   buildEvolutionPlan: (request) => ipcRenderer.invoke('companion:evolution-plan-build', request),
+  buildCapturePlan: (request) => ipcRenderer.invoke('companion:capture-plan-build', request),
 };
 
 if (window.location.search === '?runtime-test') {
