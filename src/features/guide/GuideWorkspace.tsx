@@ -19,6 +19,8 @@ import {guideComparisonRows, guideOpponentTurnsLabel, guideTrainerOptions, type 
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
+import {EvolutionSection} from './EvolutionSection';
+import type {EvolutionPlanController} from './useEvolutionPlan';
 import styles from './GuideWorkspace.module.css';
 
 const NOTICE_DURATION_MS = 4000;
@@ -39,6 +41,7 @@ export interface GuideWorkspaceProps {
   onRefresh(): void;
   onOpenCalculation(uuid: string, move: GuideTeamMember['moves'][number]): void;
   battlePlan: BattlePlanController;
+  evolutions: EvolutionPlanController;
 }
 
 type Lookup = {
@@ -315,7 +318,7 @@ function GuideResultView({
   );
 }
 
-export function GuideWorkspace({snapshot, guide, battlePlan, loading, onRefresh, onOpenCalculation}: GuideWorkspaceProps) {
+export function GuideWorkspace({snapshot, guide, battlePlan, evolutions, loading, onRefresh, onOpenCalculation}: GuideWorkspaceProps) {
   const headingId = useId();
   const [trainerQuery, setTrainerQuery] = useState('');
   const trainerOptions = useMemo(() => guideTrainerOptions(guide.trainers.items), [guide.trainers.items]);
@@ -422,9 +425,12 @@ export function GuideWorkspace({snapshot, guide, battlePlan, loading, onRefresh,
               onOpenCalculation={onOpenCalculation}
               stale={building}
               planSlot={
-                guide.result.goal.kind === 'trainer' && !building ? (
-                  <BattlePlanSection plan={battlePlan} individualName={planIndividualName} />
-                ) : null
+                building ? null : (
+                  <>
+                    {guide.result.goal.kind === 'trainer' && <BattlePlanSection plan={battlePlan} individualName={planIndividualName} />}
+                    <EvolutionSection evolutions={evolutions} />
+                  </>
+                )
               }
             />
           ) : (

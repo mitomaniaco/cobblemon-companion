@@ -8,43 +8,6 @@ import type {
   PlayerSnapshot,
 } from '../../platform/api';
 
-export type BattlePlanState = {
-  phase: 'idle' | 'building' | 'ready' | 'error' | 'canceled';
-  result: BattlePlanResult | null;
-  requestId: number;
-  error: string | null;
-};
-
-export type BattlePlanAction =
-  | {type: 'reset'}
-  | {type: 'build-started'; requestId: number}
-  | {type: 'build-succeeded'; requestId: number; result: BattlePlanResult}
-  | {type: 'build-failed'; requestId: number; error: string}
-  | {type: 'build-canceled'; requestId: number};
-
-export function createBattlePlanState(): BattlePlanState {
-  return {phase: 'idle', result: null, requestId: 0, error: null};
-}
-
-function isCurrentBuild(state: BattlePlanState, requestId: number): boolean {
-  return state.phase === 'building' && state.requestId === requestId;
-}
-
-export function battlePlanReducer(state: BattlePlanState, action: BattlePlanAction): BattlePlanState {
-  switch (action.type) {
-    case 'reset':
-      return {...createBattlePlanState(), requestId: state.requestId};
-    case 'build-started':
-      return {phase: 'building', result: null, requestId: action.requestId, error: null};
-    case 'build-succeeded':
-      return isCurrentBuild(state, action.requestId) ? {...state, phase: 'ready', result: action.result} : state;
-    case 'build-failed':
-      return isCurrentBuild(state, action.requestId) ? {...state, phase: 'error', error: action.error} : state;
-    case 'build-canceled':
-      return isCurrentBuild(state, action.requestId) ? {...state, phase: 'canceled'} : state;
-  }
-}
-
 /** O plano só vale para o time do guia que o originou: só golpes avaliados entram, e o item sugerido (ou o que já segura). */
 export function buildBattlePlanRequest(
   snapshot: PlayerSnapshot,

@@ -4,12 +4,14 @@ import {
   battlePlanBagLabel,
   battlePlanDamageLabel,
   battlePlanFirstToActLabel,
-  battlePlanReducer,
   buildBattlePlanRequest,
-  createBattlePlanState,
-  type BattlePlanState,
 } from '../src/features/guide/battle-plan-model';
+import {createJobState, jobReducer, type JobState} from '../src/features/guide/job-model';
+
 import type {BattlePlanResult, GuideResult, PlayerSnapshot} from '../src/platform/api';
+
+const battlePlanReducer = jobReducer<BattlePlanResult>;
+const createBattlePlanState = createJobState<BattlePlanResult>;
 
 const snapshot = {
   sources: [
@@ -83,8 +85,8 @@ describe('pedido do plano de batalha', () => {
   });
 });
 
-describe('estado do plano', () => {
-  const started = (state: BattlePlanState, requestId: number) => battlePlanReducer(state, {type: 'build-started', requestId});
+describe('estado da montagem (job)', () => {
+  const started = (state: JobState<BattlePlanResult>, requestId: number) => battlePlanReducer(state, {type: 'build-started', requestId});
 
   it('ignora respostas de montagens antigas e depois de cancelar', () => {
     let state = started(createBattlePlanState(), 1);
