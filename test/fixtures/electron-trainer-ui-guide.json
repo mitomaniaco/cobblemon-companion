@@ -1,0 +1,42 @@
+{
+  "trainers": [
+    {"id": "synthetic:trainer", "name": "Treinador Sintético", "format": "singles", "teamSize": 2, "maxLevel": 30, "series": "radicalred"}
+  ],
+  "nextGoal": {
+    "trainerId": "synthetic:trainer",
+    "basis": "nível",
+    "reason": "Sugestão pelo nível da sua party; o app não lê o progresso de treinadores."
+  },
+  "result": {
+    "goal": {"kind": "trainer", "trainerId": "synthetic:trainer"},
+    "referenceLevel": 30,
+    "opponents": [
+      {"id": "synthetic:trainer#0", "speciesId": "cobblemon:floatzel", "level": 30, "trainerId": "synthetic:trainer"},
+      {"id": "synthetic:trainer#1", "speciesId": "cobblemon:bulbasaur", "level": 28, "trainerId": "synthetic:trainer"}
+    ],
+    "team": [
+      {
+        "uuid": "00000000-0000-4000-8000-000000000001",
+        "speciesId": "cobblemon:gardevoir",
+        "level": 30,
+        "reason": "Gardevoir entra porque vence 2 de 2 adversários (melhor contra Floatzel, Bulbasaur).",
+        "moves": [
+          {"id": "cobblemon:psychic", "evaluated": true, "source": "equipado"},
+          {"id": "cobblemon:confusion", "evaluated": true, "source": "aprendido"}
+        ],
+        "item": {"id": "cobblemon:choice_specs", "status": "obter", "reason": "Choice Specs aumenta as vitórias de 1 para 2."},
+        "matchups": [
+          {"opponentId": "synthetic:trainer#0", "outcome": "vence", "ourTurns": 2, "theirTurns": 3},
+          {"opponentId": "synthetic:trainer#1", "outcome": "vence", "ourTurns": 1, "theirTurns": 4}
+        ],
+        "acquire": [
+          {"moveId": "cobblemon:moonblast", "requirement": "nível 35", "gainPercent": 12.5, "reason": "Moonblast (nível 35) melhora o time em 12.5%."}
+        ]
+      }
+    ],
+    "currentPartyComparison": {"kept": ["00000000-0000-4000-8000-000000000001"], "added": [], "removed": []},
+    "excluded": [],
+    "assumptions": ["Resultado sintético determinístico do modo de teste da UI."],
+    "limits": ["Singles; sem trocas, IA ou golpes de status; HP cheio; campo neutro; sem críticos ou precisão."]
+  }
+}
