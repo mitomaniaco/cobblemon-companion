@@ -24,6 +24,9 @@ import type {EvolutionPlanController} from './useEvolutionPlan';
 import {CaptureSection} from './CaptureSection';
 import {guideGapOpponentIds} from './capture-model';
 import type {CapturePlanController} from './useCapturePlan';
+import {LevelCapField} from './LevelCapField';
+import {TrainingSection} from './TrainingSection';
+import type {TrainingPlanController} from './useTrainingPlan';
 import styles from './GuideWorkspace.module.css';
 
 const NOTICE_DURATION_MS = 4000;
@@ -46,6 +49,10 @@ export interface GuideWorkspaceProps {
   battlePlan: BattlePlanController;
   evolutions: EvolutionPlanController;
   captures: CapturePlanController;
+  training: TrainingPlanController;
+  /** Level cap digitado (compartilhado por Evoluções e Treino); vazio ou inválido = desconhecido. */
+  levelCapInput: string;
+  onLevelCapInputChange(value: string): void;
 }
 
 type Lookup = {
@@ -328,6 +335,9 @@ export function GuideWorkspace({
   battlePlan,
   evolutions,
   captures,
+  training,
+  levelCapInput,
+  onLevelCapInputChange,
   loading,
   onRefresh,
   onOpenCalculation,
@@ -440,10 +450,12 @@ export function GuideWorkspace({
               planSlot={
                 building ? null : (
                   <>
+                    <LevelCapField value={levelCapInput} onChange={onLevelCapInputChange} />
                     {guide.result.goal.kind === 'trainer' && (
                       <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
                     )}
                     <EvolutionSection evolutions={evolutions} hasTeam={guide.result.team.length > 0} />
+                    <TrainingSection training={training} hasTeam={guide.result.team.length > 0} />
                     <CaptureSection captures={captures} gapCount={guideGapOpponentIds(guide.result).length} />
                   </>
                 )

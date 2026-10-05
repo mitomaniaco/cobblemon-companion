@@ -490,15 +490,14 @@ function handleSetAutoRefresh(event, enabled) {
   else if (firstReadDone) saveWatcher.start();
   return {enabled};
 }
-let simulatedChanges = 0;
 function handleSimulateSnapshotChange(event) {
   requireSender(event);
   if (!TRAINER_UI_TEST_MODE) throw new Error('Harness de UI indisponível');
   if (!autoRefreshEnabled) return {sent: false};
-  TRAINER_UI_SNAPSHOT.capturedAt = new Date().toISOString();
-  simulatedChanges += 1;
-  TRAINER_UI_SNAPSHOT.sources[0].sha256 = simulatedChanges === 1 ? 'c'.repeat(64) : simulatedChanges.toString(16).padStart(64, 'c');
-  notifySnapshotChanged(structuredClone(TRAINER_UI_SNAPSHOT));
+  const snapshot = structuredClone(TRAINER_UI_SNAPSHOT);
+  snapshot.capturedAt = new Date().toISOString();
+  snapshot.sources[0].sha256 = 'c'.repeat(64);
+  notifySnapshotChanged(snapshot);
   return {sent: true};
 }
 function handleReadPlayerSnapshot(event, ...args) {

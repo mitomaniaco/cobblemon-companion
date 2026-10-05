@@ -11,6 +11,8 @@ import {useGuide} from '../features/guide/useGuide';
 import {useBattlePlan} from '../features/guide/useBattlePlan';
 import {useEvolutionPlan} from '../features/guide/useEvolutionPlan';
 import {useCapturePlan} from '../features/guide/useCapturePlan';
+import {useTrainingPlan} from '../features/guide/useTrainingPlan';
+import {parseLevelCap} from '../features/guide/evolution-model';
 import {useTrainerSession} from './useTrainerSession';
 import {Button, Dialog, PokeBallMark, StatusMessage, Switch} from '../ui';
 import styles from './TrainerApp.module.css';
@@ -292,8 +294,11 @@ export function TrainerApp() {
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
   const guide = useGuide(api, session.snapshot, workspace === 'guide');
   const battlePlan = useBattlePlan(api, session.snapshot, guide.result);
-  const evolutions = useEvolutionPlan(api, session.snapshot, guide.result);
+  const [levelCapInput, setLevelCapInput] = useState('');
+  const levelCap = parseLevelCap(levelCapInput);
+  const evolutions = useEvolutionPlan(api, session.snapshot, guide.result, levelCap);
   const captures = useCapturePlan(api, session.snapshot, guide.result);
+  const training = useTrainingPlan(api, session.snapshot, guide.result, levelCap);
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -514,6 +519,9 @@ export function TrainerApp() {
                   battlePlan={battlePlan}
                   evolutions={evolutions}
                   captures={captures}
+                  training={training}
+                  levelCapInput={levelCapInput}
+                  onLevelCapInputChange={setLevelCapInput}
                   loading={session.phase === 'loading'}
                   onRefresh={() => void refreshSnapshot()}
                   onOpenCalculation={openGuideCalculation}

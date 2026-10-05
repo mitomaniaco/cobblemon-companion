@@ -1,23 +1,17 @@
-import {useState} from 'react';
 import type {CompanionApi, EvolutionPlanResult, GuideResult, PlayerSnapshot} from '../../platform/api';
-import {buildEvolutionPlanRequest, parseLevelCap} from './evolution-model';
+import {buildEvolutionPlanRequest} from './evolution-model';
 import {useGuideJob, type GuideJobController} from './useGuideJob';
 
-export type EvolutionPlanController = GuideJobController<EvolutionPlanResult> & {
-  /** Texto do campo "level cap"; vazio ou inválido = desconhecido. */
-  levelCapInput: string;
-  setLevelCapInput(value: string): void;
-};
+export type EvolutionPlanController = GuideJobController<EvolutionPlanResult>;
 
-/** Evoluções do time do guia, descartadas quando o guia muda. O cap vem do campo da tela (nunca presumido). */
+/** Evoluções do time do guia, descartadas quando o guia muda. `levelCap` vem do campo da tela (nulo = desconhecido). */
 export function useEvolutionPlan(
   api: () => CompanionApi,
   snapshot: PlayerSnapshot | null,
   guideResult: GuideResult | null,
+  levelCap: number | null,
 ): EvolutionPlanController {
-  const [levelCapInput, setLevelCapInput] = useState('');
-  const levelCap = parseLevelCap(levelCapInput);
-  const job = useGuideJob({
+  return useGuideJob({
     api,
     snapshot,
     guideResult,
@@ -26,5 +20,4 @@ export function useEvolutionPlan(
     buildRequest: (currentSnapshot, guide, jobId) => buildEvolutionPlanRequest(currentSnapshot, guide, levelCap, jobId),
     run: (companion, request) => companion.buildEvolutionPlan(request),
   });
-  return {...job, levelCapInput, setLevelCapInput};
 }

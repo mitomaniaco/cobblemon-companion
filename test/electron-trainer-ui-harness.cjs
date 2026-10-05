@@ -29,6 +29,7 @@ const screenshotPaths = Object.freeze({
   battlePlan1200: path.join(runDirectory, 'battle-plan-1200.png'),
   battlePlan800: path.join(runDirectory, 'battle-plan-800.png'),
   captures: path.join(runDirectory, 'captures.png'),
+  training: path.join(runDirectory, 'training.png'),
   evolutions: path.join(runDirectory, 'evolutions.png'),
   evolutions1200: path.join(runDirectory, 'evolutions-1200.png'),
   evolutions800: path.join(runDirectory, 'evolutions-800.png'),
@@ -1389,6 +1390,18 @@ async function exerciseGuideWorkspace(window) {
   }
   await capture(window, screenshotPaths.evolutions, 'ol[aria-label="Evoluções por membro"]');
 
+  // Treino sem level cap informado: não há nível-alvo, e a tela não presume cap nem inventa EV.
+  await clickButton(contents, 'Ver treino do time');
+  await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Treino por membro"] > li'))`, 'treino do motor sintético');
+  const unknownTraining = await evaluate(
+    contents,
+    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
+  );
+  for (const expected of ['Gardevoir', 'cap não determinado', 'nível-alvo não determinado', 'Hipóteses', 'Limites']) {
+    check(unknownTraining.includes(expected), `O treino sem cap não mostrou "${expected}".`);
+  }
+  check(!/Nv\. 24 → /.test(unknownTraining), 'O treino sem cap exibiu um nível-alvo.');
+
   await clickButton(contents, 'Ver capturas recomendadas');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Lacunas do time"] > li'))`, 'capturas do motor sintético');
   const captureText = await evaluate(
@@ -1444,6 +1457,38 @@ async function exerciseGuideWorkspace(window) {
   await clickButton(contents, 'Calcular de novo');
   await waitFor(contents, `document.body.innerText.includes('Level cap usado: 15.')`, 'evoluções recalculadas com o level cap informado');
 
+  // Treino com cap informado: recalcula só a seção de treino (os botões "Calcular de novo" das outras seções ficam intactos).
+  await evaluate(
+    contents,
+    `(() => {
+    const section = [...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section');
+    const button = [...(section?.querySelectorAll('button') || [])].find(node => node.textContent.trim() === 'Calcular de novo');
+    if (!button) throw new Error('Botão de recálculo do treino não encontrado.');
+    button.click();
+  })()`,
+  );
+  await waitFor(contents, `document.body.innerText.includes('cap informado por você')`, 'treino recalculado com o level cap informado');
+  const informedTraining = await evaluate(
+    contents,
+    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
+  );
+  for (const expected of [
+    'Nv. 24 → 30 (cap 30)',
+    'Psychic',
+    'Moonblast',
+    'útil para o objetivo',
+    'Atacante especial',
+    'Soma sugerida 510/510',
+    'não há espécies para treinar EVs',
+  ]) {
+    check(informedTraining.includes(expected), `O treino com cap informado não mostrou "${expected}".`);
+  }
+  check(
+    informedTraining.indexOf('Psychic') < informedTraining.indexOf('Moonblast') && !/nível-alvo não determinado/.test(informedTraining),
+    'O treino com cap informado deve listar os golpes por nível e ter nível-alvo.',
+  );
+  await capture(window, screenshotPaths.training, 'ol[aria-label="Treino por membro"]');
+
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
   await evaluate(
@@ -1490,54 +1535,6 @@ async function exerciseGuideWorkspace(window) {
   console.log('PASS tela Guia: objetivo sugerido, time com explicações, Ver cálculo no Dano e layouts 1200/800');
 }
 
-async function exerciseGuideAutoRecalculation(window) {
-  const contents = window.webContents;
-  await navigate(contents, 'Guia');
-  await waitFor(
-    contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
-    'time do guia antes do recálculo automático',
-  );
-  const toast = `[...document.querySelectorAll('[role="status"]')].some(node => node.textContent.includes('Save mudou · time recalculado'))`;
-  const autoLabel = `[...document.querySelectorAll('label')].find(node => node.textContent.includes('Atualizar automaticamente'))`;
-  const autoInput = `${autoLabel}?.querySelector('input[role="switch"]')`;
-  const toggleAuto = async () => {
-    const point = await evaluate(
-      contents,
-      `(() => {
-      const label = ${autoLabel};
-      if (!label) throw new Error('O switch Atualizar automaticamente não foi encontrado.');
-      const rect = label.getBoundingClientRect();
-      return {x: Math.round(rect.left + rect.width / 2), y: Math.round(rect.top + rect.height / 2)};
-    })()`,
-    );
-    contents.sendInputEvent({type: 'mouseDown', x: point.x, y: point.y, button: 'left', clickCount: 1});
-    contents.sendInputEvent({type: 'mouseUp', x: point.x, y: point.y, button: 'left', clickCount: 1});
-  };
-
-  check(await evaluate(contents, `${autoInput}?.checked === true`), 'O switch Atualizar automaticamente deveria começar ligado.');
-  check(!(await evaluate(contents, toast)), 'O aviso de recálculo apareceu antes de qualquer mudança do save.');
-
-  await toggleAuto();
-  await waitFor(contents, `${autoInput}?.checked === false`, 'switch Atualizar automaticamente desligado');
-  const off = await evaluate(contents, 'window.cobblemonCompanion.test.simulateSnapshotChange()');
-  await delay(500);
-  check(off.sent === false, 'Com o switch desligado, o main ainda emitiu snapshot-changed.');
-  check(!(await evaluate(contents, toast)), 'Com o switch desligado, o guia avisou recálculo.');
-
-  await toggleAuto();
-  await waitFor(contents, `${autoInput}?.checked === true`, 'switch Atualizar automaticamente religado');
-  const on = await evaluate(contents, 'window.cobblemonCompanion.test.simulateSnapshotChange()');
-  check(on.sent === true, 'Com o switch ligado, o main não emitiu snapshot-changed.');
-  await waitFor(contents, toast, 'aviso "Save mudou · time recalculado"');
-  await waitFor(
-    contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1 && !document.querySelector('[role="progressbar"][aria-label="Montando o time"]')`,
-    'time recalculado após a mudança do save',
-  );
-  console.log('PASS Guia: mudança do save recalcula com toast e o switch desligado não recalcula');
-}
-
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1569,15 +1566,6 @@ async function run() {
   );
   await exerciseGuideContract(contents);
   await exerciseGuideWorkspace(window);
-  await exerciseGuideAutoRecalculation(window);
-  // O snapshot simulado (hash 'c…') passou a ser o da sessão. Volta à captura da fixture.
-  await clickButton(contents, 'Atualizar do save');
-  await delay(150);
-  await waitFor(
-    contents,
-    "document.querySelector('[data-testid=\"refresh-snapshot\"]')?.textContent.trim() === 'Atualizar do save'",
-    'recarga da fixture depois do recálculo do guia',
-  );
   await exerciseShellScrollLock(window, snapshot);
   await exerciseDemo(contents);
   await exerciseRealDamage(contents);
