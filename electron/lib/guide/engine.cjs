@@ -370,10 +370,36 @@ function prepareOpponents(plan, assumptions) {
 }
 
 /**
+ * Level cap do RCT contra treinador: o treinador só luta se NENHUM Pokémon da party passa do cap (`TrainerMob#canBattleAgainst`;
+ * Issue #142). Por isso, em objetivo de treinador com cap conhecido, quem passa do cap sai do time. PvE geral não aplica o cap.
+ */
+function applyLevelCap({eligible, excluded}, goal, levelCap, individuals, assumptions) {
+  if (goal.kind !== 'trainer') return {eligible, excluded};
+  if (!Number.isSafeInteger(levelCap)) {
+    assumptions.push(
+      'O level cap não foi informado e não foi considerado: o time pode conter Pokémon acima do cap, que o treinador do RCT não aceita enfrentar.',
+    );
+    return {eligible, excluded};
+  }
+  const within = eligible.filter((entry) => entry.individual.level <= levelCap);
+  const above = eligible.filter((entry) => entry.individual.level > levelCap);
+  const aboveInParty = individuals.filter((individual) => individual.location.container === 'party' && individual.level > levelCap);
+  if (aboveInParty.length > 0) {
+    assumptions.push(
+      `O treinador do RCT não luta se qualquer Pokémon da party passar do level cap (${levelCap}), mesmo fora do time: guarde no PC os ${aboveInParty.length} acima do cap antes da batalha.`,
+    );
+  }
+  return {
+    eligible: within,
+    excluded: [...excluded, ...above.map((entry) => ({uuid: entry.individual.uuid, reason: `acima do level cap (${levelCap})`}))],
+  };
+}
+
+/**
  * Monta o guia: time de até 6 indivíduos (party + PC), com golpes, item e explicação, para o objetivo pedido.
  * `checkpoint` é chamado entre indivíduos e pode ceder o laço de eventos ou lançar para cancelar.
  */
-async function buildGuide({snapshot, goal, data, checkpoint = async () => {}}) {
+async function buildGuide({snapshot, goal, data, levelCap = null, checkpoint = async () => {}}) {
   const assumptions = [];
   const individuals = snapshot.individuals;
   const referenceLevel = referenceLevelOf(individuals, assumptions);
@@ -381,7 +407,8 @@ async function buildGuide({snapshot, goal, data, checkpoint = async () => {}}) {
     goal.kind === 'trainer' ? trainerOpponents(data.trainers, goal.trainerId) : pveOpponents(data.trainers, data.series, referenceLevel);
   const opponents = prepareOpponents(plan, assumptions);
 
-  const {eligible, excluded} = assessEligibility(individuals);
+  const assessed = assessEligibility(individuals);
+  const {eligible, excluded} = applyLevelCap(assessed, goal, levelCap, individuals, assumptions);
   const results = [];
   for (const entry of eligible) {
     await checkpoint();

@@ -254,9 +254,42 @@ function readSnapshotForRenderer() {
     throw new Error(publicPlayerImportError(error));
   }
 }
+// Modo de teste da UI: o resultado sintético respeita o level cap como o motor real (membro acima do cap vai para excluídos).
+const overCapOf = (member, levelCap) => ({
+  uuid: member.uuid,
+  speciesId: member.speciesId,
+  level: member.level,
+  levelCap,
+  text: `Nível ${member.level} acima do level cap (${levelCap}): baixe o nível para ${levelCap} antes da luta ou guarde no PC.`,
+});
+function applyLevelCapToFixture(result, goal, levelCap, respectLevelCap = true) {
+  if (goal.kind !== 'trainer') return result;
+  if (levelCap === null) {
+    result.assumptions.push(
+      'O level cap não foi informado e não foi considerado: o time pode conter Pokémon acima do cap, que o treinador do RCT não aceita enfrentar.',
+    );
+    return result;
+  }
+  const above = result.team.filter((member) => member.level > levelCap);
+  if (!respectLevelCap) {
+    result.overCap = above.map((member) => overCapOf(member, levelCap));
+    return result;
+  }
+  result.team = result.team.filter((member) => member.level <= levelCap);
+  for (const member of above) result.excluded.push({uuid: member.uuid, reason: `acima do level cap (${levelCap})`});
+  const kept = new Set(result.team.map((member) => member.uuid));
+  result.currentPartyComparison.kept = result.currentPartyComparison.kept.filter((uuid) => kept.has(uuid));
+  result.currentPartyComparison.removed.push(
+    ...above.map((member) => member.uuid).filter((uuid) => !result.currentPartyComparison.removed.includes(uuid)),
+  );
+  return result;
+}
 function validateGuideRequest(request) {
-  exactKeys(request, ['sources', 'goal', 'levelCap', 'jobId'], 'request');
-  if (request.levelCap !== undefined && request.levelCap !== null) integer(request.levelCap, 'request.levelCap', 1, 100);
+  exactKeys(request, ['sources', 'goal', 'levelCap', 'respectLevelCap', 'jobId'], 'request');
+  if (request.respectLevelCap !== undefined && typeof request.respectLevelCap !== 'boolean')
+    throw new TypeError('request.respectLevelCap precisa ser verdadeiro ou falso');
+  const levelCap = request.levelCap ?? null;
+  if (levelCap !== null) integer(levelCap, 'request.levelCap', 1, 100);
   if (!isRecord(request.goal)) throw new TypeError('request.goal precisa ser um objeto');
   if (request.goal.kind === 'pve') exactKeys(request.goal, ['kind'], 'request.goal');
   else if (request.goal.kind === 'trainer') {
@@ -267,7 +300,7 @@ function validateGuideRequest(request) {
   if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
   const jobId = request.jobId ?? `guide-${Date.now()}-${++guideSequence}`;
   if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
-  return {jobId, goal: structuredClone(request.goal), levelCap: request.levelCap ?? null};
+  return {jobId, goal: structuredClone(request.goal), levelCap, respectLevelCap: request.respectLevelCap ?? true};
 }
 function settleGuide(job, failure, result) {
   if (job.settled) return;
@@ -284,27 +317,22 @@ function settleGuide(job, failure, result) {
 }
 function handleGuideBuild(event, request) {
   requireSender(event);
-  const {jobId, goal, levelCap} = validateGuideRequest(request);
+  const {jobId, goal, levelCap, respectLevelCap} = validateGuideRequest(request);
   const snapshot = readSnapshotForRenderer();
   assertFreshSources(request.sources, snapshot.sources);
   if (TRAINER_UI_TEST_MODE) {
     if (goal.kind === 'trainer' && goal.trainerId !== TRAINER_UI_GUIDE.result.goal.trainerId)
       throw new Error('Treinador sintético não encontrado');
-    return testGuideResult(goal, levelCap);
+    return applyLevelCapToFixture(structuredClone({...TRAINER_UI_GUIDE.result, goal}), goal, levelCap, respectLevelCap);
   }
-  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal, levelCap});
-}
-// Modo de teste da UI: imita a regra do motor (objetivo de treinador exclui quem passa do level cap; PvE geral não aplica o cap).
-function testGuideResult(goal, levelCap) {
-  const result = structuredClone({...TRAINER_UI_GUIDE.result, goal});
-  if (goal.kind !== 'trainer' || levelCap === null) return result;
-  const over = result.team.filter((member) => member.level > levelCap);
-  result.team = result.team.filter((member) => member.level <= levelCap);
-  for (const member of over) result.excluded.push({uuid: member.uuid, reason: `acima do level cap (${levelCap})`});
-  return result;
+  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal, levelCap, respectLevelCap});
 }
 function validateBattlePlanRequest(request) {
-  exactKeys(request, ['sources', 'trainerId', 'team', 'jobId'], 'request');
+  exactKeys(request, ['sources', 'trainerId', 'team', 'levelCap', 'respectLevelCap', 'jobId'], 'request');
+  if (request.respectLevelCap !== undefined && typeof request.respectLevelCap !== 'boolean')
+    throw new TypeError('request.respectLevelCap precisa ser verdadeiro ou falso');
+  const levelCap = request.levelCap ?? null;
+  if (levelCap !== null) integer(levelCap, 'request.levelCap', 1, 100);
   if (typeof request.trainerId !== 'string' || request.trainerId.length === 0 || request.trainerId.length > 200)
     throw new TypeError('request.trainerId precisa ser texto não vazio');
   if (!Array.isArray(request.team) || request.team.length < 1 || request.team.length > 6)
@@ -326,7 +354,7 @@ function validateBattlePlanRequest(request) {
   if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
   const jobId = request.jobId ?? `plan-${Date.now()}-${++guideSequence}`;
   if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
-  return {jobId, plan: {trainerId: request.trainerId, team}};
+  return {jobId, plan: {trainerId: request.trainerId, team, levelCap, respectLevelCap: request.respectLevelCap ?? true}};
 }
 function handleBattlePlanBuild(event, request) {
   requireSender(event);

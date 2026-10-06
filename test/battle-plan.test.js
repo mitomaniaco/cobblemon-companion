@@ -127,6 +127,28 @@ describe('plano de batalha contra o líder', () => {
     expect(result.limits.join(' ')).toContain('IA do RCT');
   });
 
+  it('level cap: membro acima do cap não entra no plano; sem cap, avisa; sem ninguém dentro do cap, recusa', async () => {
+    const high = individual('venusaur', 75, ['tackle']);
+    const mixed = {individuals: [blastoise, pikachu, high]};
+    const withHigh = [...team, {uuid: high.uuid, moveIds: ['cobblemon:tackle'], itemId: null}];
+    const capped = await buildBattlePlan({
+      snapshot: mixed,
+      request: {sources: [], trainerId: 'synthetic:brock', team: withHigh, levelCap: 55},
+      data,
+    });
+    const responders = capped.entries.filter((entry) => entry.responder).map((entry) => entry.responder.uuid);
+    expect(responders).not.toContain(high.uuid);
+    expect(capped.assumptions.join(' ')).toContain('Venusaur (nível 75) ficou fora do plano por estar acima do level cap (55)');
+    expect(capped.lead.uuid).not.toBe(high.uuid);
+
+    const noCap = await buildBattlePlan({snapshot: mixed, request: {sources: [], trainerId: 'synthetic:brock', team: withHigh}, data});
+    expect(noCap.assumptions.join(' ')).toContain('O level cap não foi informado e não foi considerado');
+
+    await expect(
+      buildBattlePlan({snapshot: mixed, request: {sources: [], trainerId: 'synthetic:brock', team: [withHigh[2]], levelCap: 55}, data}),
+    ).rejects.toThrow('nenhum membro do time está dentro do level cap (55)');
+  });
+
   it('nenhum texto promete vitória', async () => {
     for (const trainerId of ['synthetic:brock', 'synthetic:surge']) {
       const text = JSON.stringify(await plan(trainerId));
