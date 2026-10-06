@@ -217,6 +217,28 @@ describe('level cap do RCT no guia (Issue #142)', () => {
     expect(result.assumptions.join(' ')).toContain('guarde no PC os 2 acima do cap');
   });
 
+  it('toggle desligado: todos entram, ninguém é excluído e overCap lista quem passa do cap', async () => {
+    const members = party();
+    const result = await run(members, trainerGoal('synthetic:fire'), {levelCap: 55, respectLevelCap: false});
+    expect(result.excluded.some((entry) => entry.reason.includes('level cap'))).toBe(false);
+    expect(result.team).toHaveLength(4);
+    const over = result.overCap.map((item) => item.uuid).sort();
+    expect(over).toEqual([members[0].uuid, members[1].uuid].sort());
+    expect(result.overCap[0]).toMatchObject({levelCap: 55});
+    expect(result.overCap[0].text).toContain('baixe o nível para 55');
+    expect(result.assumptions.join(' ')).toContain('ignorado a seu pedido');
+  });
+
+  it('toggle ligado (padrão) devolve overCap vazio; PvE nunca devolve overCap', async () => {
+    expect((await run(party(), trainerGoal('synthetic:fire'), {levelCap: 55})).overCap).toEqual([]);
+    const pveMembers = [
+      individual({species: 'blastoise', level: 40, moves: ['surf']}),
+      individual({species: 'golem', level: 38, moves: ['earthquake']}),
+    ];
+    const pve = await run(pveMembers, {kind: 'pve'}, {levelCap: 10, respectLevelCap: false});
+    expect(pve.overCap).toEqual([]);
+  });
+
   it('cap nulo não exclui ninguém e avisa que o cap não foi considerado', async () => {
     const result = await run(party(), trainerGoal('synthetic:fire'));
     expect(result.excluded).toEqual([]);

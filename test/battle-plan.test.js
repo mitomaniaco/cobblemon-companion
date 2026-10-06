@@ -144,6 +144,14 @@ describe('plano de batalha contra o líder', () => {
     const noCap = await buildBattlePlan({snapshot: mixed, request: {sources: [], trainerId: 'synthetic:brock', team: withHigh}, data});
     expect(noCap.assumptions.join(' ')).toContain('O level cap não foi informado e não foi considerado');
 
+    const ignored = await buildBattlePlan({
+      snapshot: mixed,
+      request: {sources: [], trainerId: 'synthetic:brock', team: withHigh, levelCap: 55, respectLevelCap: false},
+      data,
+    });
+    expect(ignored.overCap.map((item) => item.uuid)).toEqual([high.uuid]);
+    expect(ignored.assumptions.join(' ')).toContain('ignorado a seu pedido');
+
     await expect(
       buildBattlePlan({snapshot: mixed, request: {sources: [], trainerId: 'synthetic:brock', team: [withHigh[2]], levelCap: 55}, data}),
     ).rejects.toThrow('nenhum membro do time está dentro do level cap (55)');
