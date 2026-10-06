@@ -39,6 +39,19 @@ function walkFiles(directory) {
     .flatMap((entry) => (entry.isDirectory() ? walkFiles(path.join(directory, entry.name)) : [path.join(directory, entry.name)]));
 }
 
+/** initialLevelCap/relativeLevelCap de config/rctmod-server.toml (padrões do mod quando a série não define). */
+function readLevelCapConfig(instance) {
+  const file = path.join(instance, 'config', 'rctmod-server.toml');
+  if (!fs.existsSync(file)) fail('config/rctmod-server.toml não encontrado (necessário para o level cap)');
+  const text = fs.readFileSync(file, 'utf8');
+  const read = (key) => {
+    const match = text.match(new RegExp(`^\\s*${key}\\s*=\\s*(-?\\d+)`, 'm'));
+    if (!match) fail(`${key} ausente em config/rctmod-server.toml`);
+    return Number(match[1]);
+  };
+  return {initialLevelCap: read('initialLevelCap'), relativeLevelCap: read('relativeLevelCap')};
+}
+
 const jsonText = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
 function main() {
@@ -114,7 +127,7 @@ function main() {
     ['evolutions.json', jsonText(evolutions)],
     ['trainers.json', jsonText(trainers)],
     ['series.json', jsonText(series)],
-    ['campaign.json', jsonText(deriveCampaign({series, trainers}))],
+    ['campaign.json', jsonText(deriveCampaign({series, trainers, levelCapConfig: readLevelCapConfig(instance)}))],
     ['artwork-sources.json', jsonText(deriveArtworkSources(species, slugs, trainers))],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 
