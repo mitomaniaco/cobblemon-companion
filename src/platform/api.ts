@@ -101,10 +101,16 @@ export type GuideRequest = {
   sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
   goal: GuideGoal;
   /**
-   * Level cap do jogador. Para objetivo de treinador/líder, Pokémon acima do cap não entram no time (vão para `excluded`);
-   * `null` = cap desconhecido (o motor avisa em `assumptions`). PvE geral nunca aplica o cap.
+   * Level cap do jogador. `null` = cap desconhecido (o motor avisa em `assumptions`). PvE geral nunca aplica o cap.
+   * Fato (rctmod, `TrainerMob#canBattleAgainst`): o treinador só luta se nenhum Pokémon da party passar do cap.
    */
   levelCap: number | null;
+  /**
+   * Toggle "respeitar o level cap" (padrão `true` quando ausente). Ligado: em objetivo de treinador com cap conhecido, quem passa
+   * do cap sai do time e vai para `excluded` ("acima do level cap (N)"). Desligado: todos entram na conta, o time é o ideal
+   * independente do nível, e `GuideResult.overCap` lista quem está acima do cap para baixar o nível ou guardar no PC (campo ausente = ninguém).
+   */
+  respectLevelCap?: boolean;
   /** Identificador opcional para cancelar a construção com `cancel(jobId)`. */
   jobId?: string;
 };
@@ -134,6 +140,9 @@ export type GuideTeamMember = {
   acquire: Array<{moveId: string; requirement: string; gainPercent: number; reason: string}>;
 };
 
+/** Membro do time acima do level cap quando o jogador desligou "respeitar o level cap": o app só avisa, não exclui. */
+export type OverCapMember = {uuid: string; speciesId: string; level: number; levelCap: number; text: string};
+
 export type GuideResult = {
   goal: GuideGoal;
   referenceLevel: number;
@@ -141,6 +150,8 @@ export type GuideResult = {
   team: GuideTeamMember[];
   currentPartyComparison: {kept: string[]; added: string[]; removed: string[]};
   excluded: Array<{uuid: string; reason: string}>;
+  /** Só com `respectLevelCap: false` e cap conhecido em objetivo de treinador: quem do time passa do cap (não excluído). Vazio caso contrário. */
+  overCap?: OverCapMember[];
   assumptions: string[];
   limits: string[];
 };
@@ -152,6 +163,10 @@ export type BattlePlanRequest = {
   sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
   trainerId: string;
   team: BattlePlanMember[];
+  /** Level cap do jogador; nulo = desconhecido (aviso em `assumptions`). */
+  levelCap?: number | null;
+  /** Mesmo toggle do guia (padrão `true`): ligado, membro acima do cap não entra no plano; desligado, entra e `BattlePlanResult.overCap` o lista. */
+  respectLevelCap?: boolean;
   /** Identificador opcional para cancelar a montagem com `cancel(jobId)`. */
   jobId?: string;
 };
@@ -187,6 +202,8 @@ export type BattlePlanEntry = {
 };
 
 export type BattlePlanResult = {
+  /** Só com `respectLevelCap: false` e cap conhecido: membros do plano acima do cap (baixar o nível ou guardar no PC antes da luta). Ausente = nenhum. */
+  overCap?: OverCapMember[];
   trainer: {id: string; name: string; maxItemUses: number | null; bag: Array<{itemId: string; quantity: number}>};
   /** `fora-do-escopo`: treinador em dupla; sem entradas nem lead, só o motivo em `scopeReason`. */
   status: 'plano' | 'fora-do-escopo';
