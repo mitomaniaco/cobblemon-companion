@@ -45,12 +45,12 @@
           "spe": {"state": "known", "value": null, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].HyperTrain.spe"}}
         },
         "evs": {
-          "hp": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.hp"}},
-          "atk": {"state": "known", "value": 252, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.atk"}},
+          "hp": {"state": "known", "value": 6, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.hp"}},
+          "atk": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.atk"}},
           "def": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.def"}},
-          "spa": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spa"}},
+          "spa": {"state": "known", "value": 252, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spa"}},
           "spd": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spd"}},
-          "spe": {"state": "known", "value": 0, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spe"}}
+          "spe": {"state": "known", "value": 252, "provenance": {"sourceKind": "party", "nbtPath": "Synthetic.Party[0].EVs.spe"}}
         }
       }
     },

@@ -1,4 +1,5 @@
 import type {CSSProperties} from 'react';
+import {MAX_IV} from '../../domain/stats-format';
 import type {PlayerStat} from '../../platform/api';
 import styles from './IvRadar.module.css';
 
@@ -12,7 +13,6 @@ export interface IvRadarProps {
 
 const CENTER = 100;
 const RADIUS = 80;
-const MAX_IV = 31;
 
 const AXES: ReadonlyArray<{key: PlayerStat; label: string; angle: number}> = [
   {key: 'hp', label: 'HP', angle: -90},

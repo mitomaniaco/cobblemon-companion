@@ -509,6 +509,23 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await selectIndividual(contents, damageIndividual.uuid);
   await openCaptureDetails(contents);
   check((await selectedUuid(contents)) === damageIndividual.uuid, 'A espécie repetida selecionou outro indivíduo pelo UUID.');
+  await clickTab(contents, 'Atributos');
+  const evView = await evaluate(
+    contents,
+    `(() => {
+    const details = document.querySelector('[data-testid="individual-details"]');
+    const rows = [...(details?.querySelectorAll('tbody tr') || [])].map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent.trim()));
+    return {text: details?.innerText || '', ivs: rows.map(cells => cells[0]), evs: rows.map(cells => cells[2])};
+  })()`,
+  );
+  check(
+    evView.text.includes('EVs 510/510') && JSON.stringify(evView.evs) === JSON.stringify(['6', '0', '0', '252', '0', '252']),
+    'Os EVs 252/252/6 do indivíduo sintético não aparecem no formato do jogo (por atributo e total 510).',
+  );
+  check(
+    evView.ivs.every((value) => /^\d+$/.test(value) && Number(value) <= 31),
+    'Os IVs não aparecem como números de 0 a 31.',
+  );
   await clickTab(contents, 'Golpes');
   const plannerText = () =>
     evaluate(
