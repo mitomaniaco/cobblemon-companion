@@ -15,7 +15,7 @@ import {
   StatusMessage,
   TypeBadge,
 } from '../../ui';
-import {guideComparisonRows, guideOpponentTurnsLabel, guideTrainerOptions, type GuideMode} from './guide-model';
+import {guideCapExcluded, guideComparisonRows, guideOpponentTurnsLabel, guideTrainerOptions, type GuideMode} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
@@ -225,11 +225,25 @@ function GuideResultView({
   const acquire = result.team
     .flatMap((member) => member.acquire.map((entry) => ({member, entry})))
     .sort((left, right) => right.entry.gainPercent - left.entry.gainPercent);
+  const capExcluded = guideCapExcluded(result.excluded);
   return (
     <div className={styles.result} data-stale={stale ? 'true' : undefined} aria-busy={stale}>
       <p className={styles.resultSummary}>
         Time de {result.team.length} contra {result.opponents.length} adversários de referência (nível {result.referenceLevel}).
       </p>
+
+      {capExcluded.length > 0 && (
+        <section className={styles.capExcluded} aria-label="Excluídos pelo level cap">
+          <h3 className={styles.sectionTitle}>Fora do time pelo level cap</h3>
+          <ul>
+            {capExcluded.map((entry) => (
+              <li key={entry.uuid}>
+                <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className={styles.comparison} aria-labelledby="guide-comparison-title">
         <h3 id="guide-comparison-title" className={styles.sectionTitle}>
@@ -421,6 +435,7 @@ export function GuideWorkspace({
                   </Button>
                 )}
               </div>
+              <LevelCapField value={levelCapInput} onChange={onLevelCapInputChange} required={guide.mode === 'trainer'} />
             </div>
             {guide.mode === 'trainer' && trainers.status === 'failed' && (
               <StatusMessage tone="warning" title="Lista de treinadores indisponível">
@@ -450,7 +465,6 @@ export function GuideWorkspace({
               planSlot={
                 building ? null : (
                   <>
-                    <LevelCapField value={levelCapInput} onChange={onLevelCapInputChange} />
                     {guide.result.goal.kind === 'trainer' && (
                       <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
                     )}

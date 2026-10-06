@@ -23,6 +23,7 @@ const screenshotPaths = Object.freeze({
   demo: path.join(runDirectory, 'offline-demo-result.png'),
   gardevoirDamage: path.join(runDirectory, 'gardevoir-damage-result.png'),
   guide1440: path.join(runDirectory, 'guide-1440.png'),
+  guideCapExcluded: path.join(runDirectory, 'guide-cap-excluded.png'),
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
@@ -1356,6 +1357,20 @@ async function exerciseGuideContract(contents) {
   console.log('PASS contrato do guia no modo sintético (treinadores, próximo objetivo, card e fontes)');
 }
 
+async function setLevelCapField(contents, value) {
+  await evaluate(
+    contents,
+    `(() => {
+    const label = [...document.querySelectorAll('label')].find(node => node.textContent.trim().startsWith('Level cap atual'));
+    const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+    if (!(input instanceof HTMLInputElement)) throw new Error('Campo do level cap não encontrado.');
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    setter.call(input, ${JSON.stringify(String(value))});
+    input.dispatchEvent(new Event('input', {bubbles: true}));
+  })()`,
+  );
+}
+
 async function exerciseGuideWorkspace(window) {
   const contents = window.webContents;
   await navigate(contents, 'Guia');
@@ -1380,6 +1395,36 @@ async function exerciseGuideWorkspace(window) {
   ]) {
     check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
   }
+  const capRequired = await evaluate(
+    contents,
+    `(() => {
+    const field = [...document.querySelectorAll('[data-required="true"]')].find(node => node.querySelector('input'));
+    return {highlighted: Boolean(field), text: field?.innerText || ''};
+  })()`,
+  );
+  check(
+    capRequired.highlighted && capRequired.text.includes('Informe o level cap para montar o time'),
+    'Objetivo de líder sem level cap deve destacar o campo obrigatório com o aviso.',
+  );
+  // Cap abaixo do nível do membro (Gardevoir Nv. 30): ele sai do time e aparece como excluído pelo level cap.
+  await setLevelCapField(contents, 20);
+  await waitFor(
+    contents,
+    `document.body.innerText.includes('Fora do time pelo level cap') && document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 0`,
+    'time remontado sem o membro acima do level cap',
+  );
+  const capText = await evaluate(contents, `document.querySelector('section[aria-label="Excluídos pelo level cap"]')?.innerText || ''`);
+  check(
+    capText.includes('Gardevoir') && capText.includes('acima do level cap (20)'),
+    'O membro acima do level cap não aparece em "Fora do time pelo level cap" com o motivo.',
+  );
+  await capture(window, screenshotPaths.guideCapExcluded, 'section[aria-label="Excluídos pelo level cap"]');
+  await setLevelCapField(contents, '');
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1 && !document.body.innerText.includes('Fora do time pelo level cap')`,
+    'time de volta ao limpar o level cap',
+  );
   await capture(window, screenshotPaths.guide1440, '[aria-label="Time recomendado"]');
   const guideArtwork = await evaluate(
     contents,
@@ -1493,27 +1538,23 @@ async function exerciseGuideWorkspace(window) {
   }
   window.setContentSize(1440, 1000);
   await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após evoluções e capturas');
-  await evaluate(
+  // Informar o cap remonta o time de líder (cap 30 não exclui a Gardevoir Nv. 30); os planos derivados do time antigo são descartados.
+  await setLevelCapField(contents, 30);
+  await waitFor(
     contents,
-    `(() => {
-    const label = [...document.querySelectorAll('label')].find(node => node.textContent.trim() === 'Level cap atual (opcional)');
-    const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
-    if (!(input instanceof HTMLInputElement)) throw new Error('Campo do level cap não encontrado.');
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-    setter.call(input, '15');
-    input.dispatchEvent(new Event('input', {bubbles: true}));
-  })()`,
+    `[...document.querySelectorAll('button')].some(node => node.textContent.trim() === 'Ver evoluções do time')`,
+    'planos descartados quando o level cap remonta o time',
   );
-  await clickButton(contents, 'Calcular de novo');
-  await waitFor(contents, `document.body.innerText.includes('Level cap usado: 15.')`, 'evoluções recalculadas com o level cap informado');
+  await clickButton(contents, 'Ver evoluções do time');
+  await waitFor(contents, `document.body.innerText.includes('Level cap usado: 30.')`, 'evoluções recalculadas com o level cap informado');
 
   // Treino com cap informado: recalcula só a seção de treino (os botões "Calcular de novo" das outras seções ficam intactos).
   await evaluate(
     contents,
     `(() => {
     const section = [...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section');
-    const button = [...(section?.querySelectorAll('button') || [])].find(node => node.textContent.trim() === 'Calcular de novo');
-    if (!button) throw new Error('Botão de recálculo do treino não encontrado.');
+    const button = [...(section?.querySelectorAll('button') || [])].find(node => node.textContent.trim() === 'Ver treino do time');
+    if (!button) throw new Error('Botão do treino não encontrado.');
     button.click();
   })()`,
   );
