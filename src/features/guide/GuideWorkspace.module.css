@@ -446,3 +446,21 @@
     background: Highlight;
   }
 }
+
+.capExcluded {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  font-size: var(--text-label);
+  line-height: var(--line-body);
+}
+
+.capExcluded ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

@@ -12,7 +12,7 @@ import {useBattlePlan} from '../features/guide/useBattlePlan';
 import {useEvolutionPlan} from '../features/guide/useEvolutionPlan';
 import {useCapturePlan} from '../features/guide/useCapturePlan';
 import {useTrainingPlan} from '../features/guide/useTrainingPlan';
-import {parseLevelCap} from '../features/guide/evolution-model';
+import {useLevelCapState} from '../features/guide/level-cap-state';
 import {useTrainerSession} from './useTrainerSession';
 import {Button, Dialog, PokeBallMark, setArtworkManifest, StatusMessage, Switch, type ArtworkManifest} from '../ui';
 import styles from './TrainerApp.module.css';
@@ -292,7 +292,8 @@ export function TrainerApp() {
 
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
-  const guide = useGuide(api, session.snapshot, workspace === 'guide');
+  const {input: levelCapInput, setInput: setLevelCapInput, levelCap, debouncedLevelCap} = useLevelCapState();
+  const guide = useGuide(api, session.snapshot, workspace === 'guide', debouncedLevelCap);
 
   // Modo de teste da UI: a ponte de teste entrega um manifesto de artwork sintético (a produção não tem essa ponte).
   useEffect(() => {
@@ -301,8 +302,6 @@ export function TrainerApp() {
     void testBridge.getArtworkManifest().then(setArtworkManifest, () => undefined);
   }, []);
   const battlePlan = useBattlePlan(api, session.snapshot, guide.result);
-  const [levelCapInput, setLevelCapInput] = useState('');
-  const levelCap = parseLevelCap(levelCapInput);
   const evolutions = useEvolutionPlan(api, session.snapshot, guide.result, levelCap);
   const captures = useCapturePlan(api, session.snapshot, guide.result);
   const training = useTrainingPlan(api, session.snapshot, guide.result, levelCap);

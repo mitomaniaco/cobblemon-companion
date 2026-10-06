@@ -256,7 +256,8 @@ function readSnapshotForRenderer() {
   }
 }
 function validateGuideRequest(request) {
-  exactKeys(request, ['sources', 'goal', 'jobId'], 'request');
+  exactKeys(request, ['sources', 'goal', 'levelCap', 'jobId'], 'request');
+  if (request.levelCap !== undefined && request.levelCap !== null) integer(request.levelCap, 'request.levelCap', 1, 100);
   if (!isRecord(request.goal)) throw new TypeError('request.goal precisa ser um objeto');
   if (request.goal.kind === 'pve') exactKeys(request.goal, ['kind'], 'request.goal');
   else if (request.goal.kind === 'trainer') {
@@ -267,7 +268,7 @@ function validateGuideRequest(request) {
   if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
   const jobId = request.jobId ?? `guide-${Date.now()}-${++guideSequence}`;
   if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
-  return {jobId, goal: structuredClone(request.goal)};
+  return {jobId, goal: structuredClone(request.goal), levelCap: request.levelCap ?? null};
 }
 function settleGuide(job, failure, result) {
   if (job.settled) return;
@@ -284,15 +285,24 @@ function settleGuide(job, failure, result) {
 }
 function handleGuideBuild(event, request) {
   requireSender(event);
-  const {jobId, goal} = validateGuideRequest(request);
+  const {jobId, goal, levelCap} = validateGuideRequest(request);
   const snapshot = readSnapshotForRenderer();
   assertFreshSources(request.sources, snapshot.sources);
   if (TRAINER_UI_TEST_MODE) {
     if (goal.kind === 'trainer' && goal.trainerId !== TRAINER_UI_GUIDE.result.goal.trainerId)
       throw new Error('Treinador sintético não encontrado');
-    return structuredClone({...TRAINER_UI_GUIDE.result, goal});
+    return testGuideResult(goal, levelCap);
   }
-  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal});
+  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal, levelCap});
+}
+// Modo de teste da UI: imita a regra do motor (objetivo de treinador exclui quem passa do level cap; PvE geral não aplica o cap).
+function testGuideResult(goal, levelCap) {
+  const result = structuredClone({...TRAINER_UI_GUIDE.result, goal});
+  if (goal.kind !== 'trainer' || levelCap === null) return result;
+  const over = result.team.filter((member) => member.level > levelCap);
+  result.team = result.team.filter((member) => member.level <= levelCap);
+  for (const member of over) result.excluded.push({uuid: member.uuid, reason: `acima do level cap (${levelCap})`});
+  return result;
 }
 function validateBattlePlanRequest(request) {
   exactKeys(request, ['sources', 'trainerId', 'team', 'jobId'], 'request');

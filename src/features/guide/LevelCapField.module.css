@@ -33,6 +33,17 @@
   border-color: var(--color-error);
 }
 
+.field[data-required="true"] {
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-control);
+  background: var(--color-raised);
+}
+
+.field[data-required="true"] input {
+  border-color: var(--color-warning);
+}
+
 .muted {
   color: var(--color-muted);
   font-size: var(--text-caption);

@@ -75,8 +75,14 @@ export function guideSourcesKey(snapshot: PlayerSnapshot): string {
   return snapshot.sources.map((source) => `${source.kind}:${source.sha256}`).join('|');
 }
 
-export function guideBuildKey(sourcesKey: string, goal: GuideGoal): string {
-  return `${sourcesKey}#${goal.kind === 'pve' ? 'pve' : `trainer:${goal.trainerId}`}`;
+/** O level cap só vale para objetivo de treinador/líder (PvE geral não o aplica): por isso só entra na chave dele. */
+export function guideBuildKey(sourcesKey: string, goal: GuideGoal, levelCap: number | null): string {
+  return `${sourcesKey}#${goal.kind === 'pve' ? 'pve' : `trainer:${goal.trainerId}:cap:${levelCap ?? 'none'}`}`;
+}
+
+/** Cap enviado ao motor: só para objetivo de treinador; PvE geral nunca leva cap. */
+export function guideRequestLevelCap(goal: GuideGoal, levelCap: number | null): number | null {
+  return goal.kind === 'trainer' ? levelCap : null;
 }
 
 /** Decide se a tela deve montar o time sozinha: só com captura, objetivo definido, sugestão resolvida e chave ainda não tentada. */
@@ -84,12 +90,13 @@ export function shouldAutoBuildGuide(input: {
   active: boolean;
   sourcesKey: string | null;
   goal: GuideGoal | null;
+  levelCap: number | null;
   nextGoalKey: string | null;
   attemptedKey: string | null;
 }): boolean {
   if (!input.active || input.sourcesKey === null || input.goal === null) return false;
   if (input.nextGoalKey !== input.sourcesKey) return false;
-  return input.attemptedKey !== guideBuildKey(input.sourcesKey, input.goal);
+  return input.attemptedKey !== guideBuildKey(input.sourcesKey, input.goal, input.levelCap);
 }
 
 export function guideBuildCause(state: Pick<GuideState, 'result' | 'resultSources'>, sourcesKey: string): GuideBuildCause {
@@ -188,3 +195,12 @@ export function guideOpponentTurnsLabel(matchup: {outcome: 'vence' | 'perde'; ou
     ? `vence em ${plural(matchup.ourTurns)} (o adversário precisaria de ${plural(matchup.theirTurns)})`
     : `perde: o adversário vence em ${plural(matchup.theirTurns)} (você precisaria de ${plural(matchup.ourTurns)})`;
 }
+
+/** Excluídos por causa do level cap (motivo "acima do level cap (N)"), para mostrar à parte dos demais excluídos. */
+export function guideCapExcluded(excluded: GuideResult['excluded']): GuideResult['excluded'] {
+  return excluded.filter((entry) => /level cap/i.test(entry.reason));
+}
+
+/** Aviso fixo quando o objetivo é de líder e o cap ainda não foi informado. */
+export const LEVEL_CAP_REQUIRED_TEXT =
+  'Informe o level cap para montar o time: sem ele o time pode conter Pokémon proibidos nessa batalha.';

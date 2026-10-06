@@ -5,6 +5,7 @@ import {
   currentGuideGoal,
   guideBuildCause,
   guideBuildKey,
+  guideRequestLevelCap,
   guideReducer,
   guideSourcesKey,
   shouldAutoBuildGuide,
@@ -32,12 +33,19 @@ function describeError(error: unknown, fallback: string): string {
  * Estado da tela Guia, mantido fora do componente para sobreviver à ida ao Dano e à volta.
  * `active`: só monta/recalcula enquanto a tela Guia está aberta.
  */
-export function useGuide(api: () => CompanionApi, snapshot: PlayerSnapshot | null, active: boolean): GuideController {
+export function useGuide(
+  api: () => CompanionApi,
+  snapshot: PlayerSnapshot | null,
+  active: boolean,
+  levelCap: number | null,
+): GuideController {
   const [state, dispatch] = useReducer(guideReducer, undefined, createGuideState);
   const stateRef = useRef(state);
   stateRef.current = state;
   const snapshotRef = useRef(snapshot);
   snapshotRef.current = snapshot;
+  const levelCapRef = useRef(levelCap);
+  levelCapRef.current = levelCap;
   const requestRef = useRef(0);
   const jobRef = useRef<string | null>(null);
   const attemptedKeyRef = useRef<string | null>(null);
@@ -65,13 +73,15 @@ export function useGuide(api: () => CompanionApi, snapshot: PlayerSnapshot | nul
       requestRef.current = requestId;
       const jobId = `guide-${requestId}`;
       jobRef.current = jobId;
-      attemptedKeyRef.current = guideBuildKey(sources, currentGoal);
+      const requestCap = guideRequestLevelCap(currentGoal, levelCapRef.current);
+      attemptedKeyRef.current = guideBuildKey(sources, currentGoal, levelCapRef.current);
       dispatch({type: 'build-started', requestId, cause: guideBuildCause(stateRef.current, sources)});
       void Promise.resolve()
         .then(() =>
           api().buildGuide({
             sources: currentSnapshot.sources.map(({kind, sha256}) => ({kind, sha256})),
             goal: currentGoal,
+            levelCap: requestCap,
             jobId,
           }),
         )
@@ -126,11 +136,12 @@ export function useGuide(api: () => CompanionApi, snapshot: PlayerSnapshot | nul
       active,
       sourcesKey,
       goal: buildGoal,
+      levelCap,
       nextGoalKey,
       attemptedKey: attemptedKeyRef.current,
     });
     if (shouldBuild) start(current, buildGoal);
-  }, [active, sourcesKey, mode, trainerId, nextGoalKey, start]);
+  }, [active, sourcesKey, mode, trainerId, levelCap, nextGoalKey, start]);
 
   const selectMode = useCallback((nextMode: GuideMode) => dispatch({type: 'mode-selected', mode: nextMode}), []);
   const selectTrainer = useCallback((id: string) => dispatch({type: 'trainer-selected', trainerId: id}), []);

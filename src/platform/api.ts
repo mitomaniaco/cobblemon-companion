@@ -100,6 +100,11 @@ export type GuideGoal = {kind: 'pve'} | {kind: 'trainer'; trainerId: string};
 export type GuideRequest = {
   sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
   goal: GuideGoal;
+  /**
+   * Level cap do jogador. Para objetivo de treinador/líder, Pokémon acima do cap não entram no time (vão para `excluded`);
+   * `null` = cap desconhecido (o motor avisa em `assumptions`). PvE geral nunca aplica o cap.
+   */
+  levelCap: number | null;
   /** Identificador opcional para cancelar a construção com `cancel(jobId)`. */
   jobId?: string;
 };

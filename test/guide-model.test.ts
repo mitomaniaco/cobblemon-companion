@@ -6,6 +6,7 @@ import {
   guideBuildCause,
   guideBuildKey,
   guideCalculationTarget,
+  guideRequestLevelCap,
   guideComparisonRows,
   guideOpponentTurnsLabel,
   guideReducer,
@@ -72,7 +73,14 @@ describe('objetivo do guia', () => {
 });
 
 describe('quando montar sozinho', () => {
-  const base = {active: true, sourcesKey: 'party:a', goal: {kind: 'pve'} as const, nextGoalKey: 'party:a', attemptedKey: null};
+  const base = {
+    active: true,
+    sourcesKey: 'party:a',
+    goal: {kind: 'pve'} as const,
+    levelCap: null,
+    nextGoalKey: 'party:a',
+    attemptedKey: null,
+  };
 
   it('monta com captura, sugestão resolvida para a mesma captura e chave nova', () => {
     expect(shouldAutoBuildGuide(base)).toBe(true);
@@ -87,10 +95,26 @@ describe('quando montar sozinho', () => {
   });
 
   it('não repete a chave já tentada (erro ou cancelamento não fazem laço), mas remonta se o save ou o objetivo mudam', () => {
-    const attempted = guideBuildKey('party:a', {kind: 'pve'});
+    const attempted = guideBuildKey('party:a', {kind: 'pve'}, null);
     expect(shouldAutoBuildGuide({...base, attemptedKey: attempted})).toBe(false);
     expect(shouldAutoBuildGuide({...base, attemptedKey: attempted, goal: {kind: 'trainer', trainerId: 'brock'}})).toBe(true);
     expect(shouldAutoBuildGuide({...base, attemptedKey: attempted, sourcesKey: 'party:b', nextGoalKey: 'party:b'})).toBe(true);
+  });
+
+  it('mudar o level cap remonta o time de líder, mas não o de PvE geral (o cap não vale lá)', () => {
+    const trainer = {kind: 'trainer', trainerId: 'brock'} as const;
+    const attemptedTrainer = guideBuildKey('party:a', trainer, 55);
+    expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: 55, attemptedKey: attemptedTrainer})).toBe(false);
+    expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: 40, attemptedKey: attemptedTrainer})).toBe(true);
+    expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: null, attemptedKey: attemptedTrainer})).toBe(true);
+    const attemptedPve = guideBuildKey('party:a', {kind: 'pve'}, 55);
+    expect(shouldAutoBuildGuide({...base, levelCap: 40, attemptedKey: attemptedPve})).toBe(false);
+  });
+
+  it('o pedido leva o cap só para objetivo de treinador', () => {
+    expect(guideRequestLevelCap({kind: 'trainer', trainerId: 'brock'}, 55)).toBe(55);
+    expect(guideRequestLevelCap({kind: 'trainer', trainerId: 'brock'}, null)).toBeNull();
+    expect(guideRequestLevelCap({kind: 'pve'}, 55)).toBeNull();
   });
 
   it('a chave das fontes depende dos hashes, não dos horários', () => {
