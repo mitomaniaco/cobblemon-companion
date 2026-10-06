@@ -5,8 +5,9 @@ import {itemLabel} from '../../domain/catalog-labels';
 import {abilityName, dexId, moveDisplay, natureDisplay, speciesDisplay, titleCaseId} from '../../domain/dex';
 import {locationLabel} from '../../domain/location-label';
 import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
+import {formatStat, MAX_EV, MAX_IV, statFill, statValue, summarizeEvs, type StatFact} from '../../domain/stats-format';
 import {MovePreparation} from '../damage/MovePreparation';
-import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from '../../platform/api';
+import type {PlayerIndividual, PlayerSnapshot, PlayerStat} from '../../platform/api';
 import {
   Button,
   Disclosure,
@@ -51,16 +52,10 @@ const STAT_ROWS: ReadonlyArray<{key: PlayerStat; label: string}> = [
 ];
 
 type MoveEntry = {id: string; pp?: number | null; ppUps: number | null};
-type NumericFact = PlayerStatFact<number> | PlayerStatFact<number | null>;
 
 function timestampLabel(value: string) {
   const timestamp = Date.parse(value);
   return Number.isFinite(timestamp) ? new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'}).format(timestamp) : value;
-}
-
-function formatFact(fact: NumericFact) {
-  if (fact.state === 'unknown') return 'Não capturado';
-  return fact.value === null ? 'Sem override' : String(fact.value);
 }
 
 function moveMeta(move: MoveEntry) {
@@ -228,7 +223,7 @@ function CaptureData({individual, snapshot}: {individual: PlayerIndividual; snap
         </h3>
         <dl className={styles.provenanceList}>
           {STAT_ROWS.map((stat) => {
-            const facts: Array<{label: string; fact: NumericFact}> = [
+            const facts: Array<{label: string; fact: StatFact}> = [
               {label: 'IV base', fact: individual.battleStats.ivs[stat.key]},
               {label: 'Hyper Training', fact: individual.battleStats.hyperTrainedIvs[stat.key]},
               {label: 'EV', fact: individual.battleStats.evs[stat.key]},
@@ -304,22 +299,13 @@ const STAT_LABEL: Record<PlayerStat, string> = Object.fromEntries(STAT_ROWS.map(
   PlayerStat,
   string
 >;
-const MAX_IV = 31;
-const MAX_EV = 252;
-const MAX_EV_TOTAL = 510;
-
-function knownNumber(fact: NumericFact): number | null {
-  return fact.state === 'known' ? fact.value : null;
-}
-
-function StatCell({fact, max}: {fact: NumericFact; max: number}) {
-  const value = knownNumber(fact);
-  const fill = value === null ? null : Math.min(1, Math.max(0, value / max));
+function StatCell({fact, max}: {fact: StatFact; max: number}) {
+  const fill = statFill(fact, max);
   const style = {'--fill': fill ?? 0} as CSSProperties;
   return (
     <td>
       {fill !== null && <span className={styles.statBar} style={style} aria-hidden="true" />}
-      {formatFact(fact)}
+      {formatStat(fact)}
     </td>
   );
 }
@@ -360,13 +346,11 @@ export function IndividualWorkspace({
   const natureReduced = nature?.minus ?? null;
   const accent = typeColorVar(species.types[0] ?? null);
   const heroStyle = {'--hero-a': accent, '--hero-b': typeColorVar(species.types[1] ?? species.types[0] ?? null)} as CSSProperties;
-  const ivValues = Object.fromEntries(STAT_ROWS.map((stat) => [stat.key, knownNumber(individual.battleStats.ivs[stat.key])])) as Record<
+  const ivValues = Object.fromEntries(STAT_ROWS.map((stat) => [stat.key, statValue(individual.battleStats.ivs[stat.key])])) as Record<
     PlayerStat,
     number | null
   >;
-  const evValues = STAT_ROWS.map((stat) => knownNumber(individual.battleStats.evs[stat.key]));
-  const evsComplete = evValues.every((value) => value !== null);
-  const evTotal = evValues.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+  const evSummary = summarizeEvs(STAT_ROWS.map((stat) => individual.battleStats.evs[stat.key]));
   const view = getMoveSwapView(individual, moveSwapPlan);
   const planned = moveSwapPlan.individualUuid === individual.uuid;
   let equippedPicker: ReactNode;
@@ -565,19 +549,9 @@ export function IndividualWorkspace({
               </h3>
               <IvRadar ivs={ivValues} accent={accent} />
               <div className={styles.evSummary}>
-                {evsComplete ? (
-                  <>
-                    <span>
-                      EVs {evTotal}/{MAX_EV_TOTAL}
-                    </span>
-                    <span
-                      className={styles.evTrack}
-                      style={{'--fill': Math.min(1, evTotal / MAX_EV_TOTAL)} as CSSProperties}
-                      aria-hidden="true"
-                    />
-                  </>
-                ) : (
-                  <span>EVs incompletos</span>
+                <span>{evSummary.text}</span>
+                {evSummary.fill !== null && (
+                  <span className={styles.evTrack} style={{'--fill': evSummary.fill} as CSSProperties} aria-hidden="true" />
                 )}
               </div>
               {/* biome-ignore lint/a11y/noNoninteractiveTabindex: região rolável precisa de foco por teclado para ser rolada sem mouse (WCAG 2.1.1) */}
