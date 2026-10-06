@@ -387,7 +387,9 @@ export function GuideWorkspace({
 
       {notice && <Toast key={notice.id} id={notice.id} text={notice.text} onDismiss={dismissNotice} />}
 
-      {!snapshot ? (
+      {!snapshot && loading ? (
+        <TeamSkeleton />
+      ) : !snapshot ? (
         <div className={styles.empty}>
           <PokeBallMark className={styles.emptyMark} />
           <p>Atualize do save para montar o time.</p>
