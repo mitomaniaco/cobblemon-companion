@@ -12,12 +12,16 @@ import type {
 export function buildBattlePlanRequest(
   snapshot: PlayerSnapshot,
   guide: Pick<GuideResult, 'goal' | 'team'>,
+  levelCap: number | null,
+  respectLevelCap: boolean,
   jobId?: string,
 ): BattlePlanRequest | null {
   if (guide.goal.kind !== 'trainer' || guide.team.length === 0) return null;
   return {
     sources: snapshot.sources.map(({kind, sha256}) => ({kind, sha256})),
     trainerId: guide.goal.trainerId,
+    levelCap,
+    respectLevelCap,
     team: guide.team.map((member) => ({
       uuid: member.uuid,
       moveIds: member.moves.filter((move) => move.evaluated).map((move) => move.id),

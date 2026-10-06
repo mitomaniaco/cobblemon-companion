@@ -38,6 +38,7 @@ export function useGuide(
   snapshot: PlayerSnapshot | null,
   active: boolean,
   levelCap: number | null,
+  respectLevelCap: boolean,
 ): GuideController {
   const [state, dispatch] = useReducer(guideReducer, undefined, createGuideState);
   const stateRef = useRef(state);
@@ -46,6 +47,8 @@ export function useGuide(
   snapshotRef.current = snapshot;
   const levelCapRef = useRef(levelCap);
   levelCapRef.current = levelCap;
+  const respectRef = useRef(respectLevelCap);
+  respectRef.current = respectLevelCap;
   const requestRef = useRef(0);
   const jobRef = useRef<string | null>(null);
   const attemptedKeyRef = useRef<string | null>(null);
@@ -74,7 +77,7 @@ export function useGuide(
       const jobId = `guide-${requestId}`;
       jobRef.current = jobId;
       const requestCap = guideRequestLevelCap(currentGoal, levelCapRef.current);
-      attemptedKeyRef.current = guideBuildKey(sources, currentGoal, levelCapRef.current);
+      attemptedKeyRef.current = guideBuildKey(sources, currentGoal, levelCapRef.current, respectRef.current);
       dispatch({type: 'build-started', requestId, cause: guideBuildCause(stateRef.current, sources)});
       void Promise.resolve()
         .then(() =>
@@ -82,6 +85,7 @@ export function useGuide(
             sources: currentSnapshot.sources.map(({kind, sha256}) => ({kind, sha256})),
             goal: currentGoal,
             levelCap: requestCap,
+            respectLevelCap: respectRef.current,
             jobId,
           }),
         )
@@ -137,11 +141,12 @@ export function useGuide(
       sourcesKey,
       goal: buildGoal,
       levelCap,
+      respectLevelCap,
       nextGoalKey,
       attemptedKey: attemptedKeyRef.current,
     });
     if (shouldBuild) start(current, buildGoal);
-  }, [active, sourcesKey, mode, trainerId, levelCap, nextGoalKey, start]);
+  }, [active, sourcesKey, mode, trainerId, levelCap, respectLevelCap, nextGoalKey, start]);
 
   const selectMode = useCallback((nextMode: GuideMode) => dispatch({type: 'mode-selected', mode: nextMode}), []);
   const selectTrainer = useCallback((id: string) => dispatch({type: 'trainer-selected', trainerId: id}), []);

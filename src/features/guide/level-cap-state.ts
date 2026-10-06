@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {parseLevelCap} from './evolution-model';
 
 export const LEVEL_CAP_STORAGE_KEY = 'companion.levelCap';
+const RESPECT_LEVEL_CAP_STORAGE_KEY = 'companion.respectLevelCap';
 const LEVEL_CAP_DEBOUNCE_MS = 400;
 
 type CapStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
@@ -34,7 +35,27 @@ export function writeStoredLevelCapInput(input: string, storage: CapStorage | nu
   }
 }
 
+/** Toggle "Respeitar level cap": padrão ligado; só o valor explícito "false" desliga. */
+export function readStoredRespectLevelCap(storage: CapStorage | null = browserStorage()): boolean {
+  try {
+    return storage?.getItem(RESPECT_LEVEL_CAP_STORAGE_KEY) !== 'false';
+  } catch {
+    return true;
+  }
+}
+
+export function writeStoredRespectLevelCap(respect: boolean, storage: CapStorage | null = browserStorage()): void {
+  try {
+    if (respect) storage?.removeItem(RESPECT_LEVEL_CAP_STORAGE_KEY);
+    else storage?.setItem(RESPECT_LEVEL_CAP_STORAGE_KEY, 'false');
+  } catch {
+    // Armazenamento indisponível: a escolha vale só nesta sessão.
+  }
+}
+
 export type LevelCapState = {
+  respectLevelCap: boolean;
+  setRespectLevelCap(value: boolean): void;
   input: string;
   setInput(value: string): void;
   /** Cap digitado e válido agora; `null` = desconhecido. */
@@ -47,6 +68,11 @@ export function useLevelCapState(): LevelCapState {
   const [input, setInput] = useState(() => readStoredLevelCapInput());
   const levelCap = parseLevelCap(input);
   const [debouncedLevelCap, setDebouncedLevelCap] = useState(levelCap);
+  const [respectLevelCap, setRespectLevelCap] = useState(() => readStoredRespectLevelCap());
+
+  useEffect(() => {
+    writeStoredRespectLevelCap(respectLevelCap);
+  }, [respectLevelCap]);
 
   useEffect(() => {
     writeStoredLevelCapInput(input);
@@ -57,5 +83,5 @@ export function useLevelCapState(): LevelCapState {
     return () => window.clearTimeout(timer);
   }, [levelCap]);
 
-  return {input, setInput, levelCap, debouncedLevelCap};
+  return {input, setInput, levelCap, debouncedLevelCap, respectLevelCap, setRespectLevelCap};
 }

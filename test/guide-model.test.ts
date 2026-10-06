@@ -78,6 +78,7 @@ describe('quando montar sozinho', () => {
     sourcesKey: 'party:a',
     goal: {kind: 'pve'} as const,
     levelCap: null,
+    respectLevelCap: true,
     nextGoalKey: 'party:a',
     attemptedKey: null,
   };
@@ -95,7 +96,7 @@ describe('quando montar sozinho', () => {
   });
 
   it('não repete a chave já tentada (erro ou cancelamento não fazem laço), mas remonta se o save ou o objetivo mudam', () => {
-    const attempted = guideBuildKey('party:a', {kind: 'pve'}, null);
+    const attempted = guideBuildKey('party:a', {kind: 'pve'}, null, true);
     expect(shouldAutoBuildGuide({...base, attemptedKey: attempted})).toBe(false);
     expect(shouldAutoBuildGuide({...base, attemptedKey: attempted, goal: {kind: 'trainer', trainerId: 'brock'}})).toBe(true);
     expect(shouldAutoBuildGuide({...base, attemptedKey: attempted, sourcesKey: 'party:b', nextGoalKey: 'party:b'})).toBe(true);
@@ -103,12 +104,24 @@ describe('quando montar sozinho', () => {
 
   it('mudar o level cap remonta o time de líder, mas não o de PvE geral (o cap não vale lá)', () => {
     const trainer = {kind: 'trainer', trainerId: 'brock'} as const;
-    const attemptedTrainer = guideBuildKey('party:a', trainer, 55);
+    const attemptedTrainer = guideBuildKey('party:a', trainer, 55, true);
     expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: 55, attemptedKey: attemptedTrainer})).toBe(false);
     expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: 40, attemptedKey: attemptedTrainer})).toBe(true);
     expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: null, attemptedKey: attemptedTrainer})).toBe(true);
-    const attemptedPve = guideBuildKey('party:a', {kind: 'pve'}, 55);
+    expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: 55, respectLevelCap: false, attemptedKey: attemptedTrainer})).toBe(true);
+    expect(shouldAutoBuildGuide({...base, goal: trainer, levelCap: 55, respectLevelCap: false, attemptedKey: attemptedTrainer})).toBe(true);
+    const attemptedPve = guideBuildKey('party:a', {kind: 'pve'}, 55, true);
     expect(shouldAutoBuildGuide({...base, levelCap: 40, attemptedKey: attemptedPve})).toBe(false);
+  });
+
+  it('ligar ou desligar o toggle não remonta PvE geral', () => {
+    const attemptedPve = guideBuildKey('party:a', {kind: 'pve'}, null, true);
+    expect(shouldAutoBuildGuide({...base, respectLevelCap: false, attemptedKey: attemptedPve})).toBe(false);
+  });
+
+  it('ligar ou desligar o toggle não remonta PvE geral', () => {
+    const attemptedPve = guideBuildKey('party:a', {kind: 'pve'}, null, true);
+    expect(shouldAutoBuildGuide({...base, respectLevelCap: false, attemptedKey: attemptedPve})).toBe(false);
   });
 
   it('o pedido leva o cap só para objetivo de treinador', () => {

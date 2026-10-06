@@ -24,6 +24,7 @@ const screenshotPaths = Object.freeze({
   gardevoirDamage: path.join(runDirectory, 'gardevoir-damage-result.png'),
   guide1440: path.join(runDirectory, 'guide-1440.png'),
   guideCapExcluded: path.join(runDirectory, 'guide-cap-excluded.png'),
+  guideCapIgnored: path.join(runDirectory, 'guide-cap-ignored.png'),
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
@@ -1461,6 +1462,36 @@ async function exerciseGuideWorkspace(window) {
     'O membro acima do level cap não aparece em "Fora do time pelo level cap" com o motivo.',
   );
   await capture(window, screenshotPaths.guideCapExcluded, 'section[aria-label="Excluídos pelo level cap"]');
+  const respectedWarning = await evaluate(contents, `document.querySelector('section[aria-label="Acima do level cap"]')?.innerText || ''`);
+  check(
+    respectedWarning.includes('impede a luta contra o treinador') && respectedWarning.includes('guarde no PC'),
+    'Com o cap respeitado, o membro da party fora do time deve avisar que bloqueia a luta e precisa ir para o PC.',
+  );
+  // Toggle desligado: ninguém é excluído e o aviso pede baixar o nível ou guardar no PC.
+  await evaluate(
+    contents,
+    `(() => {
+    const toggle = [...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Respeitar level cap'));
+    if (!toggle) throw new Error('Toggle Respeitar level cap não encontrado.');
+    toggle.click();
+  })()`,
+  );
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1 && !document.body.innerText.includes('Fora do time pelo level cap')`,
+    'time ideal sem exclusão com o toggle desligado',
+  );
+  const ignoredWarning = await evaluate(contents, `document.querySelector('section[aria-label="Acima do level cap"]')?.innerText || ''`);
+  check(
+    ignoredWarning.includes('Gardevoir') && ignoredWarning.includes('baixe o nível para 20'),
+    'Com o toggle desligado, o membro acima do cap deve avisar para baixar o nível ou guardar no PC.',
+  );
+  await capture(window, screenshotPaths.guideCapIgnored, 'section[aria-label="Acima do level cap"]');
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Respeitar level cap'))?.click()`,
+  );
+  await waitFor(contents, `document.body.innerText.includes('Fora do time pelo level cap')`, 'toggle religado volta a excluir');
   await setLevelCapField(contents, '');
   await waitFor(
     contents,
