@@ -23,6 +23,7 @@ const GUIDE_WORKER_PATH = path.resolve(__dirname, 'guide-worker.cjs');
 const GUIDE_TIMEOUT_MS = 180000;
 const TRAINER_UI_SNAPSHOT = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_SNAPSHOT_PATH, 'utf8')) : null;
 const {readPlayerSnapshotFromConfig, resolvePlayerSourcePaths, publicPlayerImportError} = require(PLAYER_IMPORT_PATH);
+const {createAutoRefresh} = require('./lib/auto-refresh.cjs');
 const {createSaveWatcher} = require('./lib/save-watcher.cjs');
 const {assertFreshSources, calculateRealDamage} = require('./lib/real-damage.cjs');
 const {loadGuideData} = require('./lib/guide/data.cjs');
@@ -61,8 +62,6 @@ const jobs = new Map();
 const guideJobs = new Map();
 let guideSequence = 0;
 let shutdownStarted = false;
-let autoRefreshEnabled = true;
-let firstReadDone = false;
 let allowQuitAfterWorkerStop = false;
 
 function isRecord(value) {
@@ -489,19 +488,17 @@ const saveWatcher = TRAINER_UI_TEST_MODE
       readSnapshot: readPlayerSnapshotFromConfig,
       onChange: notifySnapshotChanged,
     });
+const autoRefresh = createAutoRefresh(saveWatcher);
 function handleSetAutoRefresh(event, enabled) {
   requireSender(event);
   if (typeof enabled !== 'boolean') throw new TypeError('O auto-refresh precisa ser verdadeiro ou falso');
-  autoRefreshEnabled = enabled;
-  if (!saveWatcher) return {enabled};
-  if (!enabled) saveWatcher.stop();
-  else if (firstReadDone) saveWatcher.start();
+  autoRefresh.setEnabled(enabled);
   return {enabled};
 }
 function handleSimulateSnapshotChange(event) {
   requireSender(event);
   if (!TRAINER_UI_TEST_MODE) throw new Error('Harness de UI indisponível');
-  if (!autoRefreshEnabled) return {sent: false};
+  if (!autoRefresh.enabled) return {sent: false};
   const snapshot = structuredClone(TRAINER_UI_SNAPSHOT);
   snapshot.capturedAt = new Date().toISOString();
   snapshot.sources[0].sha256 = 'c'.repeat(64);
@@ -514,9 +511,7 @@ function handleReadPlayerSnapshot(event, ...args) {
   try {
     if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_SNAPSHOT);
     const snapshot = readPlayerSnapshotFromConfig();
-    firstReadDone = true;
-    saveWatcher.acknowledge(snapshot);
-    if (autoRefreshEnabled) saveWatcher.start();
+    autoRefresh.afterRead(snapshot);
     return snapshot;
   } catch (error) {
     throw new Error(publicPlayerImportError(error));
@@ -633,9 +628,10 @@ app.whenReady().then(async () => {
   await installProtocol();
   installIpc();
   createWindow();
+  autoRefresh.start();
 });
 app.on('before-quit', (event) => {
-  saveWatcher?.stop();
+  autoRefresh.stop();
   if (allowQuitAfterWorkerStop) return;
   event.preventDefault();
   if (shutdownStarted) return;
