@@ -309,6 +309,29 @@ function occupiedIndividual(value) {
   return true;
 }
 
+/** `Shiny` é um byte (1 = shiny, 0 = normal); qualquer outro valor ou ausência é desconhecido (null), nunca presumido como normal. */
+function shinyOf(value) {
+  return value === 1 ? true : value === 0 ? false : null;
+}
+
+/**
+ * Aspectos de forma gravados em `Features`: cada feature de bandeira (`{<nome>: 1b, "cobblemon:feature_id": ...}`, como galarian,
+ * alolan, hisuian, paldean ou punk_form) vale o aspecto de mesmo nome. Features numéricas (blocks_traveled, dynamax_level) e de texto
+ * (spawn_bucket) não são aspectos de forma e ficam de fora. Sem a lista, desconhecido (null).
+ */
+function aspectsOf(features) {
+  if (!Array.isArray(features)) return null;
+  const aspects = [];
+  for (const feature of features) {
+    if (!isRecord(feature)) continue;
+    for (const [key, flag] of Object.entries(feature)) {
+      if (key === 'cobblemon:feature_id' || flag !== 1) continue;
+      if (!aspects.includes(key)) aspects.push(key);
+    }
+  }
+  return aspects;
+}
+
 function collectSlot(value, location, output, seenUuids, unknownCounts) {
   if (!occupiedIndividual(value)) return;
   if (output.length >= MAX_INDIVIDUALS) fail('ERR_IMPORT_LIMIT', 'A quantidade de indivíduos excede o limite seguro de importação.');
@@ -320,6 +343,10 @@ function collectSlot(value, location, output, seenUuids, unknownCounts) {
 
   const formId = sourceId(value.FormId) || 'unknown';
   if (formId === 'unknown') addUnknown(unknownCounts, 'formId');
+  const shiny = shinyOf(value.Shiny);
+  if (shiny === null) addUnknown(unknownCounts, 'shiny');
+  const aspects = aspectsOf(value.Features);
+  if (aspects === null) addUnknown(unknownCounts, 'aspects');
   const level = nonNegativeInteger(value.Level);
   if (level === null) addUnknown(unknownCounts, 'level');
 
@@ -341,6 +368,8 @@ function collectSlot(value, location, output, seenUuids, unknownCounts) {
     uuid,
     speciesId,
     formId,
+    shiny,
+    aspects,
     level,
     location,
     equippedMoves: equippedMoves.moves,
@@ -389,6 +418,8 @@ function warningsFor(counts) {
   const warnings = [];
   const labels = {
     formId: ['FormId ausente ou inválido', 'formId="unknown"'],
+    shiny: ['Shiny ausente ou inválido', 'shiny=null'],
+    aspects: ['Features ausente ou inválido', 'aspects=null'],
     level: ['Level ausente ou inválido', 'level=null'],
     nature: ['Nature/MintedNature ausente ou inválida', 'nature=null'],
     ability: ['AbilityName ausente ou inválido', 'ability=null'],
