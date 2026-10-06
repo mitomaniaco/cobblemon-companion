@@ -1286,6 +1286,8 @@ async function exerciseGuideContract(contents) {
     const sources = snapshot.sources.map(({kind, sha256}) => ({kind, sha256}));
     const guide = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}});
     // Rejeição intencional (loga no main): fontes que não correspondem ao snapshot atual devem ser recusadas.
+    const capped = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, levelCap: 1});
+    const uncapped = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, levelCap: null});
     const stale = await api.buildGuide({sources: [], goal: {kind: 'pve'}}).then(() => 'built', (error) => error.message);
     const member = guide.team[0];
     const battlePlan = await api.buildBattlePlan({sources, trainerId: trainers[0].id, team: [{uuid: member.uuid, moveIds: member.moves.map((move) => move.id), itemId: member.item.id}]});
@@ -1299,7 +1301,7 @@ async function exerciseGuideContract(contents) {
     const training = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: 30, capOrigin: 'informado'});
     const noCap = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: null, capOrigin: 'desconhecida'});
     const staleTraining = await api.buildTrainingPlan({sources: [], team: [], levelCap: null, capOrigin: 'desconhecida'}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, guide, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, training, noCap, staleTraining};
+    return {trainers, nextGoal, guide, capped, uncapped, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, training, noCap, staleTraining};
   })()`,
   );
   check(
@@ -1353,6 +1355,14 @@ async function exerciseGuideContract(contents) {
   check(result.staleCapture !== 'built', 'O plano de capturas aceitou fontes que não correspondem ao snapshot atual.');
   check(result.staleEvolution !== 'built', 'O plano de evoluções aceitou um pedido inválido.');
   check(result.stalePlan !== 'built', 'O plano aceitou um pedido inválido.');
+  check(
+    result.capped.team.length === 0 && result.capped.excluded.some((entry) => entry.reason === 'acima do level cap (1)'),
+    'Com o cap abaixo do nível do membro, ele precisa aparecer em excluídos (acima do level cap) e não no time.',
+  );
+  check(
+    result.uncapped.assumptions.some((line) => line.includes('level cap não foi informado')),
+    'Sem cap, o guia precisa avisar que o cap não foi considerado.',
+  );
   check(result.stale !== 'built', 'O guia aceitou fontes que não correspondem ao snapshot atual.');
   console.log('PASS contrato do guia no modo sintético (treinadores, próximo objetivo, card e fontes)');
 }

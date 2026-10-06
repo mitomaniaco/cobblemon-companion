@@ -88,13 +88,19 @@ const priorityOf = (moveId) => calcMove(moveId)?.priority ?? 0;
 
 // --- Time do jogador ---------------------------------------------------------------------------------------------
 
-function buildTeam(request, individuals) {
+function buildTeam(request, individuals, assumptions) {
   const members = request.team;
   if (!Array.isArray(members) || members.length < 1 || members.length > MAX_TEAM) {
     throw new Error(`o time precisa ter de 1 a ${MAX_TEAM} membros`);
   }
   const seen = new Set();
-  return members.map((member) => {
+  const levelCap = Number.isSafeInteger(request.levelCap) ? request.levelCap : null;
+  if (levelCap === null) {
+    assumptions.push(
+      'O level cap não foi informado e não foi considerado: o time pode conter Pokémon acima do cap, que o treinador do RCT não aceita enfrentar.',
+    );
+  }
+  const built = members.map((member) => {
     if (seen.has(member.uuid)) throw new Error(`membro repetido no time: ${member.uuid}`);
     seen.add(member.uuid);
     const individual = individuals.find((candidate) => candidate.uuid === member.uuid);
@@ -108,8 +114,26 @@ function buildTeam(request, individuals) {
     const moveIds = [...new Set(member.moveIds ?? [])].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id)).slice(0, MAX_MOVES);
     if (moveIds.length === 0) throw new Error(`membro ${member.uuid} não tem golpes do catálogo compatível`);
     const pokemon = pokemonFromSpec({...profile, item: itemCalcName(member.itemId)});
-    return {uuid: member.uuid, speciesId: individual.speciesId, pokemon, moveIds};
+    return {uuid: member.uuid, speciesId: individual.speciesId, level: individual.level, pokemon, moveIds};
   });
+  // Contra treinador do RCT o cap proíbe a luta com qualquer Pokémon acima dele na party (Issue #142).
+  const over = levelCap === null ? [] : built.filter((member) => member.level > levelCap);
+  if (request.respectLevelCap === false) {
+    if (levelCap !== null && over.length > 0) {
+      assumptions.push(
+        `O level cap (${levelCap}) está ignorado a seu pedido: os membros acima dele entram no plano, mas precisam baixar o nível ou ir para o PC antes da luta.`,
+      );
+    }
+    return {team: built, over};
+  }
+  const team = levelCap === null ? built : built.filter((member) => member.level <= levelCap);
+  for (const member of over) {
+    assumptions.push(
+      `${speciesName(member.speciesId)} (nível ${member.level}) ficou fora do plano por estar acima do level cap (${levelCap}); guarde-o no PC antes da batalha.`,
+    );
+  }
+  if (team.length === 0) throw new Error(`nenhum membro do time está dentro do level cap (${levelCap})`);
+  return {team, over: []};
 }
 
 // --- Adversário --------------------------------------------------------------------------------------------------
@@ -369,12 +393,19 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
       assumptions: [],
     };
   }
-  const team = buildTeam(request, snapshot.individuals);
   const assumptions = [
     'Hipóteses: HP e PP cheios, sem status, campo neutro e sem críticos; a IA do RCT não é modelada.',
     'O time usa os golpes e o item recomendados pelo guia; o app não verifica se você tem os itens.',
     'O item do adversário só entra no dano quando a definição tem uma única alternativa no catálogo; golpes de status são ignorados.',
   ];
+  const {team, over} = buildTeam(request, snapshot.individuals, assumptions);
+  const overCap = over.map((member) => ({
+    uuid: member.uuid,
+    speciesId: member.speciesId,
+    level: member.level,
+    levelCap: request.levelCap,
+    text: `Nível ${member.level} acima do level cap (${request.levelCap}): baixe o nível para ${request.levelCap} antes da luta ou guarde no PC.`,
+  }));
   const entries = [];
   for (const [index, member] of trainer.team.entries()) {
     await checkpoint();
@@ -387,6 +418,7 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
   return {
     ...header,
     status: 'plano',
+    overCap,
     scopeReason: null,
     lead,
     entries: entries.map(({evaluation: _evaluation, trainerId: _trainerId, ...entry}) => entry),

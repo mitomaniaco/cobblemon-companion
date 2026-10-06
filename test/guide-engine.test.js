@@ -190,6 +190,81 @@ describe('motor do guia', () => {
   });
 });
 
+describe('level cap do RCT no guia (Issue #142)', () => {
+  const party = () => [
+    individual({species: 'blastoise', level: 75, moves: ['surf']}),
+    individual({species: 'venusaur', level: 75, moves: ['tackle']}),
+    individual({species: 'golem', level: 50, moves: ['earthquake']}),
+    individual({species: 'gengar', level: 55, moves: ['shadowball'], container: 'pc'}),
+  ];
+
+  it('contra treinador, quem passa do cap sai do time e vai para excluded; quem está no cap ou abaixo fica elegível', async () => {
+    const members = party();
+    const result = await run(members, trainerGoal('synthetic:fire'), {levelCap: 55});
+    expect(result.team.every((member) => member.level <= 55)).toBe(true);
+    expect(result.team.map((member) => member.uuid).sort()).toEqual([members[2].uuid, members[3].uuid].sort());
+    expect(
+      result.excluded
+        .filter((entry) => entry.reason === 'acima do level cap (55)')
+        .map((entry) => entry.uuid)
+        .sort(),
+    ).toEqual([members[0].uuid, members[1].uuid].sort());
+    expect(result.currentPartyComparison.removed).toEqual(expect.arrayContaining([members[0].uuid, members[1].uuid]));
+  });
+
+  it('avisa que o treinador não luta com nenhum Pokémon da party acima do cap, mesmo fora do time', async () => {
+    const result = await run(party(), trainerGoal('synthetic:fire'), {levelCap: 55});
+    expect(result.assumptions.join(' ')).toContain('guarde no PC os 2 acima do cap');
+  });
+
+  it('toggle desligado: todos entram, ninguém é excluído e overCap lista quem passa do cap', async () => {
+    const members = party();
+    const result = await run(members, trainerGoal('synthetic:fire'), {levelCap: 55, respectLevelCap: false});
+    expect(result.excluded.some((entry) => entry.reason.includes('level cap'))).toBe(false);
+    expect(result.team).toHaveLength(4);
+    const over = result.overCap.map((item) => item.uuid).sort();
+    expect(over).toEqual([members[0].uuid, members[1].uuid].sort());
+    expect(result.overCap[0]).toMatchObject({levelCap: 55});
+    expect(result.overCap[0].text).toContain('baixe o nível para 55');
+    expect(result.assumptions.join(' ')).toContain('ignorado a seu pedido');
+  });
+
+  it('toggle ligado (padrão) devolve overCap vazio; PvE nunca devolve overCap', async () => {
+    expect((await run(party(), trainerGoal('synthetic:fire'), {levelCap: 55})).overCap).toEqual([]);
+    const pveMembers = [
+      individual({species: 'blastoise', level: 40, moves: ['surf']}),
+      individual({species: 'golem', level: 38, moves: ['earthquake']}),
+    ];
+    const pve = await run(pveMembers, {kind: 'pve'}, {levelCap: 10, respectLevelCap: false});
+    expect(pve.overCap).toEqual([]);
+  });
+
+  it('cap nulo não exclui ninguém e avisa que o cap não foi considerado', async () => {
+    const result = await run(party(), trainerGoal('synthetic:fire'));
+    expect(result.excluded).toEqual([]);
+    expect(result.team).toHaveLength(4);
+    expect(result.assumptions.join(' ')).toContain('O level cap não foi informado e não foi considerado');
+  });
+
+  it('cap alto não exclui ninguém e não gera aviso de cap', async () => {
+    const result = await run(party(), trainerGoal('synthetic:fire'), {levelCap: 100});
+    expect(result.excluded).toEqual([]);
+    expect(result.team).toHaveLength(4);
+    expect(result.assumptions.join(' ')).not.toContain('level cap');
+  });
+
+  it('PvE geral (exploração) não aplica o cap', async () => {
+    const members = [
+      individual({species: 'blastoise', level: 40, moves: ['surf']}),
+      individual({species: 'golem', level: 38, moves: ['earthquake']}),
+    ];
+    const result = await run(members, {kind: 'pve'}, {levelCap: 10});
+    expect(result.team).toHaveLength(2);
+    expect(result.excluded.some((entry) => entry.reason.includes('level cap'))).toBe(false);
+    expect(result.assumptions.join(' ')).not.toContain('level cap');
+  });
+});
+
 describe('elegibilidade do guia', () => {
   it('não exige item: heldItem fora do catálogo não exclui o indivíduo', () => {
     const modded = individual({species: 'blastoise', moves: ['surf'], heldItem: 'mega_showdown:blastoisinite'});
