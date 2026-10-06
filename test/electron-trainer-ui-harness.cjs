@@ -365,15 +365,19 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   check(team.length > 0 && pc.length > 0, 'A fixture precisa conter indivíduos na equipe e no PC.');
 
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="refresh-snapshot"]\'))', 'ação de atualização');
+  // Leitura inicial automática (#137): o snapshot aparece sem clicar em "Atualizar do save"; o convite nunca chega a ser necessário.
   await waitFor(
     contents,
     `(() => {
     const active = [...document.querySelectorAll('nav[aria-label="Vistas"] button')].find(button => button.getAttribute('aria-current') === 'page');
-    return active?.textContent.trim() === 'Guia' && document.body.innerText.includes('Atualize do save para montar o time');
+    return active?.textContent.trim() === 'Guia' && document.body.innerText.includes('Captura de') && !document.body.innerText.includes('Atualize do save para montar o time');
   })()`,
-    'tela Guia inicial com o convite para atualizar do save',
+    'captura carregada sozinha ao abrir, sem clique',
   );
-  await clickButton(contents, 'Atualizar do save');
+  check(
+    await evaluate(contents, "document.querySelector('[data-testid=\"refresh-snapshot\"]')?.textContent.trim() === 'Atualizar do save'"),
+    'Depois da leitura inicial o botão manual deve continuar disponível como releitura.',
+  );
   await navigate(contents, 'Equipe');
   await waitFor(
     contents,

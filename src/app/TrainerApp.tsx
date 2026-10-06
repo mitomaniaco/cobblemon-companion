@@ -316,9 +316,19 @@ export function TrainerApp() {
     return unsubscribe;
   }, [api]);
 
+  // Leitura inicial automática: sempre acontece ao abrir (o interruptor só controla o monitoramento contínuo).
+  // O monitoramento liga depois, para que uma mudança do save não concorra com a primeira leitura.
+  const initialReadStartedRef = useRef(false);
+  const autoRefreshRef = useRef(autoRefresh);
+  autoRefreshRef.current = autoRefresh;
+  const refreshSessionRef = useRef(session.refresh);
+  refreshSessionRef.current = session.refresh;
   useEffect(() => {
-    void Promise.resolve()
-      .then(() => api().setAutoRefresh(true))
+    if (initialReadStartedRef.current) return;
+    initialReadStartedRef.current = true;
+    void Promise.resolve(refreshSessionRef.current())
+      .catch(() => undefined)
+      .then(() => api().setAutoRefresh(autoRefreshRef.current))
       .catch(() => undefined);
   }, [api]);
 
