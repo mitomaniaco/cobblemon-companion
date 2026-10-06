@@ -76,8 +76,9 @@ export function guideSourcesKey(snapshot: PlayerSnapshot): string {
 }
 
 /** O level cap só vale para objetivo de treinador/líder (PvE geral não o aplica): por isso só entra na chave dele. */
-export function guideBuildKey(sourcesKey: string, goal: GuideGoal, levelCap: number | null): string {
-  return `${sourcesKey}#${goal.kind === 'pve' ? 'pve' : `trainer:${goal.trainerId}:cap:${levelCap ?? 'none'}`}`;
+export function guideBuildKey(sourcesKey: string, goal: GuideGoal, levelCap: number | null, respectLevelCap: boolean): string {
+  if (goal.kind === 'pve') return `${sourcesKey}#pve`;
+  return `${sourcesKey}#trainer:${goal.trainerId}:cap:${levelCap ?? 'none'}:${respectLevelCap ? 'respeita' : 'ignora'}`;
 }
 
 /** Cap enviado ao motor: só para objetivo de treinador; PvE geral nunca leva cap. */
@@ -91,12 +92,13 @@ export function shouldAutoBuildGuide(input: {
   sourcesKey: string | null;
   goal: GuideGoal | null;
   levelCap: number | null;
+  respectLevelCap: boolean;
   nextGoalKey: string | null;
   attemptedKey: string | null;
 }): boolean {
   if (!input.active || input.sourcesKey === null || input.goal === null) return false;
   if (input.nextGoalKey !== input.sourcesKey) return false;
-  return input.attemptedKey !== guideBuildKey(input.sourcesKey, input.goal, input.levelCap);
+  return input.attemptedKey !== guideBuildKey(input.sourcesKey, input.goal, input.levelCap, input.respectLevelCap);
 }
 
 export function guideBuildCause(state: Pick<GuideState, 'result' | 'resultSources'>, sourcesKey: string): GuideBuildCause {
@@ -204,3 +206,34 @@ export function guideCapExcluded(excluded: GuideResult['excluded']): GuideResult
 /** Aviso fixo quando o objetivo é de líder e o cap ainda não foi informado. */
 export const LEVEL_CAP_REQUIRED_TEXT =
   'Informe o level cap para montar o time: sem ele o time pode conter Pokémon proibidos nessa batalha.';
+
+export type GuideCapWarning = {uuid: string; level: number; text: string};
+
+/**
+ * Quem passa do cap e atrapalha a luta de líder. O jogo bloqueia a luta por qualquer Pokémon da party acima do cap
+ * (mesmo fora do time); quem está no PC só conta se o time ideal o trouxer. Só vale para objetivo de treinador com cap conhecido.
+ */
+export function guideCapWarnings(input: {
+  goal: GuideGoal;
+  team: ReadonlyArray<{uuid: string}>;
+  individuals: readonly PlayerIndividual[];
+  levelCap: number | null;
+}): GuideCapWarning[] {
+  const {goal, team, individuals, levelCap} = input;
+  if (goal.kind !== 'trainer' || levelCap === null) return [];
+  const inTeam = new Set(team.map((member) => member.uuid));
+  const warnings: GuideCapWarning[] = [];
+  for (const individual of individuals) {
+    if (individual.level === null || individual.level <= levelCap) continue;
+    const party = individual.location.container === 'party';
+    const member = inTeam.has(individual.uuid);
+    if (!party && !member) continue;
+    const text = !party
+      ? `Nv. ${individual.level}, no PC: baixe o nível para ${levelCap} antes de levá-lo à luta.`
+      : member
+        ? `Nv. ${individual.level}: baixe o nível para ${levelCap} antes da luta ou guarde no PC.`
+        : `Nv. ${individual.level}, na party fora do time: bloqueia a luta mesmo sem lutar; guarde no PC.`;
+    warnings.push({uuid: individual.uuid, level: individual.level, text});
+  }
+  return warnings;
+}

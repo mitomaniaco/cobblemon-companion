@@ -60,13 +60,15 @@ const planResult = (overrides: Partial<BattlePlanResult> = {}): BattlePlanResult
 
 describe('pedido do plano de batalha', () => {
   it('usa só os golpes avaliados e o item sugerido de cada membro, com os hashes das fontes', () => {
-    const request = buildBattlePlanRequest(snapshot, {goal: {kind: 'trainer', trainerId: 'brock'}, team}, 'job-1');
+    const request = buildBattlePlanRequest(snapshot, {goal: {kind: 'trainer', trainerId: 'brock'}, team}, 55, true, 'job-1');
     expect(request).toEqual({
       sources: [
         {kind: 'party', sha256: 'a'.repeat(64)},
         {kind: 'pc', sha256: 'b'.repeat(64)},
       ],
       trainerId: 'brock',
+      levelCap: 55,
+      respectLevelCap: true,
       team: [
         {uuid: 'u1', moveIds: ['cobblemon:psychic'], itemId: 'cobblemon:choice_specs'},
         {uuid: 'u2', moveIds: ['cobblemon:tackle'], itemId: null},
@@ -76,12 +78,12 @@ describe('pedido do plano de batalha', () => {
   });
 
   it('não pede plano para PvE geral nem para guia sem time', () => {
-    expect(buildBattlePlanRequest(snapshot, {goal: {kind: 'pve'}, team})).toBeNull();
-    expect(buildBattlePlanRequest(snapshot, {goal: {kind: 'trainer', trainerId: 'brock'}, team: []})).toBeNull();
+    expect(buildBattlePlanRequest(snapshot, {goal: {kind: 'pve'}, team}, null, true)).toBeNull();
+    expect(buildBattlePlanRequest(snapshot, {goal: {kind: 'trainer', trainerId: 'brock'}, team: []}, null, true)).toBeNull();
   });
 
   it('omite jobId quando não há', () => {
-    expect(buildBattlePlanRequest(snapshot, {goal: {kind: 'trainer', trainerId: 'brock'}, team})).not.toHaveProperty('jobId');
+    expect(buildBattlePlanRequest(snapshot, {goal: {kind: 'trainer', trainerId: 'brock'}, team}, null, true)).not.toHaveProperty('jobId');
   });
 });
 

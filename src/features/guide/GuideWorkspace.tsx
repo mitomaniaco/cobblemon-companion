@@ -13,9 +13,17 @@ import {
   PokeBallMark,
   SegmentedControl,
   StatusMessage,
+  Switch,
   TypeBadge,
 } from '../../ui';
-import {guideCapExcluded, guideComparisonRows, guideOpponentTurnsLabel, guideTrainerOptions, type GuideMode} from './guide-model';
+import {
+  guideCapExcluded,
+  guideCapWarnings,
+  guideComparisonRows,
+  guideOpponentTurnsLabel,
+  guideTrainerOptions,
+  type GuideMode,
+} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
@@ -53,6 +61,10 @@ export interface GuideWorkspaceProps {
   /** Level cap digitado (compartilhado por Evoluções e Treino); vazio ou inválido = desconhecido. */
   levelCapInput: string;
   onLevelCapInputChange(value: string): void;
+  respectLevelCap: boolean;
+  onRespectLevelCapChange(value: boolean): void;
+  /** Cap já estabilizado (o mesmo que montou o time exibido). */
+  levelCap: number | null;
 }
 
 type Lookup = {
@@ -217,6 +229,7 @@ function GuideResultView({
   onOpenCalculation,
   stale,
   planSlot,
+  levelCap,
 }: {
   result: GuideResult;
   snapshot: PlayerSnapshot;
@@ -224,6 +237,7 @@ function GuideResultView({
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
   stale: boolean;
   planSlot: ReactNode;
+  levelCap: number | null;
 }) {
   const [infoExpanded, setInfoExpanded] = useState(false);
   const comparison = guideComparisonRows(result.currentPartyComparison);
@@ -231,6 +245,7 @@ function GuideResultView({
     .flatMap((member) => member.acquire.map((entry) => ({member, entry})))
     .sort((left, right) => right.entry.gainPercent - left.entry.gainPercent);
   const capExcluded = guideCapExcluded(result.excluded);
+  const capWarnings = guideCapWarnings({goal: result.goal, team: result.team, individuals: snapshot.individuals, levelCap});
   return (
     <div className={styles.result} data-stale={stale ? 'true' : undefined} aria-busy={stale}>
       <p className={styles.resultSummary}>
@@ -244,6 +259,20 @@ function GuideResultView({
             {capExcluded.map((entry) => (
               <li key={entry.uuid}>
                 <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {capWarnings.length > 0 && (
+        <section className={styles.capExcluded} aria-label="Acima do level cap" data-kind="warning">
+          <h3 className={styles.sectionTitle}>Acima do level cap ({levelCap})</h3>
+          <p className={styles.muted}>Qualquer Pokémon da party acima do cap impede a luta contra o treinador, mesmo fora do time.</p>
+          <ul>
+            {capWarnings.map((warning) => (
+              <li key={warning.uuid}>
+                <strong>{individualName(lookup, warning.uuid)}</strong>: {warning.text}
               </li>
             ))}
           </ul>
@@ -357,6 +386,9 @@ export function GuideWorkspace({
   training,
   levelCapInput,
   onLevelCapInputChange,
+  respectLevelCap,
+  onRespectLevelCapChange,
+  levelCap,
   loading,
   onRefresh,
   onOpenCalculation,
@@ -443,6 +475,11 @@ export function GuideWorkspace({
                 )}
               </div>
               <LevelCapField value={levelCapInput} onChange={onLevelCapInputChange} required={guide.mode === 'trainer'} />
+              {guide.mode === 'trainer' && (
+                <Switch isSelected={respectLevelCap} onChange={onRespectLevelCapChange}>
+                  Respeitar level cap
+                </Switch>
+              )}
             </div>
             {guide.mode === 'trainer' && trainers.status === 'failed' && (
               <StatusMessage tone="warning" title="Lista de treinadores indisponível">
@@ -469,6 +506,7 @@ export function GuideWorkspace({
               lookup={lookup}
               onOpenCalculation={onOpenCalculation}
               stale={building}
+              levelCap={levelCap}
               planSlot={
                 building ? null : (
                   <>

@@ -292,8 +292,15 @@ export function TrainerApp() {
 
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
-  const {input: levelCapInput, setInput: setLevelCapInput, levelCap, debouncedLevelCap} = useLevelCapState();
-  const guide = useGuide(api, session.snapshot, workspace === 'guide', debouncedLevelCap);
+  const {
+    input: levelCapInput,
+    setInput: setLevelCapInput,
+    levelCap,
+    debouncedLevelCap,
+    respectLevelCap,
+    setRespectLevelCap,
+  } = useLevelCapState();
+  const guide = useGuide(api, session.snapshot, workspace === 'guide', debouncedLevelCap, respectLevelCap);
 
   // Modo de teste da UI: a ponte de teste entrega um manifesto de artwork sintético (a produção não tem essa ponte).
   useEffect(() => {
@@ -301,7 +308,7 @@ export function TrainerApp() {
     if (!testBridge?.getArtworkManifest) return;
     void testBridge.getArtworkManifest().then(setArtworkManifest, () => undefined);
   }, []);
-  const battlePlan = useBattlePlan(api, session.snapshot, guide.result);
+  const battlePlan = useBattlePlan(api, session.snapshot, guide.result, debouncedLevelCap, respectLevelCap);
   const evolutions = useEvolutionPlan(api, session.snapshot, guide.result, levelCap);
   const captures = useCapturePlan(api, session.snapshot, guide.result);
   const training = useTrainingPlan(api, session.snapshot, guide.result, levelCap);
@@ -538,6 +545,9 @@ export function TrainerApp() {
                   training={training}
                   levelCapInput={levelCapInput}
                   onLevelCapInputChange={setLevelCapInput}
+                  respectLevelCap={respectLevelCap}
+                  onRespectLevelCapChange={setRespectLevelCap}
+                  levelCap={debouncedLevelCap}
                   loading={session.phase === 'loading'}
                   onRefresh={() => void refreshSnapshot()}
                   onOpenCalculation={openGuideCalculation}
