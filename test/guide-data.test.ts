@@ -29,11 +29,17 @@ type Stage = {
   type: string | null;
   order: number;
   requires: string[];
+  capBefore: number | null;
+  capAfter: number | null;
+  capUnknownReason: string | null;
   ambiguous: boolean;
   ambiguousReason: string | null;
   variants: {id: string; format: string; maxLevel: number; teamSize: number; optional: boolean}[];
 };
-const campaign: Record<string, {stages: Stage[]; optionalTrainerIds: string[]}> = read('campaign.json');
+const campaign: Record<
+  string,
+  {levelCapRule: {initialLevelCap: number; relativeLevelCap: number}; stages: Stage[]; optionalTrainerIds: string[]}
+> = read('campaign.json');
 
 const namespaced = /^[a-z0-9_.-]+:[a-z0-9_/.-]+$/;
 
@@ -172,5 +178,26 @@ describe('dados do guia', () => {
     expect(stages.find((stage) => stage.name === 'Elite Four Lorelei')?.variants.every((variant) => variant.format === 'doubles')).toBe(
       true,
     );
+  });
+
+  it('level cap por etapa segue a regra do mod (LevelUtils.levelCap)', () => {
+    for (const [seriesId, entry] of Object.entries(campaign)) {
+      for (const stage of entry.stages) {
+        expect(stage.capUnknownReason === null, `${seriesId} ${stage.stageId}`).toBe(stage.capBefore !== null);
+        expect(stage.capUnknownReason === null, stage.stageId).toBe(stage.capAfter !== null);
+        if (stage.capBefore !== null && stage.capAfter !== null) {
+          expect(stage.capBefore >= entry.levelCapRule.initialLevelCap && stage.capBefore <= 100, stage.stageId).toBe(true);
+          expect(stage.capAfter >= entry.levelCapRule.initialLevelCap && stage.capAfter <= 100, stage.stageId).toBe(true);
+        }
+      }
+    }
+    const radical = campaign.radicalred;
+    expect(radical.levelCapRule).toMatchObject({initialLevelCap: 15, relativeLevelCap: 0});
+    const [brock, archer] = radical.stages;
+    // Brock (nível 14) abaixo do piso 15: cap 15; vencê-lo libera o Archer (nível 21).
+    expect([brock.capBefore, brock.capAfter]).toEqual([15, 21]);
+    expect(archer.capBefore).toBe(21);
+    const champion = radical.stages.find((stage) => stage.type === 'champ');
+    expect(champion?.capAfter).toBe(100);
   });
 });

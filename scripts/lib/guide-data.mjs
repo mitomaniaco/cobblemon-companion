@@ -171,7 +171,7 @@ function topologicalOrder(graph, seriesId) {
  * ponderado no spawn (TrainerSpawner.computeWeight), sem regra por escolha inicial/dificuldade: variantes ficam `ambiguous`.
  * Etapas só opcionais saem de `stages` e ficam em `optionalTrainerIds`.
  */
-export function deriveCampaign({series, trainers}) {
+export function deriveCampaign({series, trainers, levelCapConfig}) {
   const byId = new Map(trainers.map((trainer) => [trainer.id, trainer]));
   const result = {};
   for (const [seriesId, entry] of Object.entries(series)) {
@@ -231,7 +231,9 @@ export function deriveCampaign({series, trainers}) {
       const name = byId.get(stage.members[0])?.name ?? stage.members[0];
       totals.set(name, (totals.get(name) ?? 0) + 1);
     }
+    const caps = computeStageCaps({entry, ordered, byId, config: levelCapConfig});
     result[seriesId] = {
+      levelCapRule: caps.rule,
       stages: ordered.map(({stage, requires}, index) => {
         const first = byId.get(stage.members[0]);
         const baseName = first?.name ?? stage.members[0];
@@ -254,6 +256,9 @@ export function deriveCampaign({series, trainers}) {
           type: entry.graph[stage.members[0]].type,
           order: index,
           requires,
+          capBefore: caps.byStage.get(stage.stageId).capBefore,
+          capAfter: caps.byStage.get(stage.stageId).capAfter,
+          capUnknownReason: caps.byStage.get(stage.stageId).unknownReason,
           ambiguous,
           ambiguousReason: ambiguous ? 'sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos' : null,
           variants,
@@ -298,4 +303,109 @@ export function deriveArtworkSources(species, slugs, trainers = []) {
     };
   }
   return result;
+}
+
+const MAX_LEVEL = 100;
+
+/**
+ * Level cap por etapa pela regra do mod (LevelUtils.levelCap / trainerLevel, bytecode do rctmod 0.18.1-beta):
+ *   trainerLevel(T) = max( min(100, max(0, nívelMáximoDoTime(T) + relativeLevelCap)), max_{R em requiredDefeats(T)} trainerLevel(R) )
+ *   levelCap(vencidos) = max( initialLevelCap, min_{N em próximos(vencidos)} trainerLevel(N) ), 100 se não há próximo.
+ * "Próximo" = nó não opcional, não vencido, com cada grupo de requiredDefeats satisfeito por algum membro vencido.
+ * Opcional = opcional, ou com irmão/pré-requisito opcional (TrainerNode.isOptional). capBefore: só os pré-requisitos
+ * transitivos da etapa vencidos; capAfter: esses mais a própria etapa (vencida em qualquer variante). Etapas paralelas
+ * não vencidas entram na fronteira, então o cap é o da menor entre elas.
+ */
+function computeStageCaps({entry, ordered, byId, config}) {
+  const graph = entry.graph;
+  const initial = entry.initialLevelCap ?? config.initialLevelCap;
+  const relative = entry.relativeLevelCap ?? config.relativeLevelCap;
+  const rule = {
+    initialLevelCap: initial,
+    initialLevelCapSource: entry.initialLevelCap === null ? 'config/rctmod-server.toml' : 'série',
+    relativeLevelCap: relative,
+    relativeLevelCapSource: entry.relativeLevelCap === null ? 'config/rctmod-server.toml' : 'série',
+  };
+  const siblingsOf = new Map();
+  for (const node of Object.values(graph)) {
+    for (const group of node.requires) {
+      for (const member of group) siblingsOf.set(member, [...(siblingsOf.get(member) ?? []), ...group]);
+    }
+  }
+  const lacking = new Set(Object.keys(graph).filter((id) => (byId.get(id)?.team ?? []).length === 0));
+  const memo = new Map();
+  const trainerLevel = (id, trail = new Set()) => {
+    if (memo.has(id)) return memo.get(id);
+    if (trail.has(id)) return 0;
+    trail.add(id);
+    const team = byId.get(id)?.team ?? [];
+    const own = Math.min(MAX_LEVEL, Math.max(0, Math.max(0, ...team.map((pokemon) => pokemon.level)) + relative));
+    const required = (graph[id]?.requires ?? []).flat().filter((requiredId) => requiredId in graph);
+    const level = Math.max(own, ...required.map((requiredId) => trainerLevel(requiredId, trail)));
+    trail.delete(id);
+    memo.set(id, level);
+    return level;
+  };
+  const optionalMemo = new Map();
+  const isOptional = (id, trail = new Set()) => {
+    if (optionalMemo.has(id)) return optionalMemo.get(id);
+    if (trail.has(id)) return false;
+    trail.add(id);
+    const node = graph[id];
+    const siblings = (siblingsOf.get(id) ?? []).filter((sibling) => sibling !== id);
+    const value =
+      node.optional ||
+      siblings.some((sibling) => isOptional(sibling, trail)) ||
+      node.requires.flat().some((requiredId) => requiredId in graph && isOptional(requiredId, trail));
+    trail.delete(id);
+    optionalMemo.set(id, value);
+    return value;
+  };
+  const lackingMemo = new Map();
+  const dependsOnLacking = (id, trail = new Set()) => {
+    if (lackingMemo.has(id)) return lackingMemo.get(id);
+    if (trail.has(id)) return false;
+    trail.add(id);
+    const value =
+      lacking.has(id) ||
+      (graph[id]?.requires ?? []).flat().some((requiredId) => requiredId in graph && dependsOnLacking(requiredId, trail));
+    trail.delete(id);
+    lackingMemo.set(id, value);
+    return value;
+  };
+  const stageMembers = new Map(ordered.map(({stage}) => [stage.stageId, stage.members]));
+  const cap = (defeatedStages) => {
+    const defeated = new Set(defeatedStages.flatMap((stageId) => stageMembers.get(stageId)));
+    const frontier = Object.keys(graph).filter(
+      (id) => !defeated.has(id) && !isOptional(id) && graph[id].requires.every((group) => group.some((member) => defeated.has(member))),
+    );
+    const levels = frontier.map((id) => trainerLevel(id));
+    const value = frontier.length === 0 ? MAX_LEVEL : Math.max(initial, Math.min(...levels));
+    const unknown = frontier.some((id) => dependsOnLacking(id));
+    return {value, missing: unknown};
+  };
+  const stageIds = ordered.map(({stage}) => stage.stageId);
+  const requiresOf = new Map(ordered.map(({stage, requires}) => [stage.stageId, requires]));
+  const ancestors = (stageId, seen = new Set()) => {
+    for (const required of requiresOf.get(stageId) ?? []) {
+      if (!seen.has(required)) {
+        seen.add(required);
+        ancestors(required, seen);
+      }
+    }
+    return seen;
+  };
+  const byStage = new Map();
+  for (const stageId of stageIds) {
+    const before = [...ancestors(stageId)];
+    const capBefore = cap(before);
+    const capAfter = cap([...before, stageId]);
+    const unknown = capBefore.missing || capAfter.missing;
+    byStage.set(stageId, {
+      capBefore: unknown ? null : capBefore.value,
+      capAfter: unknown ? null : capAfter.value,
+      unknownReason: unknown ? 'time de algum treinador da fronteira ou de seus pré-requisitos ausente em trainers.json' : null,
+    });
+  }
+  return {rule, byStage};
 }
