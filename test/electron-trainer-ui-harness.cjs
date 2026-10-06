@@ -348,6 +348,21 @@ function idSet(items) {
   return new Set(items.map((item) => item.uuid));
 }
 
+async function detailArtworkState(contents) {
+  return evaluate(
+    contents,
+    `(() => {
+    const figure = document.querySelector('[data-testid="individual-details"] figure[data-artwork]');
+    return {
+      source: figure?.dataset.artwork || null,
+      shiny: figure?.dataset.shiny || null,
+      marked: [...(figure?.querySelectorAll('[role="img"]') || [])].map(node => node.getAttribute('aria-label')),
+      caption: figure?.querySelector('figcaption')?.textContent.trim() || null,
+    };
+  })()`,
+  );
+}
+
 async function exerciseCollectionAndDamage(window, snapshot) {
   const contents = window.webContents;
   const team = snapshot.individuals.filter((individual) => individual.location.container === 'party');
@@ -436,13 +451,13 @@ async function exerciseCollectionAndDamage(window, snapshot) {
     const figure = document.querySelector('[data-testid="individual-details"] figure[data-artwork]');
     return {
       source: figure?.dataset.artwork || null,
-      marked: Boolean(figure?.querySelector('[role="img"][aria-label="Arte da forma normal"]')),
+      marked: Boolean(figure?.querySelector('[role="img"][aria-label="Sem arte da forma"]')),
       caption: figure?.querySelector('figcaption')?.textContent.trim() || null,
     };
   })()`,
   );
   check(
-    alternateArtwork.source === 'base-form' && alternateArtwork.marked && alternateArtwork.caption === 'Arte da forma normal',
+    alternateArtwork.source === 'base-form' && alternateArtwork.marked && alternateArtwork.caption === 'Sem arte da forma: forma normal',
     'A forma alternativa não mostrou a arte da forma normal marcada como tal.',
   );
   await clickTab(contents, 'Atributos');
@@ -483,6 +498,11 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await selectIndividual(contents, emptyKnown.uuid);
   await openCaptureDetails(contents);
   check((await selectedUuid(contents)) === emptyKnown.uuid, 'A ficha do PC não manteve o UUID selecionado.');
+  const missingShiny = await detailArtworkState(contents);
+  check(
+    emptyKnown.shiny === true && missingShiny.shiny === 'shiny-missing' && missingShiny.marked.includes('Sem arte shiny'),
+    'Shiny sem arte shiny deve mostrar a arte normal marcada "Sem arte shiny" (nunca como se fosse a shiny).',
+  );
   await clickTab(contents, 'Golpes');
   const zeroMoveStates = await evaluate(
     contents,
@@ -514,6 +534,14 @@ async function exerciseCollectionAndDamage(window, snapshot) {
   await selectIndividual(contents, damageIndividual.uuid);
   await openCaptureDetails(contents);
   check((await selectedUuid(contents)) === damageIndividual.uuid, 'A espécie repetida selecionou outro indivíduo pelo UUID.');
+  const shinyArt = await detailArtworkState(contents);
+  check(
+    damageIndividual.shiny === true &&
+      shinyArt.shiny === 'shiny' &&
+      shinyArt.marked.includes('Shiny') &&
+      shinyArt.caption === 'Ilustração shiny',
+    'Shiny com arte shiny deve mostrar a arte shiny com o selo e a legenda.',
+  );
   await clickTab(contents, 'Atributos');
   const evView = await evaluate(
     contents,

@@ -141,7 +141,12 @@ function TeamCard({
       style={style}
     >
       <span className={styles.socket}>
-        <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="collection" />
+        <PokemonArtwork
+          speciesId={individual.speciesId}
+          formId={individual.formId}
+          shiny={individual.shiny === true}
+          variant="collection"
+        />
       </span>
       <span className={styles.cardBody}>
         <span className={styles.cardTitle}>
@@ -248,7 +253,12 @@ function BoxSection({
                 className={styles.boxItem}
                 style={style}
               >
-                <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="slot" />
+                <PokemonArtwork
+                  speciesId={individual.speciesId}
+                  formId={individual.formId}
+                  shiny={individual.shiny === true}
+                  variant="slot"
+                />
                 <span className={styles.levelBadge}>{individual.level ?? '?'}</span>
               </ListBoxItem>
             );

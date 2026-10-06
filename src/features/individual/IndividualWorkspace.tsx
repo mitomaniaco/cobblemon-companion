@@ -428,6 +428,7 @@ export function IndividualWorkspace({
           className={styles.heroArtwork}
           speciesId={individual.speciesId}
           formId={individual.formId}
+          shiny={individual.shiny === true}
           variant="detail"
         />
         <div className={styles.identity}>
