@@ -268,18 +268,33 @@ export function deriveCampaign({series, trainers}) {
 /**
  * Mapeamento espécie -> fonte de arte. O app só consegue arte 2D do PokeAPI/HOME por número da dex nacional: os JARs do
  * modpack trazem apenas texturas de modelo 3D (atlas UV em assets/cobblemon/textures/pokemon/<dex>_<slug>/), que não servem como retrato.
- * A chave é o slug do Cobblemon (nome-independente); `forms` lista as formas declaradas (aspectos) que NÃO têm arte própria.
+ * A chave é o slug do Cobblemon (nome-independente); `forms` lista as formas declaradas pela espécie e as observadas nos times dos adversários (`declared: false`), por conjunto de aspectos.
  */
-export function deriveArtworkSources(species, slugs) {
+export function deriveArtworkSources(species, slugs, trainers = []) {
+  const key = (aspects) => [...aspects].sort().join('+');
+  const observed = new Map();
+  for (const trainer of trainers) {
+    for (const pokemon of trainer.team) {
+      if (pokemon.aspects.length === 0) continue;
+      const slug = pokemon.speciesId.split(':').pop();
+      if (!observed.has(slug)) observed.set(slug, new Map());
+      observed.get(slug).set(key(pokemon.aspects), [...pokemon.aspects].sort());
+    }
+  }
   const result = {};
   for (const slug of slugs) {
     const json = species[slug];
+    const forms = new Map();
+    for (const form of json.forms ?? []) {
+      if ((form.aspects ?? []).length > 0)
+        forms.set(key(form.aspects), {name: form.name, aspects: [...form.aspects].sort(), declared: true});
+    }
+    for (const [formKey, aspects] of observed.get(slug) ?? [])
+      if (!forms.has(formKey)) forms.set(formKey, {name: null, aspects, declared: false});
     result[slug] = {
       nationalDex: Number.isInteger(json.nationalPokedexNumber) ? json.nationalPokedexNumber : null,
       source: 'pokeapi-home-dex',
-      forms: (json.forms ?? [])
-        .filter((form) => (form.aspects ?? []).length > 0)
-        .map((form) => ({name: form.name, aspects: [...form.aspects].sort()})),
+      forms: [...forms.values()].sort((x, y) => (key(x.aspects) < key(y.aspects) ? -1 : 1)),
     };
   }
   return result;

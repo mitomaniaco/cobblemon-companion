@@ -43,28 +43,48 @@ export const CAUSES = {
   'nome-divergente': 'o identifier do PokéAPI difere do slug do Cobblemon; só o número da dex liga os dois',
   'download-falhou': 'o manifesto marca a arte como omitida (404 no download)',
   'arquivo-ausente': 'o manifesto aponta um arquivo que não está em public/',
-  'forma-declarada':
-    'forma regional/alternativa declarada pela espécie, sem arte própria (o PokéAPI/HOME por forma usa ids de forma que o app não carrega)',
-  'aspecto-sem-forma': 'aspecto do time (gênero, item/feature, forma de mod) que não é uma forma declarada da espécie',
+  'shiny-sem-fonte': 'o PokéAPI/HOME não tem render shiny desta espécie',
+  'forma-sem-fonte': 'o PokéAPI/HOME não tem esta forma (forma de mod, gênero, item/feature ou nome sem equivalente)',
+  'forma-shiny-sem-fonte': 'o PokéAPI/HOME tem a forma, mas não o render shiny dela',
 };
 
-/** Classifica uma espécie normal. Retorna null quando há arte utilizável. */
+function manifestEntry(slug, sources, manifest) {
+  const source = sources[slug];
+  if (!source || source.nationalDex === null) return {source: null, entry: null, byIdentifier: false};
+  const byIdentifier = manifest[`cobblemon:${slug}`];
+  const entry = byIdentifier ?? Object.values(manifest).find((candidate) => candidate.dexNumber === source.nationalDex) ?? null;
+  return {source, entry, byIdentifier: Boolean(byIdentifier)};
+}
+
+const fileExists = (publicDirectory, artworkPath) => fs.existsSync(path.join(publicDirectory, artworkPath));
+
+/** Classifica a espécie normal. Retorna null quando há arte utilizável. */
 export function classifySpecies(slug, sources, manifest, publicDirectory) {
   if (manifest === null) return 'sem-artefatos';
-  const source = sources[slug];
-  if (!source || source.nationalDex === null) return 'fora-da-dex-nacional';
-  const byIdentifier = manifest[`cobblemon:${slug}`];
-  const entry = byIdentifier ?? Object.values(manifest).find((candidate) => candidate.dexNumber === source.nationalDex);
+  const {entry, byIdentifier} = manifestEntry(slug, sources, manifest);
   if (!entry) return 'fora-da-dex-nacional';
   if (entry.artworkPath === null) return 'download-falhou';
-  if (!fs.existsSync(path.join(publicDirectory, entry.artworkPath))) return 'arquivo-ausente';
+  if (!fileExists(publicDirectory, entry.artworkPath)) return 'arquivo-ausente';
   return byIdentifier ? null : 'nome-divergente';
 }
 
-export function classifyForm(slug, aspects, sources) {
-  const declared = sources[slug]?.forms ?? [];
-  const known = declared.some((form) => aspects.every((aspect) => form.aspects.includes(aspect)));
-  return known ? 'forma-declarada' : 'aspecto-sem-forma';
+/** Classifica a arte shiny da espécie (só faz sentido se a normal existe). */
+export function classifyShiny(slug, sources, manifest, publicDirectory) {
+  if (manifest === null) return 'sem-artefatos';
+  const {entry} = manifestEntry(slug, sources, manifest);
+  if (!entry?.shinyPath) return 'shiny-sem-fonte';
+  return fileExists(publicDirectory, entry.shinyPath) ? null : 'arquivo-ausente';
+}
+
+/** Classifica a arte normal de uma forma por aspectos; `shiny` escolhe a variante shiny dela. */
+export function classifyForm(slug, aspects, sources, manifest, publicDirectory, shiny = false) {
+  if (manifest === null) return 'sem-artefatos';
+  const {entry} = manifestEntry(slug, sources, manifest);
+  const form = entry?.forms?.[[...aspects].sort().join('+')];
+  if (!form) return shiny ? 'forma-shiny-sem-fonte' : 'forma-sem-fonte';
+  const artworkPath = shiny ? form.shinyPath : form.artworkPath;
+  if (artworkPath === null) return shiny ? 'forma-shiny-sem-fonte' : 'download-falhou';
+  return fileExists(publicDirectory, artworkPath) ? null : 'arquivo-ausente';
 }
 
 function collectUniverse() {
@@ -79,11 +99,10 @@ function collectUniverse() {
     for (const evolution of list) add(normal, slugOf(evolution.to), 'evolução');
   for (const slug of Object.keys(readJson(path.join(ROOT, 'data/spawns/spawn-pools.json')).species)) add(normal, slug, 'captura');
   for (const trainer of readJson(path.join(ROOT, 'data/guide/trainers.json'))) {
-    for (const pokemon of trainer.team) {
-      const slug = slugOf(pokemon.speciesId);
-      add(normal, slug, 'adversário');
-      if (pokemon.aspects.length > 0) add(forms, `${slug}/${[...pokemon.aspects].sort().join('+')}`, 'adversário');
-    }
+    for (const pokemon of trainer.team) add(normal, slugOf(pokemon.speciesId), 'adversário');
+  }
+  for (const [slug, source] of Object.entries(sources)) {
+    for (const form of source.forms) add(forms, `${slug}/${form.aspects.join('+')}`, form.declared ? 'forma da espécie' : 'adversário');
   }
   return {sources, normal, forms};
 }
@@ -94,33 +113,28 @@ function main() {
   const {sources, normal, forms} = collectUniverse();
 
   const exceptions = [];
+  const push = (kind, id, cause, origins, slug) =>
+    exceptions.push({kind, id, cause, origins: [...new Set(origins)], nationalDex: sources[slug]?.nationalDex ?? null});
   for (const [slug, origins] of [...normal].sort(([a], [b]) => (a < b ? -1 : 1))) {
     const cause = classifySpecies(slug, sources, manifest, options.publicDirectory);
-    if (cause)
-      exceptions.push({
-        kind: 'espécie',
-        id: `cobblemon:${slug}`,
-        cause,
-        origins: [...new Set(origins)],
-        nationalDex: sources[slug]?.nationalDex ?? null,
-      });
+    if (cause) push('espécie', `cobblemon:${slug}`, cause, origins, slug);
+    const shiny = cause === null || cause === 'nome-divergente' ? classifyShiny(slug, sources, manifest, options.publicDirectory) : null;
+    if (shiny) push('shiny', `cobblemon:${slug} [shiny]`, shiny, origins, slug);
   }
   for (const [key, origins] of [...forms].sort(([a], [b]) => (a < b ? -1 : 1))) {
     const [slug, aspects] = key.split('/');
-    exceptions.push({
-      kind: 'forma',
-      id: `cobblemon:${slug} [${aspects}]`,
-      cause: classifyForm(slug, aspects.split('+'), sources),
-      origins: [...new Set(origins)],
-      nationalDex: sources[slug]?.nationalDex ?? null,
-    });
+    const list = aspects.split('+');
+    const cause = classifyForm(slug, list, sources, manifest, options.publicDirectory);
+    if (cause) push('forma', `cobblemon:${slug} [${aspects}]`, cause, origins, slug);
+    else {
+      const shiny = classifyForm(slug, list, sources, manifest, options.publicDirectory, true);
+      if (shiny) push('forma-shiny', `cobblemon:${slug} [${aspects}] [shiny]`, shiny, origins, slug);
+    }
   }
 
   const counts = {};
   for (const exception of exceptions) counts[exception.cause] = (counts[exception.cause] ?? 0) + 1;
-  console.log(
-    `Espécies no universo da UI: ${normal.size}; formas de adversários: ${forms.size}; manifesto: ${manifest ? 'presente' : 'ausente'}.`,
-  );
+  console.log(`Espécies no universo da UI: ${normal.size}; formas: ${forms.size}; manifesto: ${manifest ? 'presente' : 'ausente'}.`);
   for (const [cause, count] of Object.entries(counts)) console.log(`  ${cause}: ${count} (${CAUSES[cause]})`);
   for (const exception of exceptions.filter((item) => item.kind === 'espécie'))
     console.log(`  - ${exception.id} dex=${exception.nationalDex ?? '?'} → ${exception.cause}`);

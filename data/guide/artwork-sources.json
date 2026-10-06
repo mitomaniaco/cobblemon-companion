@@ -7,7 +7,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -24,7 +25,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -41,7 +43,8 @@
         "name": "Blade",
         "aspects": [
           "blade-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -53,7 +56,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -65,7 +69,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -82,7 +87,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -91,58 +97,67 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Ruby-Cream",
+        "name": "Caramel-Swirl",
         "aspects": [
-          "cream-ruby"
-        ]
-      },
-      {
-        "name": "Matcha-Cream",
-        "aspects": [
-          "cream-matcha"
-        ]
-      },
-      {
-        "name": "Mint-Cream",
-        "aspects": [
-          "cream-mint"
-        ]
+          "cream-caramel_swirl"
+        ],
+        "declared": true
       },
       {
         "name": "Lemon-Cream",
         "aspects": [
           "cream-lemon"
-        ]
+        ],
+        "declared": true
       },
       {
-        "name": "Salted-Cream",
+        "name": "Matcha-Cream",
         "aspects": [
-          "cream-salted"
-        ]
+          "cream-matcha"
+        ],
+        "declared": true
       },
       {
-        "name": "Ruby-Swirl",
+        "name": "Mint-Cream",
         "aspects": [
-          "cream-ruby_swirl"
-        ]
-      },
-      {
-        "name": "Caramel-Swirl",
-        "aspects": [
-          "cream-caramel_swirl"
-        ]
+          "cream-mint"
+        ],
+        "declared": true
       },
       {
         "name": "Rainbow-Swirl",
         "aspects": [
           "cream-rainbow_swirl"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Ruby-Cream",
+        "aspects": [
+          "cream-ruby"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Ruby-Swirl",
+        "aspects": [
+          "cream-ruby_swirl"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Salted-Cream",
+        "aspects": [
+          "cream-salted"
+        ],
+        "declared": true
       },
       {
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -159,7 +174,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -186,7 +202,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -208,7 +225,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -240,14 +258,23 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
   "arceus": {
     "nationalDex": 493,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "bug"
+        ],
+        "declared": false
+      }
+    ]
   },
   "archaludon": {
     "nationalDex": 1018,
@@ -317,7 +344,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -329,7 +357,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -346,7 +375,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -388,7 +418,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -412,10 +443,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "f"
+        ],
+        "declared": false
+      },
+      {
         "name": "F",
         "aspects": [
           "female"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -424,16 +463,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "blue_striped"
+        ],
+        "declared": false
+      },
+      {
         "name": "Blue-Striped",
         "aspects": [
           "bluestriped"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "White-Striped",
         "aspects": [
           "whitestriped"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -470,7 +518,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -539,16 +588,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Mega",
-        "aspects": [
-          "mega"
-        ]
-      },
-      {
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ],
+        "declared": true
       }
     ]
   },
@@ -560,7 +611,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -632,7 +684,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -699,13 +752,15 @@
         "name": "Sandy",
         "aspects": [
           "sandy-cloak"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Trash",
         "aspects": [
           "trash-cloak"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -717,7 +772,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -741,16 +797,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "ice"
+        ],
+        "declared": false
+      },
+      {
         "name": "Ice",
         "aspects": [
           "ice-rider"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Shadow",
         "aspects": [
           "shadow-rider"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -762,7 +827,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -806,22 +872,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Sunny",
-        "aspects": [
-          "sunny-form"
-        ]
-      },
-      {
         "name": "Rainy",
         "aspects": [
           "rainy-form"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Snowy",
         "aspects": [
           "snowy-form"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Sunny",
+        "aspects": [
+          "sunny-form"
+        ],
+        "declared": true
       }
     ]
   },
@@ -848,7 +917,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -887,22 +957,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": "Gmax",
+        "aspects": [
+          "gmax"
+        ],
+        "declared": true
+      },
+      {
         "name": "Mega-X",
         "aspects": [
           "mega_x"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Mega-Y",
         "aspects": [
           "mega_y"
-        ]
-      },
-      {
-        "name": "Gmax",
-        "aspects": [
-          "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -934,7 +1007,8 @@
         "name": "Sunshine",
         "aspects": [
           "sunshine-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1006,7 +1080,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1023,7 +1098,15 @@
   "clawitzer": {
     "nationalDex": 693,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "hisuian"
+        ],
+        "declared": false
+      }
+    ]
   },
   "claydol": {
     "nationalDex": 344,
@@ -1068,7 +1151,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1110,7 +1194,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1127,7 +1212,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1139,7 +1225,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1183,16 +1270,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Gulping",
-        "aspects": [
-          "gulping-form"
-        ]
-      },
-      {
         "name": "Gorging",
         "aspects": [
           "gorging-form"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Gulping",
+        "aspects": [
+          "gulping-form"
+        ],
+        "declared": true
       }
     ]
   },
@@ -1254,7 +1343,8 @@
         "name": "Alola-Bias",
         "aspects": [
           "region-bias-alola"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1286,7 +1376,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1305,24 +1396,34 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Zen",
+        "name": null,
         "aspects": [
-          "zen-mode"
-        ]
+          "galarian"
+        ],
+        "declared": false
       },
       {
         "name": "Galar",
         "aspects": [
           "galarian",
           "standard-mode"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Galar-Zen",
         "aspects": [
           "galarian",
           "zen-mode"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Zen",
+        "aspects": [
+          "zen-mode"
+        ],
+        "declared": true
       }
     ]
   },
@@ -1334,7 +1435,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1346,7 +1448,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1358,7 +1461,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1372,22 +1476,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Summer",
-        "aspects": [
-          "summer"
-        ]
-      },
-      {
         "name": "Autumn",
         "aspects": [
           "autumn"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Summer",
+        "aspects": [
+          "summer"
+        ],
+        "declared": true
       },
       {
         "name": "Winter",
         "aspects": [
           "winter"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1416,22 +1523,32 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "attack"
+        ],
+        "declared": false
+      },
+      {
         "name": "Attack",
         "aspects": [
           "attack-forme"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Defense",
         "aspects": [
           "defense-forme"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Speed",
         "aspects": [
           "speed-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1448,7 +1565,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1475,7 +1593,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1492,7 +1611,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1509,7 +1629,15 @@
   "dodrio": {
     "nationalDex": 85,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "sevii"
+        ],
+        "declared": false
+      }
+    ]
   },
   "doduo": {
     "nationalDex": 84,
@@ -1599,7 +1727,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1656,7 +1785,8 @@
         "name": "Three-Segment",
         "aspects": [
           "three-segment-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1668,7 +1798,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1690,7 +1821,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1742,7 +1874,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1754,7 +1887,8 @@
         "name": "Noice-Face",
         "aspects": [
           "noice_face"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1791,7 +1925,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1825,10 +1960,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "therian"
+        ],
+        "declared": false
+      },
+      {
         "name": "Therian",
         "aspects": [
           "therian-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1865,7 +2008,8 @@
         "name": "Eternamax",
         "aspects": [
           "eternamax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1882,7 +2026,8 @@
         "name": "Alola-Bias",
         "aspects": [
           "region-bias-alola"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1894,7 +2039,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1916,7 +2062,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -1985,28 +2132,32 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Yellow",
+        "name": "Blue",
         "aspects": [
-          "flower-yellow"
-        ]
+          "flower-blue"
+        ],
+        "declared": true
       },
       {
         "name": "Orange",
         "aspects": [
           "flower-orange"
-        ]
-      },
-      {
-        "name": "Blue",
-        "aspects": [
-          "flower-blue"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "White",
         "aspects": [
           "flower-white"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Yellow",
+        "aspects": [
+          "flower-yellow"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2023,7 +2174,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2057,34 +2209,39 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Yellow",
-        "aspects": [
-          "flower-yellow"
-        ]
-      },
-      {
-        "name": "Orange",
-        "aspects": [
-          "flower-orange"
-        ]
-      },
-      {
         "name": "Blue",
         "aspects": [
           "flower-blue"
-        ]
-      },
-      {
-        "name": "White",
-        "aspects": [
-          "flower-white"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Eternal",
         "aspects": [
           "flower-eternal"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Orange",
+        "aspects": [
+          "flower-orange"
+        ],
+        "declared": true
+      },
+      {
+        "name": "White",
+        "aspects": [
+          "flower-white"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Yellow",
+        "aspects": [
+          "flower-yellow"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2098,28 +2255,32 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Yellow",
+        "name": "Blue",
         "aspects": [
-          "flower-yellow"
-        ]
+          "flower-blue"
+        ],
+        "declared": true
       },
       {
         "name": "Orange",
         "aspects": [
           "flower-orange"
-        ]
-      },
-      {
-        "name": "Blue",
-        "aspects": [
-          "flower-blue"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "White",
         "aspects": [
           "flower-white"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Yellow",
+        "aspects": [
+          "flower-yellow"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2193,94 +2354,109 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Heart",
-        "aspects": [
-          "heart-trim"
-        ]
-      },
-      {
-        "name": "Star",
-        "aspects": [
-          "star-trim"
-        ]
-      },
-      {
-        "name": "Diamond",
-        "aspects": [
-          "diamond-trim"
-        ]
-      },
-      {
-        "name": "Debutante",
-        "aspects": [
-          "debutante-trim"
-        ]
-      },
-      {
-        "name": "Matron",
-        "aspects": [
-          "matron-trim"
-        ]
-      },
-      {
-        "name": "Dandy",
-        "aspects": [
-          "dandy-trim"
-        ]
-      },
-      {
-        "name": "La-Reine",
-        "aspects": [
-          "la_reine-trim"
-        ]
-      },
-      {
-        "name": "Kabuki",
-        "aspects": [
-          "kabuki-trim"
-        ]
-      },
-      {
-        "name": "Pharaoh",
-        "aspects": [
-          "pharaoh-trim"
-        ]
-      },
-      {
-        "name": "Matcha",
-        "aspects": [
-          "matcha-trim"
-        ]
-      },
-      {
-        "name": "Lavender",
-        "aspects": [
-          "lavender-trim"
-        ]
-      },
-      {
         "name": "Cinnamon",
         "aspects": [
           "cinnamon-trim"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Crusader",
         "aspects": [
           "crusader-trim"
-        ]
+        ],
+        "declared": true
       },
       {
-        "name": "Rocker",
+        "name": "Dandy",
         "aspects": [
-          "rocker-trim"
-        ]
+          "dandy-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Debutante",
+        "aspects": [
+          "debutante-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Diamond",
+        "aspects": [
+          "diamond-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Heart",
+        "aspects": [
+          "heart-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Kabuki",
+        "aspects": [
+          "kabuki-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "La-Reine",
+        "aspects": [
+          "la_reine-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Lavender",
+        "aspects": [
+          "lavender-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Matcha",
+        "aspects": [
+          "matcha-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Matron",
+        "aspects": [
+          "matron-trim"
+        ],
+        "declared": true
       },
       {
         "name": "Mourner",
         "aspects": [
           "mourner-trim"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Pharaoh",
+        "aspects": [
+          "pharaoh-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Rocker",
+        "aspects": [
+          "rocker-trim"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Star",
+        "aspects": [
+          "star-trim"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2302,7 +2478,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2319,7 +2496,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2331,7 +2509,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2340,10 +2519,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "fairy-plate"
+        ],
+        "declared": false
+      },
+      {
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2365,7 +2552,15 @@
         "name": "East",
         "aspects": [
           "east-sea"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "east_sea"
+        ],
+        "declared": false
       }
     ]
   },
@@ -2374,28 +2569,39 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Douse",
-        "aspects": [
-          "douse-drive"
-        ]
-      },
-      {
-        "name": "Shock",
-        "aspects": [
-          "shock-drive"
-        ]
-      },
-      {
         "name": "Burn",
         "aspects": [
           "burn-drive"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Chill",
         "aspects": [
           "chill-drive"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "douse"
+        ],
+        "declared": false
+      },
+      {
+        "name": "Douse",
+        "aspects": [
+          "douse-drive"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Shock",
+        "aspects": [
+          "shock-drive"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2404,16 +2610,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Mega",
-        "aspects": [
-          "mega"
-        ]
-      },
-      {
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2425,7 +2633,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2452,7 +2661,8 @@
         "name": "Roaming",
         "aspects": [
           "roaming"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2464,7 +2674,15 @@
   "giratina": {
     "nationalDex": 487,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "origin"
+        ],
+        "declared": false
+      }
+    ]
   },
   "glaceon": {
     "nationalDex": 471,
@@ -2479,7 +2697,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2546,7 +2765,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2573,7 +2793,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2585,7 +2806,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2624,22 +2846,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Small",
-        "aspects": [
-          "pumpkin-size-small"
-        ]
-      },
-      {
         "name": "Large",
         "aspects": [
           "pumpkin-size-large"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Small",
+        "aspects": [
+          "pumpkin-size-small"
+        ],
+        "declared": true
       },
       {
         "name": "Super",
         "aspects": [
           "pumpkin-size-super"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2666,7 +2891,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2690,16 +2916,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Bond",
-        "aspects": [
-          "bond"
-        ]
-      },
-      {
         "name": "Ash",
         "aspects": [
           "ash"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Bond",
+        "aspects": [
+          "bond"
+        ],
+        "declared": true
       }
     ]
   },
@@ -2711,7 +2939,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2723,7 +2952,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2745,7 +2975,8 @@
         "name": "Primal",
         "aspects": [
           "primal"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2762,7 +2993,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2804,7 +3036,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2836,7 +3069,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2888,7 +3122,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2945,7 +3180,8 @@
         "name": "Unbound",
         "aspects": [
           "unbound"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -2972,7 +3208,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3031,10 +3268,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "f"
+        ],
+        "declared": false
+      },
+      {
         "name": "F",
         "aspects": [
           "female"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3056,7 +3301,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3183,7 +3429,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3210,7 +3457,8 @@
         "name": "Resolute",
         "aspects": [
           "resolute-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3237,7 +3485,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3284,7 +3533,8 @@
         "name": "Galar-Bias",
         "aspects": [
           "region-bias-galar"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3341,7 +3591,8 @@
         "name": "Primal",
         "aspects": [
           "primal"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3350,16 +3601,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "White",
+        "name": null,
         "aspects": [
-          "white-fusion"
-        ]
+          "black"
+        ],
+        "declared": false
       },
       {
         "name": "Black",
         "aspects": [
           "black-fusion"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "White",
+        "aspects": [
+          "white-fusion"
+        ],
+        "declared": true
       }
     ]
   },
@@ -3378,10 +3638,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "therian"
+        ],
+        "declared": false
+      },
+      {
         "name": "Therian",
         "aspects": [
           "therian-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3398,7 +3666,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3420,7 +3689,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3432,7 +3702,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3489,7 +3760,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3506,7 +3778,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3543,7 +3816,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3565,7 +3839,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3619,16 +3894,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Midnight",
+        "name": null,
         "aspects": [
-          "midnight-form"
-        ]
+          "dusk"
+        ],
+        "declared": false
       },
       {
         "name": "Dusk",
         "aspects": [
           "dusk-form"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Midnight",
+        "aspects": [
+          "midnight-form"
+        ],
+        "declared": true
       }
     ]
   },
@@ -3645,7 +3929,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3674,10 +3959,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "original"
+        ],
+        "declared": false
+      },
+      {
         "name": "Original",
         "aspects": [
           "original-color"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3744,7 +4037,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3756,7 +4050,15 @@
   "mantine": {
     "nationalDex": 226,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "sevii"
+        ],
+        "declared": false
+      }
+    ]
   },
   "mantyke": {
     "nationalDex": 458,
@@ -3791,7 +4093,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3823,7 +4126,8 @@
         "name": "Four",
         "aspects": [
           "maushold-family-four"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3835,7 +4139,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3847,7 +4152,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3869,7 +4175,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3878,10 +4185,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "pirouette"
+        ],
+        "declared": false
+      },
+      {
         "name": "Pirouette",
         "aspects": [
           "pirouette-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3903,7 +4218,8 @@
         "name": "F",
         "aspects": [
           "female"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3915,19 +4231,22 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3944,7 +4263,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -3971,13 +4291,15 @@
         "name": "Mega-X",
         "aspects": [
           "mega_x"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Mega-Y",
         "aspects": [
           "mega_y"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4004,7 +4326,15 @@
   "milotic": {
     "nationalDex": 350,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "sevii"
+        ],
+        "declared": false
+      }
+    ]
   },
   "miltank": {
     "nationalDex": 241,
@@ -4019,7 +4349,8 @@
         "name": "Galar-Bias",
         "aspects": [
           "region-bias-galar"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4031,7 +4362,8 @@
         "name": "Busted",
         "aspects": [
           "busted-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4048,7 +4380,8 @@
         "name": "Meteor",
         "aspects": [
           "meteor-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4080,7 +4413,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4107,7 +4441,8 @@
         "name": "Hangry",
         "aspects": [
           "hangry-mode"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4124,7 +4459,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4156,7 +4492,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4210,22 +4547,32 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Dusk-Mane",
-        "aspects": [
-          "dusk-fusion"
-        ]
-      },
-      {
         "name": "Dawn-Wings",
         "aspects": [
           "dawn-fusion"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Dusk-Mane",
+        "aspects": [
+          "dusk-fusion"
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "dusk_mane"
+        ],
+        "declared": false
       },
       {
         "name": "Ultra",
         "aspects": [
           "ultra-fusion"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4282,7 +4629,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4344,7 +4692,15 @@
   "ogerpon": {
     "nationalDex": 1017,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "hearthflame-mask"
+        ],
+        "declared": false
+      }
+    ]
   },
   "oinkologne": {
     "nationalDex": 916,
@@ -4354,7 +4710,8 @@
         "name": "F",
         "aspects": [
           "female"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4391,7 +4748,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4400,22 +4758,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Pom-Pom",
-        "aspects": [
-          "pom-pom-style"
-        ]
-      },
-      {
         "name": "Pa’u",
         "aspects": [
           "pau-style"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Pom-Pom",
+        "aspects": [
+          "pom-pom-style"
+        ],
+        "declared": true
       },
       {
         "name": "Sensu",
         "aspects": [
           "sensu-style"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4432,7 +4793,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4454,14 +4816,23 @@
         "name": "Hero",
         "aspects": [
           "hero-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
   "palkia": {
     "nationalDex": 484,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "origin"
+        ],
+        "declared": false
+      }
+    ]
   },
   "palossand": {
     "nationalDex": 770,
@@ -4561,7 +4932,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4573,7 +4945,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4605,7 +4978,8 @@
         "name": "Alola-Bias",
         "aspects": [
           "region-bias-alola"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4617,7 +4991,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4646,22 +5021,46 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Partner",
+        "name": null,
         "aspects": [
-          "partner-cap"
-        ]
+          "flying"
+        ],
+        "declared": false
       },
       {
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "libre"
+        ],
+        "declared": false
+      },
+      {
+        "name": "Partner",
+        "aspects": [
+          "partner-cap"
+        ],
+        "declared": true
       },
       {
         "name": "Alola-Bias",
         "aspects": [
           "region-bias-alola"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "surfing"
+        ],
+        "declared": false
       }
     ]
   },
@@ -4693,7 +5092,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4740,7 +5140,8 @@
         "name": "Artisan",
         "aspects": [
           "artisan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4752,7 +5153,8 @@
         "name": "Antique",
         "aspects": [
           "antique"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4764,7 +5166,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4823,22 +5226,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Small",
-        "aspects": [
-          "pumpkin-size-small"
-        ]
-      },
-      {
         "name": "Large",
         "aspects": [
           "pumpkin-size-large"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Small",
+        "aspects": [
+          "pumpkin-size-small"
+        ],
+        "declared": true
       },
       {
         "name": "Super",
         "aspects": [
           "pumpkin-size-super"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4895,7 +5301,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4912,7 +5319,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4939,7 +5347,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4966,7 +5375,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4978,7 +5388,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -4990,7 +5401,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5002,7 +5414,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5094,7 +5507,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5116,7 +5530,8 @@
         "name": "Dusk",
         "aspects": [
           "dusk-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5150,34 +5565,46 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Heat",
+        "name": "Fan",
         "aspects": [
-          "heat-appliance"
-        ]
-      },
-      {
-        "name": "Wash",
-        "aspects": [
-          "wash-appliance"
-        ]
+          "fan-appliance"
+        ],
+        "declared": true
       },
       {
         "name": "Frost",
         "aspects": [
           "frost-appliance"
-        ]
+        ],
+        "declared": true
       },
       {
-        "name": "Fan",
+        "name": "Heat",
         "aspects": [
-          "fan-appliance"
-        ]
+          "heat-appliance"
+        ],
+        "declared": true
       },
       {
         "name": "Mow",
         "aspects": [
           "mow-appliance"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "wash"
+        ],
+        "declared": false
+      },
+      {
+        "name": "Wash",
+        "aspects": [
+          "wash-appliance"
+        ],
+        "declared": true
       }
     ]
   },
@@ -5189,7 +5616,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5201,7 +5629,8 @@
         "name": "Hisui-Bias",
         "aspects": [
           "region-bias-hisui"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5218,7 +5647,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5230,7 +5660,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5252,7 +5683,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5264,7 +5696,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5281,7 +5714,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5293,7 +5727,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5317,22 +5752,25 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Summer",
-        "aspects": [
-          "summer"
-        ]
-      },
-      {
         "name": "Autumn",
         "aspects": [
           "autumn"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Summer",
+        "aspects": [
+          "summer"
+        ],
+        "declared": true
       },
       {
         "name": "Winter",
         "aspects": [
           "winter"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5349,7 +5787,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5361,7 +5800,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5463,7 +5903,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5472,10 +5913,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "sky"
+        ],
+        "declared": false
+      },
+      {
         "name": "Sky",
         "aspects": [
           "sky-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5502,7 +5951,15 @@
         "name": "East",
         "aspects": [
           "east-sea"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "east_sea"
+        ],
+        "declared": false
       }
     ]
   },
@@ -5569,7 +6026,29 @@
   "silvally": {
     "nationalDex": 773,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "dark"
+        ],
+        "declared": false
+      },
+      {
+        "name": null,
+        "aspects": [
+          "fairy"
+        ],
+        "declared": false
+      },
+      {
+        "name": null,
+        "aspects": [
+          "steel-memory"
+        ],
+        "declared": false
+      }
+    ]
   },
   "simipour": {
     "nationalDex": 516,
@@ -5594,7 +6073,8 @@
         "name": "Masterpiece",
         "aspects": [
           "masterpiece"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5606,7 +6086,8 @@
         "name": "Antique",
         "aspects": [
           "antique"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5683,7 +6164,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5697,16 +6179,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Mega",
-        "aspects": [
-          "mega"
-        ]
-      },
-      {
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ],
+        "declared": true
       }
     ]
   },
@@ -5718,7 +6202,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5730,7 +6215,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5767,7 +6253,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5794,7 +6281,8 @@
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5896,19 +6384,22 @@
         "name": "Blue",
         "aspects": [
           "squawkabilly-color-blue"
-        ]
-      },
-      {
-        "name": "Yellow",
-        "aspects": [
-          "squawkabilly-color-yellow"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "White",
         "aspects": [
           "squawkabilly-color-gray"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Yellow",
+        "aspects": [
+          "squawkabilly-color-yellow"
+        ],
+        "declared": true
       }
     ]
   },
@@ -5960,7 +6451,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -5992,7 +6484,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6049,7 +6542,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6146,13 +6640,15 @@
         "name": "Droopy",
         "aspects": [
           "tatsugiri-texture-droopy"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Stretchy",
         "aspects": [
           "tatsugiri-texture-stretchy"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6161,24 +6657,27 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Paldea-Combat",
+        "name": "Paldea-Aqua",
         "aspects": [
+          "aqua-breed",
           "paldean"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Paldea-Blaze",
         "aspects": [
           "blaze-breed",
           "paldean"
-        ]
+        ],
+        "declared": true
       },
       {
-        "name": "Paldea-Aqua",
+        "name": "Paldea-Combat",
         "aspects": [
-          "aqua-breed",
           "paldean"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6207,16 +6706,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Terastal",
-        "aspects": [
-          "terastal-form"
-        ]
-      },
-      {
         "name": "Stellar",
         "aspects": [
           "stellar-form"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Terastal",
+        "aspects": [
+          "terastal-form"
+        ],
+        "declared": true
       }
     ]
   },
@@ -6240,10 +6741,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "therian"
+        ],
+        "declared": false
+      },
+      {
         "name": "Therian",
         "aspects": [
           "therian-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6330,7 +6839,8 @@
         "name": "Therian",
         "aspects": [
           "therian-forme"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6374,24 +6884,34 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Low-Key",
-        "aspects": [
-          "low_key-form"
-        ]
-      },
-      {
         "name": "Gmax",
         "aspects": [
           "amped-form",
           "gmax"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Low-Key-Gmax",
         "aspects": [
           "gmax",
           "low_key-form"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "low_key"
+        ],
+        "declared": false
+      },
+      {
+        "name": "Low-Key",
+        "aspects": [
+          "low_key-form"
+        ],
+        "declared": true
       }
     ]
   },
@@ -6468,7 +6988,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6480,7 +7001,8 @@
         "name": "Mega",
         "aspects": [
           "mega"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6514,166 +7036,193 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "B",
-        "aspects": [
-          "character-b"
-        ]
-      },
-      {
-        "name": "C",
-        "aspects": [
-          "character-c"
-        ]
-      },
-      {
-        "name": "D",
-        "aspects": [
-          "character-d"
-        ]
-      },
-      {
-        "name": "E",
-        "aspects": [
-          "character-e"
-        ]
-      },
-      {
-        "name": "F",
-        "aspects": [
-          "character-f"
-        ]
-      },
-      {
-        "name": "G",
-        "aspects": [
-          "character-g"
-        ]
-      },
-      {
-        "name": "H",
-        "aspects": [
-          "character-h"
-        ]
-      },
-      {
-        "name": "I",
-        "aspects": [
-          "character-i"
-        ]
-      },
-      {
-        "name": "J",
-        "aspects": [
-          "character-j"
-        ]
-      },
-      {
-        "name": "K",
-        "aspects": [
-          "character-k"
-        ]
-      },
-      {
-        "name": "L",
-        "aspects": [
-          "character-l"
-        ]
-      },
-      {
-        "name": "M",
-        "aspects": [
-          "character-m"
-        ]
-      },
-      {
-        "name": "N",
-        "aspects": [
-          "character-n"
-        ]
-      },
-      {
-        "name": "O",
-        "aspects": [
-          "character-o"
-        ]
-      },
-      {
-        "name": "P",
-        "aspects": [
-          "character-p"
-        ]
-      },
-      {
-        "name": "Q",
-        "aspects": [
-          "character-q"
-        ]
-      },
-      {
-        "name": "R",
-        "aspects": [
-          "character-r"
-        ]
-      },
-      {
-        "name": "S",
-        "aspects": [
-          "character-s"
-        ]
-      },
-      {
-        "name": "T",
-        "aspects": [
-          "character-t"
-        ]
-      },
-      {
-        "name": "U",
-        "aspects": [
-          "character-u"
-        ]
-      },
-      {
-        "name": "V",
-        "aspects": [
-          "character-v"
-        ]
-      },
-      {
-        "name": "W",
-        "aspects": [
-          "character-w"
-        ]
-      },
-      {
-        "name": "X",
-        "aspects": [
-          "character-x"
-        ]
-      },
-      {
-        "name": "Y",
-        "aspects": [
-          "character-y"
-        ]
-      },
-      {
-        "name": "Z",
-        "aspects": [
-          "character-z"
-        ]
-      },
-      {
         "name": "!",
         "aspects": [
           "character-!"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "?",
         "aspects": [
           "character-?"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "B",
+        "aspects": [
+          "character-b"
+        ],
+        "declared": true
+      },
+      {
+        "name": "C",
+        "aspects": [
+          "character-c"
+        ],
+        "declared": true
+      },
+      {
+        "name": "D",
+        "aspects": [
+          "character-d"
+        ],
+        "declared": true
+      },
+      {
+        "name": "E",
+        "aspects": [
+          "character-e"
+        ],
+        "declared": true
+      },
+      {
+        "name": "F",
+        "aspects": [
+          "character-f"
+        ],
+        "declared": true
+      },
+      {
+        "name": "G",
+        "aspects": [
+          "character-g"
+        ],
+        "declared": true
+      },
+      {
+        "name": "H",
+        "aspects": [
+          "character-h"
+        ],
+        "declared": true
+      },
+      {
+        "name": "I",
+        "aspects": [
+          "character-i"
+        ],
+        "declared": true
+      },
+      {
+        "name": "J",
+        "aspects": [
+          "character-j"
+        ],
+        "declared": true
+      },
+      {
+        "name": "K",
+        "aspects": [
+          "character-k"
+        ],
+        "declared": true
+      },
+      {
+        "name": "L",
+        "aspects": [
+          "character-l"
+        ],
+        "declared": true
+      },
+      {
+        "name": "M",
+        "aspects": [
+          "character-m"
+        ],
+        "declared": true
+      },
+      {
+        "name": "N",
+        "aspects": [
+          "character-n"
+        ],
+        "declared": true
+      },
+      {
+        "name": "O",
+        "aspects": [
+          "character-o"
+        ],
+        "declared": true
+      },
+      {
+        "name": "P",
+        "aspects": [
+          "character-p"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Q",
+        "aspects": [
+          "character-q"
+        ],
+        "declared": true
+      },
+      {
+        "name": "R",
+        "aspects": [
+          "character-r"
+        ],
+        "declared": true
+      },
+      {
+        "name": "S",
+        "aspects": [
+          "character-s"
+        ],
+        "declared": true
+      },
+      {
+        "name": "T",
+        "aspects": [
+          "character-t"
+        ],
+        "declared": true
+      },
+      {
+        "name": "U",
+        "aspects": [
+          "character-u"
+        ],
+        "declared": true
+      },
+      {
+        "name": "V",
+        "aspects": [
+          "character-v"
+        ],
+        "declared": true
+      },
+      {
+        "name": "W",
+        "aspects": [
+          "character-w"
+        ],
+        "declared": true
+      },
+      {
+        "name": "X",
+        "aspects": [
+          "character-x"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Y",
+        "aspects": [
+          "character-y"
+        ],
+        "declared": true
+      },
+      {
+        "name": "Z",
+        "aspects": [
+          "character-z"
+        ],
+        "declared": true
       }
     ]
   },
@@ -6685,38 +7234,57 @@
         "name": "Bloodmoon",
         "aspects": [
           "bloodmoon"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
   "ursaring": {
     "nationalDex": 217,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "sevii"
+        ],
+        "declared": false
+      }
+    ]
   },
   "urshifu": {
     "nationalDex": 892,
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Rapid-Strike",
+        "name": "Rapid-Strike-Gmax",
         "aspects": [
+          "gmax",
           "rapid_strike-style"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Gmax",
         "aspects": [
           "gmax",
           "single_strike-style"
-        ]
+        ],
+        "declared": true
       },
       {
-        "name": "Rapid-Strike-Gmax",
+        "name": null,
         "aspects": [
-          "gmax",
+          "rapid_strike"
+        ],
+        "declared": false
+      },
+      {
+        "name": "Rapid-Strike",
+        "aspects": [
           "rapid_strike-style"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6775,16 +7343,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
-        "name": "Mega",
-        "aspects": [
-          "mega"
-        ]
-      },
-      {
         "name": "Gmax",
         "aspects": [
           "gmax"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": "Mega",
+        "aspects": [
+          "mega"
+        ],
+        "declared": true
       }
     ]
   },
@@ -6836,7 +7406,8 @@
         "name": "Pokeball",
         "aspects": [
           "vivillon-wings-poke-ball"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6863,7 +7434,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6880,7 +7452,8 @@
         "name": "Alola",
         "aspects": [
           "alolan"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6942,7 +7515,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -6991,10 +7565,18 @@
     "source": "pokeapi-home-dex",
     "forms": [
       {
+        "name": null,
+        "aspects": [
+          "hisuian"
+        ],
+        "declared": false
+      },
+      {
         "name": "School",
         "aspects": [
           "school-form"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7026,7 +7608,8 @@
         "name": "Paldea",
         "aspects": [
           "paldean"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7038,13 +7621,29 @@
         "name": "Sandy",
         "aspects": [
           "sandy-cloak"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "sandy_cloak"
+        ],
+        "declared": false
       },
       {
         "name": "Trash",
         "aspects": [
           "trash-cloak"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "trash_cloak"
+        ],
+        "declared": false
       }
     ]
   },
@@ -7081,7 +7680,8 @@
         "name": "Active",
         "aspects": [
           "active-mode"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7098,7 +7698,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7135,7 +7736,8 @@
         "name": "Crowned",
         "aspects": [
           "crowned"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7147,7 +7749,8 @@
         "name": "Crowned",
         "aspects": [
           "crowned"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7164,7 +7767,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7176,14 +7780,23 @@
         "name": "Dada",
         "aspects": [
           "dada-cape"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
   "zebstrika": {
     "nationalDex": 523,
     "source": "pokeapi-home-dex",
-    "forms": []
+    "forms": [
+      {
+        "name": null,
+        "aspects": [
+          "sevii"
+        ],
+        "declared": false
+      }
+    ]
   },
   "zekrom": {
     "nationalDex": 644,
@@ -7203,7 +7816,8 @@
         "name": "Galar",
         "aspects": [
           "galarian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7215,7 +7829,15 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
+      },
+      {
+        "name": null,
+        "aspects": [
+          "sevii"
+        ],
+        "declared": false
       }
     ]
   },
@@ -7227,7 +7849,8 @@
         "name": "Hisui",
         "aspects": [
           "hisuian"
-        ]
+        ],
+        "declared": true
       }
     ]
   },
@@ -7249,33 +7872,38 @@
         "name": "10%",
         "aspects": [
           "10-percent"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "10%-C",
         "aspects": [
           "10-percent",
           "power-construct"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "50%-C",
         "aspects": [
           "50-percent",
           "power-construct"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Complete",
         "aspects": [
           "complete-percent"
-        ]
+        ],
+        "declared": true
       },
       {
         "name": "Core",
         "aspects": [
           "core-percent"
-        ]
+        ],
+        "declared": true
       }
     ]
   }

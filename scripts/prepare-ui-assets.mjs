@@ -4,12 +4,15 @@ import {lstat, mkdir, mkdtemp, rename, rm, rmdir, writeFile} from 'node:fs/promi
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {formKey, parsePokemonCsv, resolveFormId} from './lib/artwork-forms.mjs';
 
 const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPECIES_CSV_REVISION = 'bc92d3b6029ef1abe9e7ad424c400b338f3c11fe';
 const SPRITES_REVISION = '1aa1b0ca273d0e096469a9846155484920b11b45';
 const SPECIES_CSV_URL = `https://raw.githubusercontent.com/PokeAPI/pokeapi/${SPECIES_CSV_REVISION}/data/v2/csv/pokemon_species.csv`;
+const POKEMON_CSV_URL = `https://raw.githubusercontent.com/PokeAPI/pokeapi/${SPECIES_CSV_REVISION}/data/v2/csv/pokemon.csv`;
 const ARTWORK_URL = `https://raw.githubusercontent.com/PokeAPI/sprites/${SPRITES_REVISION}/sprites/pokemon/other/home`;
+const SHINY_ARTWORK_URL = `${ARTWORK_URL}/shiny`;
 const ITEMS_URL = `https://raw.githubusercontent.com/PokeAPI/sprites/${SPRITES_REVISION}/sprites/items`;
 const TYPE_ICONS_REVISION = '5781623f147f1bf850f426cfe1874ba56a9b75ee';
 const TYPE_ICONS_URL = `https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/${TYPE_ICONS_REVISION}/icons`;
@@ -208,6 +211,29 @@ async function readSpeciesCsv() {
   return {species: parseSpecies(text), csvSha256: sha256(bytes)};
 }
 
+async function readPokemonCsv() {
+  const response = await fetchChecked(POKEMON_CSV_URL, 'CSV de Pokémon (formas)');
+  if (!response.ok) throw new Error(`CSV de Pokémon: HTTP ${response.status} ao acessar ${POKEMON_CSV_URL}.`);
+  const bytes = Buffer.from(await response.arrayBuffer());
+  return {byDex: parsePokemonCsv(new TextDecoder('utf-8', {fatal: true}).decode(bytes)), sha256: sha256(bytes)};
+}
+
+/** Formas de data/guide/artwork-sources.json que o PokéAPI/HOME tem, uma por id de Pokémon (aspectos diferentes podem resolver ao mesmo id). */
+function listForms(byDex) {
+  const sources = JSON.parse(readFileSync(path.join(PROJECT_ROOT, 'data', 'guide', 'artwork-sources.json'), 'utf8'));
+  const byId = new Map();
+  const keys = [];
+  for (const source of Object.values(sources)) {
+    for (const form of source.forms) {
+      const pokemonId = resolveFormId(byDex, source.nationalDex, form.aspects);
+      if (pokemonId === null) continue;
+      keys.push({dexNumber: source.nationalDex, key: formKey(form.aspects), pokemonId});
+      if (!byId.has(pokemonId)) byId.set(pokemonId, {pokemonId});
+    }
+  }
+  return {files: [...byId.values()], keys};
+}
+
 async function stageFiles(entries, {describe, toUrl, toFile, allow404}) {
   const results = new Array(entries.length);
   let nextIndex = 0;
@@ -313,12 +339,14 @@ function listItems() {
  * `data/guide/artwork-sources.json` liga o slug do Cobblemon ao número da dex; cada slug sem entrada própria
  * ganha um alias para a arte do mesmo número (nome-independente), então a UI acha a imagem pelo id do Cobblemon.
  */
-function createSpeciesManifest(results) {
+function createSpeciesManifest(results, variants) {
   const manifest = {};
   for (const result of results) {
     manifest[result.speciesId] = {
       dexNumber: result.dexNumber,
       artworkPath: result.artworkPath,
+      shinyPath: variants.shinyByDex.get(result.dexNumber) ?? null,
+      forms: variants.formsByDex.get(result.dexNumber) ?? {},
     };
   }
   const byDex = new Map(results.map((result) => [result.dexNumber, manifest[result.speciesId]]));
@@ -349,6 +377,8 @@ function createProvenance(results, csvSha256, {typeIcons, categoryIcons, itemIco
       speciesCsv: SPECIES_CSV_URL,
       artworkBase: ARTWORK_URL,
       homeArtworkBase: ARTWORK_URL,
+      homeShinyArtworkBase: SHINY_ARTWORK_URL,
+      pokemonCsv: POKEMON_CSV_URL,
       typeIcons: TYPE_ICONS_URL,
       categoryIcons: CATEGORY_ICONS_URL,
       itemsBase: ITEMS_URL,
@@ -390,8 +420,8 @@ function createProvenance(results, csvSha256, {typeIcons, categoryIcons, itemIco
   };
 }
 
-async function writeStagedOutputs(results, csvSha256, ui, stageManifest, stageUiIcons, pokemonStageDirectory) {
-  const manifest = `${JSON.stringify(createSpeciesManifest(results), null, 2)}\n`;
+async function writeStagedOutputs(results, variants, csvSha256, ui, stageManifest, stageUiIcons, pokemonStageDirectory) {
+  const manifest = `${JSON.stringify(createSpeciesManifest(results, variants), null, 2)}\n`;
   const uiIcons = `${JSON.stringify(createUiIconsManifest(ui), null, 2)}\n`;
   const provenance = `${JSON.stringify(createProvenance(results, csvSha256, ui), null, 2)}\n`;
   try {
@@ -497,6 +527,7 @@ async function publishOutputs({stageRoot, outputs, createdDirectories}) {
 
 async function main() {
   const {species, csvSha256} = await readSpeciesCsv();
+  const {byDex: pokemonByDex} = await readPokemonCsv();
   const items = listItems();
   const stageRoot = await mkdtemp(path.join(PROJECT_ROOT, '.prepare-ui-assets-'));
   const stageManifest = path.join(stageRoot, 'src', 'data', 'species-artwork.json');
@@ -508,6 +539,8 @@ async function main() {
 
   try {
     await mkdir(path.dirname(stageManifest), {recursive: true});
+    await mkdir(path.join(pokemonStageDirectory, 'shiny'), {recursive: true});
+    await mkdir(path.join(pokemonStageDirectory, 'forms', 'shiny'), {recursive: true});
     for (const name of ['pokemon', 'types', 'categories', 'items']) await mkdir(stagePublic(name), {recursive: true});
 
     const artworkFiles = await stageFiles(species, {
@@ -521,6 +554,46 @@ async function main() {
       ...artworkFiles[index],
       artworkPath: artworkFiles[index].omitted404 ? null : `/pokemon/${entry.dexNumber}.png`,
     }));
+
+    const shinyFiles = await stageFiles(species, {
+      describe: (entry) => `Artwork shiny de ${entry.speciesId}`,
+      toUrl: (entry) => `${SHINY_ARTWORK_URL}/${entry.dexNumber}.png`,
+      toFile: (entry) => path.join(pokemonStageDirectory, 'shiny', `${entry.dexNumber}.png`),
+      allow404: true,
+    });
+    const shinyByDex = new Map(
+      species.flatMap((entry, index) => (shinyFiles[index].omitted404 ? [] : [[entry.dexNumber, `/pokemon/shiny/${entry.dexNumber}.png`]])),
+    );
+
+    const {files: formEntries, keys: formKeys} = listForms(pokemonByDex);
+    const formNormal = await stageFiles(formEntries, {
+      describe: (entry) => `Artwork da forma ${entry.pokemonId}`,
+      toUrl: (entry) => `${ARTWORK_URL}/${entry.pokemonId}.png`,
+      toFile: (entry) => path.join(pokemonStageDirectory, 'forms', `${entry.pokemonId}.png`),
+      allow404: true,
+    });
+    const formShiny = await stageFiles(formEntries, {
+      describe: (entry) => `Artwork shiny da forma ${entry.pokemonId}`,
+      toUrl: (entry) => `${SHINY_ARTWORK_URL}/${entry.pokemonId}.png`,
+      toFile: (entry) => path.join(pokemonStageDirectory, 'forms', 'shiny', `${entry.pokemonId}.png`),
+      allow404: true,
+    });
+    const formPaths = new Map(
+      formEntries.map((entry, index) => [
+        entry.pokemonId,
+        {
+          pokemonId: entry.pokemonId,
+          artworkPath: formNormal[index].omitted404 ? null : `/pokemon/forms/${entry.pokemonId}.png`,
+          shinyPath: formShiny[index].omitted404 ? null : `/pokemon/forms/shiny/${entry.pokemonId}.png`,
+        },
+      ]),
+    );
+    const formsByDex = new Map();
+    for (const {dexNumber, key, pokemonId} of formKeys) {
+      if (!formsByDex.has(dexNumber)) formsByDex.set(dexNumber, {});
+      formsByDex.get(dexNumber)[key] = formPaths.get(pokemonId);
+    }
+    const variants = {shinyByDex, formsByDex};
 
     const typeIcons = await stageTypeIcons(stagePublic('types'));
     const categoryFiles = await stageFiles(CATEGORY_NAMES, {
@@ -539,7 +612,7 @@ async function main() {
     const itemIcons = items.map((item, index) => ({...item, path: `/items/${item.slug}.png`, ...itemFiles[index]}));
     const ui = {typeIcons, categoryIcons, itemIcons};
 
-    await writeStagedOutputs(results, csvSha256, ui, stageManifest, stageUiIcons, pokemonStageDirectory);
+    await writeStagedOutputs(results, variants, csvSha256, ui, stageManifest, stageUiIcons, pokemonStageDirectory);
 
     try {
       await publishOutputs({

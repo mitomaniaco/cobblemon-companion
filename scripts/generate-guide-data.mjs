@@ -115,7 +115,7 @@ function main() {
     ['trainers.json', jsonText(trainers)],
     ['series.json', jsonText(series)],
     ['campaign.json', jsonText(deriveCampaign({series, trainers}))],
-    ['artwork-sources.json', jsonText(deriveArtworkSources(species, slugs))],
+    ['artwork-sources.json', jsonText(deriveArtworkSources(species, slugs, trainers))],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 
   if (options.write) {
