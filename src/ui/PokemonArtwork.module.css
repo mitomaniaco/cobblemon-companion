@@ -75,7 +75,7 @@
   line-height: var(--line-body);
 }
 
-.baseFormMark {
+.missingMark {
   position: absolute;
   top: 2px;
   right: 2px;
@@ -90,6 +90,26 @@
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
+}
+
+.shinyMark {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--color-warning);
+  background: var(--color-raised);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.shinyMark[data-art="missing"] {
+  color: var(--color-muted);
 }
 
 .caption {

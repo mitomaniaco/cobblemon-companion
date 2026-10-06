@@ -150,7 +150,12 @@ function MemberCard({
   return (
     <li className={styles.card} style={{'--card-index': index} as CSSProperties} data-uuid={member.uuid}>
       <div className={styles.cardHeader}>
-        <PokemonArtwork speciesId={member.speciesId} formId={individual?.formId ?? 'normal'} variant="collection" />
+        <PokemonArtwork
+          speciesId={member.speciesId}
+          formId={individual?.formId ?? 'normal'}
+          shiny={individual?.shiny === true}
+          variant="collection"
+        />
         <div className={styles.cardIdentity}>
           <h3 className={styles.cardName}>{species.name}</h3>
           <div className={styles.cardMeta}>

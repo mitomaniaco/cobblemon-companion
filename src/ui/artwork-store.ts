@@ -1,11 +1,11 @@
 import {useSyncExternalStore} from 'react';
-import {buildArtworkIndex, type ArtworkManifest} from './artwork';
+import {buildArtworkIndex, type ArtworkIndex, type ArtworkManifest} from './artwork';
 
 // O manifesto é gerado por `npm run prepare:ui-assets` e não é versionado. Sem ele, toda espécie mostra o placeholder
 // com o nome da espécie (nunca um ícone igual para todas).
 const generated = import.meta.glob<ArtworkManifest>('../data/species-artwork.json', {eager: true, import: 'default'});
 
-type ArtworkState = {manifest: ArtworkManifest; index: ReadonlyMap<string, string>};
+type ArtworkState = {manifest: ArtworkManifest; index: ArtworkIndex};
 
 function createState(manifest: ArtworkManifest): ArtworkState {
   return {manifest, index: buildArtworkIndex(manifest)};

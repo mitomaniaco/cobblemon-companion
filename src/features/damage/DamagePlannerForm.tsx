@@ -136,7 +136,12 @@ export function DamagePlannerForm({individual, controller}: DamagePlannerFormPro
   const matchup = (
     <div className={styles.matchup}>
       <div className={styles.combatant}>
-        <PokemonArtwork speciesId={individual.speciesId} formId={individual.formId} variant="collection" />
+        <PokemonArtwork
+          speciesId={individual.speciesId}
+          formId={individual.formId}
+          shiny={individual.shiny === true}
+          variant="collection"
+        />
         <div className={styles.combatantInfo}>
           <span className={styles.combatantName}>{actor.name}</span>
           <span className={styles.combatantTypes}>

@@ -17,6 +17,8 @@ export type PlayerIndividual = {
   uuid: string;
   speciesId: string;
   formId: string;
+  /** Shiny do indivíduo no save; ausente ou `null` = desconhecido (nunca presumido como não-shiny). */
+  shiny?: boolean | null;
   level: number | null;
   location: PlayerLocation;
   equippedMoves: Array<{id: string; pp: number | null; ppUps: number | null}>;
