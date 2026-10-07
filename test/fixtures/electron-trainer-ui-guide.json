@@ -310,6 +310,14 @@
       "O app não lê inventário (Poké Balls); esse requisito fica como não verificado."
     ]
   },
+  "trainingPlanCap21Member": {
+    "uuid": "00000000-0000-4000-8000-000000000001",
+    "levelCap": 21,
+    "capOrigin": "informado",
+    "targetLevel": 24,
+    "targetNote": "já no cap 21; não suba mais",
+    "moves": []
+  },
   "trainingPlan": {
     "members": [
       {
