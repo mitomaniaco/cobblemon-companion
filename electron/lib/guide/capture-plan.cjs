@@ -203,12 +203,17 @@ function candidateEntry(candidate, opponent, level, limit, firstPartyLevel, lear
   const requirements = [
     {kind: 'nível', text: `alvo até o nível ${limit} (${source})`, status: catchable === 'liberada' ? 'cumprido' : 'pendente'},
   ];
-  for (const region of candidate.regions ?? []) {
-    const status = pikaStar?.[region];
+  if (candidate.regions?.length) {
+    const statuses = candidate.regions.map((region) => pikaStar?.[region]);
+    const status = statuses.some((regionStatus) => regionStatus === true)
+      ? 'cumprido'
+      : statuses.every((regionStatus) => regionStatus === false)
+        ? 'pendente'
+        : 'não verificado';
     requirements.push({
       kind: 'pika-star',
-      text: `advancement Pika Star de ${region} (allthemons:<região>_pika_star)`,
-      status: status === true ? 'cumprido' : status === false ? 'pendente' : 'não verificado',
+      text: `advancement Pika Star de ${candidate.regions.join(' ou ')} (allthemons:<região>_pika_star)`,
+      status,
     });
   }
   return {
