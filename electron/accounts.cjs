@@ -158,9 +158,7 @@ function discoverAccounts(configPath) {
       pcLastWriteAt,
     };
   });
-  const visibleAccounts = accounts.filter(
-    ({uuid, name}) => uuid === selectedUuid || foldAsciiCase(name) === foldAsciiCase(selectedName),
-  );
+  const visibleAccounts = accounts.filter(({uuid, name}) => uuid === selectedUuid || foldAsciiCase(name) === foldAsciiCase(selectedName));
   const newestParty = visibleAccounts
     .filter(({partyLastWriteAt}) => partyLastWriteAt !== null)
     .sort((left, right) => Date.parse(right.partyLastWriteAt) - Date.parse(left.partyLastWriteAt))[0];
