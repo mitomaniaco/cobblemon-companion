@@ -39,6 +39,7 @@ A navegação é estado React em `TrainerApp`, não um roteador de URLs. O rende
 |---|---|---|
 | Inicialização do renderer | `src/main.tsx`, `src/App.tsx`, `src/app/TrainerApp.tsx` | Monta React/StrictMode, shell, navegação e composição dos workspaces. |
 | Sessão do treinador | `src/app/useTrainerSession.ts`, `src/app/trainer-session-model.ts` | Importação acionada pelo usuário, snapshot em memória, seleção por UUID, estado de refresh e invalidação de resultados/prévias. |
+| Origem do save | `electron/accounts.cjs`, `src/app/useSaveAccounts.ts`, `src/app/account-source-model.ts` | Lista a conta configurada e entradas `usercache.json` com o mesmo nome; compara mtimes locais de party/PC, exige escolha explícita, persiste somente o UUID escolhido em `config.json` e atualiza o snapshot. IDs IPC são tokens efêmeros, não UUIDs. |
 | Tipos da bridge | `src/platform/api.ts` | Contratos TypeScript de `PlayerSnapshot`, cálculo real e `window.cobblemonCompanion`. |
 | Equipe e PC | `src/features/collection/CollectionWorkspace.tsx` | Listas, busca/filtros e seleção de indivíduos por UUID. |
 | Ficha e troca planejada | `src/features/individual/IndividualWorkspace.tsx`, `src/domain/move-swap.ts` | Resumo, golpes, atributos/procedência e prévia estrutural de uma troca. |
@@ -61,7 +62,7 @@ A navegação é estado React em `TrainerApp`, não um roteador de URLs. O rende
 
 `electron/main.cjs` registra o protocolo local `cobblemon://app`, cria a `BrowserWindow` e instala handlers IPC. A janela usa `nodeIntegration: false`, `contextIsolation: true` e `sandbox: true`; janelas externas são negadas. O processo principal valida remetente, frame principal e origem `cobblemon://app` antes de aceitar os handlers.
 
-`electron/preload.cjs` expõe uma allowlist pequena com `contextBridge`: `readPlayerSnapshot()`, `calculateRealDamage(request)`, `calculate(request)` e `cancel(jobId)`. A leitura do snapshot rejeita argumentos. A API de teste só aparece sob o modo de teste. Não adicione API de filesystem, `send/invoke` genérico ou execução de caminhos/código entregues pelo renderer.
+`electron/preload.cjs` expõe uma allowlist pequena com `readPlayerSnapshot()`, `listSaveAccounts()`, `selectSaveAccount(id)`, `calculateRealDamage(request)`, `calculate(request)` e `cancel(jobId)`. Listagem não recebe argumentos; a troca aceita apenas um token opaco recente e é validada no main contra existência de arquivos locais. A API de teste só aparece sob o modo de teste. Não adicione API de filesystem, `send/invoke` genérico ou execução de caminhos/código entregues pelo renderer.
 
 Há dois caminhos de cálculo distintos:
 
@@ -79,6 +80,12 @@ Há dois caminhos de cálculo distintos:
 5. O resultado fica em memória na sessão do app. Um refresh invalida snapshot/seleção/prévia anteriores antes de publicar o novo estado.
 
 A configuração usa somente `serverRoot` e `playerUuid`; há um `config.example.json` genérico. **O `config.json` real é privado e nunca deve aparecer em logs, handoffs públicos ou mensagens.** Nenhum valor dessa configuração foi lido nesta documentação.
+
+### Escolha explícita da conta
+
+Ao abrir, o main lê `usercache.json` e lista apenas a conta já configurada e entradas com o mesmo nome (comparação sem distinção de maiúsculas/minúsculas). Para cada uma, consulta somente os mtimes dos arquivos de party e PC sob o mundo configurado; não importa os dados dos outros jogadores. O renderer recebe nome, datas, flags e tokens aleatórios temporários, nunca UUIDs nem caminhos. Entradas sem arquivo local aparecem desabilitadas. A UI alerta para nomes duplicados e para party mais recente, mas mantém a seleção configurada até a pessoa escolher outra.
+
+Uma escolha explícita valida novamente a entrada e a existência de arquivos, persiste o UUID no `config.json` local de forma atômica, renova a leitura da party/PC e invalida os dados da sessão anterior. Isso altera somente a configuração local; nenhum save de Minecraft é escrito. Erros apresentados não incluem paths, UUIDs ou conteúdo da configuração.
 
 ### Propriedades do snapshot
 

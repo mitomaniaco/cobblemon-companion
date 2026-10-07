@@ -1699,6 +1699,69 @@ async function exerciseGuideWorkspace(window) {
   console.log('PASS tela Guia: objetivo sugerido, time com explicações, Ver cálculo no Dano e layouts 1200/800');
 }
 
+async function exerciseSaveAccountSelection(contents) {
+  await evaluate(
+    contents,
+    `(() => {
+    const button = document.querySelector('button[aria-label="Detalhes da captura"]');
+    if (!button) throw new Error('O botão de detalhes da captura não foi encontrado.');
+    button.click();
+  })()`,
+  );
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[role="dialog"] #save-accounts-title'))`,
+    'lista de contas no diálogo de captura',
+  );
+
+  const initial = await evaluate(
+    contents,
+    `(() => {
+    const dialog = document.querySelector('[role="dialog"]');
+    const options = [...(dialog?.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button') || [])];
+    const text = dialog?.innerText || '';
+    const unavailable = options.find(button => button.textContent.includes('Sem arquivo local de party/PC'));
+    const selectable = options.filter(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
+    return {
+      duplicateWarning: text.includes('Há outra entrada com o mesmo nome'),
+      newerWarning: text.includes('Há dados mais recentes de outra conta'),
+      options: options.length,
+      unavailableDisabled: unavailable?.disabled === true,
+      selectableCount: selectable.length,
+    };
+  })()`,
+  );
+  check(initial.duplicateWarning, 'A conta duplicada com o mesmo nome não foi avisada.');
+  check(initial.newerWarning, 'A conta alternativa com party mais recente não foi avisada.');
+  check(initial.options === 3 && initial.unavailableDisabled, 'A entrada sem arquivos locais deveria aparecer desabilitada.');
+  check(initial.selectableCount === 1, 'Deveria existir exatamente uma conta alternativa selecionável.');
+
+  await evaluate(
+    contents,
+    `(() => {
+    const options = [...document.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button')];
+    const alternative = options.find(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
+    if (!alternative) throw new Error('A conta alternativa selecionável não foi encontrada.');
+    alternative.click();
+  })()`,
+  );
+  await waitFor(contents, `!document.querySelector('[role="dialog"]')`, 'fechamento após escolha explícita da conta');
+  await waitFor(
+    contents,
+    `(() => {
+    const selected = document.querySelector('[aria-label="Conta selecionada"]');
+    const expected = new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'})
+      .format(Date.parse('2003-01-01T10:00:00.000Z'));
+    return selected?.textContent.includes(expected) === true;
+  })()`,
+    'atualização do resumo para a conta escolhida',
+  );
+  const result = await evaluate(contents, 'window.cobblemonCompanion.listSaveAccounts()');
+  const selected = result.accounts.find((account) => account.isSelected);
+  check(selected?.partyLastWriteAt === '2003-01-01T10:00:00.000Z', 'A seleção explícita não atualizou a conta configurada.');
+  console.log('PASS seleção de conta: aviso de duplicatas, conta sem save desabilitada e troca explícita');
+}
+
 async function run() {
   const window = await waitForWindow();
   window.setSize(1440, 1300);
@@ -1709,7 +1772,7 @@ async function run() {
   check(contents.getURL().startsWith('cobblemon://app/'), 'O harness não abriu o protocolo local seguro.');
   await waitFor(
     contents,
-    'Boolean(document.querySelector(\'nav[aria-label="Vistas"]\') && window.cobblemonCompanion?.readPlayerSnapshot && window.cobblemonCompanion?.calculateRealDamage && window.cobblemonCompanion?.test)',
+    `Boolean(document.querySelector('nav[aria-label="Vistas"]') && window.cobblemonCompanion?.readPlayerSnapshot && window.cobblemonCompanion?.calculateRealDamage && window.cobblemonCompanion?.test)`,
     'TrainerApp e ponte de teste local',
   );
   const snapshot = await evaluate(contents, 'window.cobblemonCompanion.readPlayerSnapshot()');
@@ -1717,6 +1780,7 @@ async function run() {
     snapshot.schemaVersion === 2 && snapshot.worldName === 'synthetic-trainer-ui',
     'A ponte retornou outro snapshot em vez da fixture sintética.',
   );
+  await exerciseSaveAccountSelection(contents);
   await exerciseCollectionAndDamage(window, snapshot);
   await exerciseDetailContainment(window, snapshot);
   await exerciseSnapshotChanged(contents);

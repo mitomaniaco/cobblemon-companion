@@ -1,5 +1,6 @@
 'use strict';
 
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const {app, BrowserWindow, dialog, ipcMain, protocol, utilityProcess} = require('electron');
@@ -22,6 +23,8 @@ const TRAINER_UI_ARTWORK = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRA
 const GUIDE_WORKER_PATH = path.resolve(__dirname, 'guide-worker.cjs');
 const GUIDE_TIMEOUT_MS = 180000;
 const TRAINER_UI_SNAPSHOT = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_SNAPSHOT_PATH, 'utf8')) : null;
+const {createSaveAccountRegistry} = require('./accounts.cjs');
+const saveAccountRegistry = createSaveAccountRegistry();
 const {readPlayerSnapshotFromConfig, resolvePlayerSourcePaths, publicPlayerImportError} = require(PLAYER_IMPORT_PATH);
 const {createAutoRefresh} = require('./lib/auto-refresh.cjs');
 const {createSaveWatcher} = require('./lib/save-watcher.cjs');
@@ -33,6 +36,8 @@ const ORIGIN = `${PROTOCOL}://app`;
 const IPC_CALCULATE = 'companion:calculate';
 const IPC_REAL_DAMAGE = 'companion:calculate-real-damage';
 const IPC_CANCEL = 'companion:cancel';
+const IPC_LIST_SAVE_ACCOUNTS = 'companion:list-save-accounts';
+const IPC_SELECT_SAVE_ACCOUNT = 'companion:select-save-account';
 const IPC_READ_PLAYER_SNAPSHOT = 'companion:read-player-snapshot';
 const IPC_GUIDE_BUILD = 'companion:guide-build';
 const IPC_BATTLE_PLAN_BUILD = 'companion:battle-plan-build';
@@ -543,6 +548,74 @@ function handleSimulateSnapshotChange(event) {
   notifySnapshotChanged(snapshot);
   return {sent: true};
 }
+let testSelectedAccountKey = 'selected';
+const testAccountTokens = new Map();
+const TEST_ACCOUNT_TOKEN_TTL_MS = 5 * 60 * 1000;
+function syntheticSaveAccounts() {
+  testAccountTokens.clear();
+  const definitions = [
+    {
+      key: 'selected',
+      name: 'Treinador Sintético',
+      partyLastWriteAt: '2001-01-01T10:00:00.000Z',
+      pcLastWriteAt: '2001-02-01T10:00:00.000Z',
+      selectable: true,
+    },
+    {
+      key: 'recent',
+      name: 'Treinador Sintético',
+      partyLastWriteAt: '2003-01-01T10:00:00.000Z',
+      pcLastWriteAt: null,
+      selectable: true,
+    },
+    {
+      key: 'cache-only',
+      name: 'Treinador Sintético',
+      partyLastWriteAt: null,
+      pcLastWriteAt: null,
+      selectable: false,
+    },
+  ];
+  const idByKey = new Map();
+  for (const account of definitions) {
+    const id = crypto.randomBytes(24).toString('base64url');
+    idByKey.set(account.key, id);
+    testAccountTokens.set(id, {
+      key: account.key,
+      selectable: account.selectable,
+      expiresAt: Date.now() + TEST_ACCOUNT_TOKEN_TTL_MS,
+    });
+  }
+  return {
+    accounts: definitions.map(({key, ...account}) => ({
+      ...account,
+      id: idByKey.get(key),
+      isSelected: key === testSelectedAccountKey,
+    })),
+    selectedAccountId: idByKey.get(testSelectedAccountKey),
+    mostRecentlyWrittenAccountId: idByKey.get('recent'),
+  };
+}
+function handleListSaveAccounts(event, ...args) {
+  requireSender(event);
+  if (args.length !== 0) throw new TypeError('A lista de contas não aceita argumentos');
+  return TRAINER_UI_TEST_MODE ? syntheticSaveAccounts() : saveAccountRegistry.list();
+}
+function handleSelectSaveAccount(event, id) {
+  requireSender(event);
+  if (TRAINER_UI_TEST_MODE) {
+    const account = typeof id === 'string' ? testAccountTokens.get(id) : undefined;
+    if (!account?.selectable || account.expiresAt < Date.now())
+      throw new TypeError('A conta escolhida é inválida ou expirou. Atualize a lista e tente novamente.');
+    testSelectedAccountKey = account.key;
+    testAccountTokens.clear();
+    return;
+  }
+  saveAccountRegistry.select(id);
+  saveWatcher.stop();
+  if (autoRefresh.enabled) saveWatcher.start();
+}
+
 function handleReadPlayerSnapshot(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('A leitura do snapshot não aceita argumentos');
@@ -640,6 +713,8 @@ function createWindow() {
   });
 }
 function installIpc() {
+  ipcMain.handle(IPC_LIST_SAVE_ACCOUNTS, handleListSaveAccounts);
+  ipcMain.handle(IPC_SELECT_SAVE_ACCOUNT, handleSelectSaveAccount);
   ipcMain.handle(IPC_CALCULATE, handleCalculate);
   ipcMain.handle(IPC_REAL_DAMAGE, handleRealDamageCalculation);
   ipcMain.handle(IPC_CANCEL, handleCancel);
