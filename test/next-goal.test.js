@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const {guideNextGoal, listGuideTrainers} = require('../electron/lib/guide/trainers.cjs');
 const data = require('./fixtures/guide-data.json');
 
-const REASON = 'Sugestão pelo nível da sua party; o app não lê o progresso de treinadores.';
+const REASON = 'Sem progresso legível; sugestão pelo nível da sua party.';
 
 const trainer = (id, format, levels) => ({
   id,
@@ -76,5 +76,109 @@ describe('dados reais do guia', () => {
     expect(picked.format).toBe('singles');
     expect(Math.max(...picked.team.map((member) => member.level))).toBeGreaterThanOrEqual(5);
     expect(listGuideTrainers(real)[0].series).toBe('radicalred');
+  });
+});
+
+describe('próximo objetivo pelo progresso RCT', () => {
+  const stages = [
+    {
+      stageId: 'radicalred:stage-a',
+      name: 'Etapa A',
+      type: 'rival',
+      order: 0,
+      requires: [],
+      capBefore: 15,
+      capAfter: 21,
+      capUnknownReason: null,
+      ambiguous: true,
+      ambiguousReason: 'sorteio ponderado',
+      variants: [
+        {id: 'rctmod:a1', format: 'singles', maxLevel: 20, teamSize: 3, optional: false},
+        {id: 'rctmod:a2', format: 'singles', maxLevel: 20, teamSize: 3, optional: false},
+      ],
+    },
+    {
+      stageId: 'radicalred:stage-b',
+      name: 'Etapa B',
+      type: 'leader',
+      order: 1,
+      requires: ['radicalred:stage-a'],
+      capBefore: 21,
+      capAfter: 25,
+      capUnknownReason: null,
+      ambiguous: false,
+      ambiguousReason: null,
+      variants: [{id: 'rctmod:b', format: 'singles', maxLevel: 24, teamSize: 4, optional: false}],
+    },
+    {
+      stageId: 'radicalred:stage-c',
+      name: 'Etapa C',
+      type: 'elite_four',
+      order: 2,
+      requires: ['radicalred:stage-b'],
+      capBefore: 25,
+      capAfter: 40,
+      capUnknownReason: null,
+      ambiguous: false,
+      ambiguousReason: null,
+      variants: [{id: 'rctmod:c', format: 'doubles', maxLevel: 40, teamSize: 6, optional: false}],
+    },
+  ];
+  const progressData = {
+    trainers: [],
+    series: {},
+    campaign: {radicalred: {levelCapRule: {initialLevelCap: 15}, stages}},
+  };
+
+  it('uses the first eligible undefeated stage, preserves stage metadata and never resolves ambiguous variants', () => {
+    const goal = guideNextGoal(progressData, 50, {
+      currentSeries: 'radicalred',
+      currentSeriesCompleted: false,
+      completedSeries: [],
+      victoryCounts: {'rctmod:a2': 1},
+      pikaStar: {},
+      sources: [],
+    });
+
+    expect(goal).toMatchObject({
+      trainerId: 'rctmod:b',
+      basis: 'progresso',
+      stage: {
+        stageId: 'radicalred:stage-b',
+        type: 'leader',
+        order: 1,
+        requires: ['radicalred:stage-a'],
+        capBefore: 21,
+        capAfter: 25,
+      },
+      upcoming: [{stageId: 'radicalred:stage-c', type: 'elite_four', variants: [{format: 'doubles'}]}],
+    });
+    const ambiguous = guideNextGoal(progressData, 50, {
+      currentSeries: 'radicalred',
+      victoryCounts: {},
+    });
+    expect(ambiguous.trainerId).toBeNull();
+    expect(ambiguous.stage.variants).toEqual([
+      {trainerId: 'rctmod:a1', format: 'singles', maxLevel: 20, teamSize: 3, optional: false, ambiguous: true, rule: 'sorteio ponderado'},
+      {trainerId: 'rctmod:a2', format: 'singles', maxLevel: 20, teamSize: 3, optional: false, ambiguous: true, rule: 'sorteio ponderado'},
+    ]);
+  });
+
+  it('does not treat a zero victory count as a defeated trainer', () => {
+    const goal = guideNextGoal(progressData, 50, {
+      currentSeries: 'radicalred',
+      victoryCounts: {'rctmod:a1': 0, 'rctmod:a2': 0},
+    });
+    expect(goal.trainerId).toBeNull();
+    expect(goal.stage.stageId).toBe('radicalred:stage-a');
+    expect(goal.stage.variants).toHaveLength(2);
+  });
+
+  it('falls back to the level basis when progress or the selected campaign is unavailable', () => {
+    expect(guideNextGoal(progressData, 5, null)).toMatchObject({basis: 'nível', trainerId: null});
+    expect(guideNextGoal(progressData, 5, {currentSeries: 'unknown', victoryCounts: {}})).toMatchObject({
+      basis: 'nível',
+      trainerId: null,
+    });
   });
 });

@@ -43,6 +43,22 @@ describe('monitoramento automático do save', () => {
     expect(watcher.start).toHaveBeenCalledTimes(2);
   });
 
+  it('aciona os watchers de snapshot e progresso juntos sem misturar a confirmação de fontes', () => {
+    const snapshotWatcher = fakeWatcher();
+    const progressWatcher = fakeWatcher();
+    const auto = createAutoRefresh(snapshotWatcher, [progressWatcher]);
+    auto.start();
+    const progress = {sources: [{kind: 'rct-stats', sha256: 'a'}]};
+    auto.afterRead(progress);
+    auto.setEnabled(false);
+    expect(snapshotWatcher.start).toHaveBeenCalledTimes(2);
+    expect(progressWatcher.start).toHaveBeenCalledTimes(2);
+    expect(snapshotWatcher.acknowledge).toHaveBeenCalledWith(progress);
+    expect(progressWatcher.acknowledge).not.toHaveBeenCalled();
+    expect(snapshotWatcher.stop).toHaveBeenCalledTimes(1);
+    expect(progressWatcher.stop).toHaveBeenCalledTimes(1);
+  });
+
   it('sem monitor (modo de teste da UI) o interruptor só guarda o estado', () => {
     const auto = createAutoRefresh(null);
     auto.start();

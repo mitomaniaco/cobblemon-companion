@@ -1307,6 +1307,35 @@ async function exerciseSnapshotChanged(contents) {
   );
   console.log('PASS aviso snapshot-changed respeita inscrição e auto-refresh');
 }
+async function exerciseProgressChanged(contents) {
+  const result = await evaluate(
+    contents,
+    `(async () => {
+    const api = window.cobblemonCompanion;
+    const progressEvents = [];
+    const snapshotEvents = [];
+    const offProgress = api.onProgressChanged((progress) => progressEvents.push(progress));
+    const offSnapshot = api.onSnapshotChanged((snapshot) => snapshotEvents.push(snapshot));
+    const on = await api.test.simulateProgressChange();
+    await api.setAutoRefresh(false);
+    const off = await api.test.simulateProgressChange();
+    await api.setAutoRefresh(true);
+    offProgress();
+    offSnapshot();
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    return {progressEvents, snapshotEvents, on, off};
+  })()`,
+  );
+  check(result.on.sent === true && result.off.sent === false, 'O aviso de progresso não respeitou o auto-refresh.');
+  check(
+    result.progressEvents.length === 1 &&
+      result.progressEvents[0].defeated.includes('rctmod:leader_brock_019e') &&
+      result.progressEvents[0].levelCap === 21 &&
+      result.snapshotEvents.length === 0,
+    'A mudança de progresso não foi notificada no canal separado do snapshot.',
+  );
+  console.log('PASS aviso progress-changed separado do snapshot');
+}
 
 async function exerciseGuideContract(contents) {
   const result = await evaluate(
@@ -1316,6 +1345,7 @@ async function exerciseGuideContract(contents) {
     const snapshot = await api.readPlayerSnapshot();
     const trainers = await api.listGuideTrainers();
     const nextGoal = await api.guideNextGoal();
+    const progress = await api.readGuideProgress();
     const sources = snapshot.sources.map(({kind, sha256}) => ({kind, sha256}));
     const guide = await api.buildGuide({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}});
     // Rejeição intencional (loga no main): fontes que não correspondem ao snapshot atual devem ser recusadas.
@@ -1334,7 +1364,7 @@ async function exerciseGuideContract(contents) {
     const training = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: 30, capOrigin: 'informado'});
     const noCap = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: null, capOrigin: 'desconhecida'});
     const staleTraining = await api.buildTrainingPlan({sources: [], team: [], levelCap: null, capOrigin: 'desconhecida'}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, guide, capped, uncapped, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, training, noCap, staleTraining};
+    return {trainers, nextGoal, progress, guide, capped, uncapped, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, training, noCap, staleTraining};
   })()`,
   );
   check(
@@ -1342,8 +1372,17 @@ async function exerciseGuideContract(contents) {
     'A lista de treinadores sintética não tem 1 treinador singles.',
   );
   check(
-    result.nextGoal.trainerId === result.trainers[0].id && result.nextGoal.basis === 'nível',
-    'O próximo objetivo sintético não aponta para o treinador.',
+    result.nextGoal.trainerId === result.trainers[0].id &&
+      result.nextGoal.basis === 'progresso' &&
+      result.nextGoal.stage?.variants.length === 1,
+    'O próximo objetivo sintético não veio da campanha de progresso.',
+  );
+  check(
+    result.progress.currentSeries === 'radicalred' &&
+      result.progress.levelCap === 15 &&
+      result.progress.pikaStar.kanto === false &&
+      result.progress.victoryCounts !== null,
+    'A bridge não expôs o progresso sintético com o level cap derivado.',
   );
   const card = result.guide.team[0];
   check(card && card.reason.length > 0 && card.item.status === 'obter', 'O guia sintético não trouxe um card com reason e item a obter.');
@@ -1784,6 +1823,7 @@ async function run() {
   await exerciseCollectionAndDamage(window, snapshot);
   await exerciseDetailContainment(window, snapshot);
   await exerciseSnapshotChanged(contents);
+  await exerciseProgressChanged(contents);
   // O app também assina o aviso: o snapshot simulado (hash 'c…') passou a ser o da sessão. Volta à captura da fixture.
   await clickButton(contents, 'Atualizar do save');
   await delay(150);

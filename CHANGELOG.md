@@ -2,6 +2,7 @@
 
 ## Não lançado
 
+- Lê progresso RCT e Pika Star somente leitura, deriva o level cap e o próximo objetivo da campanha quando os dados estão disponíveis, e notifica mudanças de progresso por IPC separado do snapshot.
 - Conta na descoberta de contas que nomes ASCII diferenciam maiúsculas/minúsculas sem depender da locale e rejeita `server.properties` acima de 1 MiB.
 - Catálogo de compatibilidade v11: 841 espécies (eram 673), derivadas de `data/compat/manifest.json` por `npm run catalog:generate`. Inclui espécies com formas alternativas (só a forma normal é calculada), como Charizard, Alakazam e Gengar. O gerador confere o JAR do Cobblemon fixado, exclui espécies cujos dados de batalha outro provedor altera e compara golpes/habilidades do catálogo com o Showdown do Mega Showdown por AST (8 habilidades revisadas, só troca de forma). Golpes (320) e habilidades (285) não mudaram.
 - Adiciona uma tela de erro diagnóstica na raiz do renderer: exceções de renderização ou erros globais mostram um diagnóstico sanitizado e copiável em vez de uma janela vazia. Nada é enviado pela rede e não há novo IPC.
