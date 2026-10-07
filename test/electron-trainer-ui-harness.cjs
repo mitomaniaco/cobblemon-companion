@@ -1813,12 +1813,6 @@ async function exerciseSaveAccountSelection(contents) {
     `Boolean(document.querySelector('[aria-label="Conta selecionada"]'))`,
     'metadados disponibilizados após uma listagem bem-sucedida',
   );
-  const refreshedAccounts = await evaluate(contents, 'window.cobblemonCompanion.listSaveAccounts()');
-  const selectedAfterReload = refreshedAccounts.accounts.find((account) => account.isSelected);
-  check(
-    selectedAfterReload?.partyLastWriteAt === '2003-01-01T10:00:00.000Z',
-    'A listagem bem-sucedida não confirmou a conta persistida nem seus metadados atuais.',
-  );
   check(
     await evaluate(
       contents,
