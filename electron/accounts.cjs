@@ -7,7 +7,40 @@ const path = require('node:path');
 const DEFAULT_CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 const MAX_CONFIG_BYTES = 1024 * 1024;
 const MAX_USERCACHE_BYTES = 2 * 1024 * 1024;
+const MAX_PROPERTIES_BYTES = 1024 * 1024;
 const UUID_PATTERN = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
+
+function foldAsciiCase(value) {
+  return value.replace(/[A-Z]/g, (letter) => String.fromCharCode(letter.charCodeAt(0) + 32));
+}
+
+function readBoundedProperties(filePath) {
+  const fd = fs.openSync(filePath, 'r');
+  try {
+    const before = fs.fstatSync(fd);
+    if (!before.isFile() || before.size > MAX_PROPERTIES_BYTES) throw new Error();
+    const bytes = Buffer.allocUnsafe(before.size + 1);
+    let offset = 0;
+    while (offset < bytes.length) {
+      const read = fs.readSync(fd, bytes, offset, bytes.length - offset, offset);
+      if (read === 0) break;
+      offset += read;
+    }
+    const after = fs.fstatSync(fd);
+    if (
+      offset !== before.size ||
+      offset > MAX_PROPERTIES_BYTES ||
+      before.size !== after.size ||
+      before.mtimeMs !== after.mtimeMs ||
+      before.ctimeMs !== after.ctimeMs ||
+      before.ino !== after.ino
+    )
+      throw new Error();
+    return bytes.toString('utf8', 0, offset);
+  } finally {
+    fs.closeSync(fd);
+  }
+}
 
 function accountError(message) {
   return new Error(message);
@@ -40,7 +73,7 @@ function worldRootFor(serverRoot) {
   let root;
   try {
     root = fs.realpathSync(serverRoot);
-    const properties = fs.readFileSync(path.join(root, 'server.properties'), 'utf8');
+    const properties = readBoundedProperties(path.join(root, 'server.properties'));
     const matches = [...properties.matchAll(/^\s*level-name\s*=\s*(.*?)\s*$/gm)];
     const worldName = matches.at(-1)?.[1];
     if (!worldName || path.isAbsolute(worldName)) throw new Error();
@@ -126,7 +159,7 @@ function discoverAccounts(configPath) {
     };
   });
   const visibleAccounts = accounts.filter(
-    ({uuid, name}) => uuid === selectedUuid || name.toLocaleLowerCase() === selectedName.toLocaleLowerCase(),
+    ({uuid, name}) => uuid === selectedUuid || foldAsciiCase(name) === foldAsciiCase(selectedName),
   );
   const newestParty = visibleAccounts
     .filter(({partyLastWriteAt}) => partyLastWriteAt !== null)

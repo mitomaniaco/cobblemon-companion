@@ -41,6 +41,42 @@ afterAll(() => {
   for (const root of roots) fs.rmSync(root, {recursive: true, force: true});
 });
 
+test('nomes ASCII com I/i são comparados sem depender da locale', () => {
+  const world = fixture([
+    {uuid: UUID_A, name: 'Iris'},
+    {uuid: UUID_B, name: 'iris'},
+  ]);
+  const originalToLocaleLowerCase = String.prototype.toLocaleLowerCase;
+  String.prototype.toLocaleLowerCase = function () {
+    return String(this)
+      .replace(/I/g, 'ı')
+      .replace(/[A-Z]/g, (letter) => String.fromCharCode(letter.charCodeAt(0) + 32));
+  };
+  try {
+    const result = registry(world.configPath).list();
+    assert.deepEqual(
+      result.accounts.map((account) => account.name),
+      ['Iris', 'iris'],
+    );
+  } finally {
+    String.prototype.toLocaleLowerCase = originalToLocaleLowerCase;
+  }
+});
+
+test('server.properties aceita o limite exato e rejeita bytes acima do limite', () => {
+  const world = fixture();
+  const propertiesPath = path.join(world.serverRoot, 'server.properties');
+  const exactLimit = Buffer.alloc(1024 * 1024, 0x20);
+  Buffer.from('level-name=world\n').copy(exactLimit);
+  fs.writeFileSync(propertiesPath, exactLimit);
+  assert.equal(registry(world.configPath).list().accounts.length, 1);
+
+  fs.writeFileSync(propertiesPath, Buffer.concat([exactLimit, Buffer.from(' ')]));
+  assert.throws(() => registry(world.configPath).list(), {
+    message: 'Não foi possível localizar o mundo configurado para listar contas.',
+  });
+});
+
 test('conta única: lista somente identidade opaca, nome e mtimes, sem escolher outra conta', () => {
   const world = fixture();
   const partyPath = party(world, UUID_A, Date.UTC(2001, 0, 1, 10));
