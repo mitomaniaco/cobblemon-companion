@@ -1703,10 +1703,10 @@ async function exerciseSaveAccountSelection(contents) {
   await evaluate(
     contents,
     `(() => {
-    const button = document.querySelector('button[aria-label="Detalhes da captura"]');
-    if (!button) throw new Error('O botão de detalhes da captura não foi encontrado.');
-    button.click();
-  })()`,
+      const button = document.querySelector('button[aria-label="Detalhes da captura"]');
+      if (!button) throw new Error('O botão de detalhes da captura não foi encontrado.');
+      button.click();
+    })()`,
   );
   await waitFor(
     contents,
@@ -1717,49 +1717,138 @@ async function exerciseSaveAccountSelection(contents) {
   const initial = await evaluate(
     contents,
     `(() => {
-    const dialog = document.querySelector('[role="dialog"]');
-    const options = [...(dialog?.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button') || [])];
-    const text = dialog?.innerText || '';
-    const unavailable = options.find(button => button.textContent.includes('Sem arquivo local de party/PC'));
-    const selectable = options.filter(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
-    return {
-      duplicateWarning: text.includes('Há outra entrada com o mesmo nome'),
-      newerWarning: text.includes('Há dados mais recentes de outra conta'),
-      options: options.length,
-      unavailableDisabled: unavailable?.disabled === true,
-      selectableCount: selectable.length,
-    };
-  })()`,
+      const dialog = document.querySelector('[role="dialog"]');
+      const options = [...(dialog?.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button') || [])];
+      const text = dialog?.innerText || '';
+      const unavailable = options.find(button => button.textContent.includes('Sem arquivo local de party/PC'));
+      const selectable = options.filter(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
+      return {
+        duplicateWarning: text.includes('Há outra entrada com o mesmo nome'),
+        newerWarning: text.includes('Há dados mais recentes de outra conta'),
+        options: options.length,
+        unavailableDisabled: unavailable?.disabled === true,
+        selectableCount: selectable.length,
+      };
+    })()`,
   );
   check(initial.duplicateWarning, 'A conta duplicada com o mesmo nome não foi avisada.');
   check(initial.newerWarning, 'A conta alternativa com party mais recente não foi avisada.');
   check(initial.options === 3 && initial.unavailableDisabled, 'A entrada sem arquivos locais deveria aparecer desabilitada.');
   check(initial.selectableCount === 1, 'Deveria existir exatamente uma conta alternativa selecionável.');
 
+  await evaluate(contents, `window.cobblemonCompanion.test.setAccountBehavior({selectionDelayMs: 300, failSelection: true})`);
   await evaluate(
     contents,
     `(() => {
-    const options = [...document.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button')];
-    const alternative = options.find(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
-    if (!alternative) throw new Error('A conta alternativa selecionável não foi encontrada.');
-    alternative.click();
-  })()`,
+      const options = [...document.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button')];
+      const alternative = options.find(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
+      if (!alternative) throw new Error('A conta alternativa selecionável não foi encontrada.');
+      alternative.click();
+    })()`,
   );
-  await waitFor(contents, `!document.querySelector('[role="dialog"]')`, 'fechamento após escolha explícita da conta');
+  await delay(100);
+  check(
+    await evaluate(
+      contents,
+      `([...document.querySelectorAll('header [role="status"]')].some(node => node.textContent.includes('Salvando a seleção da conta…')))`,
+    ),
+    'O progresso da seleção não foi anunciado fora do diálogo.',
+  );
+  await delay(350);
+  const selectionFeedback = await evaluate(contents, `document.body.innerText`);
+  check(
+    selectionFeedback.includes('Não foi possível selecionar essa conta') ||
+      selectionFeedback.includes('Não foi possível selecionar a conta'),
+    `A falha de seleção não ficou acessível: ${selectionFeedback}`,
+  );
+  check(
+    await evaluate(contents, `!document.querySelector('header [role="status"]')?.textContent.includes('Salvando a seleção da conta…')`),
+    'O estado de progresso persistiu após o erro de seleção.',
+  );
+  check(
+    await evaluate(
+      contents,
+      `(() => {
+        const selected = document.querySelector('[aria-label="Conta selecionada"]');
+        const expected = new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'})
+          .format(Date.parse('2001-01-01T10:00:00.000Z'));
+        return selected?.textContent.includes(expected) === true;
+      })()`,
+    ),
+    'A conta inicial não foi mantida após a falha de persistência.',
+  );
+
+  await evaluate(
+    contents,
+    `window.cobblemonCompanion.test.setAccountBehavior({selectionDelayMs: 0, failSelection: false, failNextList: true})`,
+  );
+  await evaluate(
+    contents,
+    `(() => {
+      const options = [...document.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button')];
+      const alternative = options.find(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
+      if (!alternative) throw new Error('A conta alternativa não estava disponível para a falha de reload.');
+      alternative.click();
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `Boolean([...document.querySelectorAll('header [role="alert"]')].some(node => node.textContent.includes('horários desconhecidos')))`,
+    'erro de reload e timestamps desconhecidos anunciados fora do diálogo',
+  );
+  check(
+    await evaluate(contents, `!document.querySelector('[aria-label="Conta selecionada"]')`),
+    'A UI apresentou metadados antigos como atuais após falha ao atualizar a lista.',
+  );
+
+  await evaluate(
+    contents,
+    `(() => {
+    if (!document.querySelector('[role="dialog"]')) document.querySelector('button[aria-label="Detalhes da captura"]').click();
+    })()`,
+  );
+  await clickButton(contents, 'Atualizar lista de contas');
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Conta selecionada"]'))`,
+    'metadados disponibilizados após uma listagem bem-sucedida',
+  );
+  check(
+    await evaluate(
+      contents,
+      `(() => {
+        const selected = document.querySelector('[aria-label="Conta selecionada"]');
+        const expected = new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'})
+          .format(Date.parse('2003-01-01T10:00:00.000Z'));
+        return selected?.textContent.includes(expected) === true;
+      })()`,
+    ),
+    'A UI não exibiu metadados atuais após o reload.',
+  );
+  await evaluate(
+    contents,
+    `(() => {
+      const options = [...document.querySelectorAll('ul[aria-label="Contas de save disponíveis"] button')];
+      const previousAccount = options.find(button => !button.disabled && button.getAttribute('aria-pressed') !== 'true');
+      if (!previousAccount) throw new Error('A conta anterior não estava disponível para seleção após reload.');
+      previousAccount.click();
+    })()`,
+  );
+  await waitFor(contents, `!document.querySelector('[role="dialog"]')`, 'fechamento após seleção concluída');
   await waitFor(
     contents,
     `(() => {
-    const selected = document.querySelector('[aria-label="Conta selecionada"]');
-    const expected = new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'})
-      .format(Date.parse('2003-01-01T10:00:00.000Z'));
-    return selected?.textContent.includes(expected) === true;
-  })()`,
-    'atualização do resumo para a conta escolhida',
+      const selected = document.querySelector('[aria-label="Conta selecionada"]');
+      const expected = new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'})
+        .format(Date.parse('2001-01-01T10:00:00.000Z'));
+      return selected?.textContent.includes(expected) === true;
+    })()`,
+    'atualização do resumo após seleção concluída',
   );
-  const result = await evaluate(contents, 'window.cobblemonCompanion.listSaveAccounts()');
-  const selected = result.accounts.find((account) => account.isSelected);
-  check(selected?.partyLastWriteAt === '2003-01-01T10:00:00.000Z', 'A seleção explícita não atualizou a conta configurada.');
-  console.log('PASS seleção de conta: aviso de duplicatas, conta sem save desabilitada e troca explícita');
+  const successfulSelection = await evaluate(contents, 'window.cobblemonCompanion.listSaveAccounts()');
+  const selectedAfterSuccess = successfulSelection.accounts.find((account) => account.isSelected);
+  check(selectedAfterSuccess?.partyLastWriteAt === '2001-01-01T10:00:00.000Z', 'A seleção concluída não atualizou a conta configurada.');
+  console.log('PASS seleção de conta: fluxo IPC, erros de seleção/reload, metadados desconhecidos e recuperação');
 }
 
 async function run() {
