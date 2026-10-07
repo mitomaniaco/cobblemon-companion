@@ -4,10 +4,11 @@ Atualização: 01/10/2026. O painel “Meus Pokémon” e o leitor local estão 
 
 ## Fluxo e limites
 
-- A leitura começa somente quando a pessoa aciona **Atualizar do save**. Não há polling nem leitura automática ao abrir o app.
-- O processo principal usa `config.json` na raiz do app para obter o diretório do servidor e o UUID do jogador. `server.properties` determina o `level-name`; se a chave simples aparecer mais de uma vez, vale a última ocorrência. A partir do mundo contido no diretório configurado, o leitor acessa os arquivos de party e PC sob seus diretórios Cobblemon.
+- Ao abrir, o processo principal lista a conta configurada e as entradas de `usercache.json` com o mesmo nome; consulta apenas mtimes dos arquivos locais de party/PC para mostrar duplicatas e sugerir a party mais recente. Não lê os dados NBT de outras contas nessa etapa. A seleção configurada permanece até uma escolha explícita.
+- A captura completa da party/PC começa somente quando a pessoa aciona **Atualizar do save**. Não há polling nem leitura automática do snapshot ao abrir o app.
+- O processo principal usa `config.json` na raiz do app para obter o diretório do servidor e o UUID do jogador. `server.properties` determina o `level-name`; se a chave simples aparecer mais de uma vez, vale a última ocorrência. A partir do mundo contido no diretório configurado, o leitor acessa os arquivos de party e PC da conta selecionada sob seus diretórios Cobblemon.
 - O IPC `companion:read-player-snapshot` não aceita argumentos. O preload também rejeita chamadas com argumentos, e o processo principal confere a origem/remetente antes de ler. O renderer não recebe acesso ao filesystem.
-- A captura usa somente leitura. Nenhum snapshot é salvo em banco ou arquivo pelo app, enviado ou escrito no jogo. A seleção existe apenas em memória nesta sessão.
+- A captura usa somente leitura dos saves. Nenhum snapshot é salvo em banco ou arquivo pelo app, enviado ou escrito no jogo. Uma escolha explícita de conta atualiza somente `playerUuid` no `config.json` privado; os identificadores IPC são temporários e não expõem UUIDs ao renderer.
 - O snapshot informa `capturedAt`, `worldName` e `consistency: "best-effort"`. Isso não é uma transação com o servidor: hashes/metadata são verificados antes e depois da leitura, mas o mundo pode mudar após a verificação. Alterações ainda não salvas no jogo não aparecem.
 
 ## Revisão do contrato

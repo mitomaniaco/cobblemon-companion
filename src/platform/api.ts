@@ -442,12 +442,34 @@ export type GuideNextGoal = {
   upcoming?: GuideStage[];
 };
 
+export type SaveAccount = {
+  /** Token aleatório efêmero mantido no processo principal; não contém UUID e expira ao atualizar a lista ou em 5 min. */
+  id: string;
+  name: string;
+  /** false quando não há arquivo party nem PC local para selecionar. */
+  selectable: boolean;
+  partyLastWriteAt: string | null;
+  pcLastWriteAt: string | null;
+  isSelected: boolean;
+};
+
+export type SaveAccountList = {
+  accounts: SaveAccount[];
+  selectedAccountId: string;
+  /** Conta cujo arquivo party tem o mtime mais recente; null se nenhuma party estiver disponível. */
+  mostRecentlyWrittenAccountId: string | null;
+};
+
 type RealDamageResponse = {status: 'calculated'; result: RealDamageResult};
 
 export type CompanionApi = {
   calculate(request: ComparisonRequest): Promise<FlowResponse>;
   calculateRealDamage(request: RealDamageRequest): Promise<RealDamageResponse>;
   cancel(jobId: string): Promise<{status: string; jobId: string}>;
+  /** Lista a conta selecionada e entradas do usercache com o mesmo nome; duplicadas sem saves aparecem selectable=false. */
+  listSaveAccounts(): Promise<SaveAccountList>;
+  /** Persiste a escolha explícita; depois chame readPlayerSnapshot() para atualizar o snapshot. */
+  selectSaveAccount(id: string): Promise<void>;
   readPlayerSnapshot(): Promise<PlayerSnapshot>;
   /** Recebe o snapshot novo quando os arquivos do save mudam; devolve a função que cancela a inscrição. */
   onSnapshotChanged(callback: (snapshot: PlayerSnapshot) => void): () => void;

@@ -10,6 +10,11 @@ const bridge = {
     if (args.length !== 0) return Promise.reject(new TypeError('A leitura do snapshot não aceita argumentos'));
     return ipcRenderer.invoke('companion:read-player-snapshot');
   },
+  listSaveAccounts: (...args) => {
+    if (args.length !== 0) return Promise.reject(new TypeError('A lista de contas não aceita argumentos'));
+    return ipcRenderer.invoke('companion:list-save-accounts');
+  },
+  selectSaveAccount: (id) => ipcRenderer.invoke('companion:select-save-account', id),
   onSnapshotChanged: (callback) => {
     if (typeof callback !== 'function') throw new TypeError('onSnapshotChanged precisa de uma função');
     const listener = (_event, snapshot) => callback(snapshot);
