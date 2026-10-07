@@ -39,6 +39,7 @@ export function useGuide(
   active: boolean,
   levelCap: number | null,
   respectLevelCap: boolean,
+  progressKey: string,
 ): GuideController {
   const [state, dispatch] = useReducer(guideReducer, undefined, createGuideState);
   const stateRef = useRef(state);
@@ -53,6 +54,7 @@ export function useGuide(
   const jobRef = useRef<string | null>(null);
   const attemptedKeyRef = useRef<string | null>(null);
   const nextGoalRequestedRef = useRef<string | null>(null);
+  const nextGoalRequestIdRef = useRef(0);
 
   const sourcesKey = snapshot ? guideSourcesKey(snapshot) : null;
   const hasSnapshot = snapshot !== null;
@@ -119,16 +121,33 @@ export function useGuide(
   }, [active, hasSnapshot, trainersIdle, api]);
 
   useEffect(() => {
-    if (!active || sourcesKey === null || nextGoalRequestedRef.current === sourcesKey) return;
-    const key = sourcesKey;
+    if (!active || sourcesKey === null) return;
+    const key = `${sourcesKey}|${progressKey}`;
+    if (nextGoalRequestedRef.current === key) return;
     nextGoalRequestedRef.current = key;
+    const requestId = ++nextGoalRequestIdRef.current;
+    dispatch({type: 'next-goal-requested'});
+    let current = true;
     void Promise.resolve()
       .then(() => api().guideNextGoal())
-      .then((next) => dispatch({type: 'next-goal-loaded', key, next}))
-      .catch((error) =>
-        dispatch({type: 'next-goal-failed', key, error: describeError(error, 'Não foi possível sugerir o próximo objetivo.')}),
-      );
-  }, [active, sourcesKey, api]);
+      .then((next) => {
+        if (current && requestId === nextGoalRequestIdRef.current) {
+          dispatch({type: 'next-goal-loaded', key: sourcesKey, next});
+        }
+      })
+      .catch((error) => {
+        if (current && requestId === nextGoalRequestIdRef.current) {
+          dispatch({
+            type: 'next-goal-failed',
+            key: sourcesKey,
+            error: describeError(error, 'Não foi possível sugerir o próximo objetivo.'),
+          });
+        }
+      });
+    return () => {
+      current = false;
+    };
+  }, [active, sourcesKey, progressKey, api]);
 
   const nextGoalKey = state.nextGoal?.key ?? null;
   const {mode, trainerId} = state;

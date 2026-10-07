@@ -182,7 +182,7 @@ export function TrainingSection({training, hasTeam}: {training: TrainingPlanCont
         )}
         <p className={styles.muted}>
           {hasTeam
-            ? 'Usa o level cap informado acima. Não sugere passar do cap.'
+            ? 'Usa o cap efetivo acima, digitado ou lido do progresso. Não sugere passar do cap.'
             : 'O guia não montou nenhum membro: não há o que treinar.'}
         </p>
       </div>

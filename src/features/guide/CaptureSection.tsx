@@ -164,6 +164,9 @@ export function CaptureSection({captures, gapCount}: {captures: CapturePlanContr
             : 'O time responde a todos os adversários de referência: não há lacuna para cobrir com capturas.'}
         </p>
       </div>
+      <p className={styles.note}>
+        O progresso Pika Star aparece acima, mas este plano ainda não o recebe; requisitos regionais continuam “não verificado”.
+      </p>
 
       {building && (
         <div className={styles.building}>

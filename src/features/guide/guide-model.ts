@@ -38,6 +38,7 @@ export type GuideAction =
   | {type: 'trainers-requested'}
   | {type: 'trainers-loaded'; items: GuideTrainer[]}
   | {type: 'trainers-failed'; error: string}
+  | {type: 'next-goal-requested'}
   | {type: 'next-goal-loaded'; key: string; next: GuideNextGoal}
   | {type: 'next-goal-failed'; key: string; error: string}
   | {type: 'mode-selected'; mode: GuideMode}
@@ -120,12 +121,13 @@ export function guideReducer(state: GuideState, action: GuideAction): GuideState
       return {...state, trainers: {status: 'ready', items: action.items, error: null}};
     case 'trainers-failed':
       return {...state, trainers: {status: 'failed', items: [], error: action.error}};
+    case 'next-goal-requested':
+      return {...state, nextGoal: null};
     case 'next-goal-loaded': {
       const next: GuideState = {...state, nextGoal: {key: action.key, status: 'ready', value: action.next}};
       if (state.goalChosen) return next;
-      return action.next.trainerId === null
-        ? {...next, mode: 'pve', trainerId: null}
-        : {...next, mode: 'trainer', trainerId: action.next.trainerId};
+      const trainerId = action.next.stage?.ambiguous ? null : action.next.trainerId;
+      return trainerId === null ? {...next, mode: 'pve', trainerId: null} : {...next, mode: 'trainer', trainerId};
     }
     case 'next-goal-failed':
       return {...state, nextGoal: {key: action.key, status: 'failed', error: action.error}};

@@ -57,6 +57,47 @@ describe('objetivo do guia', () => {
     expect(chosen.nextGoal?.status).toBe('ready');
   });
 
+  it('não escolhe automaticamente uma variante de campanha ambígua', () => {
+    const state = apply(createGuideState(), {
+      type: 'next-goal-loaded',
+      key: 'snapshot',
+      next: {
+        trainerId: 'rctmod:rival_a',
+        basis: 'progresso',
+        reason: 'A variante é sorteada no spawn.',
+        stage: {
+          stageId: 'rival-1',
+          name: 'Rival · primeiro encontro',
+          type: 'rival',
+          order: 1,
+          requires: [],
+          capBefore: 15,
+          capAfter: 20,
+          capUnknownReason: null,
+          ambiguous: true,
+          ambiguousReason: 'Sorteio ponderado no spawn.',
+          variants: [
+            {trainerId: 'rctmod:rival_a', format: 'singles', maxLevel: 20, teamSize: 3, optional: false, ambiguous: true, rule: null},
+            {trainerId: 'rctmod:rival_b', format: 'singles', maxLevel: 20, teamSize: 3, optional: false, ambiguous: true, rule: null},
+          ],
+        },
+      },
+    });
+    expect(state.nextGoal?.status).toBe('ready');
+    expect(currentGuideGoal(state)).toEqual({kind: 'pve'});
+  });
+
+  it('remove a sugestão anterior enquanto lê novamente o progresso', () => {
+    const suggested = apply(createGuideState(), {
+      type: 'next-goal-loaded',
+      key: 'snapshot',
+      next: {trainerId: 'brock', basis: 'progresso', reason: 'Líder atual'},
+    });
+    const requested = guideReducer(suggested, {type: 'next-goal-requested'});
+    expect(requested.nextGoal).toBeNull();
+    expect(currentGuideGoal(requested)).toEqual({kind: 'trainer', trainerId: 'brock'});
+  });
+
   it('sugestão sem líder fica em PvE geral', () => {
     const state = apply(createGuideState(), {
       type: 'next-goal-loaded',

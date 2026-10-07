@@ -22,9 +22,9 @@ export const TRAINING_STAT_LABEL: Record<TrainingStatKey, string> = {
   spe: 'Velocidade',
 };
 
-/** Cap só é `informado` quando a pessoa o digitou; nada é inferido de arquivo de configuração. */
+/** `informado` significa que há um cap efetivo, digitado ou derivado do progresso. */
 export const TRAINING_CAP_ORIGIN_LABEL: Record<TrainingCapOrigin, string> = {
-  informado: 'cap informado por você',
+  informado: 'cap conhecido',
   desconhecida: 'cap não determinado',
 };
 

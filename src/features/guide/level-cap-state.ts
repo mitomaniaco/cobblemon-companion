@@ -85,3 +85,8 @@ export function useLevelCapState(): LevelCapState {
 
   return {input, setInput, levelCap, debouncedLevelCap, respectLevelCap, setRespectLevelCap};
 }
+
+/** Um campo vazio aceita o cap derivado como padrão; qualquer entrada manual substitui-o, inclusive enquanto inválida. */
+export function resolveEffectiveLevelCap(input: string, manualLevelCap: number | null, progressLevelCap: number | null): number | null {
+  return input.trim() === '' ? progressLevelCap : manualLevelCap;
+}
