@@ -3,6 +3,7 @@ import {afterAll, describe, expect, it} from 'vitest';
 
 const require = createRequire(import.meta.url);
 const data = require('./fixtures/guide-data.json');
+const spawnFixture = require('./fixtures/guide-spawns.json');
 
 // O worker roda em utilityProcess do Electron: aqui `process.parentPort` é substituído por um canal em memória.
 const sent = [];
@@ -14,7 +15,19 @@ require.cache[dataModulePath] = {
   id: dataModulePath,
   filename: dataModulePath,
   loaded: true,
-  exports: {...require(dataModulePath), loadGuideData: () => data},
+  exports: {
+    ...require(dataModulePath),
+    loadGuideData: () => ({...data, learnsets: spawnFixture.learnsets}),
+    loadSpawnData: () => ({
+      ...spawnFixture.spawns,
+      rules: {
+        ...spawnFixture.spawns.rules,
+        species: Object.fromEntries(
+          Object.entries(spawnFixture.spawns.rules.species).map(([slug, rule]) => [slug, {...rule, pikaStarRegions: ['kanto']}]),
+        ),
+      },
+    }),
+  },
 };
 require('../electron/guide-worker.cjs');
 
@@ -85,18 +98,38 @@ describe('guide-worker', () => {
     expect(message.result.members[0]).toMatchObject({uuid: 'u-1', status: 'sem-evolução'});
   });
 
-  it('task capture-plan devolve o plano de capturas (dados de spawn reais)', async () => {
+  it('encaminha o estado Pika Star da requisição pelo worker ao plano de capturas', async () => {
+    const captureSnapshot = {
+      individuals: [
+        {
+          uuid: 'u-venusaur',
+          speciesId: 'cobblemon:venusaur',
+          formId: 'normal',
+          level: 40,
+          location: {container: 'party', slot: 0},
+          equippedMoves: [{id: 'cobblemon:tackle', pp: 10, ppUps: 0}],
+          equippedMovesKnown: true,
+          learnedMoves: [],
+          learnedMovesKnown: true,
+          observed: {nature: 'cobblemon:modest', ability: 'cobblemon:overgrow', heldItem: null},
+          battleStats: {ivs: facts(31), hyperTrainedIvs: facts(null), evs: facts(0)},
+        },
+      ],
+    };
     const request = {
       sources: [],
       goal: {kind: 'trainer', trainerId: 'synthetic:fire'},
-      teamUuids: [],
+      teamUuids: ['u-venusaur'],
       gapOpponentIds: ['synthetic:fire#0'],
+      pikaStar: {kanto: true},
     };
-    deliver({data: {type: 'run', task: 'capture-plan', jobId: 'job-capture', snapshot, request}});
-    await waitFor(() => sent.some((message) => message.jobId === 'job-capture'));
+    deliver({data: {type: 'run', task: 'capture-plan', jobId: 'job-capture', snapshot: captureSnapshot, request}});
+    await waitFor(() => sent.some((candidate) => candidate.jobId === 'job-capture'));
     const message = sent.find((candidate) => candidate.jobId === 'job-capture');
     expect(message.type).toBe('result');
     expect(message.result.gaps).toHaveLength(1);
+    const swampert = message.result.gaps[0].candidates.find((candidate) => candidate.speciesId === 'cobblemon:swampert');
+    expect(swampert.requirements.find((requirement) => requirement.kind === 'pika-star').status).toBe('cumprido');
   });
 
   it('task training-plan devolve o plano de treino do time', async () => {

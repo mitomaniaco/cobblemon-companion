@@ -15,7 +15,7 @@ type GuideJobOptions<Result, Request> = {
   jobPrefix: string;
   fallbackError: string;
   /** `null`: não há o que montar para este resultado do guia. */
-  buildRequest(snapshot: PlayerSnapshot, guide: GuideResult, jobId: string): Request | null;
+  buildRequest(snapshot: PlayerSnapshot, guide: GuideResult, jobId: string): Request | null | Promise<Request | null>;
   run(api: CompanionApi, request: Request): Promise<Result>;
 };
 
@@ -59,19 +59,31 @@ export function useGuideJob<Result, Request>(options: GuideJobOptions<Result, Re
 
   const request = useCallback(() => {
     const current = optionsRef.current;
-    if (!current.snapshot || !current.guideResult) return;
+    const {snapshot, guideResult} = current;
+    if (!snapshot || !guideResult) return;
     const requestId = requestRef.current + 1;
     const jobId = `${current.jobPrefix}-${requestId}`;
-    const built = current.buildRequest(current.snapshot, current.guideResult, jobId);
-    if (built === null) return;
     requestRef.current = requestId;
     cancelJob(jobRef.current);
     jobRef.current = jobId;
     dispatch({type: 'build-started', requestId});
     void Promise.resolve()
-      .then(() => current.run(current.api(), built))
-      .then((result) => dispatch({type: 'build-succeeded', requestId, result}))
-      .catch((error) => dispatch({type: 'build-failed', requestId, error: describeError(error, current.fallbackError)}))
+      .then(() => current.buildRequest(snapshot, guideResult, jobId))
+      .then((built) => {
+        if (requestRef.current !== requestId) return;
+        if (built === null) {
+          dispatch({type: 'reset'});
+          return;
+        }
+        return current.run(current.api(), built);
+      })
+      .then((result) => {
+        if (result !== undefined && requestRef.current === requestId) dispatch({type: 'build-succeeded', requestId, result});
+      })
+      .catch((error) => {
+        if (requestRef.current === requestId)
+          dispatch({type: 'build-failed', requestId, error: describeError(error, current.fallbackError)});
+      })
       .finally(() => {
         if (jobRef.current === jobId) jobRef.current = null;
       });
@@ -79,6 +91,7 @@ export function useGuideJob<Result, Request>(options: GuideJobOptions<Result, Re
 
   const cancel = useCallback(() => {
     if (stateRef.current.phase !== 'building') return;
+    requestRef.current += 1;
     cancelJob(jobRef.current);
     dispatch({type: 'build-canceled', requestId: stateRef.current.requestId});
   }, [cancelJob]);

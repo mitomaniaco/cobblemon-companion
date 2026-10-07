@@ -289,6 +289,8 @@ export type CapturePlanRequest = {
   goal: GuideGoal;
   /** Uuids do time de 6 do guia; indivíduos fora dele podem aparecer como cobertura já possuída. */
   teamUuids: string[];
+  /** `GuideProgress.pikaStar`, com valor desconhecido representado por `null`. */
+  pikaStar: Record<GuideProgressRegion, boolean | null>;
   /** `GuideResult.opponents[].id` dos adversários que nenhum membro do time vence. */
   gapOpponentIds: string[];
   /** Identificador opcional para cancelar com `cancel(jobId)`. */
@@ -309,7 +311,7 @@ export type CaptureSpawn = {
 export type CaptureRequirement = {
   kind: 'nível' | 'pika-star';
   text: string;
-  /** Só o nível da party é conhecido; o advancement Pika Star fica no save e não é lido: sempre `não verificado`. */
+  /** Situação da regra pelo nível e, para Pika Star, pelo progresso regional informado. */
   status: 'cumprido' | 'pendente' | 'não verificado';
 };
 

@@ -1359,12 +1359,13 @@ async function exerciseGuideContract(contents) {
     const evolution = await api.buildEvolutionPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: member.moves.map((move) => move.id)}], levelCap: null});
     // Rejeição intencional (loga "request.team precisa ter de 1 a 6 membros" no main): pedido de evoluções inválido.
     const staleEvolution = await api.buildEvolutionPlan({sources: [], team: [], levelCap: null}).then(() => 'built', (error) => error.message);
-    const capture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id)});
-    const staleCapture = await api.buildCapturePlan({sources: [], goal: {kind: 'pve'}, teamUuids: [], gapOpponentIds: []}).then(() => 'built', (error) => error.message);
+    const capture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id), pikaStar: (await api.readGuideProgress()).pikaStar});
+    const staleCapture = await api.buildCapturePlan({sources: [], goal: {kind: 'pve'}, teamUuids: [], gapOpponentIds: [], pikaStar: (await api.readGuideProgress()).pikaStar}).then(() => 'built', (error) => error.message);
+    const invalidCapture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id), pikaStar: {...(await api.readGuideProgress()).pikaStar, kanto: 'unknown'}}).then(() => 'built', (error) => error.message);
     const training = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: 30, capOrigin: 'informado'});
     const noCap = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: null, capOrigin: 'desconhecida'});
     const staleTraining = await api.buildTrainingPlan({sources: [], team: [], levelCap: null, capOrigin: 'desconhecida'}).then(() => 'built', (error) => error.message);
-    return {trainers, nextGoal, progress, guide, capped, uncapped, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, training, noCap, staleTraining};
+    return {trainers, nextGoal, progress, guide, capped, uncapped, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, invalidCapture, training, noCap, staleTraining};
   })()`,
   );
   check(
@@ -1425,6 +1426,7 @@ async function exerciseGuideContract(contents) {
   );
   check(result.staleTraining !== 'built', 'O plano de treino aceitou um pedido inválido.');
   check(result.staleCapture !== 'built', 'O plano de capturas aceitou fontes que não correspondem ao snapshot atual.');
+  check(result.invalidCapture.includes('request.pikaStar.kanto'), 'O IPC aceitou um valor Pika Star inválido.');
   check(result.staleEvolution !== 'built', 'O plano de evoluções aceitou um pedido inválido.');
   check(result.stalePlan !== 'built', 'O plano aceitou um pedido inválido.');
   check(

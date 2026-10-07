@@ -57,29 +57,36 @@ describe('pedido de capturas', () => {
   const goal = {kind: 'trainer', trainerId: 'misty'} as const;
   const team = [member('u1', [{opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3}])];
 
-  it('leva o objetivo, o time e só as lacunas, com os hashes das fontes', () => {
-    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team}, 'job-1')).toEqual({
+  it('leva o objetivo, o time, Pika Star e só as lacunas, com os hashes das fontes', () => {
+    const pikaStar = Object.fromEntries(
+      ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'hisui', 'paldea'].map((region) => [region, null]),
+    ) as Record<'kanto' | 'johto' | 'hoenn' | 'sinnoh' | 'unova' | 'kalos' | 'alola' | 'galar' | 'hisui' | 'paldea', boolean | null>;
+    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team}, pikaStar, 'job-1')).toEqual({
       sources: [
         {kind: 'party', sha256: 'a'.repeat(64)},
         {kind: 'pc', sha256: 'b'.repeat(64)},
       ],
       goal,
       teamUuids: ['u1'],
+      pikaStar,
       gapOpponentIds: ['o0', 'o2'],
       jobId: 'job-1',
     });
   });
 
   it('não pede nada sem time ou sem lacuna, e omite jobId quando não há', () => {
-    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team: []})).toBeNull();
+    const pikaStar = Object.fromEntries(
+      ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'hisui', 'paldea'].map((region) => [region, null]),
+    ) as Record<'kanto' | 'johto' | 'hoenn' | 'sinnoh' | 'unova' | 'kalos' | 'alola' | 'galar' | 'hisui' | 'paldea', boolean | null>;
+    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team: []}, pikaStar)).toBeNull();
     const beatAll = [
       member(
         'u1',
         opponents.map((opponent) => ({opponentId: opponent.id, outcome: 'vence' as const, ourTurns: 1, theirTurns: 2})),
       ),
     ];
-    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team: beatAll})).toBeNull();
-    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team})).not.toHaveProperty('jobId');
+    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team: beatAll}, pikaStar)).toBeNull();
+    expect(buildCapturePlanRequest(snapshot, {goal, opponents, team}, pikaStar)).not.toHaveProperty('jobId');
   });
 });
 
