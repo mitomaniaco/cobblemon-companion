@@ -1382,6 +1382,7 @@ async function exerciseGuideContract(contents) {
     result.progress.currentSeries === 'radicalred' &&
       result.progress.levelCap === 15 &&
       result.progress.pikaStar.kanto === false &&
+      result.progress.pikaStar.paldea === false &&
       result.progress.victoryCounts !== null,
     'A bridge não expôs o progresso sintético com o level cap derivado.',
   );
@@ -1414,9 +1415,10 @@ async function exerciseGuideContract(contents) {
     gap && gap.owned.length > 0 && gap.candidates.length > 0,
     'O plano de capturas sintético não trouxe um indivíduo possuído e um candidato.',
   );
+  const pikaRequirement = gap.candidates[0].requirements.find((requirement) => requirement.kind === 'pika-star');
   check(
-    gap.candidates[0].requirements.some((requirement) => requirement.kind === 'pika-star' && requirement.status === 'não verificado'),
-    'O requisito Pika Star não saiu como não verificado.',
+    result.progress.pikaStar.paldea === false && pikaRequirement?.text.includes('paldea') && pikaRequirement.status === 'pendente',
+    'O plano sintético não representou o Pika Star de Paldea conhecido como pendente.',
   );
   const trained = result.training.members[0];
   check(trained.targetLevel !== null && trained.targetLevel <= trained.levelCap, 'O plano de treino sintético sugeriu nível acima do cap.');
@@ -1651,13 +1653,21 @@ async function exerciseGuideWorkspace(window) {
     'Nv. 25–30',
     'incomum',
     'Captura liberada',
-    'não verificado',
-    'O progresso Pika Star aparece acima, mas este plano ainda não o recebe',
+    'pendente',
     'Hipóteses',
     'Limites',
   ]) {
     check(captureText.includes(expected), `A seção de capturas não mostrou "${expected}".`);
   }
+  const pikaStatus = await evaluate(
+    contents,
+    `(() => {
+      const requirements = [...document.querySelectorAll('ul[aria-label="Requisitos para capturar Swampert"] li')];
+      const pika = requirements.find((item) => item.textContent.includes('advancement Pika Star de paldea'));
+      return pika?.querySelector('[data-status]')?.textContent.trim() || null;
+    })()`,
+  );
+  check(pikaStatus === 'pendente', 'A UI não mostrou o status Pika Star de Paldea devolvido pelo plano sintético.');
   check(
     captureText.indexOf('Você já tem') < captureText.indexOf('Candidatos de captura'),
     'O que o jogador já tem deve aparecer antes dos candidatos de captura.',
