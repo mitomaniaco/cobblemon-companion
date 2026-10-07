@@ -1,10 +1,12 @@
 import {describe, expect, it} from 'vitest';
+import {createTrainerSessionRefresh} from '../src/app/useTrainerSession';
 import {
   completeTrainerSessionRefresh,
   createInitialTrainerSessionState,
   selectTrainerSessionIndividual,
   trainerSessionReducer,
   updateTrainerSessionMoveSwap,
+  type TrainerSessionAction,
 } from '../src/app/trainer-session-model';
 import type {PlayerIndividual, PlayerSnapshot, PlayerStat, PlayerStatFact} from '../src/platform/api';
 
@@ -70,6 +72,40 @@ function deferred<T>() {
 }
 
 describe('controlador de sessão do treinador', () => {
+  it('descarta a leitura inicial que termina depois da captura pós-seleção', async () => {
+    const oldSnapshot = snapshot([individual('old-account-uuid', 'eevee', {container: 'party', slot: 0})]);
+    const selectedSnapshot = snapshot([individual('selected-account-uuid', 'vaporeon', {container: 'party', slot: 0})]);
+    const initialRead = deferred<PlayerSnapshot>();
+    const appliedSnapshots: PlayerSnapshot[] = [];
+    let state = createInitialTrainerSessionState();
+    let readCount = 0;
+    const refresh = createTrainerSessionRefresh(
+      () => {
+        readCount += 1;
+        return readCount === 1 ? initialRead.promise : Promise.resolve(selectedSnapshot);
+      },
+      (action: TrainerSessionAction) => {
+        if (action.type === 'refresh-succeeded') appliedSnapshots.push(action.snapshot);
+        state = trainerSessionReducer(state, action);
+      },
+    );
+
+    const pendingInitialRead = refresh();
+    const postSelectionRead = refresh({supersedePending: true});
+    await postSelectionRead;
+
+    expect(readCount).toBe(2);
+    expect(state.snapshot).toBe(selectedSnapshot);
+    expect(state.selectedUuid).toBe('selected-account-uuid');
+
+    initialRead.resolve(oldSnapshot);
+    await pendingInitialRead;
+
+    expect(state.snapshot).toBe(selectedSnapshot);
+    expect(state.selectedUuid).toBe('selected-account-uuid');
+    expect(appliedSnapshots).toEqual([selectedSnapshot]);
+  });
+
   it('seleciona a instância exata quando duas capturas têm a mesma espécie', () => {
     const first = individual(
       'uuid-first',

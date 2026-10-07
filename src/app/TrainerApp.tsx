@@ -16,7 +16,7 @@ import {useLevelCapState} from '../features/guide/level-cap-state';
 import {accountWriteTimestamp, formatAccountTimestamp, saveAccountWarnings, selectedSaveAccount} from './account-source-model';
 import type {SaveAccount} from './account-source-model';
 import {useSaveAccounts, type SaveAccountsUiState} from './useSaveAccounts';
-import {useTrainerSession} from './useTrainerSession';
+import {useTrainerSession, type TrainerSessionRefreshOptions} from './useTrainerSession';
 import {scrubDiagnosticText} from '../platform/diagnostics';
 import {Button, Dialog, PokeBallMark, setArtworkManifest, StatusMessage, Switch, type ArtworkManifest} from '../ui';
 import styles from './TrainerApp.module.css';
@@ -383,7 +383,7 @@ function NavigationGroup({items, workspace, onNavigate}: {items: NavigationItem[
 export function TrainerApp() {
   const api = useCallback(() => getCompanionApi(), []);
   const session = useTrainerSession(api);
-  const saveAccounts = useSaveAccounts(api, refreshSnapshot);
+  const saveAccounts = useSaveAccounts(api, () => refreshSnapshot({supersedePending: true}));
   const [workspace, setWorkspace] = useState<Workspace>('guide');
   const [damageReturnWorkspace, setDamageReturnWorkspace] = useState<Exclude<Workspace, 'damage'>>('team');
   const [detailTab, setDetailTab] = useState<IndividualWorkspaceTab>('summary');
@@ -509,12 +509,12 @@ export function TrainerApp() {
   const safeSessionError = session.error ? scrubDiagnosticText(session.error) : null;
   const warningCount = session.snapshot?.warnings?.length ?? 0;
 
-  async function refreshSnapshot() {
+  async function refreshSnapshot(options?: TrainerSessionRefreshOptions) {
     damageController.invalidateCalculation();
     setSnapshotRevision((revision) => revision + 1);
     setCompactPanel('collection');
     setDetailTab('summary');
-    await session.refresh();
+    await session.refresh(options);
   }
 
   pushedSnapshotRef.current = (snapshot: PlayerSnapshot) => {
