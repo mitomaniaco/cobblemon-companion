@@ -455,7 +455,7 @@ function handleEvolutionPlanBuild(event, request) {
   return runGuideJob(jobId, {type: 'run', task: 'evolution-plan', jobId, snapshot, request: {sources: request.sources, ...plan}});
 }
 function validateCapturePlanRequest(request) {
-  exactKeys(request, ['sources', 'goal', 'teamUuids', 'gapOpponentIds', 'jobId'], 'request');
+  exactKeys(request, ['sources', 'goal', 'teamUuids', 'gapOpponentIds', 'pikaStar', 'jobId'], 'request');
   const {goal} = validateGuideRequest({sources: request.sources, goal: request.goal, jobId: request.jobId});
   const uuids = (value, name, max) => {
     if (
@@ -468,8 +468,18 @@ function validateCapturePlanRequest(request) {
   };
   const teamUuids = uuids(request.teamUuids, 'teamUuids', 6);
   const gapOpponentIds = uuids(request.gapOpponentIds, 'gapOpponentIds', 30);
+  const regions = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'hisui', 'paldea'];
+  exactKeys(request.pikaStar, regions, 'request.pikaStar');
+  const pikaStar = Object.fromEntries(
+    regions.map((region) => {
+      const status = request.pikaStar[region];
+      if (status !== true && status !== false && status !== null)
+        throw new TypeError(`request.pikaStar.${region} precisa ser verdadeiro, falso ou null`);
+      return [region, status];
+    }),
+  );
   const jobId = request.jobId ?? `capture-${Date.now()}-${++guideSequence}`;
-  return {jobId, plan: {goal, teamUuids, gapOpponentIds}};
+  return {jobId, plan: {goal, teamUuids, gapOpponentIds, pikaStar}};
 }
 function handleCapturePlanBuild(event, request) {
   requireSender(event);

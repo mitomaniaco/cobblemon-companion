@@ -16,7 +16,10 @@ export function useCapturePlan(
     guideResult,
     jobPrefix: 'capture-plan',
     fallbackError: 'As capturas recomendadas não foram montadas.',
-    buildRequest: buildCapturePlanRequest,
+    buildRequest: async (currentSnapshot, guide, jobId) => {
+      const {pikaStar} = await api().readGuideProgress();
+      return buildCapturePlanRequest(currentSnapshot, guide, pikaStar, jobId);
+    },
     run: (companion, request) => companion.buildCapturePlan(request),
   });
 }

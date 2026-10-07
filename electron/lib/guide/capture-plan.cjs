@@ -30,7 +30,7 @@ const TIME_LABELS = {
 const LIMITS = Object.freeze([
   'Só spawns naturais conhecidos dos arquivos do jogo; antecondições, peso exato e eventos especiais não são avaliados.',
   'Lendários e míticos não são recomendados; shiny não é considerado.',
-  'O app não lê inventário (Poké Balls) nem o advancement Pika Star do save: esses requisitos ficam como não verificados.',
+  'O app não lê inventário (Poké Balls); esse requisito fica como não verificado.',
 ]);
 
 const titleCase = (value) =>
@@ -184,7 +184,7 @@ function compareDuels(left, right) {
   return right.outcome.score - left.outcome.score;
 }
 
-function candidateEntry(candidate, opponent, level, limit, firstPartyLevel, learnsets) {
+function candidateEntry(candidate, opponent, level, limit, firstPartyLevel, learnsets, pikaStar) {
   const spec = wildSpec(candidate, level);
   if (!spec.ability) return null;
   const moves = levelUpMoves(learnsets, candidate.slug, level).map((id) => ({id, name: COMPATIBILITY.moves[id].name}));
@@ -203,11 +203,17 @@ function candidateEntry(candidate, opponent, level, limit, firstPartyLevel, lear
   const requirements = [
     {kind: 'nível', text: `alvo até o nível ${limit} (${source})`, status: catchable === 'liberada' ? 'cumprido' : 'pendente'},
   ];
-  if (candidate.regions) {
+  if (candidate.regions?.length) {
+    const statuses = candidate.regions.map((region) => pikaStar?.[region]);
+    const status = statuses.some((regionStatus) => regionStatus === true)
+      ? 'cumprido'
+      : statuses.every((regionStatus) => regionStatus === false)
+        ? 'pendente'
+        : 'não verificado';
     requirements.push({
       kind: 'pika-star',
       text: `advancement Pika Star de ${candidate.regions.join(' ou ')} (allthemons:<região>_pika_star)`,
-      status: 'não verificado',
+      status,
     });
   }
   return {
@@ -293,7 +299,7 @@ async function buildCapturePlan({snapshot, request, data, checkpoint = async () 
     const found = [];
     for (const candidate of candidates) {
       const level = evaluationLevel(candidate.spawns, limit);
-      const built = candidateEntry(candidate, opponent, level, limit, firstPartyLevel, data.learnsets);
+      const built = candidateEntry(candidate, opponent, level, limit, firstPartyLevel, data.learnsets, request.pikaStar);
       if (built) found.push(built);
     }
     found.sort(

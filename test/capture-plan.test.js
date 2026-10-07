@@ -36,8 +36,19 @@ const weakPc = individual('venusaur', 12, ['tackle'], {container: 'pc', slot: 4}
 const snapshot = {individuals: [venusaur, pcBlastoise, weakPc]};
 const goal = {kind: 'trainer', trainerId: 'synthetic:fire'};
 const GAP = 'synthetic:fire#0';
-const plan = (overrides = {}, input = snapshot) =>
-  buildCapturePlan({snapshot: input, request: {sources: [], goal, teamUuids: [venusaur.uuid], gapOpponentIds: [GAP], ...overrides}, data});
+const plan = (overrides = {}, input = snapshot, captureData = data) =>
+  buildCapturePlan({
+    snapshot: input,
+    request: {
+      sources: [],
+      goal,
+      teamUuids: [venusaur.uuid],
+      gapOpponentIds: [GAP],
+      pikaStar: {paldea: null},
+      ...overrides,
+    },
+    data: captureData,
+  });
 
 describe('plano de capturas recomendadas', () => {
   it('o indivíduo do PC que cobre a lacuna aparece em owned, e quem não cobre não aparece', async () => {
@@ -101,19 +112,79 @@ describe('plano de capturas recomendadas', () => {
     expect(result.gaps[0].candidates[0].catchableReason).toContain('limite de captura 15');
   });
 
-  it('Pika Star aparece sempre como não verificado e lendários e míticos nunca são candidatos', async () => {
-    const candidates = (await plan()).gaps[0].candidates;
-    const paradox = candidates.find((candidate) => candidate.speciesId === 'cobblemon:walkingwake');
-    expect(paradox.requirements).toContainEqual({
+  it('usa Pika Star regional verdadeiro, falso ou desconhecido sem alterar a regra de nível', async () => {
+    const incomplete = (await plan({pikaStar: {paldea: false}})).gaps[0].candidates.find(
+      (candidate) => candidate.speciesId === 'cobblemon:walkingwake',
+    );
+    expect(incomplete.requirements).toEqual([
+      expect.objectContaining({kind: 'nível', status: 'pendente'}),
+      {
+        kind: 'pika-star',
+        text: 'advancement Pika Star de paldea (allthemons:<região>_pika_star)',
+        status: 'pendente',
+      },
+    ]);
+
+    const unknown = (await plan({pikaStar: {paldea: null}})).gaps[0].candidates.find(
+      (candidate) => candidate.speciesId === 'cobblemon:walkingwake',
+    );
+    expect(unknown.requirements[1].status).toBe('não verificado');
+    const missing = (await plan({pikaStar: {}})).gaps[0].candidates.find((candidate) => candidate.speciesId === 'cobblemon:walkingwake');
+    expect(missing.requirements[1].status).toBe('não verificado');
+
+    const walkingWakeMultiRegionData = {
+      ...data,
+      spawns: {
+        ...data.spawns,
+        rules: {
+          ...data.spawns.rules,
+          species: {
+            ...data.spawns.rules.species,
+            walkingwake: {...data.spawns.rules.species.walkingwake, pikaStarRegions: ['kanto', 'paldea']},
+          },
+        },
+      },
+    };
+    const pikaRequirement = (result) =>
+      result.gaps[0].candidates
+        .find((candidate) => candidate.speciesId === 'cobblemon:walkingwake')
+        .requirements.find((requirement) => requirement.kind === 'pika-star');
+    const trueAndFalse = await plan({pikaStar: {kanto: true, paldea: false}}, snapshot, walkingWakeMultiRegionData);
+    const completeCandidate = trueAndFalse.gaps[0].candidates.find((candidate) => candidate.speciesId === 'cobblemon:walkingwake');
+    expect(completeCandidate.requirements.filter((requirement) => requirement.kind === 'pika-star')).toHaveLength(1);
+    expect(pikaRequirement(trueAndFalse)).toEqual({
       kind: 'pika-star',
-      text: 'advancement Pika Star de paldea (allthemons:<região>_pika_star)',
-      status: 'não verificado',
+      text: 'advancement Pika Star de kanto ou paldea (allthemons:<região>_pika_star)',
+      status: 'cumprido',
     });
-    expect(candidates.some((candidate) => candidate.speciesId === 'cobblemon:articuno')).toBe(false);
-    for (const candidate of candidates) {
-      for (const requirement of candidate.requirements.filter((item) => item.kind === 'pika-star'))
-        expect(requirement.status).toBe('não verificado');
-    }
+    const falseAndUnknown = await plan({pikaStar: {kanto: false, paldea: null}}, snapshot, walkingWakeMultiRegionData);
+    expect(pikaRequirement(falseAndUnknown).status).toBe('não verificado');
+    const allFalse = await plan({pikaStar: {kanto: false, paldea: false}}, snapshot, walkingWakeMultiRegionData);
+    expect(pikaRequirement(allFalse).status).toBe('pendente');
+    const swampertData = {
+      ...data,
+      spawns: {
+        ...data.spawns,
+        rules: {
+          ...data.spawns.rules,
+          species: {
+            ...data.spawns.rules.species,
+            swampert: {...data.spawns.rules.species.swampert, pikaStarRegions: ['kanto']},
+          },
+        },
+      },
+    };
+    const completed = (
+      await buildCapturePlan({
+        snapshot,
+        request: {sources: [], goal, teamUuids: [venusaur.uuid], gapOpponentIds: [GAP], pikaStar: {kanto: true}},
+        data: swampertData,
+      })
+    ).gaps[0].candidates.find((candidate) => candidate.speciesId === 'cobblemon:swampert');
+    expect(completed.requirements.map(({kind, status}) => [kind, status])).toEqual([
+      ['nível', 'cumprido'],
+      ['pika-star', 'cumprido'],
+    ]);
   });
 
   it('espécie sem spawn natural conhecido, forma regional e quem não vence não ganham local nem entram', async () => {
@@ -127,7 +198,13 @@ describe('plano de capturas recomendadas', () => {
     const noCover = {...data, spawns: {...data.spawns, pools: {species: {golem: data.spawns.pools.species.golem}}}};
     const result = await buildCapturePlan({
       snapshot,
-      request: {sources: [], goal, teamUuids: [venusaur.uuid], gapOpponentIds: [GAP, 'synthetic:fire#9']},
+      request: {
+        sources: [],
+        goal,
+        teamUuids: [venusaur.uuid],
+        gapOpponentIds: [GAP, 'synthetic:fire#9'],
+        pikaStar: {},
+      },
       data: noCover,
     });
     expect(result.gaps).toHaveLength(1);

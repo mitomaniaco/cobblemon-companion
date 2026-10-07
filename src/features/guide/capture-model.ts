@@ -13,6 +13,7 @@ export function guideGapOpponentIds(guide: Pick<GuideResult, 'opponents' | 'team
 export function buildCapturePlanRequest(
   snapshot: PlayerSnapshot,
   guide: Pick<GuideResult, 'goal' | 'opponents' | 'team'>,
+  pikaStar: CapturePlanRequest['pikaStar'],
   jobId?: string,
 ): CapturePlanRequest | null {
   const gapOpponentIds = guideGapOpponentIds(guide);
@@ -21,6 +22,7 @@ export function buildCapturePlanRequest(
     sources: snapshot.sources.map(({kind, sha256}) => ({kind, sha256})),
     goal: guide.goal,
     teamUuids: guide.team.map((member) => member.uuid),
+    pikaStar,
     gapOpponentIds,
     ...(jobId === undefined ? {} : {jobId}),
   };
