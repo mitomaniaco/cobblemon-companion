@@ -5,31 +5,32 @@
  * o interruptor "Atualizar automaticamente" só liga e desliga o monitor. A leitura inicial e os botões de releitura
  * independem dele. `watcher` é o `createSaveWatcher` (ou null no modo de teste da UI, onde não há arquivo a observar).
  */
-function createAutoRefresh(watcher) {
+function createAutoRefresh(watcher, additionalWatchers = []) {
+  const watchers = [watcher, ...additionalWatchers].filter(Boolean);
   let enabled = true;
   return {
     get enabled() {
       return enabled;
     },
-    /** Ao abrir o app: liga o monitor se o interruptor estiver ligado. Config inválida deixa desligado, sem erro. */
+    /** Ao abrir o app: liga os monitores se o interruptor estiver ligado. Configuração inválida deixa-os desligados. */
     start() {
-      if (watcher && enabled) watcher.start();
+      if (enabled) for (const item of watchers) item.start();
     },
     /** Interruptor do usuário. */
     setEnabled(next) {
       enabled = next;
-      if (!watcher) return;
-      if (next) watcher.start();
-      else watcher.stop();
+      for (const item of watchers) {
+        if (next) item.start();
+        else item.stop();
+      }
     },
-    /** Depois de uma leitura bem-sucedida: guarda a versão vista e (re)tenta ligar o monitor, caso a abertura tenha falhado. */
+    /** Depois de uma leitura bem-sucedida: guarda a versão vista e (re)tenta ligar o monitor. */
     afterRead(snapshot) {
-      if (!watcher) return;
-      watcher.acknowledge(snapshot);
-      if (enabled) watcher.start();
+      watcher?.acknowledge(snapshot);
+      if (enabled) for (const item of watchers) item.start();
     },
     stop() {
-      watcher?.stop();
+      for (const item of watchers) item.stop();
     },
   };
 }

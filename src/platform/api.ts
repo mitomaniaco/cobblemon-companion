@@ -407,31 +407,60 @@ export type TrainingPlanResult = {
   limits: string[];
 };
 
+export type GuideProgressRegion = 'kanto' | 'johto' | 'hoenn' | 'sinnoh' | 'unova' | 'kalos' | 'alola' | 'galar' | 'hisui' | 'paldea';
+
+export type GuideProgressSourceKind = 'rct-stats' | 'pika-advancements';
+
 /**
  * Progresso do jogador na campanha, lido do diretório do mundo (somente leitura, D15). Cada campo desconhecido é
  * `null` (arquivo ausente, ilegível ou fora do formato esperado): desconhecido nunca é zero nem falso.
  */
 export type GuideProgress = {
-  /** Ids RCT dos treinadores vencidos (`defeatedTrainerIds`). */
+  /** IDs com ao menos uma vitória em `progressDefeats`; uma contagem zero permanece somente em `victoryCounts`. */
   defeated: string[] | null;
-  /** Série em andamento (por exemplo `radicalred`). */
+  /** Contagens lidas de `progressDefeats`, sem leitura de shards de memória de batalha. */
+  victoryCounts: Record<string, number> | null;
+  /** Série selecionada/atual pelo jogador. */
   currentSeries: string | null;
+  /** Se a série atual foi concluída; null quando o campo está ausente ou inválido. */
+  currentSeriesCompleted: boolean | null;
   /** Séries concluídas. */
   completedSeries: string[] | null;
-  /** Level cap atual do jogador. */
+  /** Level cap atual, derivado das regras RCT e dos dados da campanha; não é gravado no save. */
   levelCap: number | null;
-  /** Advancement `allthemons:<região>_pika_star` por região: `true` lido como concedido, `false` lido como não concedido, `null` desconhecido. */
-  pikaStar: Record<string, boolean | null>;
+  /** Advancement `allthemons:<região>_pika_star` por região; ausência em JSON válido é false, fonte desconhecida é null. */
+  pikaStar: Record<GuideProgressRegion, boolean | null>;
   /** Arquivos lidos e o SHA-256 de cada um (o conteúdo não sai do processo principal). */
-  sources: Array<{kind: string; sha256: string}>;
+  sources: Array<{kind: GuideProgressSourceKind; sha256: string}>;
 };
 
-/** Variante RCT de uma etapa da campanha. `ambiguous`: o app não sabe qual delas vale para o jogador, e nenhuma é escolhida em silêncio. */
-export type GuideStageVariant = {trainerId: string; maxLevel: number; teamSize: number; ambiguous: boolean; rule: string | null};
+/** Variante RCT de uma etapa da campanha. `ambiguous`: nenhuma variante é escolhida em silêncio. */
+export type GuideStageVariant = {
+  trainerId: string;
+  format: string;
+  maxLevel: number;
+  teamSize: number;
+  optional: boolean;
+  ambiguous: boolean;
+  rule: string | null;
+};
 
-export type GuideStage = {stageId: string; name: string; variants: GuideStageVariant[]};
+/** Dados integrais da etapa de campaign.json necessários para explicar requisitos e a progressão do cap. */
+export type GuideStage = {
+  stageId: string;
+  name: string;
+  type: string;
+  order: number;
+  requires: string[];
+  capBefore: number | null;
+  capAfter: number | null;
+  capUnknownReason: string | null;
+  ambiguous: boolean;
+  ambiguousReason: string | null;
+  variants: GuideStageVariant[];
+};
 
-/** Próximo objetivo sugerido. `nível`: pelo maior nível da party, sem ler o progresso de treinadores do save. */
+/** Próximo objetivo sugerido. `progresso` usa campanha + progressDefeats; `nível` é o fallback pela party. */
 export type GuideNextGoal = {
   trainerId: string | null;
   basis: 'progresso' | 'nível';

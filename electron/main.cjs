@@ -23,6 +23,53 @@ const TRAINER_UI_ARTWORK = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRA
 const GUIDE_WORKER_PATH = path.resolve(__dirname, 'guide-worker.cjs');
 const GUIDE_TIMEOUT_MS = 180000;
 const TRAINER_UI_SNAPSHOT = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_SNAPSHOT_PATH, 'utf8')) : null;
+const TRAINER_UI_PROGRESS = Object.freeze({
+  defeated: [],
+  victoryCounts: {},
+  currentSeries: 'radicalred',
+  currentSeriesCompleted: false,
+  completedSeries: [],
+  levelCap: 15,
+  pikaStar: Object.freeze(
+    Object.fromEntries(
+      ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'hisui', 'paldea'].map((region) => [region, false]),
+    ),
+  ),
+  sources: [
+    {kind: 'rct-stats', sha256: 'a'.repeat(64)},
+    {kind: 'pika-advancements', sha256: 'b'.repeat(64)},
+  ],
+});
+const TRAINER_UI_CAMPAIGN = TRAINER_UI_TEST_MODE
+  ? {
+      radicalred: {
+        levelCapRule: {initialLevelCap: 15},
+        stages: [
+          {
+            stageId: 'radicalred:synthetic',
+            name: TRAINER_UI_GUIDE.trainers[0].name,
+            type: 'rival',
+            order: 0,
+            requires: [],
+            capBefore: 15,
+            capAfter: 21,
+            capUnknownReason: null,
+            ambiguous: false,
+            ambiguousReason: null,
+            variants: [
+              {
+                id: TRAINER_UI_GUIDE.trainers[0].id,
+                format: TRAINER_UI_GUIDE.trainers[0].format,
+                maxLevel: TRAINER_UI_GUIDE.trainers[0].maxLevel,
+                teamSize: TRAINER_UI_GUIDE.trainers[0].teamSize,
+                optional: false,
+              },
+            ],
+          },
+        ],
+      },
+    }
+  : null;
 const {createSaveAccountRegistry} = require('./accounts.cjs');
 const saveAccountRegistry = createSaveAccountRegistry();
 const {readPlayerSnapshotFromConfig, resolvePlayerSourcePaths, publicPlayerImportError} = require(PLAYER_IMPORT_PATH);
@@ -30,6 +77,8 @@ const {createAutoRefresh} = require('./lib/auto-refresh.cjs');
 const {createSaveWatcher} = require('./lib/save-watcher.cjs');
 const {assertFreshSources, calculateRealDamage} = require('./lib/real-damage.cjs');
 const {loadGuideData} = require('./lib/guide/data.cjs');
+const {readGuideProgressFromConfig, resolveProgressSourcePaths, publicProgressError} = require('./lib/progress.cjs');
+const {deriveProgressLevelCap} = require('./lib/guide/trainers.cjs');
 const {guideNextGoal, listGuideTrainers} = require('./lib/guide/trainers.cjs');
 const PROTOCOL = 'cobblemon';
 const ORIGIN = `${PROTOCOL}://app`;
@@ -46,8 +95,11 @@ const IPC_CAPTURE_PLAN_BUILD = 'companion:capture-plan-build';
 const IPC_TRAINING_PLAN_BUILD = 'companion:training-plan-build';
 const IPC_GUIDE_TRAINERS = 'companion:guide-trainers';
 const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
+const IPC_READ_PROGRESS = 'companion:read-progress';
+const IPC_PROGRESS_CHANGED = 'companion:progress-changed';
 const IPC_AUTO_REFRESH = 'companion:auto-refresh';
 const IPC_SNAPSHOT_CHANGED = 'companion:snapshot-changed';
+const IPC_TEST_SIMULATE_PROGRESS_CHANGE = 'companion:test:simulate-progress-change';
 const IPC_TEST_SIMULATE_CHANGE = 'companion:test:simulate-snapshot-change';
 const IPC_TEST_BEHAVIOR = 'companion:test:behavior';
 const IPC_TEST_RESPONSES = 'companion:test:responses';
@@ -499,14 +551,45 @@ function handleGuideTrainers(event, ...args) {
   if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.trainers);
   return listGuideTrainers(loadGuideData());
 }
+function guideDataForRenderer() {
+  return TRAINER_UI_TEST_MODE ? {trainers: TRAINER_UI_GUIDE.trainers, series: {}, campaign: TRAINER_UI_CAMPAIGN} : loadGuideData();
+}
+function readProgressForRenderer() {
+  const progress = TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_PROGRESS) : readGuideProgressFromConfig();
+  progress.levelCap = deriveProgressLevelCap(guideDataForRenderer().campaign, progress);
+  return progress;
+}
+function handleReadGuideProgress(event, ...args) {
+  requireSender(event);
+  if (args.length !== 0) throw new TypeError('A leitura do progresso não aceita argumentos');
+  try {
+    const progress = readProgressForRenderer();
+    progressWatcher?.acknowledge(progress);
+    if (autoRefresh.enabled) progressWatcher?.start();
+    return progress;
+  } catch (error) {
+    const safeError = publicProgressError(error);
+    throw Object.assign(new Error(safeError.message), {code: safeError.code});
+  }
+}
 function handleGuideNextGoal(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('O próximo objetivo não aceita argumentos');
-  if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.nextGoal);
-  const levels = readSnapshotForRenderer()
-    .individuals.filter((individual) => individual.location.container === 'party' && Number.isSafeInteger(individual.level))
+  const snapshot = readSnapshotForRenderer();
+  const levels = snapshot.individuals
+    .filter((individual) => individual.location.container === 'party' && Number.isSafeInteger(individual.level))
     .map((individual) => individual.level);
-  return guideNextGoal(loadGuideData(), levels.length > 0 ? Math.max(...levels) : null);
+  const data = guideDataForRenderer();
+  let progress;
+  try {
+    progress = readProgressForRenderer();
+    progressWatcher?.acknowledge(progress);
+    if (autoRefresh.enabled) progressWatcher?.start();
+  } catch (error) {
+    if (error?.code !== 'ERR_IMPORT_CHANGED') throw error;
+    progress = {currentSeries: null, victoryCounts: null};
+  }
+  return guideNextGoal(data, levels.length > 0 ? Math.max(...levels) : null, progress);
 }
 function handleRealDamageCalculation(event, request) {
   requireSender(event);
@@ -522,6 +605,41 @@ function handleRealDamageCalculation(event, request) {
 function notifySnapshotChanged(snapshot) {
   if (windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_SNAPSHOT_CHANGED, snapshot);
 }
+function notifyProgressChanged(progress) {
+  if (windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_PROGRESS_CHANGED, progress);
+}
+// Progresso RCT/advancements têm fontes e notificações próprias; alterações não provocam releitura da party/PC.
+const progressWatcher = TRAINER_UI_TEST_MODE
+  ? null
+  : createSaveWatcher({
+      watch: (file, listener) => fs.watch(file, listener),
+      resolvePaths: () => {
+        const paths = resolveProgressSourcePaths();
+        const insideWorld = (candidate) => {
+          try {
+            const real = fs.realpathSync(candidate);
+            const relative = path.relative(paths.worldRoot, real);
+            return relative === '' || (relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative))
+              ? candidate
+              : null;
+          } catch {
+            return null;
+          }
+        };
+        const watched = [
+          paths.configPath,
+          paths.propertiesPath,
+          paths.worldRoot,
+          insideWorld(path.dirname(paths.statsPath)),
+          insideWorld(paths.statsPath),
+          insideWorld(path.dirname(paths.pikaPath)),
+          insideWorld(paths.pikaPath),
+        ].filter(Boolean);
+        return Object.fromEntries(watched.map((file, index) => [`source${index}`, file]));
+      },
+      readSnapshot: readProgressForRenderer,
+      onChange: notifyProgressChanged,
+    });
 // Monitoramento somente leitura do save; no modo de teste da UI o snapshot é sintético e não há arquivo a observar.
 const saveWatcher = TRAINER_UI_TEST_MODE
   ? null
@@ -531,7 +649,7 @@ const saveWatcher = TRAINER_UI_TEST_MODE
       readSnapshot: readPlayerSnapshotFromConfig,
       onChange: notifySnapshotChanged,
     });
-const autoRefresh = createAutoRefresh(saveWatcher);
+const autoRefresh = createAutoRefresh(saveWatcher, [progressWatcher]);
 function handleSetAutoRefresh(event, enabled) {
   requireSender(event);
   if (typeof enabled !== 'boolean') throw new TypeError('O auto-refresh precisa ser verdadeiro ou falso');
@@ -546,6 +664,18 @@ function handleSimulateSnapshotChange(event) {
   snapshot.capturedAt = new Date().toISOString();
   snapshot.sources[0].sha256 = 'c'.repeat(64);
   notifySnapshotChanged(snapshot);
+  return {sent: true};
+}
+function handleSimulateProgressChange(event) {
+  requireSender(event);
+  if (!TRAINER_UI_TEST_MODE) throw new Error('Harness de UI indisponível');
+  if (!autoRefresh.enabled) return {sent: false};
+  const progress = structuredClone(TRAINER_UI_PROGRESS);
+  progress.defeated = ['rctmod:leader_brock_019e'];
+  progress.victoryCounts = {'rctmod:leader_brock_019e': 1};
+  progress.levelCap = 21;
+  progress.sources[0].sha256 = 'c'.repeat(64);
+  notifyProgressChanged(progress);
   return {sent: true};
 }
 let testSelectedAccountKey = 'selected';
@@ -613,7 +743,8 @@ function handleSelectSaveAccount(event, id) {
   }
   saveAccountRegistry.select(id);
   saveWatcher.stop();
-  if (autoRefresh.enabled) saveWatcher.start();
+  progressWatcher.stop();
+  if (autoRefresh.enabled) autoRefresh.start();
 }
 
 function handleReadPlayerSnapshot(event, ...args) {
@@ -727,8 +858,10 @@ function installIpc() {
   ipcMain.handle(IPC_TRAINING_PLAN_BUILD, handleTrainingPlanBuild);
   ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
   ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
+  ipcMain.handle(IPC_READ_PROGRESS, handleReadGuideProgress);
   if (TRAINER_UI_TEST_MODE) {
     ipcMain.handle(IPC_TEST_SIMULATE_CHANGE, handleSimulateSnapshotChange);
+    ipcMain.handle(IPC_TEST_SIMULATE_PROGRESS_CHANGE, handleSimulateProgressChange);
     ipcMain.handle(IPC_TEST_ARTWORK_MANIFEST, handleTestArtworkManifest);
   }
   if (RUNTIME_TEST_MODE) {

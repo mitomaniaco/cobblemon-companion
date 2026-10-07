@@ -53,6 +53,7 @@ const bridge = {
 if (window.location.search === '?runtime-test') {
   bridge.test = Object.freeze({
     simulateSnapshotChange: () => ipcRenderer.invoke('companion:test:simulate-snapshot-change'),
+    simulateProgressChange: () => ipcRenderer.invoke('companion:test:simulate-progress-change'),
     setBehavior: (behavior) => ipcRenderer.invoke('companion:test:behavior', behavior),
     getResponses: () => ipcRenderer.invoke('companion:test:responses'),
     getArtworkManifest: () => ipcRenderer.invoke('companion:test:artwork-manifest'),
