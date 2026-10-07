@@ -129,6 +129,8 @@ describe('plano de capturas recomendadas', () => {
       (candidate) => candidate.speciesId === 'cobblemon:walkingwake',
     );
     expect(unknown.requirements[1].status).toBe('não verificado');
+    const missing = (await plan({pikaStar: {}})).gaps[0].candidates.find((candidate) => candidate.speciesId === 'cobblemon:walkingwake');
+    expect(missing.requirements[1].status).toBe('não verificado');
 
     const swampertData = {
       ...data,
