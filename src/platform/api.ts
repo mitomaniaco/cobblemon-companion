@@ -19,6 +19,8 @@ export type PlayerIndividual = {
   formId: string;
   /** Shiny do indivíduo no save; ausente ou `null` = desconhecido (nunca presumido como não-shiny). */
   shiny?: boolean | null;
+  /** Aspectos de forma em `Features`; `null` = desconhecido, lista vazia = forma base. */
+  aspects?: string[] | null;
   level: number | null;
   location: PlayerLocation;
   equippedMoves: Array<{id: string; pp: number | null; ppUps: number | null}>;

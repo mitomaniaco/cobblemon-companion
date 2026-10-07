@@ -150,6 +150,8 @@ function makeWorld(options = {}) {
     ...(options.partyStatTags ?? []),
   ];
   if (options.partyForm !== undefined) partyFields.push(stringTag('FormId', options.partyForm));
+  if (options.partyShiny !== undefined) partyFields.push(byteTag('Shiny', options.partyShiny));
+  if (options.partyFeatures !== undefined) partyFields.push(listTag('Features', 10, options.partyFeatures));
   if (options.partyHeldItem !== undefined) {
     partyFields.push(compoundTag('HeldItem', [stringTag('id', options.partyHeldItem)]));
   }
@@ -161,6 +163,7 @@ function makeWorld(options = {}) {
     intArrayTag('UUID', pcUuid),
     stringTag('Species', options.pcSpecies ?? 'cobblemon:oddish'),
     stringTag('FormId', 'regional'),
+    ...(options.pcShiny === undefined ? [] : [byteTag('Shiny', options.pcShiny)]),
     compoundTag('Ability', [stringTag('AbilityName', 'cobblemon:chlorophyll')]),
     ...(options.pcStatTags ?? []),
   ];
@@ -1249,4 +1252,49 @@ test('resolvePlayerSourcePaths devolve os quatro arquivos observados e recusa co
   assert.throws(() => resolvePlayerSourcePaths({configPath: path.join(fixture.root, 'inexistente.json')}), {
     code: 'ERR_IMPORT_CONFIG',
   });
+});
+
+const featureFlag = (name) => compoundBody([byteTag(name, 1), stringTag('cobblemon:feature_id', name)]);
+const featureCounter = (name, value) => compoundBody([intTag(name, value), stringTag('cobblemon:feature_id', name)]);
+const featureText = (name, value) => compoundBody([stringTag(name, value), stringTag('cobblemon:feature_id', name)]);
+
+test('shiny: byte 1 é shiny, 0 é normal e ausência é desconhecido (null), nunca presumido como normal', () => {
+  const shiny = readPlayerSnapshotFromConfig({configPath: makeWorld({partyShiny: 1, pcShiny: 0}).configPath});
+  assert.deepEqual(
+    shiny.individuals.map((individual) => individual.shiny),
+    [true, false],
+  );
+  const absent = readPlayerSnapshotFromConfig({configPath: makeWorld().configPath});
+  assert.deepEqual(
+    absent.individuals.map((individual) => individual.shiny),
+    [null, null],
+  );
+  assert.match(absent.warnings.join(' '), /shiny=null/);
+  const odd = readPlayerSnapshotFromConfig({configPath: makeWorld({partyShiny: 7}).configPath});
+  assert.equal(odd.individuals[0].shiny, null);
+});
+
+test('aspectos: só features de bandeira (galarian, punk_form...) viram aspectos; contadores e texto ficam de fora', () => {
+  const world = makeWorld({
+    partyFeatures: [
+      featureFlag('galarian'),
+      featureCounter('blocks_traveled', 3),
+      featureText('spawn_bucket', 'common'),
+      featureFlag('punk_form'),
+      featureFlag('galarian'),
+    ],
+  });
+  const [party] = readPlayerSnapshotFromConfig({configPath: world.configPath}).individuals;
+  assert.deepEqual(party.aspects, ['galarian', 'punk_form']);
+});
+
+test('aspectos: Features vazio é forma base (lista vazia) e Features ausente é desconhecido (null)', () => {
+  const empty = readPlayerSnapshotFromConfig({configPath: makeWorld({partyFeatures: []}).configPath});
+  assert.deepEqual(empty.individuals[0].aspects, []);
+  const absent = readPlayerSnapshotFromConfig({configPath: makeWorld().configPath});
+  assert.deepEqual(
+    absent.individuals.map((individual) => individual.aspects),
+    [null, null],
+  );
+  assert.match(absent.warnings.join(' '), /aspects=null/);
 });
