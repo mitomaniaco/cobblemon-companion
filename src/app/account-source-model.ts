@@ -20,7 +20,12 @@ export type SaveAccountApi = {
   selectSaveAccount(id: string): Promise<void>;
 };
 
-export type SaveAccountsState = {phase: 'loading'} | {phase: 'unavailable'} | {phase: 'error'} | ({phase: 'ready'} & SaveAccountsResponse);
+export type SaveAccountsState =
+  | {phase: 'loading'}
+  | {phase: 'unavailable'}
+  | {phase: 'error'}
+  | {phase: 'selection-refresh-error'}
+  | ({phase: 'ready'} & SaveAccountsResponse);
 
 export function selectedSaveAccount(state: SaveAccountsState): SaveAccount | null {
   if (state.phase !== 'ready') return null;

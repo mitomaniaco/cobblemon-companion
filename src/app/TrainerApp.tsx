@@ -113,6 +113,21 @@ function CaptureStatus({snapshot, accountState}: {snapshot: PlayerSnapshot | nul
           Lendo conta…
         </span>
       ) : null}
+      {accountState.phase === 'ready' && accountState.selectingAccountId !== null && (
+        <span className={styles.captureAccountLoading} role="status">
+          Salvando a seleção da conta…
+        </span>
+      )}
+      {accountState.phase === 'ready' && accountState.selectionError && (
+        <span className={styles.captureAccountWarning} role="alert">
+          Não foi possível selecionar a conta. A conta atual foi mantida.
+        </span>
+      )}
+      {accountState.phase === 'selection-refresh-error' && (
+        <span className={styles.captureAccountWarning} role="alert">
+          Conta selecionada, mas horários desconhecidos. Atualize a lista em Captura.
+        </span>
+      )}
     </div>
   );
 }
@@ -144,7 +159,11 @@ function SaveAccountPicker({
         </StatusMessage>
       ) : state.phase === 'error' ? (
         <StatusMessage tone="error" title="Não foi possível listar as contas">
-          Tente carregar a lista novamente. Nenhuma conta foi alterada.
+          Tente carregar a lista novamente.
+        </StatusMessage>
+      ) : state.phase === 'selection-refresh-error' ? (
+        <StatusMessage tone="error" title="Não foi possível atualizar as contas após a seleção">
+          A escolha foi salva, mas os horários da party e do PC são desconhecidos até carregar a lista novamente.
         </StatusMessage>
       ) : state.accounts.length === 0 ? (
         <p className={styles.detailsEmpty}>Nenhuma conta de save encontrada.</p>
@@ -196,7 +215,7 @@ function SaveAccountPicker({
           </ul>
         </>
       )}
-      {(state.phase === 'error' || state.phase === 'ready') && (
+      {(state.phase === 'error' || state.phase === 'selection-refresh-error' || state.phase === 'ready') && (
         <Button variant="quiet" onPress={onReload} isDisabled={state.phase === 'ready' && state.selectingAccountId !== null}>
           Atualizar lista de contas
         </Button>
@@ -374,6 +393,7 @@ export function TrainerApp() {
   const [isWideLayout, setIsWideLayout] = useState(() => window.matchMedia('(min-width: 1100px)').matches);
   const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null);
   const [isCaptureDialogOpen, setIsCaptureDialogOpen] = useState(false);
+  const accountSelectionPendingRef = useRef(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [pendingCalculation, setPendingCalculation] = useState<{uuid: string; candidateMoveId?: string; slotIndex?: number} | null>(null);
   const pushedSnapshotRef = useRef<(snapshot: PlayerSnapshot) => void>(() => undefined);
@@ -749,14 +769,33 @@ export function TrainerApp() {
       </div>
 
       {(session.snapshot || saveAccounts.state.phase !== 'unavailable') && (
-        <Dialog isOpen={isCaptureDialogOpen} onOpenChange={setIsCaptureDialogOpen} title="Detalhes da captura e da conta">
+        <Dialog
+          isOpen={isCaptureDialogOpen}
+          onOpenChange={(open) => {
+            if (
+              accountSelectionPendingRef.current ||
+              (saveAccounts.state.phase === 'ready' && saveAccounts.state.selectingAccountId !== null)
+            ) {
+              return;
+            }
+            setIsCaptureDialogOpen(open);
+          }}
+          title="Detalhes da captura e da conta"
+        >
           <CaptureDetails
             snapshot={session.snapshot}
             accountState={saveAccounts.state}
             onReloadAccounts={() => void saveAccounts.reload()}
             onSelectAccount={(account) => {
-              setIsCaptureDialogOpen(false);
-              void saveAccounts.selectAccount(account);
+              accountSelectionPendingRef.current = true;
+              void saveAccounts
+                .selectAccount(account)
+                .then((succeeded) => {
+                  if (succeeded) setIsCaptureDialogOpen(false);
+                })
+                .finally(() => {
+                  accountSelectionPendingRef.current = false;
+                });
             }}
           />
         </Dialog>

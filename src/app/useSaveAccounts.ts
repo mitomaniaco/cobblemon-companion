@@ -6,6 +6,7 @@ export type SaveAccountsUiState =
   | {phase: 'loading'}
   | {phase: 'unavailable'}
   | {phase: 'error'}
+  | {phase: 'selection-refresh-error'}
   | (SaveAccountsResponse & {phase: 'ready'; selectingAccountId: string | null; selectionError: boolean});
 
 const INITIAL_STATE: SaveAccountsUiState = {phase: 'loading'};
@@ -61,11 +62,11 @@ export function useSaveAccounts(api: () => CompanionApi, refreshSnapshot: () => 
   }, [api]);
 
   const selectAccount = useCallback(
-    async (account: SaveAccount) => {
+    async (account: SaveAccount): Promise<boolean> => {
       const bridge = accountBridge(api);
       if (!bridge.selectSaveAccount || !bridge.listSaveAccounts) {
         setState({phase: 'unavailable'});
-        return;
+        return false;
       }
       setState((current) => (current.phase === 'ready' ? {...current, selectingAccountId: account.id, selectionError: false} : current));
       try {
@@ -74,29 +75,25 @@ export function useSaveAccounts(api: () => CompanionApi, refreshSnapshot: () => 
         setState((current) =>
           current.phase === 'ready' ? {...current, selectingAccountId: null, selectionError: true} : {phase: 'error'},
         );
-        return;
+        return false;
       }
 
+      let listRefreshSucceeded = false;
       try {
         const accounts = await bridge.listSaveAccounts();
         setState(readyState(accounts));
+        listRefreshSucceeded = true;
       } catch {
-        setState((current) => {
-          if (current.phase !== 'ready') return current;
-          return {
-            ...current,
-            selectedAccountId: account.id,
-            accounts: current.accounts.map((entry) => ({...entry, isSelected: entry.id === account.id})),
-            selectingAccountId: null,
-          };
-        });
+        // The persisted selection changed, but cached accounts and timestamps are no longer trustworthy.
+        setState({phase: 'selection-refresh-error'});
       }
 
       try {
         await refreshSnapshot();
       } catch {
-        // A escolha já foi persistida; o estado de leitura do snapshot é apresentado por useTrainerSession.
+        // A persisted choice is independent of snapshot refresh; useTrainerSession presents read failures.
       }
+      return listRefreshSucceeded;
     },
     [api, refreshSnapshot],
   );

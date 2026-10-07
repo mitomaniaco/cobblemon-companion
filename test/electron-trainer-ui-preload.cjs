@@ -2,6 +2,7 @@
 
 const {contextBridge, ipcRenderer} = require('electron');
 
+let accountBehavior = {selectionDelayMs: 0, failSelection: false, failNextList: false};
 const bridge = {
   calculate: (request) => ipcRenderer.invoke('companion:calculate', request),
   calculateRealDamage: (request) => ipcRenderer.invoke('companion:calculate-real-damage', request),
@@ -12,9 +13,20 @@ const bridge = {
   },
   listSaveAccounts: (...args) => {
     if (args.length !== 0) return Promise.reject(new TypeError('A lista de contas não aceita argumentos'));
+    if (accountBehavior.failNextList) {
+      accountBehavior = {...accountBehavior, failNextList: false};
+      return Promise.reject(new Error('Falha sintética ao atualizar a lista'));
+    }
     return ipcRenderer.invoke('companion:list-save-accounts');
   },
-  selectSaveAccount: (id) => ipcRenderer.invoke('companion:select-save-account', id),
+  selectSaveAccount: (id) => {
+    const select = () => {
+      if (accountBehavior.failSelection) return Promise.reject(new Error('Falha sintética ao selecionar conta'));
+      return ipcRenderer.invoke('companion:select-save-account', id);
+    };
+    if (accountBehavior.selectionDelayMs === 0) return select();
+    return new Promise((resolve) => setTimeout(resolve, accountBehavior.selectionDelayMs)).then(select);
+  },
   onSnapshotChanged: (callback) => {
     if (typeof callback !== 'function') throw new TypeError('onSnapshotChanged precisa de uma função');
     const listener = (_event, snapshot) => callback(snapshot);
@@ -44,6 +56,9 @@ if (window.location.search === '?runtime-test') {
     setBehavior: (behavior) => ipcRenderer.invoke('companion:test:behavior', behavior),
     getResponses: () => ipcRenderer.invoke('companion:test:responses'),
     getArtworkManifest: () => ipcRenderer.invoke('companion:test:artwork-manifest'),
+    setAccountBehavior: (behavior) => {
+      accountBehavior = {...accountBehavior, ...behavior};
+    },
   });
 }
 
