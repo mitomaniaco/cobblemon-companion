@@ -44,8 +44,9 @@ describe('resolução da imagem', () => {
     expect(resolve('cobblemon:vulpix', 'alola')).toEqual({path: '/pokemon/forms/vulpix-alola.png', source: 'form', shiny: 'normal'});
     expect(resolve('cobblemon:vulpix', 'Alola')).toMatchObject({source: 'form'});
     expect(resolve('cobblemon:mrmime', 'Galar')).toMatchObject({path: '/pokemon/forms/mr-mime-galar.png', source: 'form'});
+    expect(resolve('cobblemon:vulpix', 'alolan')).toMatchObject({path: '/pokemon/forms/vulpix-alola.png', source: 'form'});
+    expect(resolve('cobblemon:mrmime', 'galarian')).toMatchObject({path: '/pokemon/forms/mr-mime-galar.png', source: 'form'});
   });
-
   it('forma sem arte própria ou desconhecida usa a forma normal, sempre marcada como base-form', () => {
     expect(resolve('cobblemon:bulbasaur', 'alolan')).toEqual({path: '/pokemon/1.png', source: 'base-form', shiny: 'normal'});
     expect(resolve('cobblemon:bulbasaur', 'unknown')).toMatchObject({path: '/pokemon/1.png', source: 'base-form'});
