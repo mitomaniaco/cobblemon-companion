@@ -13,6 +13,9 @@ export type CampaignStage = {
   order: number;
   /** `stageId`s que precisam estar vencidas antes desta. */
   requires: string[];
+  capBefore?: number | null;
+  capAfter?: number | null;
+  capUnknownReason?: string | null;
   /** `true`: o app não sabe qual variante vale para o jogador (sorteio no spawn); nenhuma é escolhida em silêncio. */
   ambiguous: boolean;
   ambiguousReason: string | null;
@@ -85,6 +88,8 @@ export function computeStageStates(stages: readonly CampaignStage[], defeated: r
 export type StageEntry = {
   stage: CampaignStage;
   state: StageState;
+  /** Quantidade de vitórias registradas contra as variantes desta etapa. */
+  victoryCount: number;
   /** Variantes por escolher: só quando há mais de uma e o app não sabe qual vale (`ambiguous`). */
   needsVariantChoice: boolean;
   /** Variante usada quando não há escolha a fazer: a única variante singles. Nulo se todas são duplas ou há escolha pendente. */
@@ -93,12 +98,27 @@ export type StageEntry = {
   disabledReason: string | null;
 };
 
-export function stageEntry(stage: CampaignStage, state: StageState): StageEntry {
+export function stageVictoryCount(stage: CampaignStage, victoryCounts: Readonly<Record<string, number>> | null): number {
+  if (!victoryCounts) return 0;
+  let total = 0;
+  for (const variant of stage.variants) {
+    const rawId = variant.id.replace(/^rctmod:/, '');
+    total += victoryCounts[rawId] ?? victoryCounts[variant.id] ?? 0;
+  }
+  return total;
+}
+
+export function stageEntry(
+  stage: CampaignStage,
+  state: StageState,
+  victoryCounts: Readonly<Record<string, number>> | null = null,
+): StageEntry {
   const singles = stage.variants.filter((variant) => variant.format === 'singles');
   const needsVariantChoice = stage.ambiguous && singles.length > 1;
   return {
     stage,
     state,
+    victoryCount: stageVictoryCount(stage, victoryCounts),
     needsVariantChoice,
     defaultVariant: !needsVariantChoice && singles.length >= 1 ? singles[0] : null,
     disabledReason: singles.length === 0 ? DOUBLES_NOT_SUPPORTED : null,
@@ -120,6 +140,7 @@ export type CampaignView = {
 export type CampaignViewOptions = {
   seriesId: string;
   defeated: readonly string[] | null;
+  victoryCounts?: Readonly<Record<string, number>> | null;
   query: string;
   /** Liga o filtro "só campanha atual": esconde etapas vencidas (o histórico fica fora do caminho do jogador). */
   onlyCurrent: boolean;
@@ -130,7 +151,9 @@ export type CampaignViewOptions = {
 export function buildCampaignView(series: CampaignSeries, options: CampaignViewOptions): CampaignView {
   const states = computeStageStates(series.stages, options.defeated);
   const ordered = [...series.stages].sort((left, right) => left.order - right.order);
-  const entries = ordered.map((stage) => stageEntry(stage, states.get(stage.stageId) ?? 'progresso desconhecido'));
+  const entries = ordered.map((stage) =>
+    stageEntry(stage, states.get(stage.stageId) ?? 'progresso desconhecido', options.victoryCounts ?? null),
+  );
   const nextEntry = entries.find((entry) => entry.state === 'próximo');
   const nextStageId = nextEntry?.stage.stageId ?? null;
   const upcoming = nextEntry
@@ -193,4 +216,56 @@ export function stageLevelSummary(entry: StageEntry): string {
   const range = (values: number[]) =>
     Math.min(...values) === Math.max(...values) ? `${values[0]}` : `${Math.min(...values)}–${Math.max(...values)}`;
   return `nível máx. ${range(levels)} · ${range(sizes)} Pokémon`;
+}
+
+/** Etapa (e série) que contém a variante RCT escolhida como objetivo; nulo se o id não é da campanha. */
+export function findStageByVariant(campaign: Campaign, trainerId: string | null): {seriesId: string; stage: CampaignStage} | null {
+  if (trainerId === null) return null;
+  for (const [seriesId, series] of Object.entries(campaign)) {
+    const stage = series.stages.find((candidate) => candidate.variants.some((variant) => variant.id === trainerId));
+    if (stage) return {seriesId, stage};
+  }
+  return null;
+}
+
+const SERIES_LABEL: Readonly<Record<string, string>> = {
+  radicalred: 'Radical Red',
+  unbound: 'Unbound',
+  bdsp: 'Brilliant Diamond / Shining Pearl',
+  atm_team: 'Equipe ATM',
+  contentcreators: 'Criadores de conteúdo',
+};
+
+/** Nome legível da série; série desconhecida usa o id em maiúscula inicial, sem inventar nome. */
+export function seriesLabel(seriesId: string): string {
+  return SERIES_LABEL[seriesId] ?? `${seriesId.charAt(0).toUpperCase()}${seriesId.slice(1)}`;
+}
+
+/** Rótulo de variante dentro de uma etapa ambígua: posição, nível, tamanho e o final do id RCT (que as distingue). */
+export function variantLabel(variant: CampaignVariant, index: number): string {
+  const suffix = variant.id.split('_').pop() ?? variant.id;
+  return `Variante ${index + 1} (${suffix}) · nível ${variant.maxLevel} · ${variant.teamSize} Pokémon`;
+}
+
+/** De onde vem o progresso: lido do mundo (`defeated` conhecido) ou estimado pelo nível da party (sem leitura). */
+export function progressOriginLabel(defeated: readonly string[] | null): string {
+  return defeated === null ? 'Estimado pelo nível da party (progresso do save não lido)' : 'Lido do save';
+}
+
+/** Rótulo legível do tipo da etapa no Trainer Card. */
+export function stageTypeLabel(type: string): string {
+  const group = groupOf(type);
+  if (group.key === 'leader') return 'Líder de Ginásio';
+  if (group.key === 'e4') return 'Elite 4';
+  if (group.key === 'champ') return 'Campeão';
+  if (group.key === 'rival') return 'Rival';
+  if (group.key === 'team') return 'Equipe ou Chefe';
+  return 'Outro';
+}
+
+/** Formata o avanço de level cap de uma etapa: ex.: "15 → 21". */
+export function formatStageCap(capBefore: number | null | undefined, capAfter: number | null | undefined): string | null {
+  if (capBefore === null && capAfter === null) return null;
+  if (capBefore === undefined && capAfter === undefined) return null;
+  return `Level cap: ${capBefore ?? 'desconhecido'} → ${capAfter ?? 'desconhecido'}`;
 }

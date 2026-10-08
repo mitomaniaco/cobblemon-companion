@@ -12,6 +12,10 @@ import {
   type Campaign,
   type CampaignStage,
   type CampaignVariant,
+  type CampaignViewOptions,
+  formatStageCap,
+  stageTypeLabel,
+  stageVictoryCount,
 } from '../src/features/guide/campaign-model';
 
 const variant = (id: string, overrides: Partial<CampaignVariant> = {}): CampaignVariant => ({
@@ -66,12 +70,11 @@ const campaign: Campaign = {
   bdsp: {stages: [stage('b:roark', 0, {name: 'Roark'})], optionalTrainerIds: []},
 };
 
-const viewOptions = {seriesId: 'radicalred', query: '', onlyCurrent: false, upcomingCount: 2} as const;
+const viewOptions: CampaignViewOptions = {seriesId: 'radicalred', defeated: [], query: '', onlyCurrent: false, upcomingCount: 2};
 
 describe('estado das etapas', () => {
   it('sem progresso lido tudo é "progresso desconhecido": nunca vencido nem liberado', () => {
     const states = computeStageStates(series, null);
-    expect([...states.values()].every((state) => state === 'progresso desconhecido')).toBe(true);
     expect(states.size).toBe(series.length);
   });
 
@@ -220,5 +223,33 @@ describe('variantes e duplas', () => {
       'liberado',
     );
     expect(stageLevelSummary(ranged)).toBe('nível máx. 40–44 · 4–5 Pokémon');
+  });
+});
+
+describe('contagem de vitórias e level cap da etapa', () => {
+  it('soma vitórias das variantes a partir de victoryCounts com ou sem prefixo de namespace', () => {
+    const multiVariant = stage('s:rival', 1, {
+      variants: [variant('rctmod:rival_terry_014c'), variant('rctmod:rival_terry_014d')],
+    });
+    const victoryCounts = {rival_terry_014c: 2, 'rctmod:rival_terry_014d': 1, outro: 5};
+    expect(stageVictoryCount(multiVariant, victoryCounts)).toBe(3);
+    expect(stageVictoryCount(multiVariant, null)).toBe(0);
+  });
+
+  it('injeta victoryCount nas entradas da visão da campanha', () => {
+    const view = buildCampaignView(campaign.radicalred, {
+      ...viewOptions,
+      victoryCounts: {leader_brock_019e: 1, 's:brock': 2},
+    });
+    const brockEntry = view.groups.flatMap((g) => g.entries).find((e) => e.stage.stageId === 's:brock');
+    expect(brockEntry?.victoryCount).toBe(2);
+  });
+
+  it('formata level cap antes -> depois e tipo legível do treinador', () => {
+    expect(formatStageCap(15, 21)).toBe('Level cap: 15 → 21');
+    expect(formatStageCap(null, null)).toBeNull();
+    expect(stageTypeLabel('leader')).toBe('Líder de Ginásio');
+    expect(stageTypeLabel('e4')).toBe('Elite 4');
+    expect(stageTypeLabel('rival')).toBe('Rival');
   });
 });

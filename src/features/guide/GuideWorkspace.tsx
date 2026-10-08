@@ -5,7 +5,6 @@ import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {GuideNextGoal, GuideProgress, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
 import {
   Button,
-  ComboBox,
   Disclosure,
   ItemIcon,
   MoveChip,
@@ -17,31 +16,28 @@ import {
   TypeBadge,
 } from '../../ui';
 import type {GuideProgressState} from './useGuideProgress';
-import {
-  guideCapExcluded,
-  guideCapWarnings,
-  guideComparisonRows,
-  guideOpponentTurnsLabel,
-  guideTrainerOptions,
-  type GuideMode,
-} from './guide-model';
+import {guideCapExcluded, guideCapWarnings, guideComparisonRows, guideOpponentTurnsLabel, type GuideMode} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
 import {EvolutionSection} from './EvolutionSection';
 import type {EvolutionPlanController} from './useEvolutionPlan';
-import {CaptureSection} from './CaptureSection';
 import {guideGapOpponentIds} from './capture-model';
+import {CaptureSection} from './CaptureSection';
 import type {CapturePlanController} from './useCapturePlan';
 import {LevelCapField} from './LevelCapField';
 import {TrainingSection} from './TrainingSection';
 import type {TrainingPlanController} from './useTrainingPlan';
 import {pikaStarDisplayStatus} from './progress-display-model';
+import rawCampaign from '../../../data/guide/campaign.json';
+import {CampaignPicker} from './CampaignPicker';
+import type {Campaign} from './campaign-model';
 import styles from './GuideWorkspace.module.css';
+
+const CAMPAIGN = rawCampaign as unknown as Campaign;
 
 const NOTICE_DURATION_MS = 4000;
 const TEAM_SIZE = 6;
-
 const MODE_OPTIONS: ReadonlyArray<{key: GuideMode; label: string}> = [
   {key: 'pve', label: 'PvE geral'},
   {key: 'trainer', label: 'Líder ou treinador'},
@@ -505,8 +501,7 @@ export function GuideWorkspace({
   onOpenCalculation,
 }: GuideWorkspaceProps) {
   const headingId = useId();
-  const [trainerQuery, setTrainerQuery] = useState('');
-  const trainerOptions = useMemo(() => guideTrainerOptions(guide.trainers.items), [guide.trainers.items]);
+  // Treinador e campanha gerenciados pelo CampaignPicker
   const lookup = useMemo<Lookup>(
     () => ({
       individuals: new Map((snapshot?.individuals ?? []).map((individual) => [individual.uuid, individual])),
@@ -520,9 +515,7 @@ export function GuideWorkspace({
   };
   const {trainerId, trainers, dismissNotice, notice} = guide;
 
-  useEffect(() => {
-    setTrainerQuery(trainers.items.find((trainer) => trainer.id === trainerId)?.name ?? '');
-  }, [trainerId, trainers.items]);
+  // Sincronização de busca movida para o CampaignPicker
 
   const building = guide.phase === 'building';
 
@@ -560,19 +553,12 @@ export function GuideWorkspace({
             <div className={styles.goalControls}>
               <SegmentedControl label="Objetivo do guia" options={MODE_OPTIONS} value={guide.mode} onChange={guide.selectMode} />
               {guide.mode === 'trainer' && (
-                <ComboBox
-                  className={styles.trainerField}
-                  label="Líder ou treinador"
-                  options={trainerOptions}
-                  selectedKey={trainerId}
-                  onSelectionChange={(key) => {
-                    if (key !== null) guide.selectTrainer(key);
-                  }}
-                  inputValue={trainerQuery}
-                  onInputChange={setTrainerQuery}
-                  placeholder={trainers.status === 'loading' ? 'Carregando treinadores…' : 'Buscar líder ou treinador'}
-                  emptyMessage="Nenhum treinador encontrado."
-                  isDisabled={trainers.status !== 'ready'}
+                <CampaignPicker
+                  campaign={CAMPAIGN}
+                  progress={progress.status === 'ready' ? progress.value : null}
+                  selectedTrainerId={trainerId}
+                  onSelect={(id) => guide.selectTrainer(id)}
+                  allTrainers={trainers.status === 'ready' ? trainers.items : []}
                 />
               )}
               <div className={styles.goalActions}>

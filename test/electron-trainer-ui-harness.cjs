@@ -27,6 +27,7 @@ const screenshotPaths = Object.freeze({
   guideCapIgnored: path.join(runDirectory, 'guide-cap-ignored.png'),
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
+  trainerCard: path.join(runDirectory, 'guide-trainer-card.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
   battlePlan1200: path.join(runDirectory, 'battle-plan-1200.png'),
   battlePlan800: path.join(runDirectory, 'battle-plan-800.png'),
@@ -1516,6 +1517,145 @@ async function exerciseGuideWorkspace(window) {
     progressText.includes('Próxima etapa') && progressText.includes('Atual:') && progressText.includes('Level cap da etapa: 15 → 21.'),
     'O painel de progresso não explicou a próxima etapa e a progressão de level cap da campanha.',
   );
+  // Valida o seletor de campanha no estilo Trainer Card (Issue #129)
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Trainer Card da Campanha"]'))`,
+    'Trainer Card da campanha presente no guia',
+  );
+  const trainerCardText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card da Campanha"]')?.innerText || ''`);
+  check(
+    trainerCardText.includes('Trainer Card · Radical Red') &&
+      trainerCardText.includes('Vitórias na série:') &&
+      trainerCardText.includes('Level cap da campanha:'),
+    'O Trainer Card não exibiu o cabeçalho com a série, vitórias e level cap.',
+  );
+  const stagesCount = await evaluate(contents, `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length`);
+  check(stagesCount > 0, 'A lista de etapas da campanha está vazia.');
+  await capture(window, screenshotPaths.trainerCard, '[aria-label="Trainer Card da Campanha"]');
+
+  // Testa busca no Trainer Card
+  await evaluate(
+    contents,
+    `(() => {
+      const search = document.querySelector('[aria-label="Trainer Card da Campanha"] input');
+      if (!search) throw new Error('Campo de busca do Trainer Card não encontrado.');
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setter.call(search, 'Misty');
+      search.dispatchEvent(new Event('input', {bubbles: true}));
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `(() => {
+      const names = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')].map(n => n.innerText);
+      return names.length > 0 && names.every(name => name.includes('Misty'));
+    })()`,
+    'filtro de busca do Trainer Card por "Misty"',
+  );
+
+  // Limpa busca clicando no botão Limpar busca ou despachando evento
+  await evaluate(
+    contents,
+    `(() => {
+      const clearBtn = document.querySelector('[aria-label="Trainer Card da Campanha"] button[aria-label="Limpar busca"]');
+      if (clearBtn) {
+        clearBtn.click();
+      } else {
+        const search = document.querySelector('[aria-label="Trainer Card da Campanha"] input');
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        setter.call(search, '');
+        search.dispatchEvent(new Event('input', {bubbles: true}));
+        search.dispatchEvent(new Event('change', {bubbles: true}));
+      }
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length === ${stagesCount}`,
+    'restauração da lista completa após limpar busca',
+  );
+
+  // Testa seleção de etapa e detalhes
+  await evaluate(
+    contents,
+    `(() => {
+      const options = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')];
+      const stageOption = options[0];
+      if (!stageOption) throw new Error('Nenhuma etapa encontrada no Trainer Card.');
+      stageOption.click();
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label^="Detalhes de "]'))`,
+    'painel de detalhes da etapa selecionada no Trainer Card',
+  );
+  const detailText = await evaluate(contents, `document.querySelector('[aria-label^="Detalhes de "]')?.innerText || ''`);
+  check(
+    detailText.includes('Tipo') && (detailText.includes('Level cap') || detailText.includes('Pré-requisitos')),
+    'Os detalhes da etapa selecionada não exibiram tipo, cap ou requisitos.',
+  );
+  // Testa filtro "Só campanha atual" exibindo etapas já vencidas quando desligado
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Só campanha atual'))?.click()`,
+  );
+  await waitFor(
+    contents,
+    `(() => {
+      const names = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')].map(n => n.innerText);
+      return names.some(n => n.includes('Brock'));
+    })()`,
+    'etapas vencidas (Brock) visíveis ao desligar "Só campanha atual"',
+  );
+  // Restaura o filtro ligado
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Só campanha atual'))?.click()`,
+  );
+  await waitFor(
+    contents,
+    `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length === ${stagesCount}`,
+    'filtro "Só campanha atual" restaurado',
+  );
+
+  // Testa busca livre por qualquer treinador fora da campanha e restaura o objetivo sintético da fixture
+  await evaluate(
+    contents,
+    `(() => {
+      const search = document.querySelector('[aria-label="Trainer Card da Campanha"] input');
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setter.call(search, 'Sintetico');
+      search.dispatchEvent(new Event('input', {bubbles: true}));
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `[...document.querySelectorAll('button')].some(b => b.textContent.includes('Treinador Sintético'))`,
+    'treinador sintético disponível na busca livre fora da campanha',
+  );
+  await evaluate(
+    contents,
+    `(() => {
+      const btn = [...document.querySelectorAll('button')].find(b => b.textContent.includes('Treinador Sintético'));
+      if (!btn) throw new Error('Botão do Treinador Sintético não encontrado na busca livre.');
+      btn.click();
+    })()`,
+  );
+  await evaluate(
+    contents,
+    `(() => {
+      const clearBtn = document.querySelector('[aria-label="Trainer Card da Campanha"] button[aria-label="Limpar busca"]');
+      if (clearBtn) clearBtn.click();
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length === ${stagesCount}`,
+    'lista da campanha visível após restaurar treinador sintético',
+  );
+
   // Cap abaixo do nível do membro (Gardevoir Nv. 30): ele sai do time e aparece como excluído pelo level cap.
   await setLevelCapField(contents, 20);
   await waitFor(
