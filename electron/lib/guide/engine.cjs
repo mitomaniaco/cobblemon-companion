@@ -223,13 +223,25 @@ function learnsetRoutes(learnset, level) {
 function roundOne(value) {
   return Math.round(value * 10) / 10;
 }
+function canonicalMoveKey(id) {
+  if (typeof id !== 'string') return '';
+  return id
+    .replace(/^[^:]+:/, '')
+    .replace(/[_-]+/g, '')
+    .toLowerCase();
+}
 
 function acquireSuggestions(result, opponents, learnsets) {
   const {entry, chosen, pokemon, theirs, table} = result;
   const slug = entry.individual.speciesId.replace(/^[^:]+:/, '');
   const routes = learnsetRoutes(lookup(learnsets, slug), entry.individual.level);
-  const knownIds = new Set(result.known.equipped.concat(result.known.learned));
-  const candidates = [...routes.keys()].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) && !knownIds.has(id));
+  const knownKeys = new Set(
+    result.known.equipped
+      .concat(result.known.learned)
+      .concat((entry.individual.learnedMoves ?? []).map((m) => m.id ?? m))
+      .map(canonicalMoveKey),
+  );
+  const candidates = [...routes.keys()].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) && !knownKeys.has(canonicalMoveKey(id)));
   if (candidates.length === 0) return [];
   const extra = ourPercentTable(opponents, pokemon, candidates);
   const all = new Map([...table, ...extra]);
@@ -267,7 +279,7 @@ function winSet(result) {
 }
 
 function pickTeam(results, opponentCount) {
-  const remaining = results.map((result) => ({result, wins: winSet(result)}));
+  let remaining = results.map((result) => ({result, wins: winSet(result)}));
   const covered = new Set();
   const team = [];
   while (team.length < MAX_TEAM && remaining.length > 0) {
@@ -275,13 +287,16 @@ function pickTeam(results, opponentCount) {
     let bestKey = null;
     remaining.forEach((candidate, index) => {
       const union = new Set([...covered, ...candidate.wins]).size;
-      const key = [union, candidate.result.evaluated.score];
+      const inParty = candidate.result.entry.individual.location?.container === 'party';
+      const key = [union, inParty ? 1 : 0, candidate.result.evaluated.score];
       const better =
         bestKey === null ||
         key[0] > bestKey[0] ||
-        (key[0] === bestKey[0] && key[1] > bestKey[1] + 1e-9) ||
+        (key[0] === bestKey[0] && key[1] > bestKey[1]) ||
+        (key[0] === bestKey[0] && key[1] === bestKey[1] && key[2] > bestKey[2] + 1e-9) ||
         (key[0] === bestKey[0] &&
-          Math.abs(key[1] - bestKey[1]) <= 1e-9 &&
+          key[1] === bestKey[1] &&
+          Math.abs(key[2] - bestKey[2]) <= 1e-9 &&
           candidate.result.entry.individual.uuid < remaining[bestIndex].result.entry.individual.uuid);
       if (better) {
         bestIndex = index;
@@ -291,6 +306,9 @@ function pickTeam(results, opponentCount) {
     const [picked] = remaining.splice(bestIndex, 1);
     for (const index of picked.wins) covered.add(index);
     team.push(picked.result);
+    // Cláusula de Espécie: elimina qualquer outro indivíduo da mesma espécie
+    const pickedSpeciesId = picked.result.entry.individual.speciesId;
+    remaining = remaining.filter((c) => c.result.entry.individual.speciesId !== pickedSpeciesId);
   }
   return {team, coveredCount: Math.min(covered.size, opponentCount)};
 }

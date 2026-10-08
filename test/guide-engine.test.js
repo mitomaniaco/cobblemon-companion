@@ -99,6 +99,35 @@ describe('motor do guia', () => {
     expect(withSurf.team[0].acquire.some((entry) => entry.moveId === 'cobblemon:surf')).toBe(false);
   });
 
+  it('cláusula de espécie: múltiplos indivíduos da mesma espécie nunca entram juntos no time', async () => {
+    const blastoise1 = individual({species: 'blastoise', level: 50, moves: ['surf']});
+    const blastoise2 = individual({species: 'blastoise', level: 45, moves: ['surf'], container: 'pc'});
+    const venusaur = individual({species: 'venusaur', level: 40, moves: ['tackle']});
+    const result = await run([blastoise1, blastoise2, venusaur], trainerGoal('synthetic:mixed'));
+    const blastoiseCount = result.team.filter((m) => m.speciesId === 'cobblemon:blastoise').length;
+    expect(blastoiseCount).toBe(1);
+  });
+
+  it('inércia da party: indivíduo na party tem prioridade contra substituição do PC em empate de cobertura', async () => {
+    const partyMember = individual({species: 'blastoise', level: 40, moves: ['surf'], container: 'party'});
+    const pcMember = individual({species: 'venusaur', level: 40, moves: ['tackle'], container: 'pc'});
+    const result = await run([partyMember, pcMember], trainerGoal('synthetic:fire'));
+    expect(result.team[0].uuid).toBe(partyMember.uuid);
+  });
+
+  it('normalização de golpes: golpe no banco com underscore Cobblemon não é sugerido como TM', async () => {
+    const blastoise = individual({
+      species: 'blastoise',
+      level: 40,
+      moves: ['tackle'],
+      patch: {
+        learnedMoves: [{id: 'cobblemon:hydro_pump', ppUps: 0}],
+      },
+    });
+    const result = await run([blastoise], trainerGoal('synthetic:fire'));
+    expect(result.team[0].acquire.some((entry) => entry.moveId === 'cobblemon:hydropump')).toBe(false);
+  });
+
   it('recusa treinador em dupla e treinador inexistente', async () => {
     const one = individual({species: 'blastoise', moves: ['surf']});
     await expect(run([one], trainerGoal('synthetic:duo'))).rejects.toThrow('formato duplas não suportado');

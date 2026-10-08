@@ -25,11 +25,32 @@ function reasonOf(error) {
   return body;
 }
 
+function canonicalMoveKey(id) {
+  if (typeof id !== 'string') return '';
+  return id
+    .replace(/^[^:]+:/, '')
+    .replace(/[_-]+/g, '')
+    .toLowerCase();
+}
+
+function resolveCompatMoveId(id) {
+  if (typeof id !== 'string') return id;
+  if (Object.hasOwn(COMPATIBILITY.moves, id)) return id;
+  const canon = canonicalMoveKey(id);
+  const namespaced = `cobblemon:${canon}`;
+  if (Object.hasOwn(COMPATIBILITY.moves, namespaced)) return namespaced;
+  if (Object.hasOwn(COMPATIBILITY.moves, canon)) return canon;
+  return id;
+}
+
 /** Golpes que o app sabe que o indivíduo conhece: MoveSet (equipados) e BenchedMoves (aprendidos), se capturados. */
 function knownMoves(individual) {
   const equipped = individual.equippedMovesKnown === true && Array.isArray(individual.equippedMoves) ? individual.equippedMoves : [];
   const learned = individual.learnedMovesKnown === true && Array.isArray(individual.learnedMoves) ? individual.learnedMoves : [];
-  return {equipped: equipped.map((move) => move.id), learned: learned.map((move) => move.id)};
+  return {
+    equipped: equipped.map((move) => resolveCompatMoveId(move.id)),
+    learned: learned.map((move) => resolveCompatMoveId(move.id)),
+  };
 }
 
 /**
