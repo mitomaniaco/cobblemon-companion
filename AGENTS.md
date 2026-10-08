@@ -13,16 +13,13 @@ Leia também `CLAUDE.md` (regras de privacidade, escopo e estado do projeto) e `
 - O deploy acontece pelo merge do PR na `main`, somente com o CI verde.
 - Commits seguem Conventional Commits.
 
-## Papéis dos worktrees
+## Modelo de orquestração e papéis
 
-- `revisor`: orquestra, despacha Issues aos agentes, revisa e aprova PRs e propostas; não codifica features.
-- `D:\Dev\cobblemon-companion` (código): `electron/**` (exceto UI), motor do guia `electron/lib/guide/**`, IPC/preload.
-- `frontend`: `src/app/**`, `src/features/**`, `src/ui/**`, CSS.
-- `dados`: `scripts/**`, `data/**`, geradores e leitura de dados do jogo/modpack e do diretório do Minecraft, somente leitura (D15). Nunca versione saves, UUIDs de jogador reais ou `config.json`.
-- `qa`: `test/**` (harnesses, fixtures sintéticas, testes de regressão), mutação; corrige só bugs pequenos que reproduziu.
-- `produto`: não escreve código. Estuda app, docs e modpack e abre Issues com label `proposta` (problema, valor para o jogador, dados necessários, esforço, critério de aceite). O revisor aprova trocando a label para `feature`/`enhancement` e despachando, ou fecha com o motivo.
-- Arquivo fora da área do agente só com aviso do revisor.
-
+- **Ponto Único de Contato (`revisor`):** O usuário interage exclusivamente pelo chat do coordenador/revisor. O revisor planeja, decompõe tarefas, despacha workers, revisa PRs e reporta o progresso consolidado.
+- **Repositório principal (`D:\Dev\cobblemon-companion`):** Mantido sincronizado na ponta da `main`.
+- **Workers sob demanda (efêmeros via Orca):** Em vez de worktrees fixos permanentes, workers são instanciados sob demanda para executar tarefas isoladas (ex.: frontend, backend, scripts de dados ou fixtures), com Task Specs auto-contidas (Target, Change, Constraints, Ownership, Acceptance). Após o merge do PR correspondente, o worker é liberado e seu worktree temporário é removido.
+- **Desenvolvimento Contract-First:** Tarefas que cruzam backend (`electron/**`) e frontend iniciam por um PR inicial mínimo contendo os contratos de tipos (`src/platform/api.ts`) e mocks sintéticos no harness. Com o contrato na `main`, as implementações podem rodar em paralelo sem conflito de rebase.
+- **Segurança e limites:** Nunca versionar saves, UUIDs de jogador reais ou `config.json`. Leitura do jogo sempre somente leitura (D15). Fixtures em `test/fixtures/` sempre sintéticas.
 ## Padrões de qualidade
 
 - Lint/format: Biome. Código morto: Knip. Contratos de arquitetura: dependency-cruiser. Commits: Commitlint. Mutação: Stryker.
