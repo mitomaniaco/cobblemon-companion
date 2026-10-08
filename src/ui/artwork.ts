@@ -66,7 +66,10 @@ export function resolveArtwork(
   const record = exactRecord ?? index.get(normalizeSpeciesKey(speciesId));
   if (!record) return {path: null, source: 'none', shiny: isShiny ? 'shiny-missing' : 'normal'};
   const base = withShiny(record, isShiny);
-  const formArt = formId === 'normal' ? undefined : (record.forms?.[formId] ?? record.forms?.[formLookupKey(formId)]);
+  const formArt =
+    formId === 'normal'
+      ? undefined
+      : (record.forms?.[formId] ?? record.forms?.[formLookupKey(formId)] ?? record.forms?.[formLookupKey(formId, true)]);
   if (formArt) {
     const own = withShiny(formArt, isShiny);
     if (own.path !== null) return {path: own.path, source: 'form', shiny: own.shiny};
@@ -76,12 +79,27 @@ export function resolveArtwork(
   return {path: base.path, source: 'base-form', shiny: base.shiny};
 }
 
+const REGIONAL_ASPECT_MAP: Record<string, string> = {
+  alolan: 'alola',
+  galarian: 'galar',
+  hisuian: 'hisui',
+  paldean: 'paldea',
+};
+const REGIONAL_NAME_MAP: Record<string, string> = {
+  alola: 'alolan',
+  galar: 'galarian',
+  hisui: 'hisuian',
+  paldea: 'paldean',
+};
+
 /** Chave de forma do manifesto: aspectos em minúsculas, ordenados e unidos por "+" (`Alolan` → `alolan`, `male-galar` → `galar+male`). */
-function formLookupKey(formId: string): string {
+function formLookupKey(formId: string, mapToNames = false): string {
+  const map = mapToNames ? REGIONAL_NAME_MAP : REGIONAL_ASPECT_MAP;
   return formId
     .toLowerCase()
     .split(/[-_+\s]+/)
     .filter((token) => token !== '')
+    .map((token) => map[token] ?? token)
     .sort()
     .join('+');
 }
