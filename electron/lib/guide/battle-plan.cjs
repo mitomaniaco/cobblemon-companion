@@ -434,6 +434,7 @@ function planEntry(opponent, team, trainerId) {
     actReason: order.reason,
     risks: opponentRisks(opponent, dealt, order.first),
     evaluation: best,
+    opponent,
     trainerId,
   };
 }
@@ -470,6 +471,127 @@ function pickLead(entries, team) {
   };
 }
 
+/**
+ * Simulação sequencial de batalha completa (6v6): rastreia dano acumulado,
+ * HP residual transportado de confronto a confronto, trocas e KO replacements.
+ */
+function simulateTeamBattle(team, entries, lead) {
+  const teamRemainingHp = Object.fromEntries(team.map((m) => [m.uuid, 100]));
+  const sequence = [];
+
+  const plannedEntries = entries.filter((entry) => entry.status === 'planejado' && entry.evaluation && entry.opponent);
+  if (plannedEntries.length === 0) {
+    return {sequence, teamRemainingHp};
+  }
+
+  let currentMemberUuid = lead?.uuid || team[0].uuid;
+
+  for (let i = 0; i < plannedEntries.length; i++) {
+    const entry = plannedEntries[i];
+    const opponent = entry.opponent;
+
+    const evals = new Map(team.map((m) => [m.uuid, evaluateMember(m, opponent)]));
+    const living = team.filter((m) => teamRemainingHp[m.uuid] > 0);
+    if (living.length === 0) break;
+
+    let activeMemberUuid = currentMemberUuid;
+    let action = 'manter';
+
+    if (i === 0) {
+      action = 'iniciar';
+      activeMemberUuid = currentMemberUuid;
+    } else if (teamRemainingHp[currentMemberUuid] <= 0) {
+      action = 'entrar-apos-ko';
+      const bestLiving = [...living].sort((a, b) => compareEvaluations(evals.get(a.uuid), evals.get(b.uuid)))[0];
+      activeMemberUuid = bestLiving.uuid;
+    } else {
+      const currentEval = evals.get(currentMemberUuid);
+      const bestLiving = [...living].sort((a, b) => compareEvaluations(evals.get(a.uuid), evals.get(b.uuid)))[0];
+      const bestLivingEval = evals.get(bestLiving.uuid);
+
+      const shouldSwitch =
+        bestLiving.uuid !== currentMemberUuid &&
+        (!currentEval.outcome.wins ||
+          currentEval.outcome.ourTurns > bestLivingEval.outcome.ourTurns ||
+          (teamRemainingHp[currentMemberUuid] <= 30 && teamRemainingHp[bestLiving.uuid] > 50));
+
+      if (shouldSwitch) {
+        action = 'trocar';
+        activeMemberUuid = bestLiving.uuid;
+      } else {
+        action = 'manter';
+        activeMemberUuid = currentMemberUuid;
+      }
+    }
+
+    currentMemberUuid = activeMemberUuid;
+    const member = team.find((m) => m.uuid === activeMemberUuid);
+    const evaluation = evals.get(activeMemberUuid);
+    const order = actOrder(evaluation, opponent);
+
+    const hpBefore = teamRemainingHp[activeMemberUuid];
+    const ourTurns = Math.max(1, evaluation.outcome.ourTurns || 1);
+    const theirHit = evaluation.theirs?.percent ?? 0;
+
+    let opponentHits = 0;
+    if (order.first === 'jogador') {
+      opponentHits = Math.max(0, ourTurns - 1);
+    } else {
+      opponentHits = ourTurns;
+    }
+
+    const damageTaken = opponentHits * theirHit;
+    const hpAfter = Math.max(0, Math.round((hpBefore - damageTaken) * 10) / 10);
+    teamRemainingHp[activeMemberUuid] = hpAfter;
+
+    const opponentDefeated = hpAfter > 0 || hpBefore > damageTaken;
+
+    sequence.push({
+      step: sequence.length + 1,
+      opponentId: entry.opponentId,
+      opponentSpeciesId: entry.speciesId,
+      opponentLevel: entry.level,
+      memberUuid: member.uuid,
+      memberSpeciesId: member.speciesId,
+      action,
+      hpBeforePercent: hpBefore,
+      hpAfterPercent: hpAfter,
+      moveId: evaluation.ours ? evaluation.ours.id : member.moveIds[0],
+      damageDealtPercent: Math.min(100, Math.round((evaluation.ours?.percent ?? 0) * ourTurns)),
+      turnsTaken: ourTurns,
+      opponentDefeated,
+    });
+
+    if (!opponentDefeated) {
+      const remainingLiving = team.filter((m) => teamRemainingHp[m.uuid] > 0);
+      if (remainingLiving.length > 0) {
+        const finisher = [...remainingLiving].sort((a, b) => compareEvaluations(evals.get(a.uuid), evals.get(b.uuid)))[0];
+        const finisherEval = evals.get(finisher.uuid);
+        const finisherHpBefore = teamRemainingHp[finisher.uuid];
+        const finisherHpAfter = finisherHpBefore;
+        currentMemberUuid = finisher.uuid;
+
+        sequence.push({
+          step: sequence.length + 1,
+          opponentId: entry.opponentId,
+          opponentSpeciesId: entry.speciesId,
+          opponentLevel: entry.level,
+          memberUuid: finisher.uuid,
+          memberSpeciesId: finisher.speciesId,
+          action: 'entrar-apos-ko',
+          hpBeforePercent: finisherHpBefore,
+          hpAfterPercent: finisherHpAfter,
+          moveId: finisherEval.ours ? finisherEval.ours.id : finisher.moveIds[0],
+          damageDealtPercent: 100,
+          turnsTaken: 1,
+          opponentDefeated: true,
+        });
+      }
+    }
+  }
+
+  return {sequence, teamRemainingHp};
+}
 /**
  * Plano de batalha contra um treinador singles: respondedor, golpe, dano nos dois sentidos, ordem de ação e riscos
  * declarados por adversário. Não simula turnos nem estima chance de resultado.
@@ -509,6 +631,7 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     entries.push(planEntry(buildOpponent(member, index, trainer.id), team, trainer.id));
   }
   const lead = pickLead(entries, team);
+  const {sequence, teamRemainingHp} = simulateTeamBattle(team, entries, lead);
   const blocked = entries.filter((entry) => entry.status === 'bloqueado').length;
   if (blocked > 0)
     assumptions.push(`${blocked} de ${entries.length} adversário(s) ficaram sem plano por mecânica fora do catálogo ou do adaptador.`);
@@ -518,7 +641,9 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     overCap,
     scopeReason: null,
     lead,
-    entries: entries.map(({evaluation: _evaluation, trainerId: _trainerId, ...entry}) => entry),
+    sequence,
+    teamRemainingHp,
+    entries: entries.map(({evaluation: _evaluation, opponent: _opponent, trainerId: _trainerId, ...entry}) => entry),
     assumptions,
   };
 }
