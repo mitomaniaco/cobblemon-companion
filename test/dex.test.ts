@@ -1,11 +1,24 @@
 import {describe, expect, it} from 'vitest';
-import {abilityName, moveDisplay, natureDisplay, speciesDisplay} from '../src/domain/dex';
+import {abilityName, formChipLabel, moveDisplay, natureDisplay, speciesDisplay} from '../src/domain/dex';
 
 describe('dados de exibição', () => {
-  it('mostra nome e tipos da espécie só na forma normal', () => {
+  it('mostra nome e tipos da espécie, incluindo formas alternativas e regionais', () => {
     expect(speciesDisplay('cobblemon:gardevoir', 'normal')).toEqual({name: 'Gardevoir', types: ['Psychic', 'Fairy']});
-    expect(speciesDisplay('cobblemon:bulbasaur', 'synthetic-alternate')).toEqual({name: 'Bulbasaur', types: []});
+    expect(speciesDisplay('cobblemon:slowking', 'galarian')).toEqual({name: 'Slowking', types: ['Poison', 'Psychic']});
+    expect(speciesDisplay('cobblemon:growlithe', 'hisuian')).toEqual({name: 'Growlithe', types: ['Fire', 'Rock']});
+    expect(speciesDisplay('cobblemon:goodra', 'hisui')).toEqual({name: 'Goodra', types: ['Steel', 'Dragon']});
+    expect(speciesDisplay('cobblemon:bulbasaur', 'synthetic-alternate')).toEqual({name: 'Bulbasaur', types: ['Grass', 'Poison']});
     expect(speciesDisplay('cobblemon:not_a_species', 'normal')).toEqual({name: 'Not A Species', types: []});
+  });
+
+  it('formChipLabel extrai rótulos limpos para formas regionais e alternativas', () => {
+    expect(formChipLabel('galarian')).toBe('Galar');
+    expect(formChipLabel('hisui')).toBe('Hisui');
+    expect(formChipLabel('alolan')).toBe('Alola');
+    expect(formChipLabel('paldean')).toBe('Paldea');
+    expect(formChipLabel('normal', ['galarian'])).toBe('Galar');
+    expect(formChipLabel('unknown')).toBe('Forma desconhecida');
+    expect(formChipLabel('normal')).toBe('');
   });
 
   it('resolve golpes pelo dex quando fora do catálogo e zera poder de golpes de status', () => {

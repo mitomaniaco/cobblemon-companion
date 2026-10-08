@@ -44,11 +44,13 @@ function buildDisplayDex() {
   const abilities: Record<string, string> = {};
   const natures: Record<string, {name: string; plus: string | null; minus: string | null}> = {};
 
-  // Só as espécies do Cobblemon (chaves do manifesto): formas e espécies de outras gerações do calc não têm como aparecer na tela.
+  // Espécies do Cobblemon e suas formas alternativas (chaves do manifesto ou cuja espécie base está no manifesto).
   const cobblemonSpecies = new Set(Object.keys(JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')).species));
   for (const entry of generation.species) {
-    if (!cobblemonSpecies.has(dexId(entry.name))) continue;
-    species[dexId(entry.name)] = {name: entry.name, types: entry.types.filter((type) => TYPES.has(type))};
+    const fullId = dexId(entry.name);
+    const baseId = dexId(entry.name.split('-')[0]);
+    if (!cobblemonSpecies.has(fullId) && !cobblemonSpecies.has(baseId)) continue;
+    species[fullId] = {name: entry.name, types: entry.types.filter((type) => TYPES.has(type))};
   }
   for (const entry of generation.moves) {
     if (!TYPES.has(entry.type)) continue;

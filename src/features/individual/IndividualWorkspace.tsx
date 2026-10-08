@@ -2,7 +2,7 @@ import {useId, useState} from 'react';
 import type {CSSProperties, ReactNode} from 'react';
 import {ArrowLeft, CaretDown, CaretUp} from '@phosphor-icons/react';
 import {itemLabel} from '../../domain/catalog-labels';
-import {abilityName, dexId, moveDisplay, natureDisplay, speciesDisplay, titleCaseId} from '../../domain/dex';
+import {abilityName, dexId, formChipLabel, moveDisplay, natureDisplay, speciesDisplay, titleCaseId} from '../../domain/dex';
 import {locationLabel} from '../../domain/location-label';
 import {getMoveSwapView, type MoveSwapPlan} from '../../domain/move-swap';
 import {formatStat, MAX_EV, MAX_IV, statFill, statValue, summarizeEvs, type StatFact} from '../../domain/stats-format';
@@ -339,8 +339,9 @@ export function IndividualWorkspace({
   const [captureDataExpanded, setCaptureDataExpanded] = useState(false);
   const titleId = useId();
   const panelIds = useId();
-  const species = speciesDisplay(individual.speciesId, individual.formId);
-  const formLabel = individual.formId === 'unknown' ? 'Desconhecida' : titleCaseId(individual.formId);
+  const species = speciesDisplay(individual.speciesId, individual.formId, individual.aspects);
+  const chipText = formChipLabel(individual.formId, individual.aspects);
+  const formLabel = chipText || (individual.formId === 'unknown' ? 'Desconhecida' : titleCaseId(individual.formId));
   const nature = individual.observed.nature === null ? null : natureDisplay(individual.observed.nature);
   const natureIncreased = nature?.plus ?? null;
   const natureReduced = nature?.minus ?? null;
@@ -445,9 +446,7 @@ export function IndividualWorkspace({
           <div className={styles.identityChips}>
             <span className={styles.chip}>{individual.level === null ? 'Nv. ?' : `Nv. ${individual.level}`}</span>
             <span className={styles.chip}>{locationLabel(individual.location)}</span>
-            {individual.formId !== 'normal' && (
-              <span className={styles.formChip}>{individual.formId === 'unknown' ? 'Forma desconhecida' : 'Forma alternativa'}</span>
-            )}
+            {chipText && <span className={styles.formChip}>{chipText}</span>}
           </div>
         </div>
       </header>
