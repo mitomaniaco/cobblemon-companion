@@ -453,6 +453,8 @@ export type GuideProgress = {
   pikaStar: Record<GuideProgressRegion, boolean | null>;
   /** Arquivos lidos e o SHA-256 de cada um (o conteúdo não sai do processo principal). */
   sources: Array<{kind: GuideProgressSourceKind; sha256: string}>;
+  /** Diagnósticos sanitizados sobre leitura de arquivos do save (ex.: arquivos ausentes). */
+  diagnostics?: string[];
 };
 
 /** Variante RCT de uma etapa da campanha. `ambiguous`: nenhuma variante é escolhida em silêncio. */
