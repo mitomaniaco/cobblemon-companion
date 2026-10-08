@@ -68,20 +68,11 @@ const PROGRESS_REGIONS: ReadonlyArray<{id: keyof GuideProgress['pikaStar']; labe
 function StageDetails({stage, label}: {stage: NonNullable<GuideNextGoal['stage']>; label: string}) {
   return (
     <li className={styles.stageItem}>
-      <strong>
-        {label}: {stage.name}
-      </strong>
-      {stage.ambiguous && <p>{stage.ambiguousReason ?? 'A variante não foi determinada.'} Todas as variantes possíveis:</p>}
-      {stage.ambiguous && (
-        <ul>
-          {stage.variants.map((variant) => (
-            <li key={variant.trainerId}>
-              {variant.trainerId} · {variant.format} · nível máx. {variant.maxLevel} · equipe {variant.teamSize}
-              {variant.rule ? ` · ${variant.rule}` : ''}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className={styles.stageItemHeader}>
+        <strong>
+          {label}: {stage.name}
+        </strong>
+      </div>
       {stage.capBefore !== null || stage.capAfter !== null ? (
         <p>
           Level cap da etapa: {stage.capBefore ?? 'desconhecido'} → {stage.capAfter ?? 'desconhecido'}.
@@ -89,6 +80,7 @@ function StageDetails({stage, label}: {stage: NonNullable<GuideNextGoal['stage']
       ) : (
         stage.capUnknownReason && <p>{stage.capUnknownReason}</p>
       )}
+      {stage.ambiguous && <p className={styles.stageAmbiguousNote}>Possui variações de equipe. Vencer qualquer uma avança a campanha.</p>}
     </li>
   );
 }
@@ -577,16 +569,18 @@ export function GuideWorkspace({
             )}
             {guide.nextGoal?.status === 'failed' && <p className={styles.muted}>Sem sugestão de objetivo: {guide.nextGoal.error}</p>}
 
-            <div className={styles.goalControls}>
+            <div className={styles.goalToolbar}>
               <SegmentedControl label="Objetivo do guia" options={MODE_OPTIONS} value={guide.mode} onChange={guide.selectMode} />
+              <LevelCapField
+                value={levelCapInput}
+                onChange={onLevelCapInputChange}
+                required={guide.mode === 'trainer'}
+                defaultLevelCap={levelCapInput.trim() === '' ? progressLevelCap : null}
+              />
               {guide.mode === 'trainer' && (
-                <CampaignPicker
-                  campaign={CAMPAIGN}
-                  progress={progress.status === 'ready' ? progress.value : null}
-                  selectedTrainerId={trainerId}
-                  onSelect={(id) => guide.selectTrainer(id)}
-                  allTrainers={trainers.status === 'ready' ? trainers.items : []}
-                />
+                <Switch isSelected={respectLevelCap} onChange={onRespectLevelCapChange}>
+                  Respeitar level cap
+                </Switch>
               )}
               <div className={styles.goalActions}>
                 {building ? (
@@ -599,18 +593,19 @@ export function GuideWorkspace({
                   </Button>
                 )}
               </div>
-              <LevelCapField
-                value={levelCapInput}
-                onChange={onLevelCapInputChange}
-                required={guide.mode === 'trainer'}
-                defaultLevelCap={levelCapInput.trim() === '' ? progressLevelCap : null}
-              />
-              {guide.mode === 'trainer' && (
-                <Switch isSelected={respectLevelCap} onChange={onRespectLevelCapChange}>
-                  Respeitar level cap
-                </Switch>
-              )}
             </div>
+
+            {guide.mode === 'trainer' && (
+              <div className={styles.campaignContainer}>
+                <CampaignPicker
+                  campaign={CAMPAIGN}
+                  progress={progress.status === 'ready' ? progress.value : null}
+                  selectedTrainerId={trainerId}
+                  onSelect={(id) => guide.selectTrainer(id)}
+                  allTrainers={trainers.status === 'ready' ? trainers.items : []}
+                />
+              </div>
+            )}
             {guide.mode === 'trainer' && trainers.status === 'failed' && (
               <StatusMessage tone="warning" title="Lista de treinadores indisponível">
                 {trainers.error}
