@@ -79,21 +79,22 @@ describe('plano de batalha contra o líder', () => {
     expect(texts.ia).toContain('IA do RCT não é modelada');
   });
 
-  it('forma alternativa bloqueia só aquele confronto, com o motivo, e nenhum número sai dele', async () => {
+  it('forma alternativa (como Geodude de Alola) é planejada com cálculo real e sem bloqueio', async () => {
     const result = await plan('synthetic:brock');
     const alolan = result.entries[2];
-    expect(alolan.status).toBe('bloqueado');
-    expect(alolan.blockedReason).toContain('forma alternativa (alolan)');
-    expect(alolan).toMatchObject({responder: null, dealt: null, received: null, firstToAct: null, actReason: null});
-    expect(result.entries.filter((entry) => entry.status === 'planejado')).toHaveLength(2);
+    expect(alolan.status).toBe('planejado');
+    expect(alolan.responder).toBeTruthy();
+    expect(alolan.dealt.max).toBeGreaterThan(0);
+    expect(alolan.received.targetHP).toBeGreaterThan(0);
+    expect(result.entries.filter((entry) => entry.status === 'planejado')).toHaveLength(3);
   });
 
-  it('heldItem com várias alternativas aparece como alternativas, nunca como um item escolhido', async () => {
+  it('heldItem com várias alternativas não escolhe item; Mega/Z vira risco sem bloquear', async () => {
     const result = await plan('synthetic:surge');
     const raichu = result.entries[0];
     expect(raichu.heldItemAlternatives).toEqual(['mega_showdown:manectite', 'cobblemon:expert_belt']);
-    expect(raichu.status).toBe('bloqueado');
-    expect(raichu.blockedReason).toContain('Mega Evolução ou Cristal Z');
+    expect(raichu.status).toBe('planejado');
+    expect(raichu.risks.some((risk) => risk.text.includes('Mega Evolução ou Cristal Z'))).toBe(true);
 
     const pika = result.entries[1];
     expect(pika.status).toBe('planejado');
@@ -101,16 +102,45 @@ describe('plano de batalha contra o líder', () => {
     expect(pika.risks.map((risk) => risk.text).join(' ')).toContain('Expert Belt ou Life Orb');
   });
 
-  it('terreno de habilidade bloqueia o confronto; imunidade de habilidade vira risco no confronto planejado', async () => {
+  it('terreno de habilidade ativa o campo e dano real sem bloquear; imunidade vira risco', async () => {
     const result = await plan('synthetic:surge');
-    expect(result.entries[2].status).toBe('bloqueado');
-    expect(result.entries[2].blockedReason).toContain('terreno elétrico');
+    const surgeVoltorb = result.entries[2];
+    expect(surgeVoltorb.status).toBe('planejado');
+    expect(surgeVoltorb.risks.some((risk) => risk.text.includes('Terreno Elétrico'))).toBe(true);
+    expect(surgeVoltorb.dealt.max).toBeGreaterThan(0);
+
     const absorb = result.entries[3];
     expect(absorb.status).toBe('planejado');
     expect(absorb.dealt.max).toBeGreaterThan(0);
     const immune = await plan('synthetic:surge', {team: [{...team[1], moveIds: ['cobblemon:thunderbolt']}]});
     expect(immune.entries[3].dealt).toMatchObject({moveId: 'cobblemon:thunderbolt', min: 0, max: 0});
     expect(immune.entries[3].risks).toContainEqual({kind: 'habilidade', text: 'Voltorb anula golpes do tipo Electric com Voltabsorb.'});
+  });
+
+  it('habilidade Intimidate reduz Ataque e gera risco sem bloquear o confronto', async () => {
+    const staraptorOpponent = {
+      id: 'synthetic:custom',
+      name: 'Custom',
+      format: 'singles',
+      team: [
+        {
+          speciesId: 'cobblemon:staraptor',
+          level: 30,
+          moves: ['cobblemon:brave_bird', 'cobblemon:close_combat'],
+          ability: 'intimidate',
+          nature: 'jolly',
+          heldItem: [],
+          ivs: {},
+          evs: {},
+          aspects: [],
+        },
+      ],
+    };
+    const customData = {trainers: [staraptorOpponent]};
+    const result = await buildBattlePlan({snapshot, request: {sources: [], trainerId: 'synthetic:custom', team}, data: customData});
+    expect(result.entries[0].status).toBe('planejado');
+    expect(result.entries[0].risks.some((r) => r.text.includes('Intimidate'))).toBe(true);
+    expect(result.lead.uuid).toBe(result.entries[0].responder.uuid);
   });
 
   it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem lead', async () => {

@@ -16,7 +16,7 @@ function pokemonFromSpec(spec) {
     ability: spec.ability,
     item: spec.item ?? '',
     status: '',
-    boosts: Object.fromEntries(STATS.map((stat) => [stat, 0])),
+    boosts: Object.fromEntries(STATS.map((stat) => [stat, spec.boosts?.[stat] ?? 0])),
     ivs: spec.ivs,
     evs: spec.evs,
   });
@@ -26,8 +26,16 @@ function pokemonFromSpec(spec) {
  * Faixa de dano de um golpe em campo neutro. O calc devolve o número 0 (não os 16 rolls) quando o alvo é imune ao tipo;
  * isso vira 0–0. Qualquer outra forma fora dos 16 inteiros não negativos lança erro com `code: 'ERR_CALC_ROLLS'`.
  */
-function damageRange(attacker, defender, moveName) {
-  const result = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), new calc.Field());
+const LEGACY_MOVES = Object.freeze({
+  'bouncy bubble': {baseMove: 'Water Gun', bp: 90},
+  'sappy seed': {baseMove: 'Mega Drain', bp: 90},
+  'zippy zap': {baseMove: 'Nuzzle', bp: 50},
+});
+
+function damageRange(attacker, defender, moveName, field = new calc.Field()) {
+  const legacy = LEGACY_MOVES[moveName.toLowerCase()];
+  const moveObj = legacy ? new calc.Move(9, legacy.baseMove, {bp: legacy.bp}) : new calc.Move(9, moveName);
+  const result = calc.calculate(9, attacker, defender, moveObj, field);
   const rolls = result.damage === 0 ? new Array(16).fill(0) : result.damage;
   if (!Array.isArray(rolls) || rolls.length !== 16 || !rolls.every((value) => Number.isSafeInteger(value) && value >= 0)) {
     throw Object.assign(new Error('o motor não retornou os 16 rolls inteiros esperados'), {code: 'ERR_CALC_ROLLS'});
