@@ -16,6 +16,7 @@ import {
   formatStageCap,
   stageTypeLabel,
   stageVictoryCount,
+  variantLabel,
 } from '../src/features/guide/campaign-model';
 
 const variant = (id: string, overrides: Partial<CampaignVariant> = {}): CampaignVariant => ({
@@ -119,18 +120,14 @@ describe('lista da campanha', () => {
 
   it('uma entrada por treinador lógico, sem duplicar as variantes, na ordem da campanha', () => {
     const entries = view.groups.flatMap((group) => group.entries);
-    expect(entries.map((entry) => entry.stage.stageId)).toEqual(['s:brock', 's:misty', 's:archer', 's:rival1', 's:lorelei', 's:champion']);
+    expect(entries.map((entry) => entry.stage.stageId)).toEqual(['s:brock', 's:archer', 's:rival1', 's:misty', 's:lorelei', 's:champion']);
     expect(new Set(entries.map((entry) => entry.stage.stageId)).size).toBe(entries.length);
     expect(view.totalStages).toBe(series.length);
   });
 
-  it('agrupa por tipo na ordem em que aparecem, mantendo a ordem dentro do grupo', () => {
+  it('mantém todas as etapas na ordem linear cronológica da jornada', () => {
     expect(view.groups.map((group) => [group.label, group.entries.map((entry) => entry.stage.stageId)])).toEqual([
-      ['Líderes', ['s:brock', 's:misty']],
-      ['Equipes e chefes', ['s:archer']],
-      ['Rivais', ['s:rival1']],
-      ['Elite 4', ['s:lorelei']],
-      ['Campeão', ['s:champion']],
+      ['Jornada da Campanha', ['s:brock', 's:archer', 's:rival1', 's:misty', 's:lorelei', 's:champion']],
     ]);
   });
 
@@ -223,6 +220,13 @@ describe('variantes e duplas', () => {
       'liberado',
     );
     expect(stageLevelSummary(ranged)).toBe('nível máx. 40–44 · 4–5 Pokémon');
+  });
+
+  it('formata rótulos de variantes focados no jogador', () => {
+    expect(variantLabel(variant('rctmod:rival_starter_squirtle', {maxLevel: 15, teamSize: 3}), 0)).toBe(
+      'Inicial: Squirtle · nível 15 · 3 Pokémon',
+    );
+    expect(variantLabel(variant('rctmod:rival_terry_014c', {maxLevel: 12, teamSize: 3}), 0)).toBe('Equipe 1 · nível 12 · 3 Pokémon');
   });
 });
 
