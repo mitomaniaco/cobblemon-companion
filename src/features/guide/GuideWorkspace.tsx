@@ -43,6 +43,15 @@ const MODE_OPTIONS: ReadonlyArray<{key: GuideMode; label: string}> = [
   {key: 'trainer', label: 'Líder ou treinador'},
 ];
 
+type GuideFocusTab = 'all' | 'team' | 'battle' | 'training' | 'captures';
+
+const FOCUS_TABS: ReadonlyArray<{key: GuideFocusTab; label: string}> = [
+  {key: 'all', label: 'Visão Geral'},
+  {key: 'team', label: '1. Time'},
+  {key: 'battle', label: '2. Batalha'},
+  {key: 'training', label: '3. Treino & EVs'},
+  {key: 'captures', label: '4. Capturas'},
+];
 const PROGRESS_REGIONS: ReadonlyArray<{id: keyof GuideProgress['pikaStar']; label: string}> = [
   {id: 'kanto', label: 'Kanto'},
   {id: 'johto', label: 'Johto'},
@@ -333,7 +342,9 @@ function GuideResultView({
   lookup,
   onOpenCalculation,
   stale,
-  planSlot,
+  battleSlot,
+  trainingSlot,
+  captureSlot,
   levelCap,
 }: {
   result: GuideResult;
@@ -341,9 +352,12 @@ function GuideResultView({
   lookup: Lookup;
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
   stale: boolean;
-  planSlot: ReactNode;
+  battleSlot: ReactNode;
+  trainingSlot: ReactNode;
+  captureSlot: ReactNode;
   levelCap: number | null;
 }) {
+  const [focusTab, setFocusTab] = useState<GuideFocusTab>('all');
   const [infoExpanded, setInfoExpanded] = useState(false);
   const comparison = guideComparisonRows(result.currentPartyComparison);
   const acquire = result.team
@@ -384,100 +398,113 @@ function GuideResultView({
         </section>
       )}
 
-      <section className={styles.comparison} aria-labelledby="guide-comparison-title">
-        <h3 id="guide-comparison-title" className={styles.sectionTitle}>
-          Comparado à sua party
-        </h3>
-        <div className={styles.comparisonRows}>
-          {comparison.map((row) => (
-            <div key={row.key} className={styles.comparisonRow} data-kind={row.key}>
-              <strong>{row.label}</strong>
-              {row.uuids.length === 0 ? (
-                <span className={styles.muted}>ninguém</span>
-              ) : (
-                <ul>
-                  {row.uuids.map((uuid) => (
-                    <li key={uuid}>{individualName(lookup, uuid)}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <ol className={styles.cards} aria-label="Time recomendado">
-        {result.team.map((member, index) => (
-          <MemberCard
-            key={member.uuid}
-            member={member}
-            index={index}
-            individual={lookup.individuals.get(member.uuid)}
-            lookup={lookup}
-            onOpenCalculation={onOpenCalculation}
-          />
-        ))}
-      </ol>
-
-      {planSlot}
-
-      <section className={styles.acquire} aria-labelledby="guide-acquire-title">
-        <h3 id="guide-acquire-title" className={styles.sectionTitle}>
-          Vale adquirir
-        </h3>
-        {acquire.length === 0 ? (
-          <p className={styles.muted}>Nenhum golpe a adquirir para este objetivo.</p>
-        ) : (
-          <ul className={styles.acquireList}>
-            {acquire.map(({member, entry}) => (
-              <li key={`${member.uuid}-${entry.moveId}`}>
-                <strong>
-                  {individualName(lookup, member.uuid)} · {moveDisplay(entry.moveId).name}
-                </strong>
-                <span className={styles.gain}>+{entry.gainPercent}%</span>
-                <span className={styles.muted}>{entry.requirement}</span>
-                <span>{entry.reason}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <Disclosure headingLevel={3} title="Exclusões, hipóteses e limites" isExpanded={infoExpanded} onExpandedChange={setInfoExpanded}>
-        <div className={styles.infoBody}>
-          <section aria-label="Excluídos">
-            <h4 className={styles.detailsTitle}>Excluídos</h4>
-            {result.excluded.length === 0 ? (
-              <p className={styles.muted}>Nenhum indivíduo foi excluído.</p>
+      <div className={styles.focusTabs}>
+        <SegmentedControl
+          label="Foco da Análise"
+          options={FOCUS_TABS}
+          value={focusTab}
+          onChange={(key) => setFocusTab(key as GuideFocusTab)}
+        />
+      </div>
+      {(focusTab === 'all' || focusTab === 'team') && (
+        <>
+          <section className={styles.comparison} aria-label="Comparado à sua party">
+            <h3 className={styles.sectionTitle}>Comparado à sua party</h3>
+            {comparison.every((row) => row.uuids.length === 0) ? (
+              <p className={styles.muted}>Nenhuma alteração em relação à sua party atual.</p>
             ) : (
-              <ul>
-                {result.excluded.map((entry) => (
-                  <li key={entry.uuid}>
-                    <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
+              <div className={styles.comparisonChips}>
+                {comparison.flatMap((row) =>
+                  row.uuids.map((uuid) => (
+                    <span key={`${row.key}-${uuid}`} className={styles.comparisonChip} data-kind={row.key}>
+                      <span className={styles.chipBadge} data-kind={row.key}>
+                        {row.key === 'added' ? 'Entra' : row.key === 'removed' ? 'Sai' : 'Fica'}
+                      </span>
+                      <span className={styles.chipName}>{individualName(lookup, uuid)}</span>
+                    </span>
+                  )),
+                )}
+              </div>
+            )}
+          </section>
+
+          <ol className={styles.cards} aria-label="Time recomendado">
+            {result.team.map((member, index) => (
+              <MemberCard
+                key={member.uuid}
+                member={member}
+                index={index}
+                individual={lookup.individuals.get(member.uuid)}
+                lookup={lookup}
+                onOpenCalculation={onOpenCalculation}
+              />
+            ))}
+          </ol>
+          <section className={styles.acquire} aria-labelledby="guide-acquire-title">
+            <h3 id="guide-acquire-title" className={styles.sectionTitle}>
+              Vale adquirir
+            </h3>
+            {acquire.length === 0 ? (
+              <p className={styles.muted}>Nenhum golpe a adquirir para este objetivo.</p>
+            ) : (
+              <ul className={styles.acquireList}>
+                {acquire.map(({member, entry}) => (
+                  <li key={`${member.uuid}-${entry.moveId}`}>
+                    <strong>
+                      {individualName(lookup, member.uuid)} · {moveDisplay(entry.moveId).name}
+                    </strong>
+                    <span className={styles.gain}>+{entry.gainPercent}%</span>
+                    <span className={styles.muted}>{entry.requirement}</span>
+                    <span>{entry.reason}</span>
                   </li>
                 ))}
               </ul>
             )}
           </section>
-          <section aria-label="Hipóteses">
-            <h4 className={styles.detailsTitle}>Hipóteses</h4>
-            <ul>
-              {result.assumptions.map((text) => (
-                <li key={text}>{text}</li>
-              ))}
-            </ul>
-          </section>
-          <section aria-label="Limites">
-            <h4 className={styles.detailsTitle}>Limites</h4>
-            <ul>
-              {result.limits.map((text) => (
-                <li key={text}>{text}</li>
-              ))}
-            </ul>
-          </section>
-          <p className={styles.muted}>Captura de {snapshot.worldName}.</p>
-        </div>
-      </Disclosure>
+
+          <Disclosure headingLevel={3} title="Exclusões, hipóteses e limites" isExpanded={infoExpanded} onExpandedChange={setInfoExpanded}>
+            <div className={styles.infoBody}>
+              <section aria-label="Excluídos">
+                <h4 className={styles.detailsTitle}>Excluídos</h4>
+                {result.excluded.length === 0 ? (
+                  <p className={styles.muted}>Nenhum indivíduo foi excluído.</p>
+                ) : (
+                  <ul>
+                    {result.excluded.map((entry) => (
+                      <li key={entry.uuid}>
+                        <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+              <section aria-label="Hipóteses">
+                <h4 className={styles.detailsTitle}>Hipóteses</h4>
+                <ul>
+                  {result.assumptions.map((text) => (
+                    <li key={text}>{text}</li>
+                  ))}
+                </ul>
+              </section>
+              <section aria-label="Limites">
+                <h4 className={styles.detailsTitle}>Limites</h4>
+                <ul>
+                  {result.limits.map((text) => (
+                    <li key={text}>{text}</li>
+                  ))}
+                </ul>
+              </section>
+              <p className={styles.muted}>Captura de {snapshot.worldName}.</p>
+            </div>
+          </Disclosure>
+        </>
+      )}
+
+      {(focusTab === 'all' || focusTab === 'battle') && <div className={styles.tabSection}>{battleSlot}</div>}
+
+      {(focusTab === 'all' || focusTab === 'training') && <div className={styles.tabSection}>{trainingSlot}</div>}
+
+      {(focusTab === 'all' || focusTab === 'captures') && <div className={styles.tabSection}>{captureSlot}</div>}
     </div>
   );
 }
@@ -610,18 +637,22 @@ export function GuideWorkspace({
               onOpenCalculation={onOpenCalculation}
               stale={building}
               levelCap={levelCap}
-              planSlot={
+              battleSlot={
+                building ? null : guide.result.goal.kind === 'trainer' ? (
+                  <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
+                ) : (
+                  <StatusMessage tone="info">O plano de batalha detalhado é voltado para líderes e treinadores da campanha.</StatusMessage>
+                )
+              }
+              trainingSlot={
                 building ? null : (
                   <>
-                    {guide.result.goal.kind === 'trainer' && (
-                      <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
-                    )}
-                    <EvolutionSection evolutions={evolutions} hasTeam={guide.result.team.length > 0} />
                     <TrainingSection training={training} hasTeam={guide.result.team.length > 0} />
-                    <CaptureSection captures={captures} gapCount={guideGapOpponentIds(guide.result).length} />
+                    <EvolutionSection evolutions={evolutions} hasTeam={guide.result.team.length > 0} />
                   </>
                 )
               }
+              captureSlot={building ? null : <CaptureSection captures={captures} gapCount={guideGapOpponentIds(guide.result).length} />}
             />
           ) : (
             building && <TeamSkeleton />

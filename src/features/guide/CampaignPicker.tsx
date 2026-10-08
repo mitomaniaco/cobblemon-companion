@@ -294,7 +294,12 @@ export function CampaignPicker({campaign, progress, selectedTrainerId, onSelect,
             <fieldset className={styles.variants}>
               <legend className={styles.variantLegend}>Escolha a variante de {choosing.stage.name}</legend>
               <p className={styles.variantReason}>
-                {choosing.stage.ambiguousReason ?? 'O app não sabe qual variante foi gerada; escolha uma para montar o time:'}
+                {choosing.stage.ambiguousReason
+                  ? choosing.stage.ambiguousReason
+                      .replace(/sorteio ponderado no spawn \(TrainerSpawner\);? ?/i, '')
+                      .replace(/vencer qualquer irmão conta como vencer todos/i, 'Vencer qualquer uma avança a campanha.') ||
+                    'Escolha a equipe do adversário para montar o time:'
+                  : 'Escolha a equipe do adversário para montar o time:'}
               </p>
               {choosing.stage.variants
                 .filter((variant) => variant.format === 'singles')

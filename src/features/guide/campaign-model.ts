@@ -169,13 +169,7 @@ export function buildCampaignView(series: CampaignSeries, options: CampaignViewO
     return normalizeSearch(`${entry.stage.name} ${groupOf(entry.stage.type).label}`).includes(query);
   });
 
-  const groups: StageGroup[] = [];
-  for (const entry of visible) {
-    const group = groupOf(entry.stage.type);
-    const existing = groups.find((candidate) => candidate.key === group.key);
-    if (existing) existing.entries.push(entry);
-    else groups.push({key: group.key, label: group.label, entries: [entry]});
-  }
+  const groups: StageGroup[] = visible.length > 0 ? [{key: 'journey', label: 'Jornada da Campanha', entries: visible}] : [];
   return {seriesId: options.seriesId, groups, nextStageId, upcoming, totalStages: series.stages.length};
 }
 
@@ -241,10 +235,25 @@ export function seriesLabel(seriesId: string): string {
   return SERIES_LABEL[seriesId] ?? `${seriesId.charAt(0).toUpperCase()}${seriesId.slice(1)}`;
 }
 
-/** Rótulo de variante dentro de uma etapa ambígua: posição, nível, tamanho e o final do id RCT (que as distingue). */
+function cleanVariantDescriptor(id: string, index: number): string {
+  const cleanId = id.replace(/^rctmod:/, '');
+  const starterMatch = cleanId.match(/player_chose_([a-z0-9]+)/i) || cleanId.match(/starter_([a-z0-9]+)/i);
+  if (starterMatch) {
+    const name = starterMatch[1].charAt(0).toUpperCase() + starterMatch[1].slice(1);
+    return `Inicial: ${name}`;
+  }
+  const teamMatch = cleanId.match(/team_([a-z0-9]+)/i);
+  if (teamMatch) {
+    const name = teamMatch[1].charAt(0).toUpperCase() + teamMatch[1].slice(1);
+    return `Equipe ${name}`;
+  }
+  return `Equipe ${index + 1}`;
+}
+
+/** Rótulo legível e focado no jogador para variantes de uma etapa. */
 export function variantLabel(variant: CampaignVariant, index: number): string {
-  const suffix = variant.id.split('_').pop() ?? variant.id;
-  return `Variante ${index + 1} (${suffix}) · nível ${variant.maxLevel} · ${variant.teamSize} Pokémon`;
+  const descriptor = cleanVariantDescriptor(variant.id, index);
+  return `${descriptor} · nível ${variant.maxLevel} · ${variant.teamSize} Pokémon`;
 }
 
 /** De onde vem o progresso: lido do mundo (`defeated` conhecido) ou estimado pelo nível da party (sem leitura). */
