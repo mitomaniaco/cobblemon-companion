@@ -5,6 +5,7 @@ import {
   LEVEL_CAP_STORAGE_KEY,
   readStoredLevelCapInput,
   readStoredRespectLevelCap,
+  resolveEffectiveLevelCap,
   writeStoredLevelCapInput,
   writeStoredRespectLevelCap,
 } from '../src/features/guide/level-cap-state';
@@ -126,5 +127,15 @@ describe('avisos de quem passa do cap', () => {
     expect(guideCapWarnings({goal: trainer, team: [], individuals, levelCap: null})).toEqual([]);
     expect(guideCapWarnings({goal: {kind: 'pve'}, team: [], individuals, levelCap: 10})).toEqual([]);
     expect(guideCapWarnings({goal: trainer, team: [], individuals, levelCap: 40}).map((warning) => warning.uuid)).toEqual([]);
+  });
+});
+
+describe('cap efetivo do guia', () => {
+  it('usa o cap do progresso só quando o campo manual está vazio', () => {
+    expect(resolveEffectiveLevelCap('', null, 15)).toBe(15);
+    expect(resolveEffectiveLevelCap('  ', null, 15)).toBe(15);
+    expect(resolveEffectiveLevelCap('30', 30, 15)).toBe(30);
+    expect(resolveEffectiveLevelCap('inválido', null, 15)).toBeNull();
+    expect(resolveEffectiveLevelCap('', null, null)).toBeNull();
   });
 });

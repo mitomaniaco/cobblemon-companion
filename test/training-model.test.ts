@@ -62,9 +62,9 @@ describe('nível-alvo', () => {
     expect(trainingLevelLabel({level: 30, targetLevel: 30, levelCap: 30})).toBe('Nv. 30 · já no alvo');
   });
 
-  it('rotula a origem do cap e os papéis', () => {
+  it('rotula cap conhecido e cap não determinado sem atribuir a origem manual', () => {
     expect(TRAINING_CAP_ORIGIN_LABEL.desconhecida).toBe('cap não determinado');
-    expect(TRAINING_CAP_ORIGIN_LABEL.informado).toContain('informado');
+    expect(TRAINING_CAP_ORIGIN_LABEL.informado).toBe('cap conhecido');
     expect(TRAINING_ROLE_LABEL['atacante-especial']).toBe('Atacante especial');
   });
 });

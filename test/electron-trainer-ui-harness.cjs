@@ -1362,7 +1362,7 @@ async function exerciseGuideContract(contents) {
     const capture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id), pikaStar: (await api.readGuideProgress()).pikaStar});
     const staleCapture = await api.buildCapturePlan({sources: [], goal: {kind: 'pve'}, teamUuids: [], gapOpponentIds: [], pikaStar: (await api.readGuideProgress()).pikaStar}).then(() => 'built', (error) => error.message);
     const invalidCapture = await api.buildCapturePlan({sources, goal: {kind: 'trainer', trainerId: trainers[0].id}, teamUuids: [member.uuid], gapOpponentIds: guide.opponents.map((opponent) => opponent.id), pikaStar: {...(await api.readGuideProgress()).pikaStar, kanto: 'unknown'}}).then(() => 'built', (error) => error.message);
-    const training = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: 30, capOrigin: 'informado'});
+    const training = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: 21, capOrigin: 'informado'});
     const noCap = await api.buildTrainingPlan({sources, team: [{uuid: member.uuid, usefulMoveIds: []}], levelCap: null, capOrigin: 'desconhecida'});
     const staleTraining = await api.buildTrainingPlan({sources: [], team: [], levelCap: null, capOrigin: 'desconhecida'}).then(() => 'built', (error) => error.message);
     return {trainers, nextGoal, progress, guide, capped, uncapped, stale, battlePlan, stalePlan, evolution, staleEvolution, capture, staleCapture, invalidCapture, training, noCap, staleTraining};
@@ -1382,6 +1382,7 @@ async function exerciseGuideContract(contents) {
     result.progress.currentSeries === 'radicalred' &&
       result.progress.levelCap === 15 &&
       result.progress.pikaStar.kanto === false &&
+      result.progress.pikaStar.paldea === false &&
       result.progress.victoryCounts !== null,
     'A bridge não expôs o progresso sintético com o level cap derivado.',
   );
@@ -1414,12 +1415,16 @@ async function exerciseGuideContract(contents) {
     gap && gap.owned.length > 0 && gap.candidates.length > 0,
     'O plano de capturas sintético não trouxe um indivíduo possuído e um candidato.',
   );
+  const pikaRequirement = gap.candidates[0].requirements.find((requirement) => requirement.kind === 'pika-star');
   check(
-    gap.candidates[0].requirements.some((requirement) => requirement.kind === 'pika-star' && requirement.status === 'não verificado'),
-    'O requisito Pika Star não saiu como não verificado.',
+    result.progress.pikaStar.paldea === false && pikaRequirement?.text.includes('paldea') && pikaRequirement.status === 'pendente',
+    'O plano sintético não representou o Pika Star de Paldea conhecido como pendente.',
   );
   const trained = result.training.members[0];
-  check(trained.targetLevel !== null && trained.targetLevel <= trained.levelCap, 'O plano de treino sintético sugeriu nível acima do cap.');
+  check(
+    trained.levelCap === 21 && trained.targetLevel === trained.level,
+    'O treino sintético não respeitou o cap conhecido quando o membro já estava acima dele.',
+  );
   check(
     result.noCap.members[0].targetLevel === null && result.noCap.members[0].targetNote === 'cap não determinado',
     'O plano de treino sem cap calculou um nível-alvo.',
@@ -1460,16 +1465,44 @@ async function exerciseGuideWorkspace(window) {
   await navigate(contents, 'Guia');
   await waitFor(
     contents,
+    `document.querySelector('[aria-label="Progresso do mundo"]')?.innerText.includes('Level cap padrão')`,
+    'progresso do mundo no guia',
+  );
+  const progressText = await evaluate(contents, `document.querySelector('[aria-label="Progresso do mundo"]')?.innerText || ''`);
+  check(
+    progressText.includes('Level cap padrão') &&
+      progressText.includes('Pika Star por região') &&
+      progressText.includes('Kanto') &&
+      progressText.includes('Não obtido'),
+    'A tela Guia não mostrou o cap nem o estado Pika Star conhecido na leitura sintética.',
+  );
+  const defaultCap = await evaluate(
+    contents,
+    `(() => {
+      const label = [...document.querySelectorAll('label')].find(node => node.textContent.trim().startsWith('Level cap atual'));
+      const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+      return {placeholder: input?.getAttribute('placeholder'), required: Boolean(input?.closest('[data-required="true"]'))};
+    })()`,
+  );
+  check(defaultCap.placeholder === '21' && !defaultCap.required, 'O cap do progresso não foi aplicado como padrão editável.');
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 0 && document.querySelector('[aria-label="Excluídos pelo level cap"]')?.innerText.includes('acima do level cap (21)')`,
+    'o cap padrão do progresso exclui o Gardevoir acima do limite',
+  );
+  await setLevelCapField(contents, 30);
+  await waitFor(
+    contents,
     `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
-    'time do guia montado com o motor sintético',
+    'time do guia montado com o override manual do cap',
   );
   const text = await evaluate(
     contents,
     "document.querySelector('[aria-labelledby]')?.closest('main')?.innerText || document.body.innerText",
   );
   for (const expected of [
-    'Próximo objetivo sugerido',
-    'Sugestão pelo nível da sua party',
+    'Próxima etapa',
+    'Próxima etapa de radicalred',
     'Gardevoir entra porque vence 1 de 2 adversários',
     'Choice Specs aumenta as vitórias de 1 para 2.',
     'obter',
@@ -1479,16 +1512,9 @@ async function exerciseGuideWorkspace(window) {
   ]) {
     check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
   }
-  const capRequired = await evaluate(
-    contents,
-    `(() => {
-    const field = [...document.querySelectorAll('[data-required="true"]')].find(node => node.querySelector('input'));
-    return {highlighted: Boolean(field), text: field?.innerText || ''};
-  })()`,
-  );
   check(
-    capRequired.highlighted && capRequired.text.includes('Informe o level cap para montar o time'),
-    'Objetivo de líder sem level cap deve destacar o campo obrigatório com o aviso.',
+    progressText.includes('Próxima etapa') && progressText.includes('Atual:') && progressText.includes('Level cap da etapa: 15 → 21.'),
+    'O painel de progresso não explicou a próxima etapa e a progressão de level cap da campanha.',
   );
   // Cap abaixo do nível do membro (Gardevoir Nv. 30): ele sai do time e aparece como excluído pelo level cap.
   await setLevelCapField(contents, 20);
@@ -1536,8 +1562,17 @@ async function exerciseGuideWorkspace(window) {
   await setLevelCapField(contents, '');
   await waitFor(
     contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1 && !document.body.innerText.includes('Fora do time pelo level cap')`,
-    'time de volta ao limpar o level cap',
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 0 && document.body.innerText.includes('acima do level cap (21)')`,
+    'limpar o cap manual restaura o cap padrão do progresso',
+  );
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Respeitar level cap'))?.click()`,
+  );
+  await waitFor(
+    contents,
+    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
+    'time mantido com cap do progresso e respeito desligado',
   );
   await capture(window, screenshotPaths.guide1440, '[aria-label="Time recomendado"]');
   const guideArtwork = await evaluate(
@@ -1594,22 +1629,36 @@ async function exerciseGuideWorkspace(window) {
     contents,
     `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Evoluções do time')?.closest('section')?.innerText) || ''`,
   );
-  for (const expected of ['Evoluções do time', 'Alcance não verificado', 'não verificado', 'Hipóteses', 'Limites']) {
+  for (const expected of ['Evoluções do time', 'Level cap usado: 21.', 'não verificado', 'Hipóteses', 'Limites']) {
     check(evolutionText.includes(expected), `A seção de evoluções não mostrou "${expected}".`);
   }
   await capture(window, screenshotPaths.evolutions, 'ol[aria-label="Evoluções por membro"]');
 
-  // Treino sem level cap informado: não há nível-alvo, e a tela não presume cap nem inventa EV.
+  // Cap padrão do progresso: o plano usa o valor, sem confundi-lo com um cap digitado.
+  const capBeforeTraining = await evaluate(
+    contents,
+    `(() => {
+      const label = [...document.querySelectorAll('label')].find((node) => node.textContent.trim().startsWith('Level cap atual'));
+      const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+      const respectLevelCap = [...document.querySelectorAll('input[role="switch"]')].find((node) =>
+        node.closest('label')?.innerText.includes('Respeitar level cap'),
+      );
+      return {input: input?.value, placeholder: input?.getAttribute('placeholder'), respected: respectLevelCap?.checked};
+    })()`,
+  );
+  check(
+    capBeforeTraining.input === '' && capBeforeTraining.placeholder === '21' && capBeforeTraining.respected === false,
+    'O campo manual ou o level cap padrão não estava no estado esperado para o treino.',
+  );
   await clickButton(contents, 'Ver treino do time');
-  await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Treino por membro"] > li'))`, 'treino do motor sintético');
-  const unknownTraining = await evaluate(
+  await waitFor(contents, `document.body.innerText.includes('cap conhecido')`, 'treino usando o cap conhecido do progresso');
+  const progressTraining = await evaluate(
     contents,
     `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
   );
-  for (const expected of ['Gardevoir', 'cap não determinado', 'nível-alvo não determinado', 'Hipóteses', 'Limites']) {
-    check(unknownTraining.includes(expected), `O treino sem cap não mostrou "${expected}".`);
+  for (const expected of ['Gardevoir', 'cap conhecido', 'já no cap 21; não suba mais']) {
+    check(progressTraining.includes(expected), `O treino não usou o cap padrão do progresso "${expected}".`);
   }
-  check(!/Nv\. 24 → /.test(unknownTraining), 'O treino sem cap exibiu um nível-alvo.');
 
   await clickButton(contents, 'Ver capturas recomendadas');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Lacunas do time"] > li'))`, 'capturas do motor sintético');
@@ -1628,12 +1677,21 @@ async function exerciseGuideWorkspace(window) {
     'Nv. 25–30',
     'incomum',
     'Captura liberada',
-    'não verificado',
+    'pendente',
     'Hipóteses',
     'Limites',
   ]) {
     check(captureText.includes(expected), `A seção de capturas não mostrou "${expected}".`);
   }
+  const pikaStatus = await evaluate(
+    contents,
+    `(() => {
+      const requirements = [...document.querySelectorAll('ul[aria-label="Requisitos para capturar Swampert"] li')];
+      const pika = requirements.find((item) => item.textContent.includes('advancement Pika Star de paldea'));
+      return pika?.querySelector('[data-status]')?.textContent.trim() || null;
+    })()`,
+  );
+  check(pikaStatus === 'pendente', 'A UI não mostrou o status Pika Star de Paldea devolvido pelo plano sintético.');
   check(
     captureText.indexOf('Você já tem') < captureText.indexOf('Candidatos de captura'),
     'O que o jogador já tem deve aparecer antes dos candidatos de captura.',
@@ -1654,10 +1712,24 @@ async function exerciseGuideWorkspace(window) {
   await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após evoluções e capturas');
   // Informar o cap remonta o time de líder (cap 30 não exclui a Gardevoir Nv. 30); os planos derivados do time antigo são descartados.
   await setLevelCapField(contents, 30);
+  // Confirme o resultado atualizado com o cap efetivo 30, não só o valor recém-digitado.
+  await clickButton(contents, 'Exclusões, hipóteses e limites');
   await waitFor(
     contents,
-    `[...document.querySelectorAll('button')].some(node => node.textContent.trim() === 'Ver evoluções do time')`,
-    'planos descartados quando o level cap remonta o time',
+    `(() => {
+      const label = [...document.querySelectorAll('label')].find(node => node.textContent.trim().startsWith('Level cap atual'));
+      const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
+      const team = document.querySelector('ol[aria-label="Time recomendado"]');
+      const result = team?.closest('[data-stale]');
+      const assumptions = document.querySelector('section[aria-label="Hipóteses"]');
+      return input?.value === '30' &&
+        team?.children.length === 1 &&
+        result?.getAttribute('data-stale') !== 'true' &&
+        !document.querySelector('[aria-label="Acima do level cap"]') &&
+        assumptions &&
+        !assumptions.innerText.includes('level cap não foi informado');
+    })()`,
+    'time do guia recalculado com o level cap efetivo 30',
   );
   await clickButton(contents, 'Ver evoluções do time');
   await waitFor(contents, `document.body.innerText.includes('Level cap usado: 30.')`, 'evoluções recalculadas com o level cap informado');
@@ -1672,7 +1744,7 @@ async function exerciseGuideWorkspace(window) {
     button.click();
   })()`,
   );
-  await waitFor(contents, `document.body.innerText.includes('cap informado por você')`, 'treino recalculado com o level cap informado');
+  await waitFor(contents, `document.body.innerText.includes('cap conhecido')`, 'treino recalculado com o level cap manual');
   const informedTraining = await evaluate(
     contents,
     `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,

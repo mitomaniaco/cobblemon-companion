@@ -2,7 +2,7 @@ import {useEffect, useId, useMemo, useState} from 'react';
 import type {CSSProperties, ReactNode} from 'react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
-import type {GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
+import type {GuideNextGoal, GuideProgress, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
 import {
   Button,
   ComboBox,
@@ -16,6 +16,7 @@ import {
   Switch,
   TypeBadge,
 } from '../../ui';
+import type {GuideProgressState} from './useGuideProgress';
 import {
   guideCapExcluded,
   guideCapWarnings,
@@ -35,6 +36,7 @@ import type {CapturePlanController} from './useCapturePlan';
 import {LevelCapField} from './LevelCapField';
 import {TrainingSection} from './TrainingSection';
 import type {TrainingPlanController} from './useTrainingPlan';
+import {pikaStarDisplayStatus} from './progress-display-model';
 import styles from './GuideWorkspace.module.css';
 
 const NOTICE_DURATION_MS = 4000;
@@ -44,6 +46,111 @@ const MODE_OPTIONS: ReadonlyArray<{key: GuideMode; label: string}> = [
   {key: 'pve', label: 'PvE geral'},
   {key: 'trainer', label: 'Líder ou treinador'},
 ];
+
+const PROGRESS_REGIONS: ReadonlyArray<{id: keyof GuideProgress['pikaStar']; label: string}> = [
+  {id: 'kanto', label: 'Kanto'},
+  {id: 'johto', label: 'Johto'},
+  {id: 'hoenn', label: 'Hoenn'},
+  {id: 'sinnoh', label: 'Sinnoh'},
+  {id: 'unova', label: 'Unova'},
+  {id: 'kalos', label: 'Kalos'},
+  {id: 'alola', label: 'Alola'},
+  {id: 'galar', label: 'Galar'},
+  {id: 'hisui', label: 'Hisui'},
+  {id: 'paldea', label: 'Paldea'},
+];
+
+function StageDetails({stage, label}: {stage: NonNullable<GuideNextGoal['stage']>; label: string}) {
+  return (
+    <li className={styles.stageItem}>
+      <strong>
+        {label}: {stage.name}
+      </strong>
+      {stage.ambiguous && <p>{stage.ambiguousReason ?? 'A variante não foi determinada.'} Todas as variantes possíveis:</p>}
+      {stage.ambiguous && (
+        <ul>
+          {stage.variants.map((variant) => (
+            <li key={variant.trainerId}>
+              {variant.trainerId} · {variant.format} · nível máx. {variant.maxLevel} · equipe {variant.teamSize}
+              {variant.rule ? ` · ${variant.rule}` : ''}
+            </li>
+          ))}
+        </ul>
+      )}
+      {stage.capBefore !== null || stage.capAfter !== null ? (
+        <p>
+          Level cap da etapa: {stage.capBefore ?? 'desconhecido'} → {stage.capAfter ?? 'desconhecido'}.
+        </p>
+      ) : (
+        stage.capUnknownReason && <p>{stage.capUnknownReason}</p>
+      )}
+    </li>
+  );
+}
+
+function ProgressPanel({progress, nextGoal}: {progress: GuideProgressState; nextGoal: GuideNextGoal | null}) {
+  if (progress.status === 'loading') {
+    return (
+      <section className={styles.progressPanel} aria-label="Progresso do mundo" aria-busy="true">
+        <h3>Progresso do mundo</h3>
+        <div className={styles.progressSkeleton} />
+        <div className={styles.progressSkeleton} />
+      </section>
+    );
+  }
+  if (progress.status === 'error') {
+    return (
+      <StatusMessage tone="warning" title="Progresso do mundo indisponível">
+        {progress.error}
+      </StatusMessage>
+    );
+  }
+  const value = progress.value;
+  return (
+    <section className={styles.progressPanel} aria-label="Progresso do mundo">
+      <h3>Progresso do mundo</h3>
+      <dl className={styles.progressFacts}>
+        <div>
+          <dt>Série atual</dt>
+          <dd>{value.currentSeries || 'Nenhuma série selecionada'}</dd>
+        </div>
+        <div>
+          <dt>Level cap padrão</dt>
+          <dd>{value.levelCap === null ? 'Não verificado' : value.levelCap}</dd>
+        </div>
+        <div>
+          <dt>Treinadores vencidos</dt>
+          <dd>{value.defeated === null ? 'Não verificado' : value.defeated.length}</dd>
+        </div>
+      </dl>
+      {nextGoal && (
+        <div className={styles.progressNextGoal}>
+          <strong>Próxima etapa</strong>
+          <p>{nextGoal.reason}</p>
+          {nextGoal.stage && (
+            <ul className={styles.stageList}>
+              <StageDetails stage={nextGoal.stage} label="Atual" />
+              {(nextGoal.upcoming ?? []).map((stage) => (
+                <StageDetails key={stage.stageId} stage={stage} label="Depois" />
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+      <div className={styles.pikaStatus}>
+        <strong>Pika Star por região</strong>
+        <ul>
+          {PROGRESS_REGIONS.map(({id, label}) => (
+            <li key={id} data-status={value.pikaStar[id] === true ? 'verified' : value.pikaStar[id] === false ? 'not-achieved' : 'unknown'}>
+              <span>{label}</span>
+              <span>{pikaStarDisplayStatus(value.pikaStar[id])}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 const ITEM_STATUS_LABEL = {tem: 'já segura', obter: 'obter', nenhum: 'sem item'} as const;
 
@@ -58,13 +165,15 @@ export interface GuideWorkspaceProps {
   evolutions: EvolutionPlanController;
   captures: CapturePlanController;
   training: TrainingPlanController;
-  /** Level cap digitado (compartilhado por Evoluções e Treino); vazio ou inválido = desconhecido. */
+  /** Level cap digitado (compartilhado por Evoluções e Treino); vazio usa o padrão do progresso quando disponível. */
   levelCapInput: string;
   onLevelCapInputChange(value: string): void;
   respectLevelCap: boolean;
   onRespectLevelCapChange(value: boolean): void;
-  /** Cap já estabilizado (o mesmo que montou o time exibido). */
+  /** Cap efetivo já estabilizado (manual tem precedência sobre o padrão do progresso). */
   levelCap: number | null;
+  progress: GuideProgressState;
+  progressLevelCap: number | null;
 }
 
 type Lookup = {
@@ -389,6 +498,8 @@ export function GuideWorkspace({
   respectLevelCap,
   onRespectLevelCapChange,
   levelCap,
+  progress,
+  progressLevelCap,
   loading,
   onRefresh,
   onOpenCalculation,
@@ -423,6 +534,7 @@ export function GuideWorkspace({
       </header>
 
       {notice && <Toast key={notice.id} id={notice.id} text={notice.text} onDismiss={dismissNotice} />}
+      <ProgressPanel progress={progress} nextGoal={guide.nextGoal?.status === 'ready' ? guide.nextGoal.value : null} />
 
       {!snapshot && loading ? (
         <TeamSkeleton />
@@ -437,7 +549,7 @@ export function GuideWorkspace({
       ) : (
         <>
           <section className={styles.goal} aria-label="Objetivo">
-            {guide.nextGoal?.status === 'ready' && (
+            {guide.nextGoal?.status === 'ready' && progress.status === 'error' && (
               <p className={styles.suggestion}>
                 <strong>Próximo objetivo sugerido</strong>
                 <span>{guide.nextGoal.value.reason}</span>
@@ -474,7 +586,12 @@ export function GuideWorkspace({
                   </Button>
                 )}
               </div>
-              <LevelCapField value={levelCapInput} onChange={onLevelCapInputChange} required={guide.mode === 'trainer'} />
+              <LevelCapField
+                value={levelCapInput}
+                onChange={onLevelCapInputChange}
+                required={guide.mode === 'trainer'}
+                defaultLevelCap={levelCapInput.trim() === '' ? progressLevelCap : null}
+              />
               {guide.mode === 'trainer' && (
                 <Switch isSelected={respectLevelCap} onChange={onRespectLevelCapChange}>
                   Respeitar level cap

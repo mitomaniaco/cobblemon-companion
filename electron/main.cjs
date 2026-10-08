@@ -521,6 +521,12 @@ function handleTrainingPlanBuild(event, request) {
   assertFreshSources(request.sources, snapshot.sources);
   if (TRAINER_UI_TEST_MODE) {
     const result = structuredClone(TRAINER_UI_GUIDE.trainingPlan);
+    if (plan.levelCap === 21) {
+      const cap21Member = TRAINER_UI_GUIDE.trainingPlanCap21Member;
+      const member = result.members.find(({uuid}) => uuid === cap21Member.uuid);
+      if (!member) throw new Error('Fixture de treino sem membro correspondente ao cap 21.');
+      Object.assign(member, cap21Member);
+    }
     if (plan.levelCap === null) {
       for (const member of result.members)
         Object.assign(member, {levelCap: null, capOrigin: 'desconhecida', targetLevel: null, targetNote: 'cap não determinado', moves: []});

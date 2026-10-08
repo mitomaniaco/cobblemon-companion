@@ -12,7 +12,8 @@ import {useBattlePlan} from '../features/guide/useBattlePlan';
 import {useEvolutionPlan} from '../features/guide/useEvolutionPlan';
 import {useCapturePlan} from '../features/guide/useCapturePlan';
 import {useTrainingPlan} from '../features/guide/useTrainingPlan';
-import {useLevelCapState} from '../features/guide/level-cap-state';
+import {resolveEffectiveLevelCap, useLevelCapState} from '../features/guide/level-cap-state';
+import {useGuideProgress} from '../features/guide/useGuideProgress';
 import {accountWriteTimestamp, formatAccountTimestamp, saveAccountWarnings, selectedSaveAccount} from './account-source-model';
 import type {SaveAccount} from './account-source-model';
 import {useSaveAccounts, type SaveAccountsUiState} from './useSaveAccounts';
@@ -449,26 +450,25 @@ export function TrainerApp() {
 
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
-  const {
-    input: levelCapInput,
-    setInput: setLevelCapInput,
-    levelCap,
+  const {input: levelCapInput, setInput: setLevelCapInput, debouncedLevelCap, respectLevelCap, setRespectLevelCap} = useLevelCapState();
+  const progress = useGuideProgress(api);
+  const progressKey = progress.status === 'ready' ? JSON.stringify(progress.value) : progress.status;
+  const effectiveLevelCap = resolveEffectiveLevelCap(
+    levelCapInput,
     debouncedLevelCap,
-    respectLevelCap,
-    setRespectLevelCap,
-  } = useLevelCapState();
-  const guide = useGuide(api, session.snapshot, workspace === 'guide', debouncedLevelCap, respectLevelCap);
-
+    progress.status === 'ready' ? progress.value.levelCap : null,
+  );
+  const guide = useGuide(api, session.snapshot, workspace === 'guide', effectiveLevelCap, respectLevelCap, progressKey);
   // Modo de teste da UI: a ponte de teste entrega um manifesto de artwork sintético (a produção não tem essa ponte).
   useEffect(() => {
     const testBridge = (window.cobblemonCompanion as {test?: {getArtworkManifest?: () => Promise<ArtworkManifest>}} | undefined)?.test;
     if (!testBridge?.getArtworkManifest) return;
     void testBridge.getArtworkManifest().then(setArtworkManifest, () => undefined);
   }, []);
-  const battlePlan = useBattlePlan(api, session.snapshot, guide.result, debouncedLevelCap, respectLevelCap);
-  const evolutions = useEvolutionPlan(api, session.snapshot, guide.result, levelCap);
+  const battlePlan = useBattlePlan(api, session.snapshot, guide.result, effectiveLevelCap, respectLevelCap);
+  const evolutions = useEvolutionPlan(api, session.snapshot, guide.result, effectiveLevelCap);
   const captures = useCapturePlan(api, session.snapshot, guide.result);
-  const training = useTrainingPlan(api, session.snapshot, guide.result, levelCap);
+  const training = useTrainingPlan(api, session.snapshot, guide.result, effectiveLevelCap);
 
   useEffect(() => {
     let unsubscribe = () => {};
@@ -705,7 +705,9 @@ export function TrainerApp() {
                   onLevelCapInputChange={setLevelCapInput}
                   respectLevelCap={respectLevelCap}
                   onRespectLevelCapChange={setRespectLevelCap}
-                  levelCap={debouncedLevelCap}
+                  levelCap={effectiveLevelCap}
+                  progress={progress}
+                  progressLevelCap={progress.status === 'ready' ? progress.value.levelCap : null}
                   loading={session.phase === 'loading'}
                   onRefresh={() => void refreshSnapshot()}
                   onOpenCalculation={openGuideCalculation}
