@@ -80,8 +80,8 @@ function matchupOutcome(ourPercent, theirPercent, ourSpeed, theirSpeed) {
   return {wins, ourTurns, theirTurns, score};
 }
 
-function averagePercent(attacker, defender, moveName) {
-  const {min, max, targetHP} = damageRange(attacker, defender, moveName);
+function averagePercent(attacker, defender, moveName, field) {
+  const {min, max, targetHP} = damageRange(attacker, defender, moveName, field);
   return ((min + max) / 2 / targetHP) * 100;
 }
 

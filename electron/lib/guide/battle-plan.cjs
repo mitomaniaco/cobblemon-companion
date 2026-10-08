@@ -16,27 +16,42 @@ const LIMITS = Object.freeze([
   'O plano mostra números e riscos declarados; não estima chance de resultado.',
 ]);
 
-// Habilidades que mudam o campo ou o confronto na entrada: o adaptador não as modela, então o confronto é bloqueado.
-const UNSUPPORTED_ABILITIES = Object.freeze({
-  electricsurge: 'terreno elétrico',
-  grassysurge: 'terreno de grama',
-  mistysurge: 'terreno enevoado',
-  psychicsurge: 'terreno psíquico',
-  hadronengine: 'terreno elétrico',
-  seedsower: 'terreno de grama',
-  drought: 'sol forte',
-  orichalcumpulse: 'sol forte',
-  drizzle: 'chuva',
-  sandstream: 'tempestade de areia',
-  snowwarning: 'neve',
-  desolateland: 'sol extremamente forte',
-  primordialsea: 'mar primordial',
-  deltastream: 'correntes de ar',
-  intimidate: 'queda de Ataque na entrada',
-  download: 'aumento de atributo na entrada',
-  trace: 'cópia de habilidade',
-  imposter: 'transformação',
-  neutralizinggas: 'supressão de habilidades',
+const ABILITY_TERRAINS = Object.freeze({
+  electricsurge: 'Electric',
+  hadronengine: 'Electric',
+  grassysurge: 'Grassy',
+  seedsower: 'Grassy',
+  psychicsurge: 'Psychic',
+  mistysurge: 'Misty',
+});
+const ABILITY_WEATHERS = Object.freeze({
+  drizzle: 'Rain',
+  primordialsea: 'Rain',
+  drought: 'Sun',
+  desolateland: 'Sun',
+  orichalcumpulse: 'Sun',
+  sandstream: 'Sand',
+  snowwarning: 'Snow',
+});
+const ENTRY_RISK_ABILITIES = Object.freeze({
+  electricsurge: 'ativa Terreno Elétrico na entrada',
+  hadronengine: 'ativa Terreno Elétrico na entrada',
+  grassysurge: 'ativa Terreno de Grama na entrada',
+  seedsower: 'ativa Terreno de Grama ao sofrer dano',
+  psychicsurge: 'ativa Terreno Psíquico na entrada',
+  mistysurge: 'ativa Terreno Enevoado na entrada',
+  drizzle: 'ativa Chuva na entrada',
+  primordialsea: 'ativa Mar Primordial na entrada',
+  drought: 'ativa Sol Forte na entrada',
+  desolateland: 'ativa Sol Extremamente Forte na entrada',
+  orichalcumpulse: 'ativa Sol Forte na entrada',
+  sandstream: 'ativa Tempestade de Areia na entrada',
+  snowwarning: 'ativa Neve na entrada',
+  intimidate: 'reduz o Ataque na entrada com Intimidate (-1 Atk)',
+  download: 'ajusta os atributos na entrada com Download',
+  trace: 'copia a habilidade do adversário na entrada',
+  imposter: 'transforma-se no adversário na entrada',
+  neutralizinggas: 'anula as habilidades em campo',
 });
 const IMMUNITY_ABILITIES = Object.freeze({
   voltabsorb: 'Electric',
@@ -81,10 +96,41 @@ const itemCalcName = (itemId) => {
 };
 const joinOr = (items) => (items.length <= 2 ? items.join(' ou ') : `${items.slice(0, -1).join(', ')} ou ${items.at(-1)}`);
 
+const gen7 = calc.Generations.get(7);
+
 function calcMove(moveId) {
-  return generation.moves.get(calc.toID(moveId.replace(/^[^:]+:/, '')));
+  const id = calc.toID(moveId.replace(/^[^:]+:/, ''));
+  return generation.moves.get(id) || gen7.moves.get(id);
 }
 const priorityOf = (moveId) => calcMove(moveId)?.priority ?? 0;
+const moveNameOf = (moveId) => COMPATIBILITY.moves[moveId]?.name ?? calcMove(moveId)?.name ?? titleCase(moveId);
+
+function resolveCalcSpeciesName(baseName, aspects = []) {
+  if (!aspects || aspects.length === 0) {
+    if (baseName.toLowerCase() === 'aegislash') return 'Aegislash-Shield';
+    return baseName;
+  }
+  const suffixMap = {
+    alolan: '-Alola',
+    alola: '-Alola',
+    galarian: '-Galar',
+    galar: '-Galar',
+    hisuian: '-Hisui',
+    hisui: '-Hisui',
+    paldean: '-Paldea',
+    paldea: '-Paldea',
+  };
+  for (const aspect of aspects) {
+    const suffix = suffixMap[aspect.toLowerCase()];
+    if (suffix) {
+      const candidate = baseName + suffix;
+      if (generation.species.get(calc.toID(candidate))) return candidate;
+      if (generation.species.get(calc.toID(`${candidate}-Combat`))) return `${candidate}-Combat`;
+    }
+  }
+  if (baseName.toLowerCase() === 'aegislash') return 'Aegislash-Shield';
+  return baseName;
+}
 
 // --- Time do jogador ---------------------------------------------------------------------------------------------
 
@@ -111,7 +157,9 @@ function buildTeam(request, individuals, assumptions) {
     } catch (error) {
       throw new Error(`membro ${member.uuid} não é elegível: ${error.message.replace(/^Cálculo real: /, '')}`);
     }
-    const moveIds = [...new Set(member.moveIds ?? [])].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id)).slice(0, MAX_MOVES);
+    const moveIds = [...new Set(member.moveIds ?? [])]
+      .filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) || (calcMove(id)?.category && calcMove(id).category !== 'Status'))
+      .slice(0, MAX_MOVES);
     if (moveIds.length === 0) throw new Error(`membro ${member.uuid} não tem golpes do catálogo compatível`);
     const pokemon = pokemonFromSpec({...profile, item: itemCalcName(member.itemId)});
     return {uuid: member.uuid, speciesId: individual.speciesId, level: individual.level, pokemon, moveIds};
@@ -141,25 +189,44 @@ function buildTeam(request, individuals, assumptions) {
 /** Constrói o adversário ou lista o que bloqueia este confronto. IV ausente vale 31 e EV ausente vale 0. */
 function buildOpponent(member, index, trainerId) {
   const blockers = [];
-  const species = lookup(COMPATIBILITY.species, member.speciesId);
-  const label = speciesName(member.speciesId);
-  if (!species) blockers.push(`espécie ${label} fora do catálogo compatível`);
-  if (member.aspects?.length > 0) blockers.push(`forma alternativa (${member.aspects.join(', ')}) fora do catálogo compatível`);
-  const ability = namedFromCatalog(COMPATIBILITY.abilities, member.ability);
+  const baseSlug = member.speciesId.replace(/^[^:]+:/, '');
+  let species = lookup(COMPATIBILITY.species, member.speciesId);
+  if (!species) {
+    const cs =
+      generation.species.get(calc.toID(baseSlug)) ||
+      (baseSlug.toLowerCase() === 'aegislash' ? generation.species.get('aegislashshield') : null);
+    if (cs) species = {name: cs.name};
+    else blockers.push(`espécie ${speciesName(member.speciesId)} fora do catálogo compatível`);
+  }
+  const calcSpeciesName = species ? resolveCalcSpeciesName(species.name, member.aspects) : null;
+  const label = species
+    ? calcSpeciesName !== species.name
+      ? `${species.name} (${member.aspects.map(titleCase).join(', ')})`
+      : species.name
+    : speciesName(member.speciesId);
+
+  const ability = namedFromCatalog(COMPATIBILITY.abilities, member.ability) || generation.abilities.get(calc.toID(member.ability))?.name;
   if (!ability) blockers.push(`habilidade ${member.ability} fora do catálogo compatível`);
-  const unsupportedField = UNSUPPORTED_ABILITIES[member.ability];
-  if (unsupportedField) blockers.push(`habilidade ${ability ?? member.ability}: ${unsupportedField}, fora do adaptador`);
-  const nature = namedFromCatalog(COMPATIBILITY.natures, member.nature);
-  if (!nature) blockers.push(`natureza ${member.nature} fora do catálogo compatível`);
+
+  const nature =
+    namedFromCatalog(COMPATIBILITY.natures, member.nature) || generation.natures.get(calc.toID(member.nature))?.name || 'Hardy';
+
   const alternatives = Array.isArray(member.heldItem) ? member.heldItem : member.heldItem ? [member.heldItem] : [];
-  const modded = alternatives.find((id) => id.startsWith('mega_showdown:'));
-  if (modded) blockers.push(`${itemLabel(modded)}: Mega Evolução ou Cristal Z, fora do adaptador`);
   const moves = [];
+  const statusMoves = [];
   for (const moveId of member.moves ?? []) {
-    if (Object.hasOwn(COMPATIBILITY.moves, moveId)) moves.push({id: moveId, name: COMPATIBILITY.moves[moveId].name});
-    else if (calcMove(moveId)?.category && calcMove(moveId).category !== 'Status') {
-      blockers.push(`golpe de dano ${calcMove(moveId).name} fora do catálogo compatível`);
-    } else if (!calcMove(moveId)) blockers.push(`golpe ${titleCase(moveId)} desconhecido`);
+    if (Object.hasOwn(COMPATIBILITY.moves, moveId)) {
+      moves.push({id: moveId, name: COMPATIBILITY.moves[moveId].name});
+    } else {
+      const cm = calcMove(moveId);
+      if (cm?.category && cm.category !== 'Status') {
+        moves.push({id: moveId, name: cm.name});
+      } else if (cm?.category === 'Status') {
+        statusMoves.push({id: moveId, name: cm.name});
+      } else {
+        blockers.push(`golpe ${titleCase(moveId)} desconhecido`);
+      }
+    }
   }
   const base = {
     id: `${trainerId}#${index}`,
@@ -168,6 +235,7 @@ function buildOpponent(member, index, trainerId) {
     abilityId: member.ability,
     alternatives,
     moves,
+    statusMoves,
     label,
     pokemon: null,
     blockers,
@@ -175,10 +243,9 @@ function buildOpponent(member, index, trainerId) {
   if (blockers.length > 0) return base;
   const ivs = Object.fromEntries(STATS.map((stat) => [stat, member.ivs?.[stat] ?? 31]));
   const evs = Object.fromEntries(STATS.map((stat) => [stat, member.evs?.[stat] ?? 0]));
-  // Com mais de uma alternativa o item é desconhecido: o cálculo não escolhe e o plano avisa.
   const item = alternatives.length === 1 ? itemCalcName(alternatives[0]) : '';
   try {
-    base.pokemon = pokemonFromSpec({species, level: member.level, nature, ability, ivs, evs, item});
+    base.pokemon = pokemonFromSpec({species: {name: calcSpeciesName}, level: member.level, nature, ability, ivs, evs, item});
   } catch (error) {
     base.blockers.push(`o motor de cálculo recusou o adversário (${error.message})`);
   }
@@ -190,6 +257,17 @@ function opponentRisks(opponent, dealt, firstToAct) {
   const {alternatives, label} = opponent;
   const multi = alternatives.length > 1;
   const hedge = (id) => (multi ? ` (se segurar ${itemLabel(id)})` : '');
+  const modded = alternatives.find((id) => id.startsWith('mega_showdown:'));
+  if (modded) {
+    risks.push({kind: 'item', text: `${label} pode portar ${itemLabel(modded)} (Mega Evolução ou Cristal Z).`});
+  }
+  const entryRisk = ENTRY_RISK_ABILITIES[opponent.abilityId];
+  if (entryRisk) {
+    risks.push({kind: 'habilidade', text: `${label} ${entryRisk}.`});
+  }
+  for (const sm of opponent.statusMoves ?? []) {
+    risks.push({kind: 'golpe', text: `${label} conhece o golpe de status ${sm.name}.`});
+  }
   const sturdy = opponent.abilityId === 'sturdy';
   const sash = alternatives.includes('cobblemon:focus_sash');
   const custap = alternatives.includes('cobblemon:custap_berry');
@@ -229,29 +307,45 @@ function opponentRisks(opponent, dealt, firstToAct) {
 
 // --- Confrontos --------------------------------------------------------------------------------------------------
 
-function bestDamaging(attacker, defender, moves) {
+function battleFieldFor(oppAbility, playAbility) {
+  const terrain = ABILITY_TERRAINS[oppAbility] ?? (playAbility ? ABILITY_TERRAINS[playAbility] : undefined);
+  const weather = ABILITY_WEATHERS[oppAbility] ?? (playAbility ? ABILITY_WEATHERS[playAbility] : undefined);
+  return new calc.Field({terrain, weather});
+}
+
+function bestDamaging(attacker, defender, moves, field) {
   let best = null;
   for (const move of moves) {
-    const percent = averagePercent(attacker, defender, move.name);
+    const percent = averagePercent(attacker, defender, move.name, field);
     if (!best || percent > best.percent) best = {...move, percent};
   }
   return best;
 }
 
 function evaluateMember(member, opponent) {
-  const ours = bestDamaging(
-    member.pokemon,
-    opponent.pokemon,
-    member.moveIds.map((id) => ({id, name: COMPATIBILITY.moves[id].name})),
-  );
-  const theirs = bestDamaging(opponent.pokemon, member.pokemon, opponent.moves);
+  const field = battleFieldFor(opponent.abilityId, member.pokemon.ability);
+  let effectivePlayer = member.pokemon;
+  let effectiveOpponent = opponent.pokemon;
+
+  if (opponent.abilityId === 'intimidate') {
+    effectivePlayer = member.pokemon.clone();
+    effectivePlayer.boosts.atk = Math.max(-6, Math.min(6, (effectivePlayer.boosts.atk || 0) - 1));
+  }
+  if (member.pokemon.ability === 'intimidate') {
+    effectiveOpponent = opponent.pokemon.clone();
+    effectiveOpponent.boosts.atk = Math.max(-6, Math.min(6, (effectiveOpponent.boosts.atk || 0) - 1));
+  }
+
+  const ourMoves = member.moveIds.map((id) => ({id, name: moveNameOf(id)}));
+  const ours = bestDamaging(effectivePlayer, effectiveOpponent, ourMoves, field);
+  const theirs = bestDamaging(effectiveOpponent, effectivePlayer, opponent.moves, field);
   const outcome = matchupOutcome(
     ours?.percent ?? 0,
     theirs?.percent ?? 0,
-    effectiveSpeed(member.pokemon),
-    effectiveSpeed(opponent.pokemon),
+    effectiveSpeed(effectivePlayer),
+    effectiveSpeed(effectiveOpponent),
   );
-  return {member, ours, theirs, outcome};
+  return {member, ours, theirs, outcome, field, effectivePlayer, effectiveOpponent};
 }
 
 function compareEvaluations(left, right) {
@@ -324,8 +418,10 @@ function planEntry(opponent, team, trainerId) {
   }
   const evaluations = team.map((member) => evaluateMember(member, opponent)).sort(compareEvaluations);
   const best = evaluations[0];
-  const dealt = {moveId: best.ours.id, ...damageRange(best.member.pokemon, opponent.pokemon, best.ours.name)};
-  const received = best.theirs ? {moveId: best.theirs.id, ...damageRange(opponent.pokemon, best.member.pokemon, best.theirs.name)} : null;
+  const dealt = {moveId: best.ours.id, ...damageRange(best.effectivePlayer, best.effectiveOpponent, best.ours.name, best.field)};
+  const received = best.theirs
+    ? {moveId: best.theirs.id, ...damageRange(best.effectiveOpponent, best.effectivePlayer, best.theirs.name, best.field)}
+    : null;
   const order = actOrder(best, opponent);
   return {
     ...header,
@@ -360,16 +456,17 @@ function trainerRisks(trainer) {
 }
 
 function pickLead(entries, team) {
-  const first = entries.find((entry) => entry.status === 'planejado');
-  if (!first) return null;
-  const planned = entries.filter((entry) => entry.status === 'planejado');
+  const slotZero = entries[0];
+  if (!slotZero?.responder) return null;
+  const planned = entries.filter((entry) => entry.status === 'planejado' && entry.evaluation);
   const advantages = (uuid) => planned.filter((entry) => entry.evaluation.member.uuid === uuid && entry.evaluation.outcome.wins).length;
-  const member = team.find((candidate) => candidate.uuid === first.responder.uuid);
+  const member = team.find((candidate) => candidate.uuid === slotZero.responder.uuid);
+  if (!member) return null;
   const wins = advantages(member.uuid);
   return {
     uuid: member.uuid,
     speciesId: member.speciesId,
-    reason: `${speciesName(member.speciesId)} abre porque é o melhor respondedor ao primeiro adversário do plano (${speciesName(first.speciesId)}) e responde com vantagem de turnos a ${wins} de ${planned.length} adversários planejados.`,
+    reason: `${speciesName(member.speciesId)} abre porque é o melhor respondedor ao primeiro adversário do plano (${speciesName(slotZero.speciesId)}) e responde com vantagem de turnos a ${wins} de ${planned.length} adversários planejados.`,
   };
 }
 
