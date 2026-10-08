@@ -52,11 +52,78 @@ export function dexId(id: string): string {
 
 const isPokemonType = (value: string): value is PokemonType => TYPE_SET.has(value);
 
-export function speciesDisplay(speciesId: string, formId: string): {name: string; types: PokemonType[]} {
-  const entry = dexData.species[dexId(speciesId)];
+const REGIONAL_FORM_ALIASES: Record<string, string> = {
+  alolan: 'alola',
+  alola: 'alola',
+  galarian: 'galar',
+  galar: 'galar',
+  hisuian: 'hisui',
+  hisui: 'hisui',
+  paldean: 'paldea',
+  paldea: 'paldea',
+};
+
+const REGIONAL_LABELS: Record<string, string> = {
+  galar: 'Galar',
+  galarian: 'Galar',
+  hisui: 'Hisui',
+  hisuian: 'Hisui',
+  alola: 'Alola',
+  alolan: 'Alola',
+  paldea: 'Paldea',
+  paldean: 'Paldea',
+};
+
+/** Rótulo legível para o chip de forma (ex.: "Galar", "Hisui", "Alola"). Vazio para forma normal. */
+export function formChipLabel(formId?: string | null, aspects?: readonly string[] | null): string {
+  if (formId === 'unknown') return 'Forma desconhecida';
+  const tokens = [...(formId && formId !== 'normal' ? [formId] : []), ...(Array.isArray(aspects) ? aspects : [])]
+    .map(dexId)
+    .filter(Boolean);
+
+  for (const token of tokens) {
+    if (REGIONAL_LABELS[token]) return REGIONAL_LABELS[token];
+  }
+  if (!formId || formId === 'normal') return '';
+  return titleCaseId(formId);
+}
+
+export function speciesDisplay(
+  speciesId: string,
+  formId?: string,
+  aspects?: readonly string[] | null,
+): {name: string; types: PokemonType[]} {
+  const baseKey = dexId(speciesId);
+  const baseEntry = dexData.species[baseKey];
+
+  let formEntry: {name: string; types: string[]} | undefined;
+  const tokens = [...(formId && formId !== 'normal' && formId !== 'unknown' ? [formId] : []), ...(Array.isArray(aspects) ? aspects : [])]
+    .map(dexId)
+    .filter(Boolean);
+
+  for (const token of tokens) {
+    const alias = REGIONAL_FORM_ALIASES[token] ?? token;
+    const candidate1 = `${baseKey}${alias}`;
+    if (dexData.species[candidate1]) {
+      formEntry = dexData.species[candidate1];
+      break;
+    }
+    const candidate2 = `${baseKey}${token}`;
+    if (dexData.species[candidate2]) {
+      formEntry = dexData.species[candidate2];
+      break;
+    }
+    const candidateCombat = `${candidate1}combat`;
+    if (dexData.species[candidateCombat]) {
+      formEntry = dexData.species[candidateCombat];
+      break;
+    }
+  }
+
+  const finalEntry = formEntry ?? baseEntry;
   return {
-    name: entry?.name ?? titleCaseId(speciesId),
-    types: entry && formId === 'normal' ? entry.types.filter(isPokemonType) : [],
+    name: baseEntry?.name ?? titleCaseId(speciesId),
+    types: finalEntry ? finalEntry.types.filter(isPokemonType) : [],
   };
 }
 

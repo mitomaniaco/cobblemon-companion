@@ -1,7 +1,7 @@
 import {type CSSProperties, useId} from 'react';
 import {ListBox, ListBoxItem} from 'react-aria-components';
 import {locationLabel} from '../../domain/location-label';
-import {speciesDisplay} from '../../domain/dex';
+import {formChipLabel, speciesDisplay} from '../../domain/dex';
 import type {PlayerIndividual, PlayerSnapshot} from '../../platform/api';
 import {Button, PokeBallMark, PokemonArtwork, SearchField, Select, TypeBadge, typeColorVar} from '../../ui';
 import type {SelectOption} from '../../ui';
@@ -48,7 +48,7 @@ function levelLabel(individual: PlayerIndividual) {
 
 function individualTextValue(individual: PlayerIndividual) {
   const level = individual.level === null ? 'nível não capturado' : `nível ${individual.level}`;
-  return `${speciesDisplay(individual.speciesId, individual.formId).name} · ${locationLabel(individual.location)} · ${level}`;
+  return `${speciesDisplay(individual.speciesId, individual.formId, individual.aspects).name} · ${locationLabel(individual.location)} · ${level}`;
 }
 
 function getBoxOptions(individuals: readonly PlayerIndividual[]): BoxOption[] {
@@ -126,7 +126,8 @@ function TeamCard({
   index: number;
   onSelect(uuid: string): void;
 }) {
-  const display = speciesDisplay(individual.speciesId, individual.formId);
+  const display = speciesDisplay(individual.speciesId, individual.formId, individual.aspects);
+  const chipText = formChipLabel(individual.formId, individual.aspects);
   const textValue = individualTextValue(individual);
   const style = {'--type-a': typeColorVar(display.types[0] ?? null), '--i': index, '--slot': slot} as CSSProperties;
   return (
@@ -157,9 +158,7 @@ function TeamCard({
           {display.types.map((type) => (
             <TypeBadge key={type} type={type} size="sm" />
           ))}
-          {individual.formId !== 'normal' && (
-            <span className={styles.formChip}>{individual.formId === 'unknown' ? 'Forma desconhecida' : 'Forma alternativa'}</span>
-          )}
+          {chipText && <span className={styles.formChip}>{chipText}</span>}
         </span>
       </span>
     </ListBoxItem>
@@ -230,7 +229,7 @@ function BoxSection({
           onSelectionChange={selectionHandler(onSelect)}
         >
           {(individual) => {
-            const display = speciesDisplay(individual.speciesId, individual.formId);
+            const display = speciesDisplay(individual.speciesId, individual.formId, individual.aspects);
             const textValue = individualTextValue(individual);
             const slot = individual.location.slot;
             const style = fixedSlots
