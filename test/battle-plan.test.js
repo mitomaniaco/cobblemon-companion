@@ -143,6 +143,27 @@ describe('plano de batalha contra o líder', () => {
     expect(result.lead.uuid).toBe(result.entries[0].responder.uuid);
   });
 
+  it('simula a sequência de batalha 6v6 passo a passo transportando HP residual e indicando ações', async () => {
+    const result = await plan('synthetic:brock');
+    expect(result.sequence).toBeDefined();
+    expect(result.sequence.length).toBe(3);
+
+    const step1 = result.sequence[0];
+    expect(step1.action).toBe('iniciar');
+    expect(step1.memberUuid).toBe(blastoise.uuid);
+    expect(step1.hpBeforePercent).toBe(100);
+    expect(step1.hpAfterPercent).toBeLessThan(100);
+    expect(step1.opponentDefeated).toBe(true);
+
+    const step2 = result.sequence[1];
+    expect(step2.action).toBe('manter');
+    expect(step2.hpBeforePercent).toBe(step1.hpAfterPercent);
+
+    expect(result.teamRemainingHp).toBeDefined();
+    expect(result.teamRemainingHp[blastoise.uuid]).toBe(result.sequence[2].hpAfterPercent);
+    expect(result.teamRemainingHp[pikachu.uuid]).toBe(100);
+  });
+
   it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem lead', async () => {
     const result = await plan('synthetic:duo');
     expect(result).toMatchObject({status: 'fora-do-escopo', scopeReason: 'batalha em dupla, fora do escopo', entries: [], lead: null});
