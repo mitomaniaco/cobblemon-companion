@@ -35,6 +35,24 @@ const team = [
   {uuid: blastoise.uuid, moveIds: ['cobblemon:surf', 'cobblemon:tackle'], itemId: null},
   {uuid: pikachu.uuid, moveIds: ['cobblemon:thunderbolt', 'cobblemon:quickattack'], itemId: null},
 ];
+const opponent = (overrides = {}) => ({
+  speciesId: 'cobblemon:geodude',
+  level: 30,
+  moves: ['cobblemon:rocktomb'],
+  ability: 'sturdy',
+  nature: 'hardy',
+  heldItem: [],
+  ivs: {},
+  evs: {},
+  aspects: [],
+  ...overrides,
+});
+const customPlan = (members, {snapshot: custom = snapshot, team: customTeam = team} = {}) =>
+  buildBattlePlan({
+    snapshot: custom,
+    request: {sources: [], trainerId: 'synthetic:custom', team: customTeam},
+    data: {trainers: [{id: 'synthetic:custom', name: 'Custom', format: 'singles', team: members}]},
+  });
 const plan = (trainerId, overrides = {}) => buildBattlePlan({snapshot, request: {sources: [], trainerId, team, ...overrides}, data});
 
 describe('plano de batalha contra o líder', () => {
@@ -79,89 +97,146 @@ describe('plano de batalha contra o líder', () => {
     expect(texts.ia).toContain('IA do RCT não é modelada');
   });
 
-  it('forma alternativa (como Geodude de Alola) é planejada com cálculo real e sem bloqueio', async () => {
+  it('forma alternativa (como Geodude de Alola) é planejada com a forma do catálogo, não a normal', async () => {
     const result = await plan('synthetic:brock');
     const alolan = result.entries[2];
     expect(alolan.status).toBe('planejado');
     expect(alolan.responder).toBeTruthy();
     expect(alolan.dealt.max).toBeGreaterThan(0);
-    expect(alolan.received.targetHP).toBeGreaterThan(0);
+    expect(alolan.risks.some((risk) => risk.text.startsWith('Geodude-Alola aguenta'))).toBe(true);
     expect(result.entries.filter((entry) => entry.status === 'planejado')).toHaveLength(3);
   });
 
-  it('heldItem com várias alternativas não escolhe item; Mega/Z vira risco sem bloquear', async () => {
+  it('aspects sem forma no catálogo bloqueiam o confronto', async () => {
+    const result = await customPlan([opponent({speciesId: 'cobblemon:geodude', aspects: ['inexistente']})]);
+    expect(result.entries[0].status).toBe('bloqueado');
+    expect(result.entries[0].blockedReason).toContain('sem correspondência');
+  });
+
+  it('natureza fora do catálogo bloqueia, sem cair em Hardy', async () => {
+    const result = await customPlan([opponent({nature: 'cobblemon:xyz'})]);
+    expect(result.entries[0].status).toBe('bloqueado');
+    expect(result.entries[0].blockedReason).toContain('natureza');
+  });
+
+  it('golpe de dano fora do catálogo bloqueia; golpe de status vira risco', async () => {
+    const bad = await customPlan([opponent({moves: ['cobblemon:superfang']})]);
+    expect(bad.entries[0].status).toBe('bloqueado');
+    expect(bad.entries[0].blockedReason).toContain('Super Fang');
+    const status = await customPlan([opponent({moves: ['cobblemon:tackle', 'cobblemon:swordsdance']})]);
+    expect(status.entries[0].status).toBe('planejado');
+    expect(status.entries[0].risks.some((risk) => risk.text.includes('Swords Dance'))).toBe(true);
+  });
+
+  it('habilidade de entrada fora do adaptador bloqueia', async () => {
+    const result = await customPlan([opponent({ability: 'neutralizinggas'})]);
+    expect(result.entries[0].status).toBe('bloqueado');
+    expect(result.entries[0].blockedReason).toContain('fora do adaptador');
+  });
+
+  it('heldItem com várias alternativas: pior caso entre as catalogadas; item de Mega vira parcial; só Mega bloqueia', async () => {
     const result = await plan('synthetic:surge');
     const raichu = result.entries[0];
     expect(raichu.heldItemAlternatives).toEqual(['mega_showdown:manectite', 'cobblemon:expert_belt']);
-    expect(raichu.status).toBe('planejado');
-    expect(raichu.risks.some((risk) => risk.text.includes('Mega Evolução ou Cristal Z'))).toBe(true);
+    expect(raichu.status).toBe('parcial');
+    expect(raichu.partialReason).toContain('Manectite');
+    expect(raichu.dealt.max).toBeGreaterThan(0);
 
     const pika = result.entries[1];
     expect(pika.status).toBe('planejado');
-    expect(pika.heldItemAlternatives).toEqual(['cobblemon:expert_belt', 'cobblemon:life_orb']);
     expect(pika.risks.map((risk) => risk.text).join(' ')).toContain('Expert Belt ou Life Orb');
+
+    const onlyMega = await customPlan([opponent({heldItem: ['mega_showdown:red_orb']})]);
+    expect(onlyMega.entries[0].status).toBe('bloqueado');
+    expect(onlyMega.entries[0].blockedReason).toContain('Red Orb');
   });
 
-  it('terreno de habilidade ativa o campo e dano real sem bloquear; imunidade vira risco', async () => {
-    const result = await plan('synthetic:surge');
-    const surgeVoltorb = result.entries[2];
-    expect(surgeVoltorb.status).toBe('planejado');
-    expect(surgeVoltorb.risks.some((risk) => risk.text.includes('Terreno Elétrico'))).toBe(true);
-    expect(surgeVoltorb.dealt.max).toBeGreaterThan(0);
+  it('a pior variante de item para o jogador é a que vale', async () => {
+    const lifeOrbOnly = await customPlan([opponent({heldItem: ['cobblemon:life_orb']})]);
+    const either = await customPlan([opponent({heldItem: ['cobblemon:oran_berry', 'cobblemon:life_orb']})]);
+    expect(either.entries[0].received.max).toBe(lifeOrbOnly.entries[0].received.max);
+  });
 
-    const absorb = result.entries[3];
-    expect(absorb.status).toBe('planejado');
-    expect(absorb.dealt.max).toBeGreaterThan(0);
+  it('terreno de habilidade do adversário entra no dano que o jogador recebe', async () => {
+    const withTerrain = await customPlan([
+      opponent({speciesId: 'cobblemon:voltorb', ability: 'electricsurge', moves: ['cobblemon:thunderbolt']}),
+    ]);
+    const without = await customPlan([opponent({speciesId: 'cobblemon:voltorb', ability: 'static', moves: ['cobblemon:thunderbolt']})]);
+    expect(withTerrain.entries[0].status).toBe('planejado');
+    expect(withTerrain.entries[0].risks.some((risk) => risk.text.includes('Terreno Elétrico'))).toBe(true);
+    expect(withTerrain.entries[0].received.max).toBeGreaterThan(without.entries[0].received.max);
+  });
+
+  it('imunidade por habilidade vira risco', async () => {
     const immune = await plan('synthetic:surge', {team: [{...team[1], moveIds: ['cobblemon:thunderbolt']}]});
     expect(immune.entries[3].dealt).toMatchObject({moveId: 'cobblemon:thunderbolt', min: 0, max: 0});
-    expect(immune.entries[3].risks).toContainEqual({kind: 'habilidade', text: 'Voltorb anula golpes do tipo Electric com Voltabsorb.'});
+    expect(immune.entries[3].risks).toContainEqual({kind: 'habilidade', text: 'Voltorb anula golpes do tipo Electric com Volt Absorb.'});
   });
 
-  it('habilidade Intimidate reduz Ataque e gera risco sem bloquear o confronto', async () => {
-    const staraptorOpponent = {
-      id: 'synthetic:custom',
-      name: 'Custom',
-      format: 'singles',
-      team: [
-        {
-          speciesId: 'cobblemon:staraptor',
-          level: 30,
-          moves: ['cobblemon:brave_bird', 'cobblemon:close_combat'],
-          ability: 'intimidate',
-          nature: 'jolly',
-          heldItem: [],
-          ivs: {},
-          evs: {},
-          aspects: [],
-        },
-      ],
-    };
-    const customData = {trainers: [staraptorOpponent]};
-    const result = await buildBattlePlan({snapshot, request: {sources: [], trainerId: 'synthetic:custom', team}, data: customData});
-    expect(result.entries[0].status).toBe('planejado');
-    expect(result.entries[0].risks.some((r) => r.text.includes('Intimidate'))).toBe(true);
-    expect(result.lead.uuid).toBe(result.entries[0].responder.uuid);
+  it('clima ou terreno diferentes entre adversário e membro ficam em disputa e o membro não é avaliado', async () => {
+    const pelipper = individual('pelipper', 30, ['surf']);
+    pelipper.observed.ability = 'cobblemon:drizzle';
+    const members = [{uuid: pelipper.uuid, moveIds: ['cobblemon:surf'], itemId: null}];
+    const result = await customPlan([opponent({ability: 'drought'})], {snapshot: {individuals: [pelipper]}, team: members});
+    expect(result.entries[0].status).toBe('bloqueado');
+    expect(result.entries[0].blockedReason).toContain('clima em disputa');
+    expect(result.lead).toBeNull();
+
+    const mixed = await customPlan([opponent({ability: 'drought'})], {
+      snapshot: {individuals: [pelipper, blastoise]},
+      team: [...members, team[0]],
+    });
+    expect(mixed.entries[0].status).toBe('planejado');
+    expect(mixed.entries[0].responder.uuid).toBe(blastoise.uuid);
+    expect(mixed.entries[0].risks.some((risk) => risk.text.includes('em disputa'))).toBe(true);
   });
 
-  it('simula a sequência de batalha 6v6 passo a passo transportando HP residual e indicando ações', async () => {
-    const result = await plan('synthetic:brock');
-    expect(result.sequence).toBeDefined();
-    expect(result.sequence.length).toBe(3);
+  describe('Intimidate', () => {
+    const tackleTeam = [{uuid: blastoise.uuid, moveIds: ['cobblemon:tackle'], itemId: null}];
+    const staraptor = (ability) => opponent({speciesId: 'cobblemon:staraptor', ability, moves: ['cobblemon:bravebird']});
+    const dealtBy = async (foe, request = {}) => (await customPlan([foe], {team: tackleTeam, ...request})).entries[0].dealt.max;
 
-    const step1 = result.sequence[0];
-    expect(step1.action).toBe('iniciar');
-    expect(step1.memberUuid).toBe(blastoise.uuid);
-    expect(step1.hpBeforePercent).toBe(100);
-    expect(step1.hpAfterPercent).toBeLessThan(100);
-    expect(step1.opponentDefeated).toBe(true);
+    it('reduz o Ataque do membro e o dano dele cai em relação à mesma batalha sem Intimidate', async () => {
+      const result = await customPlan([staraptor('intimidate')], {team: tackleTeam});
+      expect(result.entries[0].status).toBe('planejado');
+      expect(result.entries[0].risks.some((risk) => risk.text.includes('Intimidate'))).toBe(true);
+      expect(await dealtBy(staraptor('intimidate'))).toBeLessThan(await dealtBy(staraptor('reckless')));
+    });
 
-    const step2 = result.sequence[1];
-    expect(step2.action).toBe('manter');
-    expect(step2.hpBeforePercent).toBe(step1.hpAfterPercent);
+    it('Clear Body não sofre a queda', async () => {
+      const beldum = individual('beldum', 30, ['tackle']);
+      const request = {snapshot: {individuals: [beldum]}, team: [{uuid: beldum.uuid, moveIds: ['cobblemon:tackle'], itemId: null}]};
+      expect(await dealtBy(staraptor('intimidate'), request)).toBe(await dealtBy(staraptor('reckless'), request));
+    });
 
-    expect(result.teamRemainingHp).toBeDefined();
-    expect(result.teamRemainingHp[blastoise.uuid]).toBe(result.sequence[2].hpAfterPercent);
-    expect(result.teamRemainingHp[pikachu.uuid]).toBe(100);
+    it('Intimidate do membro reduz o Ataque do adversário', async () => {
+      const gyarados = individual('gyarados', 30, ['waterfall']);
+      expect(gyarados.observed.ability).toBe('cobblemon:intimidate');
+      const request = {snapshot: {individuals: [gyarados]}, team: [{uuid: gyarados.uuid, moveIds: ['cobblemon:waterfall'], itemId: null}]};
+      const received = async (foe) => (await customPlan([foe], request)).entries[0].received.max;
+      const physical = opponent({speciesId: 'cobblemon:staraptor', ability: 'reckless', moves: ['cobblemon:bravebird']});
+      const withIntimidate = await received(physical);
+      const plain = individual('gyarados', 30, ['waterfall']);
+      plain.observed.ability = 'cobblemon:moxie';
+      const noIntimidate = (
+        await customPlan([physical], {
+          snapshot: {individuals: [plain]},
+          team: [{uuid: plain.uuid, moveIds: ['cobblemon:waterfall'], itemId: null}],
+        })
+      ).entries[0].received.max;
+      expect(withIntimidate).toBeLessThan(noIntimidate);
+    });
+  });
+
+  it('o lead é o respondedor do primeiro adversário; com ele bloqueado, não há lead', async () => {
+    const planned = await customPlan([opponent({speciesId: 'cobblemon:staraptor', ability: 'intimidate'}), opponent({})]);
+    expect(planned.lead.uuid).toBe(planned.entries[0].responder.uuid);
+    expect(planned.lead.reason).toContain('abre contra o primeiro adversário');
+
+    const blockedFirst = await customPlan([opponent({nature: 'cobblemon:xyz'}), opponent({})]);
+    expect(blockedFirst.entries[0].status).toBe('bloqueado');
+    expect(blockedFirst.entries[1].status).toBe('planejado');
+    expect(blockedFirst.lead).toBeNull();
   });
 
   it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem lead', async () => {
@@ -172,7 +247,7 @@ describe('plano de batalha contra o líder', () => {
   it('sugere um lead entre os membros do time e declara as hipóteses junto do plano', async () => {
     const result = await plan('synthetic:brock');
     expect(team.map((member) => member.uuid)).toContain(result.lead.uuid);
-    expect(result.lead.reason).toContain('abre porque');
+    expect(result.lead.reason).toContain('abre contra o primeiro adversário');
     expect(result.assumptions.join(' ')).toContain('HP e PP cheios');
     expect(result.assumptions.join(' ')).toContain('não verifica se você tem os itens');
     expect(result.limits.join(' ')).toContain('IA do RCT');
