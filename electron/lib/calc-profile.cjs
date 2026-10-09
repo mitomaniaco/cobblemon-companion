@@ -22,25 +22,32 @@ function pokemonFromSpec(spec) {
   });
 }
 
-/**
- * Faixa de dano de um golpe em campo neutro. O calc devolve o número 0 (não os 16 rolls) quando o alvo é imune ao tipo;
- * isso vira 0–0. Qualquer outra forma fora dos 16 inteiros não negativos lança erro com `code: 'ERR_CALC_ROLLS'`.
- */
-const LEGACY_MOVES = Object.freeze({
-  'bouncy bubble': {baseMove: 'Water Gun', bp: 90},
-  'sappy seed': {baseMove: 'Mega Drain', bp: 90},
-  'zippy zap': {baseMove: 'Nuzzle', bp: 50},
-});
+const ROLLS = 16;
+const invalidRolls = () => Object.assign(new Error('o motor não retornou os 16 rolls inteiros esperados'), {code: 'ERR_CALC_ROLLS'});
+const validValue = (value) => Number.isSafeInteger(value) && value >= 0;
+const validRollList = (list) => Array.isArray(list) && list.length === ROLLS && list.every(validValue);
 
-function damageRange(attacker, defender, moveName, field = new calc.Field()) {
-  const legacy = LEGACY_MOVES[moveName.toLowerCase()];
-  const moveObj = legacy ? new calc.Move(9, legacy.baseMove, {bp: legacy.bp}) : new calc.Move(9, moveName);
-  const result = calc.calculate(9, attacker, defender, moveObj, field);
-  const rolls = result.damage === 0 ? new Array(16).fill(0) : result.damage;
-  if (!Array.isArray(rolls) || rolls.length !== 16 || !rolls.every((value) => Number.isSafeInteger(value) && value >= 0)) {
-    throw Object.assign(new Error('o motor não retornou os 16 rolls inteiros esperados'), {code: 'ERR_CALC_ROLLS'});
+/**
+ * Os 16 rolls de dano de um golpe, normalizando o que o calc devolve: número (dano fixo, imunidade), lista de 16
+ * (golpe comum), lista de listas de 16 (multi-hit: soma índice a índice) ou lista de números de outro tamanho
+ * (dano fixo em vários acertos: soma replicada). Qualquer outra forma lança erro com `code: 'ERR_CALC_ROLLS'`.
+ */
+function damageRolls(attacker, defender, moveName, field = new calc.Field()) {
+  const raw = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), field).damage;
+  if (validValue(raw)) return new Array(ROLLS).fill(raw);
+  if (!Array.isArray(raw) || raw.length === 0) throw invalidRolls();
+  if (validRollList(raw)) return [...raw];
+  if (raw.every(validValue)) return new Array(ROLLS).fill(raw.reduce((sum, value) => sum + value, 0));
+  if (raw.every(validRollList)) {
+    return Array.from({length: ROLLS}, (_, index) => raw.reduce((sum, hit) => sum + hit[index], 0));
   }
+  throw invalidRolls();
+}
+
+/** Faixa de dano de um golpe em campo neutro (mínimo e máximo dos 16 rolls) e o HP do alvo. */
+function damageRange(attacker, defender, moveName, field = new calc.Field()) {
+  const rolls = damageRolls(attacker, defender, moveName, field);
   return {min: Math.min(...rolls), max: Math.max(...rolls), targetHP: defender.stats.hp};
 }
 
-module.exports = {pokemonFromSpec, damageRange};
+module.exports = {pokemonFromSpec, damageRange, damageRolls};
