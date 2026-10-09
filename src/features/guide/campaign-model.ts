@@ -122,11 +122,10 @@ export function stageEntry(
   };
 }
 
-export type StageGroup = {key: string; label: string; entries: StageEntry[]};
-
 export type CampaignView = {
   seriesId: string;
-  groups: StageGroup[];
+  /** Etapas visíveis em ordem de campanha. */
+  entries: StageEntry[];
   /** Etapa próxima (primeira liberada não vencida), se o progresso é conhecido e há alguma. */
   nextStageId: string | null;
   /** As próximas etapas depois da próxima (em ordem), não vencidas e não bloqueadas por ela, até `upcomingCount`. */
@@ -144,7 +143,7 @@ export type CampaignViewOptions = {
   upcomingCount: number;
 };
 
-/** Uma entrada por treinador lógico, agrupadas por tipo na ordem da campanha; variantes ficam dentro da entrada. */
+/** Uma entrada por treinador lógico, na ordem da campanha; variantes ficam dentro da entrada. */
 export function buildCampaignView(series: CampaignSeries, options: CampaignViewOptions): CampaignView {
   const states = computeStageStates(series.stages, options.defeated);
   const ordered = [...series.stages].sort((left, right) => left.order - right.order);
@@ -166,8 +165,7 @@ export function buildCampaignView(series: CampaignSeries, options: CampaignViewO
     return normalizeSearch(`${entry.stage.name} ${groupOf(entry.stage.type).label}`).includes(query);
   });
 
-  const groups: StageGroup[] = visible.length > 0 ? [{key: 'journey', label: 'Jornada da Campanha', entries: visible}] : [];
-  return {seriesId: options.seriesId, groups, nextStageId, upcoming, totalStages: series.stages.length};
+  return {seriesId: options.seriesId, entries: visible, nextStageId, upcoming, totalStages: series.stages.length};
 }
 
 /**
@@ -232,25 +230,9 @@ export function seriesLabel(seriesId: string): string {
   return SERIES_LABEL[seriesId] ?? `${seriesId.charAt(0).toUpperCase()}${seriesId.slice(1)}`;
 }
 
-function cleanVariantDescriptor(id: string, index: number): string {
-  const cleanId = id.replace(/^rctmod:/, '');
-  const starterMatch = cleanId.match(/player_chose_([a-z0-9]+)/i) || cleanId.match(/starter_([a-z0-9]+)/i);
-  if (starterMatch) {
-    const name = starterMatch[1].charAt(0).toUpperCase() + starterMatch[1].slice(1);
-    return `Inicial: ${name}`;
-  }
-  const teamMatch = cleanId.match(/team_([a-z0-9]+)/i);
-  if (teamMatch) {
-    const name = teamMatch[1].charAt(0).toUpperCase() + teamMatch[1].slice(1);
-    return `Equipe ${name}`;
-  }
-  return `Equipe ${index + 1}`;
-}
-
-/** Rótulo legível e focado no jogador para variantes de uma etapa. */
+/** Rótulo de uma variante da etapa: o app só sabe a ordem, o nível máximo e o tamanho da equipe. */
 export function variantLabel(variant: CampaignVariant, index: number): string {
-  const descriptor = cleanVariantDescriptor(variant.id, index);
-  return `${descriptor} · nível ${variant.maxLevel} · ${variant.teamSize} Pokémon`;
+  return `Variante ${index + 1} · nível ${variant.maxLevel} · ${variant.teamSize} Pokémon`;
 }
 
 /** De onde vem o progresso: lido do mundo (`defeated` conhecido) ou estimado pelo nível da party (sem leitura). */

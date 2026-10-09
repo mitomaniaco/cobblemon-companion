@@ -104,6 +104,25 @@ async function clickButton(contents, label) {
   );
 }
 
+async function selectGuideTab(contents, label) {
+  const found = await evaluate(
+    contents,
+    `(() => {
+    const tab = [...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')]
+      .find(item => item.textContent.trim() === ${JSON.stringify(label)});
+    if (!tab) return false;
+    tab.click();
+    return true;
+  })()`,
+  );
+  check(found, `A aba "${label}" não existe em "Ferramentas do guia".`);
+  await waitFor(
+    contents,
+    `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].some(item => item.textContent.trim() === ${JSON.stringify(label)} && item.getAttribute('aria-selected') === 'true')`,
+    `aba do guia "${label}" selecionada`,
+  );
+}
+
 async function navigate(contents, label) {
   await evaluate(
     contents,
@@ -1724,7 +1743,7 @@ async function exerciseGuideWorkspace(window) {
     'Alguma espécie das fixtures do Guia apareceu sem imagem (ícone neutro).',
   );
 
-  await clickButton(contents, 'Ver plano de batalha');
+  await selectGuideTab(contents, 'Plano de batalha');
   await waitFor(
     contents,
     `Boolean(document.querySelector('ol[aria-label="Confronto por adversário"] > li'))`,
@@ -1771,7 +1790,7 @@ async function exerciseGuideWorkspace(window) {
   window.setContentSize(1440, 1000);
   await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após o plano de batalha');
 
-  await clickButton(contents, 'Ver evoluções do time');
+  await selectGuideTab(contents, 'Evoluções');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Evoluções por membro"] > li'))`, 'evoluções do motor sintético');
   const evolutionText = await evaluate(
     contents,
@@ -1798,7 +1817,7 @@ async function exerciseGuideWorkspace(window) {
     capBeforeTraining.input === '' && capBeforeTraining.placeholder === '21' && capBeforeTraining.respected === false,
     'O campo manual ou o level cap padrão não estava no estado esperado para o treino.',
   );
-  await clickButton(contents, 'Ver treino do time');
+  await selectGuideTab(contents, 'Treino até o cap');
   await waitFor(contents, `document.body.innerText.includes('cap conhecido')`, 'treino usando o cap conhecido do progresso');
   const progressTraining = await evaluate(
     contents,
@@ -1808,7 +1827,7 @@ async function exerciseGuideWorkspace(window) {
     check(progressTraining.includes(expected), `O treino não usou o cap padrão do progresso "${expected}".`);
   }
 
-  await clickButton(contents, 'Ver capturas recomendadas');
+  await selectGuideTab(contents, 'Capturas');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Lacunas do time"] > li'))`, 'capturas do motor sintético');
   const captureText = await evaluate(
     contents,
@@ -1853,7 +1872,9 @@ async function exerciseGuideWorkspace(window) {
     await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport de evoluções e capturas em ${layout.width}px`);
     const overflow = await evaluate(contents, '(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)()');
     check(!overflow, `Evoluções e capturas em ${layout.width}px geraram rolagem horizontal.`);
+    await selectGuideTab(contents, 'Evoluções');
     await capture(window, screenshotPaths[layout.evolutions], 'ol[aria-label="Evoluções por membro"]');
+    await selectGuideTab(contents, 'Capturas');
     await capture(window, screenshotPaths[layout.captures], 'ol[aria-label="Lacunas do time"]');
   }
   window.setContentSize(1440, 1000);
@@ -1861,6 +1882,7 @@ async function exerciseGuideWorkspace(window) {
   // Informar o cap remonta o time de líder (cap 30 não exclui a Gardevoir Nv. 30); os planos derivados do time antigo são descartados.
   await setLevelCapField(contents, 30);
   // Confirme o resultado atualizado com o cap efetivo 30, não só o valor recém-digitado.
+  await selectGuideTab(contents, 'Time recomendado');
   await clickButton(contents, 'Exclusões, hipóteses e limites');
   await waitFor(
     contents,
@@ -1879,19 +1901,11 @@ async function exerciseGuideWorkspace(window) {
     })()`,
     'time do guia recalculado com o level cap efetivo 30',
   );
-  await clickButton(contents, 'Ver evoluções do time');
+  await selectGuideTab(contents, 'Evoluções');
   await waitFor(contents, `document.body.innerText.includes('Level cap usado: 30.')`, 'evoluções recalculadas com o level cap informado');
 
-  // Treino com cap informado: recalcula só a seção de treino (os botões "Calcular de novo" das outras seções ficam intactos).
-  await evaluate(
-    contents,
-    `(() => {
-    const section = [...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section');
-    const button = [...(section?.querySelectorAll('button') || [])].find(node => node.textContent.trim() === 'Ver treino do time');
-    if (!button) throw new Error('Botão do treino não encontrado.');
-    button.click();
-  })()`,
-  );
+  // Treino com cap informado: ao abrir a aba o treino é calculado de novo para o guia remontado.
+  await selectGuideTab(contents, 'Treino até o cap');
   await waitFor(contents, `document.body.innerText.includes('cap conhecido')`, 'treino recalculado com o level cap manual');
   const informedTraining = await evaluate(
     contents,
@@ -1914,6 +1928,7 @@ async function exerciseGuideWorkspace(window) {
   );
   await capture(window, screenshotPaths.training, 'ol[aria-label="Treino por membro"]');
 
+  await selectGuideTab(contents, 'Time recomendado');
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
   await evaluate(
@@ -1943,6 +1958,13 @@ async function exerciseGuideWorkspace(window) {
     contents,
     `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
     'retorno ao guia sem perder o time',
+  );
+  check(
+    await evaluate(
+      contents,
+      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.textContent.trim() === 'Time recomendado'`,
+    ),
+    'A aba ativa do guia não sobreviveu à ida ao Dano e à volta.',
   );
 
   for (const layout of [

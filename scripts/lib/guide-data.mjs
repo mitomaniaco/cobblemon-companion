@@ -260,7 +260,9 @@ export function deriveCampaign({series, trainers, levelCapConfig}) {
           capAfter: caps.byStage.get(stage.stageId).capAfter,
           capUnknownReason: caps.byStage.get(stage.stageId).unknownReason,
           ambiguous,
-          ambiguousReason: ambiguous ? 'sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos' : null,
+          ambiguousReason: ambiguous
+            ? 'O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.'
+            : null,
           variants,
         };
       }),

@@ -6,7 +6,7 @@ import {CollectionWorkspace} from '../features/collection/CollectionWorkspace';
 import {IndividualWorkspace} from '../features/individual/IndividualWorkspace';
 import type {IndividualWorkspaceTab} from '../features/individual/IndividualWorkspace';
 import {getCompanionApi, type GuideTeamMember, type PlayerSnapshot} from '../platform/api';
-import {guideCalculationTarget} from '../features/guide/guide-model';
+import {guideCalculationTarget, type GuideTab} from '../features/guide/guide-model';
 import {useGuide} from '../features/guide/useGuide';
 import {useBattlePlan} from '../features/guide/useBattlePlan';
 import {useEvolutionPlan} from '../features/guide/useEvolutionPlan';
@@ -388,6 +388,7 @@ export function TrainerApp() {
   const [workspace, setWorkspace] = useState<Workspace>('guide');
   const [damageReturnWorkspace, setDamageReturnWorkspace] = useState<Exclude<Workspace, 'damage'>>('team');
   const [detailTab, setDetailTab] = useState<IndividualWorkspaceTab>('summary');
+  const [guideTab, setGuideTab] = useState<GuideTab>('team');
   const [compactPanel, setCompactPanel] = useState<CompactPanel>('collection');
   const [collectionStates, setCollectionStates] = useState(INITIAL_COLLECTION_STATE);
   const [snapshotRevision, setSnapshotRevision] = useState(0);
@@ -708,6 +709,8 @@ export function TrainerApp() {
                   levelCap={effectiveLevelCap}
                   progress={progress}
                   progressLevelCap={progress.status === 'ready' ? progress.value.levelCap : null}
+                  guideTab={guideTab}
+                  onGuideTabChange={setGuideTab}
                   loading={session.phase === 'loading'}
                   onRefresh={() => void refreshSnapshot()}
                   onOpenCalculation={openGuideCalculation}
