@@ -113,7 +113,38 @@
     "lead": {
       "uuid": "00000000-0000-4000-8000-000000000001",
       "speciesId": "cobblemon:gardevoir",
-      "reason": "Gardevoir abre porque é o melhor respondedor ao primeiro adversário do plano (Floatzel) e responde com vantagem de turnos a 1 de 1 adversários planejados."
+      "reason": "Gardevoir abre contra o primeiro adversário (Floatzel) e responde com vantagem de turnos a 1 de 1 adversários planejados."
+    },
+    "simulation": {
+      "status": "interrompida",
+      "stopReason": "adversário 2 (Bulbasaur) bloqueado: habilidade Electric Surge: terreno elétrico, fora do adaptador",
+      "steps": [
+        {
+          "opponentIndex": 0,
+          "opponentSpeciesId": "cobblemon:floatzel",
+          "memberUuid": "00000000-0000-4000-8000-000000000001",
+          "memberSpeciesId": "cobblemon:gardevoir",
+          "entry": "lead",
+          "turns": 2,
+          "memberHpBefore": 100,
+          "memberHpAfter": 64,
+          "memberMaxHp": 100,
+          "opponentHpBefore": 100,
+          "opponentHpAfter": 0,
+          "opponentMaxHp": 100,
+          "outcome": "adversário derrotado"
+        }
+      ],
+      "opponentsDefeated": 1,
+      "opponentsTotal": 2,
+      "remaining": [
+        {
+          "uuid": "00000000-0000-4000-8000-000000000001",
+          "speciesId": "cobblemon:gardevoir",
+          "hp": 64,
+          "maxHp": 100
+        }
+      ]
     },
     "entries": [
       {

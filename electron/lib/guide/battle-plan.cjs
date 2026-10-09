@@ -14,6 +14,7 @@ const MAX_MOVES = 4;
 const DOUBLES_REASON = 'batalha em dupla, fora do escopo';
 const LIMITS = Object.freeze([
   'Singles; IA do RCT não modelada; HP e PP cheios no início; sem status, críticos ou precisão; clima, terreno e Intimidate de habilidade de entrada são modelados; itens alternativos do adversário: vale o pior caso entre os catalogados.',
+  'A simulação é determinística: dano por acerto = média dos 16 rolls; sem cura, bolsa, itens consumíveis (além do Focus Sash), recuo ou dano residual; a troca de membro segue um critério próprio, não a IA do RCT.',
   'O plano mostra números e riscos declarados; não estima chance de resultado.',
 ]);
 
@@ -497,6 +498,202 @@ function pickLead(entries, team) {
   };
 }
 
+// --- Simulação da batalha inteira --------------------------------------------------------------------------------
+
+const MAX_TURNS = 100;
+
+/** Números do confronto de um membro contra o adversário, em HP absoluto (dano por acerto = média dos 16 rolls). Nulo se o campo está em disputa. */
+function pairContext(member, opponent) {
+  const evaluation = evaluateMember(member, opponent);
+  if (evaluation.conflict) return null;
+  const {attacker, defender, field, ours, theirs} = evaluation;
+  const average = (from, to, move) => {
+    const {min, max} = damageRange(from, to, move.name, field);
+    return Math.floor((min + max) / 2);
+  };
+  let firstTurn = null;
+  for (const move of opponent.firstTurnMoves) {
+    const hit = average(defender, attacker, move);
+    if (hit > 0 && (!firstTurn || hit > firstTurn.hit)) firstTurn = {hit, priority: priorityOf(move.id)};
+  }
+  return {
+    evaluation,
+    ourHit: ours ? average(attacker, defender, ours) : 0,
+    ourPriority: ours ? priorityOf(ours.id) : 0,
+    theirHit: theirs ? average(defender, attacker, theirs) : 0,
+    theirPriority: theirs ? priorityOf(theirs.id) : 0,
+    firstTurn,
+    ourSpeed: effectiveSpeed(attacker),
+    theirSpeed: effectiveSpeed(defender),
+    memberMaxHp: attacker.stats.hp,
+    memberSturdy: calc.toID(attacker.ability ?? '') === 'sturdy',
+  };
+}
+
+/** Acerto em HP cheio que seria letal deixa 1 HP quando o alvo tem Sturdy. */
+function hitWithSturdy(hp, maxHp, hit, sturdy) {
+  return sturdy && hp === maxHp && hit >= hp ? Math.min(1, hp) : Math.max(0, hp - hit);
+}
+
+/**
+ * Um trecho contínuo do confronto, alterando `state`. Por turno: prioridade do golpe, depois Speed efetiva; empate de Speed
+ * favorece o adversário (pior caso). `freeHit`: o adversário acerta primeiro o membro que acabou de entrar.
+ * Termina com `member` ou `opponent` (quem caiu), `stall` (ninguém causa dano) ou `limit` (100 turnos no adversário).
+ */
+function runFight(ctx, state, {freeHit}) {
+  let turns = 0;
+  const opponentActs = (move) => {
+    state.oppActed = true;
+    state.memberHp = hitWithSturdy(state.memberHp, ctx.memberMaxHp, move.hit, ctx.memberSturdy);
+  };
+  const theirMove = () => (!state.oppActed && ctx.firstTurn ? ctx.firstTurn : {hit: ctx.theirHit, priority: ctx.theirPriority});
+  const ourHitLands = () => {
+    const protectedHit = state.oppSturdy || state.sashAvailable;
+    if (protectedHit && state.oppHp === state.oppMaxHp && ctx.ourHit >= state.oppHp) {
+      if (!state.oppSturdy) state.sashAvailable = false;
+      state.oppHp = Math.min(1, state.oppHp);
+    } else {
+      state.oppHp = Math.max(0, state.oppHp - ctx.ourHit);
+    }
+  };
+  if (freeHit) opponentActs(theirMove());
+  while (state.memberHp > 0 && state.oppHp > 0) {
+    if (state.oppTurns >= MAX_TURNS) return {ended: 'limit', turns};
+    const their = theirMove();
+    if (ctx.ourHit === 0 && ctx.theirHit === 0 && (state.oppActed || !ctx.firstTurn)) return {ended: 'stall', turns};
+    turns += 1;
+    state.oppTurns += 1;
+    const ourFirst = ctx.ourPriority === their.priority ? ctx.ourSpeed > ctx.theirSpeed : ctx.ourPriority > their.priority;
+    for (const actor of ourFirst ? ['us', 'them'] : ['them', 'us']) {
+      if (state.memberHp <= 0 || state.oppHp <= 0) break;
+      if (actor === 'us') ourHitLands();
+      else opponentActs(their);
+    }
+  }
+  return {ended: state.memberHp <= 0 ? 'member' : 'opponent', turns};
+}
+
+/**
+ * Simula, adversário a adversário e na ordem do time do treinador, a batalha inteira com HP carregado entre os
+ * confrontos. Determinística; troca o membro só quando o ativo não derruba o adversário e outro derruba, ou após KO.
+ */
+async function simulateBattle(team, entries, lead, checkpoint) {
+  const memberHp = new Map(team.map((member) => [member.uuid, member.pokemon.stats.hp]));
+  const steps = [];
+  let defeated = 0;
+  const finish = (status, stopReason) => ({
+    status,
+    stopReason,
+    steps,
+    opponentsDefeated: defeated,
+    opponentsTotal: entries.length,
+    remaining: team
+      .filter((member) => memberHp.get(member.uuid) > 0)
+      .map((member) => ({
+        uuid: member.uuid,
+        speciesId: member.speciesId,
+        hp: memberHp.get(member.uuid),
+        maxHp: member.pokemon.stats.hp,
+      })),
+  });
+  let active = null;
+  for (const [index, entry] of entries.entries()) {
+    await checkpoint();
+    const name = speciesName(entry.speciesId);
+    if (entry.status === 'bloqueado') return finish('interrompida', `adversário ${index + 1} (${name}) bloqueado: ${entry.blockedReason}`);
+    const {opponent} = entry;
+    const contexts = new Map();
+    const contextOf = (member) => {
+      if (!contexts.has(member.uuid)) contexts.set(member.uuid, pairContext(member, opponent));
+      return contexts.get(member.uuid);
+    };
+    const oppMaxHp = opponent.variants[0].stats.hp;
+    const fight = {
+      oppHp: oppMaxHp,
+      oppMaxHp,
+      oppSturdy: opponent.abilityKey === 'sturdy',
+      sashAvailable: opponent.alternatives.length === 1 && opponent.alternatives[0] === 'cobblemon:focus_sash',
+      oppActed: false,
+      oppTurns: 0,
+    };
+    const beats = (member, freeHit) => {
+      const ctx = contextOf(member);
+      if (!ctx) return false;
+      return runFight(ctx, {...fight, memberHp: memberHp.get(member.uuid)}, {freeHit}).ended === 'opponent';
+    };
+    const alive = () => team.filter((member) => memberHp.get(member.uuid) > 0);
+    const ranked = (members) =>
+      members.filter(contextOf).sort((left, right) => compareEvaluations(contextOf(left).evaluation, contextOf(right).evaluation));
+
+    let entryKind;
+    let freeHit = false;
+    if (index === 0) {
+      active = lead ? team.find((member) => member.uuid === lead.uuid) : null;
+      if (!active || !contextOf(active)) return finish('interrompida', 'sem lead para abrir contra o primeiro adversário');
+      entryKind = 'lead';
+    } else if (beats(active, false)) {
+      entryKind = 'mantém';
+    } else {
+      const swap = ranked(alive().filter((member) => member !== active)).find((member) => beats(member, true));
+      if (swap) {
+        active = swap;
+        entryKind = 'troca';
+        freeHit = true;
+      } else if (contextOf(active)) {
+        entryKind = 'mantém';
+      } else {
+        active = ranked(alive())[0];
+        if (!active) return finish('interrompida', `nenhum membro vivo pode ser avaliado contra o adversário ${index + 1} (${name})`);
+        entryKind = 'troca';
+        freeHit = true;
+      }
+    }
+
+    for (;;) {
+      const ctx = contextOf(active);
+      const memberBefore = memberHp.get(active.uuid);
+      const opponentBefore = fight.oppHp;
+      const state = {...fight, memberHp: memberBefore};
+      const result = runFight(ctx, state, {freeHit});
+      freeHit = false;
+      Object.assign(fight, {oppHp: state.oppHp, sashAvailable: state.sashAvailable, oppActed: state.oppActed, oppTurns: state.oppTurns});
+      memberHp.set(active.uuid, state.memberHp);
+      const outcome = {opponent: 'adversário derrotado', member: 'membro derrotado'}[result.ended] ?? 'interrompido';
+      steps.push({
+        opponentIndex: index,
+        opponentSpeciesId: entry.speciesId,
+        memberUuid: active.uuid,
+        memberSpeciesId: active.speciesId,
+        entry: entryKind,
+        turns: result.turns,
+        memberHpBefore: memberBefore,
+        memberHpAfter: state.memberHp,
+        memberMaxHp: ctx.memberMaxHp,
+        opponentHpBefore: opponentBefore,
+        opponentHpAfter: state.oppHp,
+        opponentMaxHp: oppMaxHp,
+        outcome,
+      });
+      if (result.ended === 'stall') return finish('interrompida', 'impasse: nenhum lado causa dano');
+      if (result.ended === 'limit') return finish('interrompida', `limite de ${MAX_TURNS} turnos no adversário ${index + 1} (${name})`);
+      if (result.ended === 'opponent') {
+        defeated += 1;
+        break;
+      }
+      const next = ranked(alive());
+      if (next.length === 0) {
+        return finish(
+          alive().length === 0 ? 'time derrotado' : 'interrompida',
+          alive().length === 0 ? null : `nenhum membro vivo pode ser avaliado contra o adversário ${index + 1} (${name})`,
+        );
+      }
+      active = next.find((member) => beats(member, false)) ?? next[0];
+      entryKind = 'após KO';
+    }
+  }
+  return finish('concluída', null);
+}
+
 /**
  * Plano de batalha contra um treinador singles: respondedor, golpe, dano nos dois sentidos, ordem de ação e riscos
  * declarados por adversário. Não estima chance de resultado.
@@ -513,6 +710,7 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
       status: 'fora-do-escopo',
       scopeReason: DOUBLES_REASON,
       lead: null,
+      simulation: null,
       entries: [],
       assumptions: [],
     };
@@ -522,6 +720,7 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     'O time usa os golpes e o item recomendados pelo guia; o app não verifica se você tem os itens.',
     'Item do adversário com várias alternativas: vale o pior caso entre as catalogadas. Golpes de status não entram nos números.',
     'Golpes de vários acertos usam o número de acertos padrão do cálculo (3; 5 com Skill Link).',
+    'Simulação: os adversários entram na ordem do time do treinador; empate de Speed favorece o adversário; Focus Sash só vale quando é a única alternativa de item.',
   ];
   const {team, over} = buildTeam(request, snapshot.individuals, assumptions);
   const overCap = over.map((member) => ({
@@ -537,6 +736,7 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     entries.push(planEntry(buildOpponent(member, index, trainer.id), team, trainer.id));
   }
   const lead = pickLead(entries, team);
+  const simulation = await simulateBattle(team, entries, lead, checkpoint);
   const blocked = entries.filter((entry) => entry.status === 'bloqueado').length;
   if (blocked > 0)
     assumptions.push(`${blocked} de ${entries.length} adversário(s) ficaram sem plano por mecânica fora do catálogo ou do adaptador.`);
@@ -546,6 +746,7 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     overCap,
     scopeReason: null,
     lead,
+    simulation,
     entries: entries.map(({evaluation: _evaluation, opponent: _opponent, trainerId: _trainerId, ...entry}) => entry),
     assumptions,
   };

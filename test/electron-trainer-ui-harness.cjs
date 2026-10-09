@@ -1731,7 +1731,15 @@ async function exerciseGuideWorkspace(window) {
     'plano de batalha do motor sintético',
   );
   const planText = await evaluate(contents, `document.querySelector('[aria-label="Plano de batalha"]')?.innerText || ''`);
-  for (const expected of ['Plano de batalha contra', 'Sugestão de lead', 'Riscos do treinador', 'Hipóteses', 'Limites']) {
+  for (const expected of [
+    'Plano de batalha contra',
+    'Sugestão de lead',
+    'Simulação da batalha',
+    'Adversários derrotados: 1 de 2',
+    'Riscos do treinador',
+    'Hipóteses',
+    'Limites',
+  ]) {
     check(planText.includes(expected), `O plano de batalha não mostrou "${expected}".`);
   }
   check(!/vit[óo]ria garantida|vai vencer|voc[êe] vence|garant/i.test(planText), 'O plano de batalha contém texto que promete vitória.');

@@ -1,5 +1,7 @@
 import type {
   BattlePlanDamage,
+  BattleSimulation,
+  BattleSimulationStep,
   BattlePlanEntry,
   BattlePlanRequest,
   BattlePlanResult,
@@ -66,4 +68,38 @@ export function battlePlanBagLabel(trainer: BattlePlanResult['trainer'], itemNam
   if (items.length === 0 && trainer.maxItemUses === null) return null;
   const uses = trainer.maxItemUses === null ? '' : `máximo de ${trainer.maxItemUses} ${trainer.maxItemUses === 1 ? 'uso' : 'usos'}`;
   return [items.length > 0 ? items.join(', ') : 'sem itens', uses].filter((part) => part.length > 0).join(' · ');
+}
+
+export function hpPercent(hp: number, maxHp: number): number {
+  return maxHp > 0 ? Math.round((hp / maxHp) * 100) : 0;
+}
+
+const SIMULATION_ENTRY_LABEL: Record<BattleSimulationStep['entry'], string> = {
+  lead: 'abre',
+  mantém: 'segue',
+  troca: 'entra na troca',
+  'após KO': 'entra após KO',
+};
+
+/** `Gardevoir abre contra Floatzel: 100%→64% · adversário 100%→0% · 2 turnos · adversário derrotado`. */
+export function battleSimulationStepLabel(step: BattleSimulationStep, memberName: string, opponentName: string): string {
+  const turns = `${step.turns} ${step.turns === 1 ? 'turno' : 'turnos'}`;
+  return [
+    `${memberName} ${SIMULATION_ENTRY_LABEL[step.entry]} contra ${opponentName}: ${hpPercent(step.memberHpBefore, step.memberMaxHp)}%→${hpPercent(step.memberHpAfter, step.memberMaxHp)}%`,
+    `adversário ${hpPercent(step.opponentHpBefore, step.opponentMaxHp)}%→${hpPercent(step.opponentHpAfter, step.opponentMaxHp)}%`,
+    turns,
+    step.outcome,
+  ].join(' · ');
+}
+
+/** `Adversários derrotados: 2 de 3 · Membros restantes: 4 de 6`, mais o status quando a simulação não concluiu. */
+export function battleSimulationSummary(simulation: BattleSimulation): string {
+  const teamSize = new Set([...simulation.steps.map((step) => step.memberUuid), ...simulation.remaining.map((member) => member.uuid)]).size;
+  const parts = [
+    `Adversários derrotados: ${simulation.opponentsDefeated} de ${simulation.opponentsTotal}`,
+    `Membros restantes: ${simulation.remaining.length} de ${teamSize}`,
+  ];
+  if (simulation.status !== 'concluída')
+    parts.push(`Simulação ${simulation.status}${simulation.stopReason ? `: ${simulation.stopReason}` : ''}`);
+  return parts.join(' · ');
 }

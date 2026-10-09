@@ -1,11 +1,14 @@
 import type {CSSProperties} from 'react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {abilityName, dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
-import type {BattlePlanEntry, BattlePlanResult} from '../../platform/api';
-import {Button, ItemIcon, StatusMessage} from '../../ui';
+import type {BattlePlanEntry, BattlePlanResult, BattleSimulation} from '../../platform/api';
+import {Button, HpBar, ItemIcon, StatusMessage} from '../../ui';
 import {
   BATTLE_PLAN_DOUBLES_TEXT,
   battlePlanBagLabel,
+  battleSimulationStepLabel,
+  battleSimulationSummary,
+  hpPercent,
   battlePlanDamageLabel,
   battlePlanFirstToActLabel,
   battlePlanRiskKindLabel,
@@ -115,6 +118,51 @@ function EntryRow({
   );
 }
 
+function SimulationSection({
+  simulation,
+  individualName,
+}: {
+  simulation: BattleSimulation;
+  individualName: BattlePlanSectionProps['individualName'];
+}) {
+  return (
+    <section className={styles.simulation} aria-label="Simulação da batalha">
+      <h4 className={styles.subtitle}>Simulação da batalha</h4>
+      <p className={styles.simulationSummary}>{battleSimulationSummary(simulation)}</p>
+      {simulation.steps.length > 0 && (
+        <ol className={styles.steps} aria-label="Sequência simulada">
+          {simulation.steps.map((step) => (
+            <li key={`${step.opponentIndex}-${step.memberUuid}`} className={styles.step} data-outcome={step.outcome}>
+              <span>
+                {battleSimulationStepLabel(
+                  step,
+                  individualName(step.memberUuid, step.memberSpeciesId),
+                  speciesDisplay(step.opponentSpeciesId, 'normal').name,
+                )}
+              </span>
+              <HpBar
+                total={step.memberMaxHp}
+                minDamage={step.memberMaxHp - step.memberHpAfter}
+                maxDamage={step.memberMaxHp - step.memberHpAfter}
+                label={`HP de ${individualName(step.memberUuid, step.memberSpeciesId)} depois: ${hpPercent(step.memberHpAfter, step.memberMaxHp)}%`}
+              />
+            </li>
+          ))}
+        </ol>
+      )}
+      {simulation.remaining.length > 0 && (
+        <ul className={styles.remaining} aria-label="Membros restantes">
+          {simulation.remaining.map((member) => (
+            <li key={member.uuid}>
+              {individualName(member.uuid, member.speciesId)}: {hpPercent(member.hp, member.maxHp)}%
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
 function PlanBody({result, individualName}: {result: BattlePlanResult; individualName: BattlePlanSectionProps['individualName']}) {
   const bag = battlePlanBagLabel(result.trainer, itemLabel);
   return (
@@ -161,6 +209,8 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
               <EntryRow key={entry.opponentId} entry={entry} index={index} individualName={individualName} />
             ))}
           </ol>
+
+          {result.simulation && <SimulationSection simulation={result.simulation} individualName={individualName} />}
         </>
       )}
 

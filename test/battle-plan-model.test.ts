@@ -4,11 +4,13 @@ import {
   battlePlanBagLabel,
   battlePlanDamageLabel,
   battlePlanFirstToActLabel,
+  battleSimulationStepLabel,
+  battleSimulationSummary,
   buildBattlePlanRequest,
 } from '../src/features/guide/battle-plan-model';
 import {createJobState, jobReducer, type JobState} from '../src/features/guide/job-model';
 
-import type {BattlePlanResult, GuideResult, PlayerSnapshot} from '../src/platform/api';
+import type {BattlePlanResult, BattleSimulation, GuideResult, PlayerSnapshot} from '../src/platform/api';
 
 const battlePlanReducer = jobReducer<BattlePlanResult>;
 const createBattlePlanState = createJobState<BattlePlanResult>;
@@ -51,6 +53,7 @@ const planResult = (overrides: Partial<BattlePlanResult> = {}): BattlePlanResult
   status: 'plano',
   scopeReason: null,
   lead: null,
+  simulation: null,
   entries: [],
   trainerRisks: [],
   assumptions: [],
@@ -130,6 +133,47 @@ describe('textos do plano', () => {
     expect(battlePlanBagLabel(planResult().trainer, name)).toBe('potion ×1 · máximo de 2 usos');
     expect(battlePlanBagLabel({id: 'x', name: 'X', maxItemUses: 1, bag: []}, name)).toBe('sem itens · máximo de 1 uso');
     expect(battlePlanBagLabel({id: 'x', name: 'X', maxItemUses: null, bag: []}, name)).toBeNull();
+  });
+  describe('simulação da batalha', () => {
+    const step = {
+      opponentIndex: 0,
+      opponentSpeciesId: 'cobblemon:geodude',
+      memberUuid: 'u1',
+      memberSpeciesId: 'cobblemon:blastoise',
+      entry: 'lead' as const,
+      turns: 1,
+      memberHpBefore: 100,
+      memberHpAfter: 64,
+      memberMaxHp: 100,
+      opponentHpBefore: 40,
+      opponentHpAfter: 0,
+      opponentMaxHp: 40,
+      outcome: 'adversário derrotado' as const,
+    };
+
+    it('descreve o trecho com HP antes e depois, turnos no singular e desfecho', () => {
+      expect(battleSimulationStepLabel(step, 'Blastoise', 'Geodude')).toBe(
+        'Blastoise abre contra Geodude: 100%→64% · adversário 100%→0% · 1 turno · adversário derrotado',
+      );
+      expect(battleSimulationStepLabel({...step, entry: 'troca', turns: 3}, 'Blastoise', 'Geodude')).toContain(
+        'entra na troca contra Geodude',
+      );
+    });
+
+    it('resume derrotados e restantes, e só cita o status quando a simulação não concluiu', () => {
+      const simulation: BattleSimulation = {
+        status: 'concluída',
+        stopReason: null,
+        steps: [step, {...step, memberUuid: 'u2', memberHpAfter: 0, outcome: 'membro derrotado'}],
+        opponentsDefeated: 2,
+        opponentsTotal: 3,
+        remaining: [{uuid: 'u1', speciesId: 'cobblemon:blastoise', hp: 64, maxHp: 100}],
+      };
+      expect(battleSimulationSummary(simulation)).toBe('Adversários derrotados: 2 de 3 · Membros restantes: 1 de 2');
+      expect(battleSimulationSummary({...simulation, status: 'interrompida', stopReason: 'impasse: nenhum lado causa dano'})).toBe(
+        'Adversários derrotados: 2 de 3 · Membros restantes: 1 de 2 · Simulação interrompida: impasse: nenhum lado causa dano',
+      );
+    });
   });
 
   it('o texto de duplas diz fora do escopo e não promete plano', () => {
