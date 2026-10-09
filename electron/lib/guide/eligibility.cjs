@@ -25,22 +25,13 @@ function reasonOf(error) {
   return body;
 }
 
-function canonicalMoveKey(id) {
-  if (typeof id !== 'string') return '';
-  return id
-    .replace(/^[^:]+:/, '')
-    .replace(/[_-]+/g, '')
-    .toLowerCase();
-}
-
-function resolveCompatMoveId(id) {
-  if (typeof id !== 'string') return id;
-  if (Object.hasOwn(COMPATIBILITY.moves, id)) return id;
-  const canon = canonicalMoveKey(id);
-  const namespaced = `cobblemon:${canon}`;
-  if (Object.hasOwn(COMPATIBILITY.moves, namespaced)) return namespaced;
-  if (Object.hasOwn(COMPATIBILITY.moves, canon)) return canon;
-  return id;
+/**
+ * O save grava golpes sem namespace (`bravebird`) e os learnsets usam `cobblemon:bravebird`. O catálogo lista as duas
+ * chaves para o mesmo golpe; qualquer outro id fica como está.
+ */
+function canonicalMoveId(id) {
+  if (typeof id !== 'string' || id.includes(':')) return id;
+  return Object.hasOwn(COMPATIBILITY.moves, `cobblemon:${id}`) ? `cobblemon:${id}` : id;
 }
 
 /** Golpes que o app sabe que o indivíduo conhece: MoveSet (equipados) e BenchedMoves (aprendidos), se capturados. */
@@ -48,8 +39,8 @@ function knownMoves(individual) {
   const equipped = individual.equippedMovesKnown === true && Array.isArray(individual.equippedMoves) ? individual.equippedMoves : [];
   const learned = individual.learnedMovesKnown === true && Array.isArray(individual.learnedMoves) ? individual.learnedMoves : [];
   return {
-    equipped: equipped.map((move) => resolveCompatMoveId(move.id)),
-    learned: learned.map((move) => resolveCompatMoveId(move.id)),
+    equipped: equipped.map((move) => canonicalMoveId(move.id)),
+    learned: learned.map((move) => canonicalMoveId(move.id)),
   };
 }
 

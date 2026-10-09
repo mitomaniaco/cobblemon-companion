@@ -223,27 +223,14 @@ function learnsetRoutes(learnset, level) {
 function roundOne(value) {
   return Math.round(value * 10) / 10;
 }
-function canonicalMoveKey(id) {
-  if (typeof id !== 'string') return '';
-  return id
-    .replace(/^[^:]+:/, '')
-    .replace(/[_-]+/g, '')
-    .toLowerCase();
-}
-
 function acquireSuggestions(result, opponents, learnsets) {
   const {entry, chosen, pokemon, theirs, table} = result;
   // Os learnsets versionados são da forma normal: forma alternativa não recebe sugestão de golpe (fail-closed).
   if (entry.individual.formId !== 'normal') return [];
   const slug = entry.individual.speciesId.replace(/^[^:]+:/, '');
   const routes = learnsetRoutes(lookup(learnsets, slug), entry.individual.level);
-  const knownKeys = new Set(
-    result.known.equipped
-      .concat(result.known.learned)
-      .concat((entry.individual.learnedMoves ?? []).map((m) => m.id ?? m))
-      .map(canonicalMoveKey),
-  );
-  const candidates = [...routes.keys()].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) && !knownKeys.has(canonicalMoveKey(id)));
+  const knownIds = new Set([...result.known.equipped, ...result.known.learned]);
+  const candidates = [...routes.keys()].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) && !knownIds.has(id));
   if (candidates.length === 0) return [];
   const extra = ourPercentTable(opponents, pokemon, candidates);
   const all = new Map([...table, ...extra]);
@@ -280,7 +267,11 @@ function winSet(result) {
   return new Set(result.evaluated.outcomes.flatMap((outcome, index) => (outcome.wins ? [index] : [])));
 }
 
-function pickTeam(results, opponentCount) {
+/**
+ * Guloso por cobertura de adversários. Empate de cobertura: quem já estava na recomendação anterior do mesmo objetivo
+ * (`previousTeamUuids`) fica, para o time não trocar de membros sem ganho; depois a pontuação.
+ */
+function pickTeam(results, opponentCount, previousTeamUuids = []) {
   let remaining = results.map((result) => ({result, wins: winSet(result)}));
   const covered = new Set();
   const team = [];
@@ -289,8 +280,8 @@ function pickTeam(results, opponentCount) {
     let bestKey = null;
     remaining.forEach((candidate, index) => {
       const union = new Set([...covered, ...candidate.wins]).size;
-      const inParty = candidate.result.entry.individual.location?.container === 'party';
-      const key = [union, inParty ? 1 : 0, candidate.result.evaluated.score];
+      const inPrevious = previousTeamUuids.includes(candidate.result.entry.individual.uuid);
+      const key = [union, inPrevious ? 1 : 0, candidate.result.evaluated.score];
       const better =
         bestKey === null ||
         key[0] > bestKey[0] ||
@@ -440,7 +431,15 @@ function overCapOf(members, overEntries, levelCap) {
  * Monta o guia: time de até 6 indivíduos (party + PC), com golpes, item e explicação, para o objetivo pedido.
  * `checkpoint` é chamado entre indivíduos e pode ceder o laço de eventos ou lançar para cancelar.
  */
-async function buildGuide({snapshot, goal, data, levelCap = null, respectLevelCap = true, checkpoint = async () => {}}) {
+async function buildGuide({
+  snapshot,
+  goal,
+  data,
+  levelCap = null,
+  respectLevelCap = true,
+  previousTeamUuids = [],
+  checkpoint = async () => {},
+}) {
   const assumptions = [];
   const individuals = snapshot.individuals;
   const referenceLevel = referenceLevelOf(individuals, assumptions);
@@ -455,7 +454,7 @@ async function buildGuide({snapshot, goal, data, levelCap = null, respectLevelCa
     await checkpoint();
     results.push(optimizeMember(entry, opponents));
   }
-  const {team} = pickTeam(results, opponents.length);
+  const {team} = pickTeam(results, opponents.length, previousTeamUuids);
   if (team.length < MAX_TEAM) {
     assumptions.push(`Só ${eligible.length} indivíduo(s) elegível(is) entre party e PC; o time tem ${team.length} membro(s).`);
   }

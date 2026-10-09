@@ -342,11 +342,18 @@ function applyLevelCapToFixture(result, goal, levelCap, respectLevelCap = true) 
   return result;
 }
 function validateGuideRequest(request) {
-  exactKeys(request, ['sources', 'goal', 'levelCap', 'respectLevelCap', 'jobId'], 'request');
+  exactKeys(request, ['sources', 'goal', 'levelCap', 'respectLevelCap', 'previousTeamUuids', 'jobId'], 'request');
   if (request.respectLevelCap !== undefined && typeof request.respectLevelCap !== 'boolean')
     throw new TypeError('request.respectLevelCap precisa ser verdadeiro ou falso');
   const levelCap = request.levelCap ?? null;
   if (levelCap !== null) integer(levelCap, 'request.levelCap', 1, 100);
+  const previousTeamUuids = request.previousTeamUuids ?? [];
+  if (
+    !Array.isArray(previousTeamUuids) ||
+    previousTeamUuids.length > 6 ||
+    previousTeamUuids.some((uuid) => typeof uuid !== 'string' || uuid.length < 1 || uuid.length > 64)
+  )
+    throw new TypeError('request.previousTeamUuids precisa ser uma lista de até 6 identificadores');
   if (!isRecord(request.goal)) throw new TypeError('request.goal precisa ser um objeto');
   if (request.goal.kind === 'pve') exactKeys(request.goal, ['kind'], 'request.goal');
   else if (request.goal.kind === 'trainer') {
@@ -357,7 +364,13 @@ function validateGuideRequest(request) {
   if (request.jobId !== undefined) identifier(request.jobId, 'request.jobId');
   const jobId = request.jobId ?? `guide-${Date.now()}-${++guideSequence}`;
   if (guideJobs.has(jobId) || jobs.has(jobId)) throw new TypeError('request.jobId já está ativo');
-  return {jobId, goal: structuredClone(request.goal), levelCap, respectLevelCap: request.respectLevelCap ?? true};
+  return {
+    jobId,
+    goal: structuredClone(request.goal),
+    levelCap,
+    respectLevelCap: request.respectLevelCap ?? true,
+    previousTeamUuids: [...previousTeamUuids],
+  };
 }
 function settleGuide(job, failure, result) {
   if (job.settled) return;
@@ -374,7 +387,7 @@ function settleGuide(job, failure, result) {
 }
 function handleGuideBuild(event, request) {
   requireSender(event);
-  const {jobId, goal, levelCap, respectLevelCap} = validateGuideRequest(request);
+  const {jobId, goal, levelCap, respectLevelCap, previousTeamUuids} = validateGuideRequest(request);
   const snapshot = readSnapshotForRenderer();
   assertFreshSources(request.sources, snapshot.sources);
   if (TRAINER_UI_TEST_MODE) {
@@ -382,7 +395,7 @@ function handleGuideBuild(event, request) {
       throw new Error('Treinador sintético não encontrado');
     return applyLevelCapToFixture(structuredClone({...TRAINER_UI_GUIDE.result, goal}), goal, levelCap, respectLevelCap);
   }
-  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal, levelCap, respectLevelCap});
+  return runGuideJob(jobId, {type: 'run', jobId, snapshot, goal, levelCap, respectLevelCap, previousTeamUuids});
 }
 function validateBattlePlanRequest(request) {
   exactKeys(request, ['sources', 'trainerId', 'team', 'levelCap', 'respectLevelCap', 'jobId'], 'request');

@@ -108,24 +108,33 @@ describe('motor do guia', () => {
     expect(blastoiseCount).toBe(1);
   });
 
-  it('inércia da party: indivíduo na party tem prioridade contra substituição do PC em empate de cobertura', async () => {
-    const partyMember = individual({species: 'blastoise', level: 40, moves: ['surf'], container: 'party'});
-    const pcMember = individual({species: 'venusaur', level: 40, moves: ['tackle'], container: 'pc'});
-    const result = await run([partyMember, pcMember], trainerGoal('synthetic:fire'));
-    expect(result.team[0].uuid).toBe(partyMember.uuid);
-  });
-
-  it('normalização de golpes: golpe no banco com underscore Cobblemon não é sugerido como TM', async () => {
+  it('golpes do save sem namespace (equipados ou no banco) não são sugeridos como aquisição', async () => {
+    const asSaved = (ids) => ids.map((id) => ({id, pp: 20, ppUps: 0}));
     const blastoise = individual({
       species: 'blastoise',
       level: 40,
       moves: ['tackle'],
       patch: {
-        learnedMoves: [{id: 'cobblemon:hydro_pump', ppUps: 0}],
+        equippedMoves: asSaved(['tackle']),
+        learnedMoves: [
+          {id: 'surf', ppUps: 0},
+          {id: 'hydropump', ppUps: 0},
+        ],
       },
     });
     const result = await run([blastoise], trainerGoal('synthetic:fire'));
-    expect(result.team[0].acquire.some((entry) => entry.moveId === 'cobblemon:hydropump')).toBe(false);
+    const suggested = result.team[0].acquire.map((entry) => entry.moveId);
+    expect(suggested).not.toContain('cobblemon:surf');
+    expect(suggested).not.toContain('cobblemon:hydropump');
+  });
+
+  it('empate de cobertura: quem estava na recomendação anterior fica à frente; sem recomendação anterior vale a pontuação', async () => {
+    const strong = individual({species: 'blastoise', level: 60, moves: ['surf']});
+    const weaker = individual({species: 'floatzel', level: 40, moves: ['surf']});
+    const without = await run([strong, weaker], trainerGoal('synthetic:fire'));
+    expect(without.team[0].uuid).toBe(strong.uuid);
+    const withPrevious = await run([strong, weaker], trainerGoal('synthetic:fire'), {previousTeamUuids: [weaker.uuid]});
+    expect(withPrevious.team[0].uuid).toBe(weaker.uuid);
   });
 
   it('recusa treinador em dupla e treinador inexistente', async () => {

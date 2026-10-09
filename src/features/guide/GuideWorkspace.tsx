@@ -16,7 +16,14 @@ import {
   TypeBadge,
 } from '../../ui';
 import type {GuideProgressState} from './useGuideProgress';
-import {guideCapExcluded, guideCapWarnings, guideComparisonRows, guideOpponentTurnsLabel, type GuideMode} from './guide-model';
+import {
+  guideCapExcluded,
+  guideCapWarnings,
+  guideComparisonRows,
+  guideOpponentTurnsLabel,
+  guideTeamChanges,
+  type GuideMode,
+} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
@@ -333,6 +340,7 @@ function GuideResultView({
   snapshot,
   lookup,
   onOpenCalculation,
+  previousResult,
   stale,
   battleSlot,
   trainingSlot,
@@ -340,6 +348,7 @@ function GuideResultView({
   levelCap,
 }: {
   result: GuideResult;
+  previousResult: GuideResult | null;
   snapshot: PlayerSnapshot;
   lookup: Lookup;
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
@@ -357,6 +366,7 @@ function GuideResultView({
     .sort((left, right) => right.entry.gainPercent - left.entry.gainPercent);
   const capExcluded = guideCapExcluded(result.excluded);
   const capWarnings = guideCapWarnings({goal: result.goal, team: result.team, individuals: snapshot.individuals, levelCap});
+  const teamChanges = guideTeamChanges(previousResult, result);
   return (
     <div className={styles.result} data-stale={stale ? 'true' : undefined} aria-busy={stale}>
       <p className={styles.resultSummary}>
@@ -419,6 +429,21 @@ function GuideResultView({
               </div>
             )}
           </section>
+
+          {teamChanges && (teamChanges.left.length > 0 || teamChanges.entered.length > 0) && (
+            <StatusMessage tone="info" title="O time mudou desde a última montagem">
+              <ul>
+                {teamChanges.left.map((change) => (
+                  <li key={`left-${change.uuid}`}>
+                    Saiu {individualName(lookup, change.uuid)}: {change.reason}
+                  </li>
+                ))}
+                {teamChanges.entered.map((uuid) => (
+                  <li key={`entered-${uuid}`}>Entrou {individualName(lookup, uuid)}</li>
+                ))}
+              </ul>
+            </StatusMessage>
+          )}
 
           <ol className={styles.cards} aria-label="Time recomendado">
             {result.team.map((member, index) => (
@@ -627,6 +652,7 @@ export function GuideWorkspace({
           {guide.result ? (
             <GuideResultView
               result={guide.result}
+              previousResult={guide.previousResult}
               snapshot={snapshot}
               lookup={lookup}
               onOpenCalculation={onOpenCalculation}

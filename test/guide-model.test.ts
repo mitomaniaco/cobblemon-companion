@@ -9,8 +9,10 @@ import {
   guideRequestLevelCap,
   guideComparisonRows,
   guideOpponentTurnsLabel,
+  guidePreviousTeamUuids,
   guideReducer,
   guideSourcesKey,
+  guideTeamChanges,
   guideTrainerOptions,
   shouldAutoBuildGuide,
   type GuideAction,
@@ -290,5 +292,55 @@ describe('textos do resultado', () => {
     expect(guideOpponentTurnsLabel({outcome: 'perde', ourTurns: 2, theirTurns: 1})).toBe(
       'perde: o adversário vence em 1 turno (você precisaria de 2 turnos)',
     );
+  });
+});
+
+describe('estabilidade e mudança do time', () => {
+  const member = (uuid: string) => ({uuid}) as GuideResult['team'][number];
+  const trainerResult = (uuids: string[], excluded: GuideResult['excluded'] = [], trainerId = 'brock'): GuideResult => ({
+    ...result(),
+    goal: {kind: 'trainer', trainerId},
+    team: uuids.map(member),
+    excluded,
+  });
+
+  it('só usa o time anterior se foi para o mesmo objetivo', () => {
+    const previous = trainerResult(['a', 'b']);
+    expect(guidePreviousTeamUuids(previous, {kind: 'trainer', trainerId: 'brock'})).toEqual(['a', 'b']);
+    expect(guidePreviousTeamUuids(previous, {kind: 'trainer', trainerId: 'misty'})).toEqual([]);
+    expect(guidePreviousTeamUuids(previous, {kind: 'pve'})).toEqual([]);
+    expect(guidePreviousTeamUuids(null, {kind: 'pve'})).toEqual([]);
+  });
+
+  it('quem saiu traz o motivo da exclusão (level cap) ou a explicação genérica; quem entrou é listado', () => {
+    const previous = trainerResult(['a', 'b', 'c']);
+    const next = trainerResult(['a', 'd'], [{uuid: 'b', reason: 'acima do level cap (30)'}]);
+    expect(guideTeamChanges(previous, next)).toEqual({
+      left: [
+        {uuid: 'b', reason: 'acima do level cap (30)'},
+        {uuid: 'c', reason: 'outra escolha cobre mais adversários ou com mais margem neste cálculo'},
+      ],
+      entered: ['d'],
+    });
+  });
+
+  it('sem montagem anterior ou com outro objetivo não há aviso', () => {
+    expect(guideTeamChanges(null, trainerResult(['a']))).toBeNull();
+    expect(guideTeamChanges(trainerResult(['a'], [], 'misty'), trainerResult(['b']))).toBeNull();
+  });
+
+  it('a montagem bem-sucedida guarda o resultado anterior', () => {
+    const first = trainerResult(['a']);
+    const second = trainerResult(['b']);
+    const built = (state: GuideState, requestId: number, value: GuideResult) =>
+      apply(state, {type: 'build-started', requestId, cause: 'goal'} as GuideAction, {
+        type: 'build-succeeded',
+        requestId,
+        result: value,
+        sources: 's',
+      });
+    const state = built(built(createGuideState(), 1, first), 2, second);
+    expect(state.result).toBe(second);
+    expect(state.previousResult).toBe(first);
   });
 });
