@@ -44,13 +44,16 @@ function buildDisplayDex() {
   const abilities: Record<string, string> = {};
   const natures: Record<string, {name: string; plus: string | null; minus: string | null}> = {};
 
-  // Espécies do Cobblemon e suas formas alternativas (chaves do manifesto ou cuja espécie base está no manifesto).
+  // Espécies do Cobblemon (chaves do manifesto) e suas formas alternativas do calc (`<Espécie>-<Forma>`), sem Mega, Gmax, Primal nem Totem.
   const cobblemonSpecies = new Set(Object.keys(JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')).species));
-  for (const entry of generation.species) {
-    const fullId = dexId(entry.name);
-    const baseId = dexId(entry.name.split('-')[0]);
-    if (!cobblemonSpecies.has(fullId) && !cobblemonSpecies.has(baseId)) continue;
-    species[fullId] = {name: entry.name, types: entry.types.filter((type) => TYPES.has(type))};
+  const calcSpecies = [...generation.species];
+  const baseNames = calcSpecies.filter((entry) => cobblemonSpecies.has(dexId(entry.name))).map((entry) => entry.name);
+  const excludedToken = (name: string) => name.split('-').some((token) => ['Mega', 'Gmax', 'Primal', 'Totem'].includes(token));
+  for (const entry of calcSpecies) {
+    const isBase = cobblemonSpecies.has(dexId(entry.name));
+    const isForm = baseNames.some((baseName) => entry.name.startsWith(`${baseName}-`)) && !excludedToken(entry.name);
+    if (!isBase && !isForm) continue;
+    species[dexId(entry.name)] = {name: entry.name, types: entry.types.filter((type) => TYPES.has(type))};
   }
   for (const entry of generation.moves) {
     if (!TYPES.has(entry.type)) continue;

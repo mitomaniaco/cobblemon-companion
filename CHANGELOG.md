@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Revisão do motor de batalha, do guia e da UI (Issues #175–#191): `damageRolls` normaliza dano fixo e multi-hit do calc; catálogo v14 com espécies habilitadas por adição, 158 formas alternativas e golpes com mecânica modelada (Sucker Punch, Fake Out só no primeiro turno, multi-hit, dano fixo); forma do jogador (`formId`) e do adversário (`aspects`) resolvidas pelo catálogo; plano de batalha de volta ao fail-closed, com clima, terreno, Intimidate, itens alternativos pelo pior caso e lead do slot 0; simulação determinística da batalha inteira (D16); estabilidade do time pela recomendação anterior com aviso de mudança; golpes do save sem namespace deixam de ser sugeridos como aquisição; progresso do RCT com ids `rctmod:` e leitura fail-closed; guia em abas por ferramenta com cálculo ao abrir; tinta das cores de tipo com contraste ≥ 4,5:1 e tipos/arte de forma pela chave `formId` sem tabelas de alias.
+
 - Planos de captura agora recebem o progresso regional Pika Star de `GuideProgress` e marcam o requisito como cumprido, pendente ou não verificado conforme conhecido.
 
 - Lê progresso RCT e Pika Star somente leitura, deriva o level cap e o próximo objetivo da campanha quando os dados estão disponíveis, e notifica mudanças de progresso por IPC separado do snapshot.

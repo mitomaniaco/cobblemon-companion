@@ -228,6 +228,10 @@ function listForms(byDex) {
       const pokemonId = resolveFormId(byDex, source.nationalDex, form.aspects);
       if (pokemonId === null) continue;
       keys.push({dexNumber: source.nationalDex, key: formKey(form.aspects), pokemonId});
+      // O save grava `formId` (`galar`, `lowkey`): o nome da forma sem pontuação é a chave que a tela usa.
+      if (typeof form.name === 'string') {
+        keys.push({dexNumber: source.nationalDex, key: form.name.toLowerCase().replace(/[^a-z0-9]/g, ''), pokemonId});
+      }
       if (!byId.has(pokemonId)) byId.set(pokemonId, {pokemonId});
     }
   }

@@ -16,6 +16,11 @@ const manifest: ArtworkManifest = {
     shinyPath: '/pokemon/shiny/37.png',
     forms: {alola: {artworkPath: '/pokemon/forms/vulpix-alola.png', shinyPath: null}},
   },
+  'cobblemon:toxtricity': {
+    dexNumber: 849,
+    artworkPath: '/pokemon/849.png',
+    forms: {lowkey: {artworkPath: '/pokemon/forms/toxtricity-lowkey.png'}, 'amped-form': {artworkPath: null}},
+  },
   'cobblemon:missing': {dexNumber: 999, artworkPath: null},
 };
 const index = buildArtworkIndex(manifest);
@@ -44,11 +49,10 @@ describe('resolução da imagem', () => {
     expect(resolve('cobblemon:vulpix', 'alola')).toEqual({path: '/pokemon/forms/vulpix-alola.png', source: 'form', shiny: 'normal'});
     expect(resolve('cobblemon:vulpix', 'Alola')).toMatchObject({source: 'form'});
     expect(resolve('cobblemon:mrmime', 'Galar')).toMatchObject({path: '/pokemon/forms/mr-mime-galar.png', source: 'form'});
-    expect(resolve('cobblemon:vulpix', 'alolan')).toMatchObject({path: '/pokemon/forms/vulpix-alola.png', source: 'form'});
-    expect(resolve('cobblemon:mrmime', 'galarian')).toMatchObject({path: '/pokemon/forms/mr-mime-galar.png', source: 'form'});
+    expect(resolve('cobblemon:toxtricity', 'lowkey')).toMatchObject({path: '/pokemon/forms/toxtricity-lowkey.png', source: 'form'});
   });
   it('forma sem arte própria ou desconhecida usa a forma normal, sempre marcada como base-form', () => {
-    expect(resolve('cobblemon:bulbasaur', 'alolan')).toEqual({path: '/pokemon/1.png', source: 'base-form', shiny: 'normal'});
+    expect(resolve('cobblemon:bulbasaur', 'alola')).toEqual({path: '/pokemon/1.png', source: 'base-form', shiny: 'normal'});
     expect(resolve('cobblemon:bulbasaur', 'unknown')).toMatchObject({path: '/pokemon/1.png', source: 'base-form'});
     expect(resolve('cobblemon:vulpix', 'hisui')).toMatchObject({path: '/pokemon/37.png', source: 'base-form'});
   });
@@ -76,7 +80,7 @@ describe('resolução da imagem', () => {
   it('sem arte (espécie ausente ou com caminho nulo) não inventa imagem de outra espécie', () => {
     expect(resolve('cobblemon:missing', 'normal')).toEqual({path: null, source: 'none', shiny: 'normal'});
     expect(resolve('cobblemon:unlisted', 'normal', true)).toEqual({path: null, source: 'none', shiny: 'shiny-missing'});
-    expect(resolve('cobblemon:unlisted', 'alolan')).toEqual({path: null, source: 'none', shiny: 'normal'});
+    expect(resolve('cobblemon:unlisted', 'alola')).toEqual({path: null, source: 'none', shiny: 'normal'});
     expect(resolveArtwork({}, buildArtworkIndex({}), 'cobblemon:bulbasaur', 'normal', false).path).toBeNull();
   });
 
