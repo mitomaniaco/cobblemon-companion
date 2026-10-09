@@ -2,7 +2,7 @@ import {createRequire} from 'node:module';
 import {describe, expect, it, vi} from 'vitest';
 
 const require = createRequire(import.meta.url);
-const {COMPATIBILITY, assertFreshSources, calculateRealDamage} = require('../electron/lib/real-damage.cjs');
+const {COMPATIBILITY, assertFreshSources, baseActorProfile, calculateRealDamage} = require('../electron/lib/real-damage.cjs');
 const fact = (value) => ({state: 'known', value, provenance: {sourceKind: 'party', nbtPath: 'test'}});
 const sourceHashes = [
   {kind: 'party', sha256: 'a'.repeat(64)},
@@ -488,7 +488,34 @@ describe('versioned real damage adapter', () => {
   it('rejects actor formId other than normal', () => {
     const badForm = makeIndividual();
     badForm.formId = 'alternate';
-    expect(() => calculateRealDamage(makeSnapshot(badForm), makeRequest())).toThrow(/actor\.formId.*forma normal/);
+    expect(() => calculateRealDamage(makeSnapshot(badForm), makeRequest())).toThrow(
+      /actor\.formId forma alternate fora do subconjunto compatível versionado/,
+    );
+  });
+
+  describe('forma alternativa do indivíduo', () => {
+    const galarSlowking = (ability) => ({
+      ...makeIndividual(),
+      speciesId: 'cobblemon:slowking',
+      formId: 'galar',
+      observed: {nature: 'cobblemon:adamant', ability, heldItem: null},
+    });
+
+    it('usa o nome e as habilidades da forma do catálogo', () => {
+      const profile = baseActorProfile(galarSlowking('cobblemon:curiousmedicine'));
+      expect(profile.species.name).toBe('Slowking-Galar');
+    });
+
+    it('valida a habilidade contra a forma, não contra a espécie base', () => {
+      expect(() => baseActorProfile(galarSlowking('cobblemon:oblivious'))).toThrow(/não está mapeada para esta espécie/);
+    });
+
+    it('recusa forma desconhecida ou fora do catálogo com o motivo no campo formId', () => {
+      expect(() => baseActorProfile({...galarSlowking('cobblemon:curiousmedicine'), formId: 'xyz'})).toThrow(/actor\.formId forma xyz/);
+      expect(() => baseActorProfile({...galarSlowking('cobblemon:curiousmedicine'), formId: 'unknown'})).toThrow(
+        /actor\.formId forma não foi capturada/,
+      );
+    });
   });
 
   it('rejects target formId other than normal', () => {
