@@ -9,6 +9,9 @@ import type {
 } from '../../platform/api';
 
 export type GuideMode = 'pve' | 'trainer';
+
+/** Ferramentas do guia, cada uma em sua aba; a aba ativa fica no app para sobreviver à ida ao Dano e à volta. */
+export type GuideTab = 'team' | 'battle' | 'evolutions' | 'training' | 'captures';
 type GuideBuildCause = 'initial' | 'goal' | 'snapshot' | 'manual';
 
 export const GUIDE_SNAPSHOT_NOTICE = 'Save mudou · time recalculado';

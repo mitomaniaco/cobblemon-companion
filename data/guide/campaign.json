@@ -589,7 +589,7 @@
         "capAfter": 30,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:pokemon_trainer_cedric_0445",
@@ -672,7 +672,7 @@
         "capAfter": 36,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:pokemon_trainer_cedric_0448",
@@ -732,7 +732,7 @@
         "capAfter": 39,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:pokemon_trainer_cedric_044b",
@@ -976,7 +976,7 @@
         "capAfter": 57,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:pokemon_trainer_cedric_044e",
@@ -1688,7 +1688,7 @@
         "capAfter": 27,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_terry_014c",
@@ -1840,7 +1840,7 @@
         "capAfter": 55,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_terry_01b0",
@@ -2130,7 +2130,7 @@
         "capAfter": 82,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_terry_01b3",
@@ -2190,7 +2190,7 @@
         "capAfter": 85,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:elite_four_agatha_0053",
@@ -2220,7 +2220,7 @@
         "capAfter": 85,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:elite_four_bruno_0050",
@@ -2250,7 +2250,7 @@
         "capAfter": 85,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:elite_four_lance_0056",
@@ -2280,7 +2280,7 @@
         "capAfter": 85,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:elite_four_lorelei_004d",
@@ -2313,7 +2313,7 @@
         "capAfter": 100,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:champion_terry_01b6",
@@ -2439,7 +2439,7 @@
         "capAfter": 21,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_2_player_chose_beldum_060a",
@@ -2591,7 +2591,7 @@
         "capAfter": 34,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_3_player_chose_beldum_05fb",
@@ -2743,7 +2743,7 @@
         "capAfter": 47,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_4_player_chose_beldum_05fe",
@@ -2918,7 +2918,7 @@
         "capAfter": 65,
         "capUnknownReason": null,
         "ambiguous": true,
-        "ambiguousReason": "sorteio ponderado no spawn (TrainerSpawner); vencer qualquer irmão conta como vencer todos",
+        "ambiguousReason": "O RCT sorteia uma destas equipes quando o treinador aparece; vencer qualquer uma conta para a etapa.",
         "variants": [
           {
             "id": "rctmod:rival_5_player_chose_beldum_0601",

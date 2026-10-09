@@ -1,5 +1,5 @@
 import {useMemo, useState} from 'react';
-import {Header, ListBox, ListBoxItem, ListBoxSection, type Key, type Selection} from 'react-aria-components';
+import {ListBox, ListBoxItem, type Key, type Selection} from 'react-aria-components';
 import type {GuideProgress, GuideTrainer} from '../../platform/api';
 import {SearchField, Select, Switch} from '../../ui';
 import {
@@ -100,10 +100,7 @@ export function CampaignPicker({campaign, progress, selectedTrainerId, onSelect,
     [series, seriesId, defeated, victoryCounts, query, onlyCurrent],
   );
 
-  const entries = useMemo(
-    () => new Map(view.groups.flatMap((group) => group.entries).map((entry) => [entry.stage.stageId, entry])),
-    [view],
-  );
+  const entries = useMemo(() => new Map(view.entries.map((entry) => [entry.stage.stageId, entry])), [view]);
 
   const allStagesMap = useMemo(() => {
     const records: Record<string, string> = {};
@@ -129,7 +126,7 @@ export function CampaignPicker({campaign, progress, selectedTrainerId, onSelect,
 
   const selectedKey = expandedStageId ?? (selectedStage?.seriesId === seriesId ? selectedStage.stage.stageId : null);
   const choosing = selectedKey === null ? null : (entries.get(selectedKey) ?? null);
-  const matches = view.groups.reduce((sum, group) => sum + group.entries.length, 0);
+  const matches = view.entries.length;
 
   // Estatísticas do Trainer Card
   const totalVictories = useMemo(
@@ -208,13 +205,8 @@ export function CampaignPicker({campaign, progress, selectedTrainerId, onSelect,
           selectedKeys={selectedKey === null ? [] : [selectedKey]}
           onSelectionChange={handleSelection}
         >
-          {view.groups.map((group) => (
-            <ListBoxSection key={group.key} className={styles.group}>
-              <Header className={styles.groupHeader}>{group.label}</Header>
-              {group.entries.map((entry) => (
-                <EntryRow key={entry.stage.stageId} entry={entry} selected={entry.stage.stageId === selectedKey} />
-              ))}
-            </ListBoxSection>
+          {view.entries.map((entry) => (
+            <EntryRow key={entry.stage.stageId} entry={entry} selected={entry.stage.stageId === selectedKey} />
           ))}
         </ListBox>
       )}
@@ -287,12 +279,7 @@ export function CampaignPicker({campaign, progress, selectedTrainerId, onSelect,
             <fieldset className={styles.variants}>
               <legend className={styles.variantLegend}>Escolha a variante de {choosing.stage.name}</legend>
               <p className={styles.variantReason}>
-                {choosing.stage.ambiguousReason
-                  ? choosing.stage.ambiguousReason
-                      .replace(/sorteio ponderado no spawn \(TrainerSpawner\);? ?/i, '')
-                      .replace(/vencer qualquer irmão conta como vencer todos/i, 'Vencer qualquer uma avança a campanha.') ||
-                    'Escolha a equipe do adversário para montar o time:'
-                  : 'Escolha a equipe do adversário para montar o time:'}
+                {choosing.stage.ambiguousReason ?? 'Escolha a equipe do adversário para montar o time:'}
               </p>
               {choosing.stage.variants
                 .filter((variant) => variant.format === 'singles')

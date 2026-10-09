@@ -1,5 +1,5 @@
 import {useEffect, useId, useMemo, useState} from 'react';
-import type {CSSProperties, ReactNode} from 'react';
+import type {CSSProperties} from 'react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {GuideNextGoal, GuideProgress, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
@@ -13,6 +13,11 @@ import {
   SegmentedControl,
   StatusMessage,
   Switch,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   TypeBadge,
 } from '../../ui';
 import type {GuideProgressState} from './useGuideProgress';
@@ -23,6 +28,7 @@ import {
   guideOpponentTurnsLabel,
   guideTeamChanges,
   type GuideMode,
+  type GuideTab,
 } from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
@@ -50,14 +56,12 @@ const MODE_OPTIONS: ReadonlyArray<{key: GuideMode; label: string}> = [
   {key: 'trainer', label: 'Líder ou treinador'},
 ];
 
-type GuideFocusTab = 'all' | 'team' | 'battle' | 'training' | 'captures';
-
-const FOCUS_TABS: ReadonlyArray<{key: GuideFocusTab; label: string}> = [
-  {key: 'all', label: 'Visão Geral'},
-  {key: 'team', label: '1. Time'},
-  {key: 'battle', label: '2. Batalha'},
-  {key: 'training', label: '3. Treino & EVs'},
-  {key: 'captures', label: '4. Capturas'},
+const GUIDE_TABS: ReadonlyArray<{key: GuideTab; label: string}> = [
+  {key: 'team', label: 'Time recomendado'},
+  {key: 'battle', label: 'Plano de batalha'},
+  {key: 'evolutions', label: 'Evoluções'},
+  {key: 'training', label: 'Treino até o cap'},
+  {key: 'captures', label: 'Capturas'},
 ];
 const PROGRESS_REGIONS: ReadonlyArray<{id: keyof GuideProgress['pikaStar']; label: string}> = [
   {id: 'kanto', label: 'Kanto'},
@@ -87,7 +91,20 @@ function StageDetails({stage, label}: {stage: NonNullable<GuideNextGoal['stage']
       ) : (
         stage.capUnknownReason && <p>{stage.capUnknownReason}</p>
       )}
-      {stage.ambiguous && <p className={styles.stageAmbiguousNote}>Possui variações de equipe. Vencer qualquer uma avança a campanha.</p>}
+      {stage.ambiguous && (
+        <>
+          {stage.ambiguousReason && <p>{stage.ambiguousReason}</p>}
+          <ul aria-label={`Variantes de ${stage.name}`}>
+            {stage.variants
+              .filter((variant) => variant.format === 'singles')
+              .map((variant, index) => (
+                <li key={variant.trainerId}>
+                  Variante {index + 1} · formato {variant.format} · nível máx. {variant.maxLevel} · equipe {variant.teamSize}
+                </li>
+              ))}
+          </ul>
+        </>
+      )}
     </li>
   );
 }
@@ -178,6 +195,9 @@ export interface GuideWorkspaceProps {
   levelCap: number | null;
   progress: GuideProgressState;
   progressLevelCap: number | null;
+  /** Aba ativa do resultado do guia; fica no app para sobreviver à ida ao Dano e à volta. */
+  guideTab: GuideTab;
+  onGuideTabChange(tab: GuideTab): void;
 }
 
 type Lookup = {
@@ -337,15 +357,19 @@ function TeamSkeleton() {
 
 function GuideResultView({
   result,
+  previousResult,
   snapshot,
   lookup,
   onOpenCalculation,
-  previousResult,
   stale,
-  battleSlot,
-  trainingSlot,
-  captureSlot,
   levelCap,
+  guideTab,
+  onGuideTabChange,
+  planIndividualName,
+  battlePlan,
+  evolutions,
+  training,
+  captures,
 }: {
   result: GuideResult;
   previousResult: GuideResult | null;
@@ -353,12 +377,15 @@ function GuideResultView({
   lookup: Lookup;
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
   stale: boolean;
-  battleSlot: ReactNode;
-  trainingSlot: ReactNode;
-  captureSlot: ReactNode;
   levelCap: number | null;
+  guideTab: GuideTab;
+  onGuideTabChange(tab: GuideTab): void;
+  planIndividualName(uuid: string, fallbackSpeciesId: string): string;
+  battlePlan: BattlePlanController;
+  evolutions: EvolutionPlanController;
+  training: TrainingPlanController;
+  captures: CapturePlanController;
 }) {
-  const [focusTab, setFocusTab] = useState<GuideFocusTab>('all');
   const [infoExpanded, setInfoExpanded] = useState(false);
   const comparison = guideComparisonRows(result.currentPartyComparison);
   const acquire = result.team
@@ -367,161 +394,214 @@ function GuideResultView({
   const capExcluded = guideCapExcluded(result.excluded);
   const capWarnings = guideCapWarnings({goal: result.goal, team: result.team, individuals: snapshot.individuals, levelCap});
   const teamChanges = guideTeamChanges(previousResult, result);
+  const hasTeam = result.team.length > 0;
+  const gapCount = guideGapOpponentIds(result).length;
+
+  // Cada ferramenta calcula ao abrir a aba, uma vez por resultado do guia (o controlador volta a `idle` quando o guia muda).
+  const controller =
+    guideTab === 'battle'
+      ? battlePlan
+      : guideTab === 'evolutions'
+        ? evolutions
+        : guideTab === 'training'
+          ? training
+          : guideTab === 'captures'
+            ? captures
+            : null;
+  const hasInput = guideTab === 'battle' ? result.goal.kind === 'trainer' : guideTab === 'captures' ? gapCount > 0 : true;
+  const shouldRequest = controller !== null && !stale && hasTeam && hasInput && controller.phase === 'idle';
+  const request = controller?.request;
+  useEffect(() => {
+    if (shouldRequest && request) request();
+  }, [shouldRequest, request]);
+
   return (
     <div className={styles.result} data-stale={stale ? 'true' : undefined} aria-busy={stale}>
       <p className={styles.resultSummary}>
         Time de {result.team.length} contra {result.opponents.length} adversários de referência (nível {result.referenceLevel}).
       </p>
 
-      {capExcluded.length > 0 && (
-        <section className={styles.capExcluded} aria-label="Excluídos pelo level cap">
-          <h3 className={styles.sectionTitle}>Fora do time pelo level cap</h3>
-          <ul>
-            {capExcluded.map((entry) => (
-              <li key={entry.uuid}>
-                <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {capWarnings.length > 0 && (
-        <section className={styles.capExcluded} aria-label="Acima do level cap" data-kind="warning">
-          <h3 className={styles.sectionTitle}>Acima do level cap ({levelCap})</h3>
-          <p className={styles.muted}>Qualquer Pokémon da party acima do cap impede a luta contra o treinador, mesmo fora do time.</p>
-          <ul>
-            {capWarnings.map((warning) => (
-              <li key={warning.uuid}>
-                <strong>{individualName(lookup, warning.uuid)}</strong>: {warning.text}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <div className={styles.focusTabs}>
-        <SegmentedControl
-          label="Foco da Análise"
-          options={FOCUS_TABS}
-          value={focusTab}
-          onChange={(key) => setFocusTab(key as GuideFocusTab)}
-        />
-      </div>
-      {(focusTab === 'all' || focusTab === 'team') && (
-        <>
-          <section className={styles.comparison} aria-label="Comparado à sua party">
-            <h3 className={styles.sectionTitle}>Comparado à sua party</h3>
-            {comparison.every((row) => row.uuids.length === 0) ? (
-              <p className={styles.muted}>Nenhuma alteração em relação à sua party atual.</p>
-            ) : (
-              <div className={styles.comparisonChips}>
-                {comparison.flatMap((row) =>
-                  row.uuids.map((uuid) => (
-                    <span key={`${row.key}-${uuid}`} className={styles.comparisonChip} data-kind={row.key}>
-                      <span className={styles.chipBadge} data-kind={row.key}>
-                        {row.key === 'added' ? 'Entra' : row.key === 'removed' ? 'Sai' : 'Fica'}
-                      </span>
-                      <span className={styles.chipName}>{individualName(lookup, uuid)}</span>
-                    </span>
-                  )),
-                )}
-              </div>
-            )}
-          </section>
-
-          {teamChanges && (teamChanges.left.length > 0 || teamChanges.entered.length > 0) && (
-            <StatusMessage tone="info" title="O time mudou desde a última montagem">
-              <ul>
-                {teamChanges.left.map((change) => (
-                  <li key={`left-${change.uuid}`}>
-                    Saiu {individualName(lookup, change.uuid)}: {change.reason}
-                  </li>
-                ))}
-                {teamChanges.entered.map((uuid) => (
-                  <li key={`entered-${uuid}`}>Entrou {individualName(lookup, uuid)}</li>
-                ))}
-              </ul>
-            </StatusMessage>
-          )}
-
-          <ol className={styles.cards} aria-label="Time recomendado">
-            {result.team.map((member, index) => (
-              <MemberCard
-                key={member.uuid}
-                member={member}
-                index={index}
-                individual={lookup.individuals.get(member.uuid)}
-                lookup={lookup}
-                onOpenCalculation={onOpenCalculation}
-              />
-            ))}
-          </ol>
-          <section className={styles.acquire} aria-labelledby="guide-acquire-title">
-            <h3 id="guide-acquire-title" className={styles.sectionTitle}>
-              Vale adquirir
-            </h3>
-            {acquire.length === 0 ? (
-              <p className={styles.muted}>Nenhum golpe a adquirir para este objetivo.</p>
-            ) : (
-              <ul className={styles.acquireList}>
-                {acquire.map(({member, entry}) => (
-                  <li key={`${member.uuid}-${entry.moveId}`}>
-                    <strong>
-                      {individualName(lookup, member.uuid)} · {moveDisplay(entry.moveId).name}
-                    </strong>
-                    <span className={styles.gain}>+{entry.gainPercent}%</span>
-                    <span className={styles.muted}>{entry.requirement}</span>
-                    <span>{entry.reason}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          <Disclosure headingLevel={3} title="Exclusões, hipóteses e limites" isExpanded={infoExpanded} onExpandedChange={setInfoExpanded}>
-            <div className={styles.infoBody}>
-              <section aria-label="Excluídos">
-                <h4 className={styles.detailsTitle}>Excluídos</h4>
-                {result.excluded.length === 0 ? (
-                  <p className={styles.muted}>Nenhum indivíduo foi excluído.</p>
-                ) : (
+      <Tabs selectedKey={guideTab} onSelectionChange={(key) => onGuideTabChange(key as GuideTab)}>
+        <TabList aria-label="Ferramentas do guia">
+          {GUIDE_TABS.map((tab) => (
+            <Tab key={tab.key} id={tab.key}>
+              {tab.label}
+            </Tab>
+          ))}
+        </TabList>
+        <TabPanels>
+          <TabPanel id="team">
+            <div className={styles.tabSection}>
+              {capExcluded.length > 0 && (
+                <section className={styles.capExcluded} aria-label="Excluídos pelo level cap">
+                  <h3 className={styles.sectionTitle}>Fora do time pelo level cap</h3>
                   <ul>
-                    {result.excluded.map((entry) => (
+                    {capExcluded.map((entry) => (
                       <li key={entry.uuid}>
                         <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
                       </li>
                     ))}
                   </ul>
+                </section>
+              )}
+
+              {capWarnings.length > 0 && (
+                <section className={styles.capExcluded} aria-label="Acima do level cap" data-kind="warning">
+                  <h3 className={styles.sectionTitle}>Acima do level cap ({levelCap})</h3>
+                  <p className={styles.muted}>
+                    Qualquer Pokémon da party acima do cap impede a luta contra o treinador, mesmo fora do time.
+                  </p>
+                  <ul>
+                    {capWarnings.map((warning) => (
+                      <li key={warning.uuid}>
+                        <strong>{individualName(lookup, warning.uuid)}</strong>: {warning.text}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {teamChanges && (teamChanges.left.length > 0 || teamChanges.entered.length > 0) && (
+                <StatusMessage tone="info" title="O time mudou desde a última montagem">
+                  <ul>
+                    {teamChanges.left.map((change) => (
+                      <li key={`left-${change.uuid}`}>
+                        Saiu {individualName(lookup, change.uuid)}: {change.reason}
+                      </li>
+                    ))}
+                    {teamChanges.entered.map((uuid) => (
+                      <li key={`entered-${uuid}`}>Entrou {individualName(lookup, uuid)}</li>
+                    ))}
+                  </ul>
+                </StatusMessage>
+              )}
+
+              <section className={styles.comparison} aria-label="Comparado à sua party">
+                <h3 className={styles.sectionTitle}>Comparado à sua party</h3>
+                {comparison.every((row) => row.uuids.length === 0) ? (
+                  <p className={styles.muted}>Nenhuma alteração em relação à sua party atual.</p>
+                ) : (
+                  <div className={styles.comparisonChips}>
+                    {comparison.flatMap((row) =>
+                      row.uuids.map((uuid) => (
+                        <span key={`${row.key}-${uuid}`} className={styles.comparisonChip} data-kind={row.key}>
+                          <span className={styles.chipBadge} data-kind={row.key}>
+                            {row.key === 'added' ? 'Entra' : row.key === 'removed' ? 'Sai' : 'Fica'}
+                          </span>
+                          <span className={styles.chipName}>{individualName(lookup, uuid)}</span>
+                        </span>
+                      )),
+                    )}
+                  </div>
                 )}
               </section>
-              <section aria-label="Hipóteses">
-                <h4 className={styles.detailsTitle}>Hipóteses</h4>
-                <ul>
-                  {result.assumptions.map((text) => (
-                    <li key={text}>{text}</li>
-                  ))}
-                </ul>
+
+              <ol className={styles.cards} aria-label="Time recomendado">
+                {result.team.map((member, index) => (
+                  <MemberCard
+                    key={member.uuid}
+                    member={member}
+                    index={index}
+                    individual={lookup.individuals.get(member.uuid)}
+                    lookup={lookup}
+                    onOpenCalculation={onOpenCalculation}
+                  />
+                ))}
+              </ol>
+              <section className={styles.acquire} aria-labelledby="guide-acquire-title">
+                <h3 id="guide-acquire-title" className={styles.sectionTitle}>
+                  Vale adquirir
+                </h3>
+                {acquire.length === 0 ? (
+                  <p className={styles.muted}>Nenhum golpe a adquirir para este objetivo.</p>
+                ) : (
+                  <ul className={styles.acquireList}>
+                    {acquire.map(({member, entry}) => (
+                      <li key={`${member.uuid}-${entry.moveId}`}>
+                        <strong>
+                          {individualName(lookup, member.uuid)} · {moveDisplay(entry.moveId).name}
+                        </strong>
+                        <span className={styles.gain}>+{entry.gainPercent}%</span>
+                        <span className={styles.muted}>{entry.requirement}</span>
+                        <span>{entry.reason}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
-              <section aria-label="Limites">
-                <h4 className={styles.detailsTitle}>Limites</h4>
-                <ul>
-                  {result.limits.map((text) => (
-                    <li key={text}>{text}</li>
-                  ))}
-                </ul>
-              </section>
-              <p className={styles.muted}>Captura de {snapshot.worldName}.</p>
+
+              <Disclosure
+                headingLevel={3}
+                title="Exclusões, hipóteses e limites"
+                isExpanded={infoExpanded}
+                onExpandedChange={setInfoExpanded}
+              >
+                <div className={styles.infoBody}>
+                  <section aria-label="Excluídos">
+                    <h4 className={styles.detailsTitle}>Excluídos</h4>
+                    {result.excluded.length === 0 ? (
+                      <p className={styles.muted}>Nenhum indivíduo foi excluído.</p>
+                    ) : (
+                      <ul>
+                        {result.excluded.map((entry) => (
+                          <li key={entry.uuid}>
+                            <strong>{individualName(lookup, entry.uuid)}</strong>: {entry.reason}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                  <section aria-label="Hipóteses">
+                    <h4 className={styles.detailsTitle}>Hipóteses</h4>
+                    <ul>
+                      {result.assumptions.map((text) => (
+                        <li key={text}>{text}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <section aria-label="Limites">
+                    <h4 className={styles.detailsTitle}>Limites</h4>
+                    <ul>
+                      {result.limits.map((text) => (
+                        <li key={text}>{text}</li>
+                      ))}
+                    </ul>
+                  </section>
+                  <p className={styles.muted}>Captura de {snapshot.worldName}.</p>
+                </div>
+              </Disclosure>
             </div>
-          </Disclosure>
-        </>
-      )}
+          </TabPanel>
 
-      {(focusTab === 'all' || focusTab === 'battle') && <div className={styles.tabSection}>{battleSlot}</div>}
+          <TabPanel id="battle">
+            <div className={styles.tabSection}>
+              {result.goal.kind === 'trainer' ? (
+                <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={hasTeam} />
+              ) : (
+                <StatusMessage tone="info">O plano de batalha é calculado contra um líder ou treinador.</StatusMessage>
+              )}
+            </div>
+          </TabPanel>
 
-      {(focusTab === 'all' || focusTab === 'training') && <div className={styles.tabSection}>{trainingSlot}</div>}
+          <TabPanel id="evolutions">
+            <div className={styles.tabSection}>
+              <EvolutionSection evolutions={evolutions} hasTeam={hasTeam} />
+            </div>
+          </TabPanel>
 
-      {(focusTab === 'all' || focusTab === 'captures') && <div className={styles.tabSection}>{captureSlot}</div>}
+          <TabPanel id="training">
+            <div className={styles.tabSection}>
+              <TrainingSection training={training} hasTeam={hasTeam} />
+            </div>
+          </TabPanel>
+
+          <TabPanel id="captures">
+            <div className={styles.tabSection}>
+              <CaptureSection captures={captures} gapCount={gapCount} />
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   );
 }
@@ -540,6 +620,8 @@ export function GuideWorkspace({
   levelCap,
   progress,
   progressLevelCap,
+  guideTab,
+  onGuideTabChange,
   loading,
   onRefresh,
   onOpenCalculation,
@@ -658,22 +740,13 @@ export function GuideWorkspace({
               onOpenCalculation={onOpenCalculation}
               stale={building}
               levelCap={levelCap}
-              battleSlot={
-                building ? null : guide.result.goal.kind === 'trainer' ? (
-                  <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={guide.result.team.length > 0} />
-                ) : (
-                  <StatusMessage tone="info">O plano de batalha detalhado é voltado para líderes e treinadores da campanha.</StatusMessage>
-                )
-              }
-              trainingSlot={
-                building ? null : (
-                  <>
-                    <TrainingSection training={training} hasTeam={guide.result.team.length > 0} />
-                    <EvolutionSection evolutions={evolutions} hasTeam={guide.result.team.length > 0} />
-                  </>
-                )
-              }
-              captureSlot={building ? null : <CaptureSection captures={captures} gapCount={guideGapOpponentIds(guide.result).length} />}
+              guideTab={guideTab}
+              onGuideTabChange={onGuideTabChange}
+              planIndividualName={planIndividualName}
+              battlePlan={battlePlan}
+              evolutions={evolutions}
+              training={training}
+              captures={captures}
             />
           ) : (
             building && <TeamSkeleton />

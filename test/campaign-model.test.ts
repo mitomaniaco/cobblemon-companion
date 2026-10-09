@@ -120,15 +120,20 @@ describe('lista da campanha', () => {
   const view = buildCampaignView(campaign.radicalred, {...viewOptions, defeated: ['rctmod:s:brock']});
 
   it('uma entrada por treinador lógico, sem duplicar as variantes, na ordem da campanha', () => {
-    const entries = view.groups.flatMap((group) => group.entries);
+    const entries = view.entries;
     expect(entries.map((entry) => entry.stage.stageId)).toEqual(['s:brock', 's:archer', 's:rival1', 's:misty', 's:lorelei', 's:champion']);
     expect(new Set(entries.map((entry) => entry.stage.stageId)).size).toBe(entries.length);
     expect(view.totalStages).toBe(series.length);
   });
 
   it('mantém todas as etapas na ordem linear cronológica da jornada', () => {
-    expect(view.groups.map((group) => [group.label, group.entries.map((entry) => entry.stage.stageId)])).toEqual([
-      ['Jornada da Campanha', ['s:brock', 's:archer', 's:rival1', 's:misty', 's:lorelei', 's:champion']],
+    expect(view.entries.map((entry) => entry.stage.stageId)).toEqual([
+      's:brock',
+      's:archer',
+      's:rival1',
+      's:misty',
+      's:lorelei',
+      's:champion',
     ]);
   });
 
@@ -141,22 +146,20 @@ describe('lista da campanha', () => {
     const unknown = buildCampaignView(campaign.radicalred, {...viewOptions, defeated: null});
     expect(unknown.nextStageId).toBeNull();
     expect(unknown.upcoming).toEqual([]);
-    expect(unknown.groups.flatMap((group) => group.entries).every((entry) => entry.state === 'progresso desconhecido')).toBe(true);
+    expect(unknown.entries.every((entry) => entry.state === 'progresso desconhecido')).toBe(true);
   });
 
   it('"só campanha atual" esconde as etapas vencidas e mantém as demais', () => {
     const current = buildCampaignView(campaign.radicalred, {...viewOptions, defeated: ['rctmod:s:brock'], onlyCurrent: true});
-    expect(current.groups.flatMap((group) => group.entries).map((entry) => entry.stage.stageId)).not.toContain('s:brock');
-    expect(current.groups.flatMap((group) => group.entries)).toHaveLength(series.length - 1);
+    expect(current.entries.map((entry) => entry.stage.stageId)).not.toContain('s:brock');
+    expect(current.entries).toHaveLength(series.length - 1);
     const all = buildCampaignView(campaign.radicalred, {...viewOptions, defeated: ['rctmod:s:brock'], onlyCurrent: false});
-    expect(all.groups.flatMap((group) => group.entries)).toHaveLength(series.length);
+    expect(all.entries).toHaveLength(series.length);
   });
 
   it('a busca ignora acento, caixa e pontuação e também acha pelo grupo', () => {
     const search = (query: string) =>
-      buildCampaignView(campaign.radicalred, {...viewOptions, defeated: [], query})
-        .groups.flatMap((group) => group.entries)
-        .map((entry) => entry.stage.stageId);
+      buildCampaignView(campaign.radicalred, {...viewOptions, defeated: [], query}).entries.map((entry) => entry.stage.stageId);
     expect(search('rival terry 1o')).toEqual(['s:rival1']);
     expect(search('CAMPEAO')).toEqual(['s:champion']);
     expect(search('elite')).toEqual(['s:lorelei']);
@@ -223,11 +226,11 @@ describe('variantes e duplas', () => {
     expect(stageLevelSummary(ranged)).toBe('nível máx. 40–44 · 4–5 Pokémon');
   });
 
-  it('formata rótulos de variantes focados no jogador', () => {
+  it('rotula as variantes só pelo que o app sabe: ordem, nível máximo e tamanho da equipe', () => {
     expect(variantLabel(variant('rctmod:rival_starter_squirtle', {maxLevel: 15, teamSize: 3}), 0)).toBe(
-      'Inicial: Squirtle · nível 15 · 3 Pokémon',
+      'Variante 1 · nível 15 · 3 Pokémon',
     );
-    expect(variantLabel(variant('rctmod:rival_terry_014c', {maxLevel: 12, teamSize: 3}), 0)).toBe('Equipe 1 · nível 12 · 3 Pokémon');
+    expect(variantLabel(variant('rctmod:rival_terry_014c', {maxLevel: 12, teamSize: 4}), 2)).toBe('Variante 3 · nível 12 · 4 Pokémon');
   });
 });
 
@@ -246,7 +249,7 @@ describe('contagem de vitórias e level cap da etapa', () => {
       ...viewOptions,
       victoryCounts: {'rctmod:s:brock': 2},
     });
-    const brockEntry = view.groups.flatMap((g) => g.entries).find((e) => e.stage.stageId === 's:brock');
+    const brockEntry = view.entries.find((e) => e.stage.stageId === 's:brock');
     expect(brockEntry?.victoryCount).toBe(2);
   });
 
