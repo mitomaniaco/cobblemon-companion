@@ -96,11 +96,8 @@ const itemCalcName = (itemId) => {
 };
 const joinOr = (items) => (items.length <= 2 ? items.join(' ou ') : `${items.slice(0, -1).join(', ')} ou ${items.at(-1)}`);
 
-const gen7 = calc.Generations.get(7);
-
 function calcMove(moveId) {
-  const id = calc.toID(moveId.replace(/^[^:]+:/, ''));
-  return generation.moves.get(id) || gen7.moves.get(id);
+  return generation.moves.get(calc.toID(moveId.replace(/^[^:]+:/, '')));
 }
 const priorityOf = (moveId) => calcMove(moveId)?.priority ?? 0;
 const moveNameOf = (moveId) => COMPATIBILITY.moves[moveId]?.name ?? calcMove(moveId)?.name ?? titleCase(moveId);

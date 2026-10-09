@@ -1100,16 +1100,21 @@ describe('motor de dano e saída', () => {
         expect(result.candidate).toMatchObject({min: 0, max: 0, rollCount: 16});
       },
     );
+    withSpy(
+      () => ({damage: 7}),
+      () => {
+        const result = calculateRealDamage(makeSnapshot(), request);
+        expect(result.current).toMatchObject({min: 7, max: 7, rollCount: 16});
+      },
+    );
     const invalid = [
-      roll16.slice(0, 15),
       [...roll16.slice(0, 15), -1],
       [...roll16.slice(0, 15), 1.5],
-      [...roll16, 17],
-      7,
       [],
       null,
       undefined,
       '0',
+      [roll16, [1]],
     ];
     for (const damage of invalid) {
       withSpy(
