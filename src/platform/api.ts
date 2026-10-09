@@ -182,7 +182,7 @@ export type BattlePlanDamage = {moveId: string; min: number; max: number; target
  * Risco declarado na definição do treinador ou do Pokémon, com o texto pronto para a tela
  * (por exemplo "Geodude aguenta um golpe com Sturdy e pode agir antes com Custap Berry").
  */
-export type BattlePlanRisk = {kind: 'habilidade' | 'item' | 'bolsa' | 'campo' | 'ia'; text: string};
+export type BattlePlanRisk = {kind: 'habilidade' | 'item' | 'golpe' | 'bolsa' | 'campo' | 'ia'; text: string};
 
 export type BattlePlanEntry = {
   opponentId: string;

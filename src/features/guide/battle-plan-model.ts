@@ -51,6 +51,7 @@ export function battlePlanDamageLabel(damage: BattlePlanDamage): string {
 const RISK_KIND_LABEL: Record<BattlePlanRisk['kind'], string> = {
   habilidade: 'Habilidade',
   item: 'Item',
+  golpe: 'Golpe',
   bolsa: 'Bolsa',
   campo: 'Campo',
   ia: 'IA',
