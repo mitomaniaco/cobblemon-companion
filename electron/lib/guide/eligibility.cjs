@@ -18,7 +18,7 @@ function reasonOf(error) {
   const body = message.startsWith(ERROR_PREFIX) ? message.slice(ERROR_PREFIX.length) : message;
   const [field, ...rest] = body.split(' ');
   const detail = rest.join(' ');
-  if (field === 'actor.formId') return 'só a forma normal é compatível';
+  if (field === 'actor.formId') return detail;
   const label = FIELD_LABELS.find(([prefix]) => field === prefix)?.[1];
   if (label) return `${label} ${detail}`;
   if (field.startsWith('actor.battleStats.')) return `IVs/EVs (${field.slice('actor.battleStats.'.length)}) ${detail}`;

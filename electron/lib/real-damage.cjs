@@ -4,6 +4,7 @@ const crypto = require('node:crypto');
 const calcPackage = require('@smogon/calc/package.json');
 const {damageRange, pokemonFromSpec} = require('./calc-profile.cjs');
 const compatibility = require('./combat-compatibility.json');
+const {resolvePlayerSpecies} = require('./species-forms.cjs');
 
 const CALC_VERSION = '0.11.0';
 const ADAPTER_VERSION = 'real-damage-adapter-v12';
@@ -196,20 +197,21 @@ function heldItemName(id, pathName) {
 
 /** Perfil do indivíduo sem a exigência de item (usado pelo guia, que decide o item por conta própria). */
 function baseActorProfile(actor) {
-  if (actor?.formId !== 'normal') fail('actor.formId', 'somente forma normal é compatível');
-  const species = supportedSpecies(actor.speciesId, 'actor.speciesId');
+  supportedSpecies(actor?.speciesId, 'actor.speciesId');
+  const resolved = resolvePlayerSpecies(actor.speciesId, actor.formId);
+  if (!resolved.ok) fail('actor.formId', resolved.reason);
   if (!Number.isSafeInteger(actor.level)) fail('actor.level', 'não foi capturado');
   integer(actor.level, 'actor.level', 1, 100);
   if (!actor.observed) fail('actor.observed', 'não foi capturado');
   const natureId = text(actor.observed.nature, 'actor.observed.nature');
   const abilityId = text(actor.observed.ability, 'actor.observed.ability');
   const nature = supportedNature(natureId, 'actor.observed.nature');
-  const ability = supportedAbility(species, abilityId, 'actor.observed.ability');
+  const ability = supportedAbility(resolved, abilityId, 'actor.observed.ability');
   // Snapshot v2 null is unknown; the required manual baseline attestation supplies this scenario fact.
   const ivs = effectiveIvs(actor.battleStats);
   const evs = statValues(actor.battleStats.evs, 'actor.battleStats.evs', 0, 252);
   if (STATS.reduce((sum, stat) => sum + evs[stat], 0) > 510) fail('actor.battleStats.evs', 'a soma excede 510');
-  return {species, level: actor.level, nature, ability, ivs, evs};
+  return {species: {name: resolved.name, abilities: resolved.abilities}, level: actor.level, nature, ability, ivs, evs};
 }
 
 function actorProfile(actor) {

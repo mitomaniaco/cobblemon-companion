@@ -233,6 +233,8 @@ function canonicalMoveKey(id) {
 
 function acquireSuggestions(result, opponents, learnsets) {
   const {entry, chosen, pokemon, theirs, table} = result;
+  // Os learnsets versionados são da forma normal: forma alternativa não recebe sugestão de golpe (fail-closed).
+  if (entry.individual.formId !== 'normal') return [];
   const slug = entry.individual.speciesId.replace(/^[^:]+:/, '');
   const routes = learnsetRoutes(lookup(learnsets, slug), entry.individual.level);
   const knownKeys = new Set(

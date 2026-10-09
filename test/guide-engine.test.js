@@ -173,7 +173,7 @@ describe('motor do guia', () => {
   it('remove adversário com espécie fora do catálogo e cita na lista de hipóteses', async () => {
     const result = await run([individual({species: 'blastoise', moves: ['surf']})], trainerGoal('synthetic:mixed'));
     expect(result.opponents.map((opponent) => opponent.speciesId)).toEqual(['cobblemon:charizard', 'cobblemon:golem']);
-    expect(result.assumptions.some((line) => line.includes('espécie mod:especie_desconhecida'))).toBe(true);
+    expect(result.assumptions.some((line) => line.includes('mod:especie_desconhecida'))).toBe(true);
   });
 
   it('PvE usa a janela de nível da party, uma espécie por vez e sem duplas', async () => {
@@ -202,7 +202,7 @@ describe('motor do guia', () => {
     const result = await run([fine, alternate, noLevel, noMoves], trainerGoal('synthetic:fire'));
     expect(result.team.map((member) => member.uuid)).toEqual([fine.uuid]);
     expect(Object.fromEntries(result.excluded.map((entry) => [entry.uuid, entry.reason]))).toEqual({
-      [alternate.uuid]: 'só a forma normal é compatível',
+      [alternate.uuid]: 'forma alola fora do subconjunto compatível versionado',
       [noLevel.uuid]: 'nível não foi capturado',
       [noMoves.uuid]: 'nenhum golpe conhecido pertence ao subconjunto compatível',
     });

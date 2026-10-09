@@ -1,6 +1,7 @@
 'use strict';
 
 const {COMPATIBILITY} = require('../real-damage.cjs');
+const {resolveOpponentSpecies} = require('../species-forms.cjs');
 
 const PVE_LEVEL_BELOW = 10;
 const PVE_LEVEL_ABOVE = 5;
@@ -33,8 +34,9 @@ function heldItemName(alternatives) {
  * (`{removed}`); golpes fora do catálogo (inclui os de status) são ignorados e contados. IV ausente vira 31, EV ausente 0.
  */
 function opponentFromMember(member, id, trainerId) {
-  const species = lookup(COMPATIBILITY.species, member.speciesId);
-  if (!species) return {removed: `espécie ${member.speciesId}`};
+  const resolved = resolveOpponentSpecies(member.speciesId, member.aspects);
+  if (!resolved.ok) return {removed: `${resolved.reason} de ${member.speciesId}`};
+  const species = {name: resolved.name, abilities: resolved.abilities};
   const ability = namedFromCatalog(COMPATIBILITY.abilities, member.ability);
   if (!ability) return {removed: `habilidade ${member.ability} de ${species.name}`};
   const nature = namedFromCatalog(COMPATIBILITY.natures, member.nature);
