@@ -27,12 +27,24 @@ import {
   showdownMoveFacts,
   speciesFacts,
   speciesSlug,
+  formStatus,
   speciesStatus,
 } from './lib/compat-catalog.mjs';
 import {classifyProviderEntries, collectDirectoryProviders, collectJarProvider, parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
 
 const require = createRequire(import.meta.url);
 const calc = require('@smogon/calc');
+const {damageRolls} = require('../electron/lib/calc-profile.cjs');
+
+/** Texto das mecânicas do calc: um golpe citado pelo nome ali tem tratamento próprio (callbacks de dano). */
+function calcMechanicsSource() {
+  const directory = path.join(path.dirname(require.resolve('@smogon/calc')), 'mechanics');
+  return fs
+    .readdirSync(directory)
+    .filter((name) => name.endsWith('.js'))
+    .map((name) => fs.readFileSync(path.join(directory, name), 'utf8'))
+    .join('\n');
+}
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CATALOG_PATH = path.join(ROOT, 'electron/lib/combat-compatibility.json');
 const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
@@ -131,23 +143,45 @@ function main() {
       if (fields.length > 0) addConflict(conflicts, addition.target, {provider: provider.label, kind: 'species-addition', fields});
     }
   }
+  const enabledByAddition = new Set(
+    providers.flatMap((provider) =>
+      provider.additions.filter((addition) => addition.json.implemented === true).map((addition) => addition.target),
+    ),
+  );
   const species = {};
+  const formReasons = {};
   for (const slug of Object.keys(baseSpeciesJson).sort()) {
     const facts = speciesFacts(baseSpeciesJson[slug]);
+    facts.implemented = facts.implemented || enabledByAddition.has(slug);
     const calcSpecies = facts.name ? generation.species.get(calc.toID(facts.name)) : undefined;
+    facts.forms = facts.forms.map((form) => ({
+      ...form,
+      calcMatches: compareWithCalc(form, generation.species.get(calc.toID(form.name))).matches,
+    }));
     species[slug] = {facts, calcMatches: compareWithCalc(facts, calcSpecies).matches, conflicts: conflicts[slug] ?? []};
   }
 
   // Regras do Showdown (golpes e habilidades) comparadas entre provedores. Golpes: lista-base revisada + candidatos derivados.
   const moveFacts = showdownMoveFacts(strFromU8(showdownFiles['data/moves.js']));
   const calcHasMove = (facts) => Boolean(facts.name && generation.moves.get(calc.toID(facts.name)));
+  const calcSource = calcMechanicsSource();
+  const moveCalcContext = (facts) => {
+    const has = calcHasMove(facts);
+    return {
+      calcHasMove: has,
+      calcNamesMove: Boolean(facts.name) && (calcSource.includes(`'${facts.name}'`) || calcSource.includes(`"${facts.name}"`)),
+      calcDamageProbe: has
+        ? damageRolls(new calc.Pokemon(9, 'Mew', {level: 50}), new calc.Pokemon(9, 'Mew', {level: 50}), facts.name)[15]
+        : null,
+    };
+  };
   for (const id of baseMoveIds) {
     if (!moveFacts[id] || !calcHasMove(moveFacts[id])) fail(`golpe-base ausente no calc: ${id}`);
   }
   const candidateMoveIds = Object.keys(moveFacts).filter(
     (id) =>
       !baseMoveIds.has(id) &&
-      moveStatus(moveFacts[id], {isBase: false, calcHasMove: calcHasMove(moveFacts[id]), packDiffers: false}).status === 'derived',
+      moveStatus(moveFacts[id], {isBase: false, packDiffers: false, ...moveCalcContext(moveFacts[id])}).status === 'derived',
   );
   const packDiffersMoves = new Set();
   const showdown = {};
@@ -249,8 +283,8 @@ function main() {
     if (facts.category !== 'Physical' && facts.category !== 'Special') continue;
     const verdict = moveStatus(facts, {
       isBase: baseMoveIds.has(id),
-      calcHasMove: calcHasMove(facts),
       packDiffers: packDiffersMoves.has(id),
+      ...moveCalcContext(facts),
     });
     moves[id] = {...facts, ...verdict};
     if (verdict.status === 'excluded') moveReasons[verdict.reason] = (moveReasons[verdict.reason] ?? 0) + 1;
@@ -296,6 +330,12 @@ function main() {
   for (const entry of Object.values(species)) {
     const verdict = speciesStatus(entry, supportedAbilityIds);
     if (verdict.status === 'excluded') reasons[verdict.reason] = (reasons[verdict.reason] ?? 0) + 1;
+    else {
+      for (const form of entry.facts.forms) {
+        const formVerdict = formStatus(form, supportedAbilityIds);
+        if (formVerdict.status === 'excluded') formReasons[formVerdict.reason] = (formReasons[formVerdict.reason] ?? 0) + 1;
+      }
+    }
   }
   console.log(
     JSON.stringify(
@@ -311,6 +351,8 @@ function main() {
         adicionadas: added.length,
         removidas: removed,
         motivosDeExclusao: reasons,
+        formasNoCatalogo: Object.values(derivedSpecies).reduce((sum, entry) => sum + Object.keys(entry.forms).length, 0),
+        motivosDeExclusaoDeFormas: formReasons,
         provedoresRelevantes: providers.map((provider) => provider.label),
         conflitosDeEspecie: Object.keys(conflicts),
       },

@@ -133,7 +133,7 @@ A demonstração é uma fixture fixa Pikachu/Floatzel, Spark/Thunderbolt, um alv
 
 ## 7. Catálogo e limites de compatibilidade
 
-Revisão ativa: `cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v13`. O adaptador é `real-damage-adapter-v11`, com `@smogon/calc` 0.11.0/Gen 9 e fingerprints documentados em `docs/preflight/IMPORTACAO-PARTY.md`.
+Revisão ativa: `cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v14`. O adaptador é `real-damage-adapter-v12`, com `@smogon/calc` 0.11.0/Gen 9 e fingerprints documentados em `docs/preflight/IMPORTACAO-PARTY.md`.
 
 O catálogo atualmente tem **841 espécies, 401 golpes diretos (320 da lista-base revisada em `data/compat/base-moves.json` + 81 derivados pelo gerador), 285 habilidades e 25 naturezas**. IDs aceitos são explícitos; só forma normal é liberada, mesmo para espécies com formas alternativas. As espécies são derivadas por `npm run catalog:generate -- --instance <pasta com mods/> [--write]` (scripts/generate-compat-catalog.mjs, regras puras em scripts/lib/compat-catalog.mjs) e registradas em `data/compat/manifest.json`; um teste garante que o catálogo é exatamente o derivado do manifesto. Gardevoir normal está incluído: `Synchronize` e `Telepathy` são aceitas; `Trace` permanece bloqueada porque copiar a habilidade do alvo não faz parte do estado modelado.
 No JSON, golpes, habilidades e naturezas têm uma chave `cobblemon:` e outra sem namespace para cada entrada canônica; a contagem bruta de chaves é 802/570/50, mas a cobertura é de 401/285/25 entradas, respectivamente.
