@@ -39,9 +39,9 @@
   --type-normal: #a8a77a;
   --type-normal-ink: #11141c;
   --type-fire: #ee8130;
-  --type-fire-ink: #ffffff;
+  --type-fire-ink: #11141c;
   --type-water: #6390f0;
-  --type-water-ink: #ffffff;
+  --type-water-ink: #11141c;
   --type-electric: #f7d02c;
   --type-electric-ink: #11141c;
   --type-grass: #7ac74c;
@@ -57,11 +57,11 @@
   --type-flying: #a98ff3;
   --type-flying-ink: #11141c;
   --type-psychic: #f95587;
-  --type-psychic-ink: #ffffff;
+  --type-psychic-ink: #11141c;
   --type-bug: #a6b91a;
-  --type-bug-ink: #ffffff;
+  --type-bug-ink: #11141c;
   --type-rock: #b6a136;
-  --type-rock-ink: #ffffff;
+  --type-rock-ink: #11141c;
   --type-ghost: #735797;
   --type-ghost-ink: #ffffff;
   --type-dragon: #6f35fc;

@@ -48,7 +48,7 @@ function levelLabel(individual: PlayerIndividual) {
 
 function individualTextValue(individual: PlayerIndividual) {
   const level = individual.level === null ? 'nível não capturado' : `nível ${individual.level}`;
-  return `${speciesDisplay(individual.speciesId, individual.formId, individual.aspects).name} · ${locationLabel(individual.location)} · ${level}`;
+  return `${speciesDisplay(individual.speciesId, individual.formId).name} · ${locationLabel(individual.location)} · ${level}`;
 }
 
 function getBoxOptions(individuals: readonly PlayerIndividual[]): BoxOption[] {
@@ -126,8 +126,8 @@ function TeamCard({
   index: number;
   onSelect(uuid: string): void;
 }) {
-  const display = speciesDisplay(individual.speciesId, individual.formId, individual.aspects);
-  const chipText = formChipLabel(individual.formId, individual.aspects);
+  const display = speciesDisplay(individual.speciesId, individual.formId);
+  const chipText = formChipLabel(individual.speciesId, individual.formId);
   const textValue = individualTextValue(individual);
   const style = {'--type-a': typeColorVar(display.types[0] ?? null), '--i': index, '--slot': slot} as CSSProperties;
   return (
@@ -229,7 +229,7 @@ function BoxSection({
           onSelectionChange={selectionHandler(onSelect)}
         >
           {(individual) => {
-            const display = speciesDisplay(individual.speciesId, individual.formId, individual.aspects);
+            const display = speciesDisplay(individual.speciesId, individual.formId);
             const textValue = individualTextValue(individual);
             const slot = individual.location.slot;
             const style = fixedSlots

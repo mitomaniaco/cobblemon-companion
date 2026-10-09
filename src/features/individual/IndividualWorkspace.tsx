@@ -339,8 +339,8 @@ export function IndividualWorkspace({
   const [captureDataExpanded, setCaptureDataExpanded] = useState(false);
   const titleId = useId();
   const panelIds = useId();
-  const species = speciesDisplay(individual.speciesId, individual.formId, individual.aspects);
-  const chipText = formChipLabel(individual.formId, individual.aspects);
+  const species = speciesDisplay(individual.speciesId, individual.formId);
+  const chipText = formChipLabel(individual.speciesId, individual.formId);
   const formLabel = chipText || (individual.formId === 'unknown' ? 'Desconhecida' : titleCaseId(individual.formId));
   const nature = individual.observed.nature === null ? null : natureDisplay(individual.observed.nature);
   const natureIncreased = nature?.plus ?? null;

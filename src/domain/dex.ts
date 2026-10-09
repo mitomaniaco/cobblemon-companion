@@ -52,78 +52,28 @@ export function dexId(id: string): string {
 
 const isPokemonType = (value: string): value is PokemonType => TYPE_SET.has(value);
 
-const REGIONAL_FORM_ALIASES: Record<string, string> = {
-  alolan: 'alola',
-  alola: 'alola',
-  galarian: 'galar',
-  galar: 'galar',
-  hisuian: 'hisui',
-  hisui: 'hisui',
-  paldean: 'paldea',
-  paldea: 'paldea',
-};
+/** Entrada de forma alternativa no dex: o id do calc é o da espécie seguido do `formId` do save (`slowking` + `galar`). */
+function formEntry(speciesId: string, formId: string): {name: string; types: string[]} | undefined {
+  return dexData.species[`${dexId(speciesId)}${dexId(formId)}`];
+}
 
-const REGIONAL_LABELS: Record<string, string> = {
-  galar: 'Galar',
-  galarian: 'Galar',
-  hisui: 'Hisui',
-  hisuian: 'Hisui',
-  alola: 'Alola',
-  alolan: 'Alola',
-  paldea: 'Paldea',
-  paldean: 'Paldea',
-};
-
-/** Rótulo legível para o chip de forma (ex.: "Galar", "Hisui", "Alola"). Vazio para forma normal. */
-export function formChipLabel(formId?: string | null, aspects?: readonly string[] | null): string {
+/** Rótulo do chip de forma (`Galar`, `Low-Key`, `Bloodmoon`). Vazio para forma normal. */
+export function formChipLabel(speciesId: string, formId: string): string {
   if (formId === 'unknown') return 'Forma desconhecida';
-  const tokens = [...(formId && formId !== 'normal' ? [formId] : []), ...(Array.isArray(aspects) ? aspects : [])]
-    .map(dexId)
-    .filter(Boolean);
-
-  for (const token of tokens) {
-    if (REGIONAL_LABELS[token]) return REGIONAL_LABELS[token];
-  }
-  if (!formId || formId === 'normal') return '';
+  if (formId === 'normal') return '';
+  const entry = formEntry(speciesId, formId);
+  const baseName = dexData.species[dexId(speciesId)]?.name;
+  if (entry && baseName && entry.name.startsWith(`${baseName}-`)) return entry.name.slice(baseName.length + 1);
   return titleCaseId(formId);
 }
 
-export function speciesDisplay(
-  speciesId: string,
-  formId?: string,
-  aspects?: readonly string[] | null,
-): {name: string; types: PokemonType[]} {
-  const baseKey = dexId(speciesId);
-  const baseEntry = dexData.species[baseKey];
-
-  let formEntry: {name: string; types: string[]} | undefined;
-  const tokens = [...(formId && formId !== 'normal' && formId !== 'unknown' ? [formId] : []), ...(Array.isArray(aspects) ? aspects : [])]
-    .map(dexId)
-    .filter(Boolean);
-
-  for (const token of tokens) {
-    const alias = REGIONAL_FORM_ALIASES[token] ?? token;
-    const candidate1 = `${baseKey}${alias}`;
-    if (dexData.species[candidate1]) {
-      formEntry = dexData.species[candidate1];
-      break;
-    }
-    const candidate2 = `${baseKey}${token}`;
-    if (dexData.species[candidate2]) {
-      formEntry = dexData.species[candidate2];
-      break;
-    }
-    const candidateCombat = `${candidate1}combat`;
-    if (dexData.species[candidateCombat]) {
-      formEntry = dexData.species[candidateCombat];
-      break;
-    }
-  }
-
-  const finalEntry = formEntry ?? baseEntry;
+/** Nome da espécie base e tipos da forma. Forma sem entrada no dex (inclusive `unknown`) fica sem tipos: nunca os da forma normal. */
+export function speciesDisplay(speciesId: string, formId: string): {name: string; types: PokemonType[]} {
+  const baseEntry = dexData.species[dexId(speciesId)];
+  const entry = formId === 'normal' ? baseEntry : formEntry(speciesId, formId);
   return {
     name: baseEntry?.name ?? titleCaseId(speciesId),
-    types: finalEntry ? finalEntry.types.filter(isPokemonType) : [],
+    types: entry ? entry.types.filter(isPokemonType) : [],
   };
 }
 
