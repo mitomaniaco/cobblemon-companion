@@ -239,6 +239,105 @@ describe('plano de batalha contra o líder', () => {
     expect(blockedFirst.lead).toBeNull();
   });
 
+  describe('simulação da batalha inteira', () => {
+    const hitOf = (damage) => Math.floor((damage.min + damage.max) / 2);
+
+    it('carrega o HP do membro de um adversário ao próximo e conta o dano como a média dos rolls', async () => {
+      const result = await plan('synthetic:brock');
+      const {simulation} = result;
+      expect(simulation.status).toBe('concluída');
+      expect(simulation.opponentsDefeated).toBe(3);
+      expect(simulation.opponentsTotal).toBe(3);
+      const [first, second] = simulation.steps;
+      expect(first).toMatchObject({
+        entry: 'lead',
+        memberUuid: blastoise.uuid,
+        memberHpBefore: first.memberMaxHp,
+        outcome: 'adversário derrotado',
+      });
+      // O membro é mais rápido: age primeiro e o adversário só acerta nos turnos em que sobrevive.
+      expect(first.memberHpBefore - first.memberHpAfter).toBe((first.turns - 1) * hitOf(result.entries[0].received));
+      expect(first.memberHpBefore - first.memberHpAfter).toBeGreaterThan(0);
+      expect(second.memberHpBefore).toBe(first.memberHpAfter);
+      expect(simulation.remaining.find((member) => member.uuid === blastoise.uuid).hp).toBe(simulation.steps.at(-1).memberHpAfter);
+    });
+
+    it('Sturdy em HP cheio segura o primeiro golpe letal e custa um turno', async () => {
+      const turnsAgainst = async (ability) => {
+        const result = await customPlan([opponent({ability, level: 13})], {team: [team[0]]});
+        return result.simulation.steps[0].turns;
+      };
+      expect(await turnsAgainst('rockhead')).toBe(1);
+      expect(await turnsAgainst('sturdy')).toBe(2);
+    });
+
+    it('um time que não derruba o primeiro adversário termina derrotado', async () => {
+      const fragile = individual('pikachu', 5, ['thunderbolt']);
+      const result = await buildBattlePlan({
+        snapshot: {individuals: [fragile]},
+        request: {
+          sources: [],
+          trainerId: 'synthetic:brock',
+          team: [{uuid: fragile.uuid, moveIds: ['cobblemon:thunderbolt'], itemId: null}],
+        },
+        data,
+      });
+      expect(result.simulation.status).toBe('time derrotado');
+      expect(result.simulation.opponentsDefeated).toBe(0);
+      expect(result.simulation.remaining).toEqual([]);
+      expect(result.simulation.steps.at(-1).outcome).toBe('membro derrotado');
+    });
+
+    it('adversário bloqueado interrompe a simulação e diz qual', async () => {
+      const result = await customPlan([opponent({nature: 'cobblemon:xyz'}), opponent({})]);
+      expect(result.simulation.status).toBe('interrompida');
+      expect(result.simulation.stopReason).toMatch(/^adversário 1 \(Geodude\) bloqueado: natureza/);
+      expect(result.simulation.steps).toEqual([]);
+    });
+
+    it('troca para quem derruba o adversário seguinte, que acerta primeiro o membro que entra', async () => {
+      const quick = individual('pikachu', 30, ['thunderbolt']);
+      const tank = individual('blastoise', 30, ['surf']);
+      const result = await customPlan(
+        [opponent({speciesId: 'cobblemon:gyarados', level: 30, moves: ['cobblemon:tackle'], ability: 'moxie'}), opponent({level: 30})],
+        {
+          snapshot: {individuals: [quick, tank]},
+          team: [
+            {uuid: quick.uuid, moveIds: ['cobblemon:thunderbolt'], itemId: null},
+            {uuid: tank.uuid, moveIds: ['cobblemon:surf'], itemId: null},
+          ],
+        },
+      );
+      const {steps} = result.simulation;
+      expect(steps[0]).toMatchObject({entry: 'lead', memberUuid: quick.uuid});
+      const swap = steps.find((step) => step.entry === 'troca');
+      expect(swap).toMatchObject({opponentIndex: 1, memberUuid: tank.uuid, memberHpBefore: swap.memberMaxHp});
+      expect(swap.memberHpAfter).toBeLessThan(swap.memberHpBefore);
+      expect(swap.outcome).toBe('adversário derrotado');
+    });
+
+    it('após KO entra o próximo membro sem acerto grátis e o adversário mantém o HP que ficou', async () => {
+      const result = await customPlan(
+        [opponent({speciesId: 'cobblemon:gyarados', level: 70, ability: 'moxie', moves: ['cobblemon:waterfall', 'cobblemon:earthquake']})],
+        {
+          snapshot: {individuals: [blastoise, pikachu]},
+          team: [team[0], team[1]],
+        },
+      );
+      const {steps} = result.simulation;
+      const replacement = steps.find((step) => step.entry === 'após KO');
+      expect(replacement).toBeDefined();
+      const previous = steps[steps.indexOf(replacement) - 1];
+      expect(previous.outcome).toBe('membro derrotado');
+      expect(replacement.opponentHpBefore).toBe(previous.opponentHpAfter);
+      expect(replacement.memberHpBefore).toBe(replacement.memberMaxHp);
+    });
+
+    it('treinador em dupla não tem simulação', async () => {
+      expect((await plan('synthetic:duo')).simulation).toBeNull();
+    });
+  });
+
   it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem lead', async () => {
     const result = await plan('synthetic:duo');
     expect(result).toMatchObject({status: 'fora-do-escopo', scopeReason: 'batalha em dupla, fora do escopo', entries: [], lead: null});

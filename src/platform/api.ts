@@ -206,6 +206,35 @@ export type BattlePlanEntry = {
   risks: BattlePlanRisk[];
 };
 
+/** Um trecho contínuo de um membro contra um adversário, em HP absoluto. */
+export type BattleSimulationStep = {
+  opponentIndex: number;
+  opponentSpeciesId: string;
+  memberUuid: string;
+  memberSpeciesId: string;
+  /** `troca`: o adversário acerta primeiro o membro que entra. `após KO`: entrada sem acerto grátis. */
+  entry: 'lead' | 'mantém' | 'troca' | 'após KO';
+  turns: number;
+  memberHpBefore: number;
+  memberHpAfter: number;
+  memberMaxHp: number;
+  opponentHpBefore: number;
+  opponentHpAfter: number;
+  opponentMaxHp: number;
+  outcome: 'adversário derrotado' | 'membro derrotado' | 'interrompido';
+};
+
+export type BattleSimulation = {
+  status: 'concluída' | 'time derrotado' | 'interrompida';
+  /** Por que a simulação parou antes de acabar (adversário bloqueado, impasse, limite de turnos). */
+  stopReason: string | null;
+  steps: BattleSimulationStep[];
+  opponentsDefeated: number;
+  opponentsTotal: number;
+  /** Membros ainda de pé no fim da simulação. */
+  remaining: Array<{uuid: string; speciesId: string; hp: number; maxHp: number}>;
+};
+
 export type BattlePlanResult = {
   /** Só com `respectLevelCap: false` e cap conhecido: membros do plano acima do cap (baixar o nível ou guardar no PC antes da luta). Ausente = nenhum. */
   overCap?: OverCapMember[];
@@ -214,6 +243,8 @@ export type BattlePlanResult = {
   status: 'plano' | 'fora-do-escopo';
   scopeReason: string | null;
   lead: {uuid: string; speciesId: string; reason: string} | null;
+  /** Nulo em `fora-do-escopo`. */
+  simulation: BattleSimulation | null;
   entries: BattlePlanEntry[];
   /** Riscos do treinador como um todo: bolsa × `maxItemUses`, IA não modelada. */
   trainerRisks: BattlePlanRisk[];
