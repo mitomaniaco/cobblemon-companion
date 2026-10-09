@@ -32,10 +32,7 @@ function listGuideTrainers({trainers, series}) {
 }
 
 function stageIsDefeated(stage, victoryCounts) {
-  return stage.variants.some((variant) => {
-    const id = variant.id.startsWith('rctmod:') ? variant.id.slice('rctmod:'.length) : variant.id;
-    return victoryCounts[variant.id] > 0 || victoryCounts[id] > 0;
-  });
+  return stage.variants.some((variant) => victoryCounts[variant.id] > 0);
 }
 
 function publicStage(stage) {

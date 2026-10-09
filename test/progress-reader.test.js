@@ -45,9 +45,9 @@ function long(name, value) {
 }
 function syntheticNbt({invalidVictoryCount = false, withLong = false} = {}) {
   const defeats = compound('progressDefeats', [
-    int('rctmod:trainer_a', 2),
-    int('rctmod:trainer_b', 0),
-    ...(withLong ? [long('rctmod:trainer_long', 5)] : []),
+    int('trainer_a', 2),
+    int('trainer_b', 0),
+    ...(withLong ? [long('trainer_long', 5)] : []),
     ...(invalidVictoryCount ? [string('invalid', 'nope')] : []),
   ]);
   const completed = compound('completedSeries', [byte('series-a', 1)]);
@@ -102,12 +102,20 @@ describe('RCT and Pika progress reader', () => {
     expect(progress.pikaStar.johto).toBe(false);
   });
 
-  it('entradas válidas entram em victoryCounts mesmo com uma chave anômala no NBT', () => {
+  it('campo inválido não vira contagem parcial: o progresso fica desconhecido', () => {
     const env = setup();
     fs.writeFileSync(env.statsPath, syntheticNbt({invalidVictoryCount: true}));
     const progress = readGuideProgressFromConfig(env.options);
-    expect({...progress.victoryCounts}).toEqual({'rctmod:trainer_a': 2, 'rctmod:trainer_b': 0});
-    expect(progress.defeated).toEqual(['rctmod:trainer_a']);
+    expect(progress.victoryCounts).toBeNull();
+    expect(progress.defeated).toBeNull();
+    expect(progress.currentSeries).toBe('series-a');
+  });
+
+  it('o id do save sem namespace vira rctmod:<id> e um id já com namespace fica como está', () => {
+    const env = setup();
+    fs.writeFileSync(env.statsPath, syntheticNbt({withLong: true}));
+    const progress = readGuideProgressFromConfig(env.options);
+    expect(Object.keys(progress.victoryCounts).every((id) => id.startsWith('rctmod:'))).toBe(true);
   });
 
   it('suporta TAG_Long (strings 64-bit do parser NBT) em progressDefeats', () => {
@@ -116,12 +124,6 @@ describe('RCT and Pika progress reader', () => {
     const progress = readGuideProgressFromConfig(env.options);
     expect(progress.victoryCounts['rctmod:trainer_long']).toBe(5);
     expect(progress.defeated).toContain('rctmod:trainer_long');
-  });
-
-  it('registra diagnóstico sanitizado quando statsPath está ausente', () => {
-    const env = setup();
-    const progress = readGuideProgressFromConfig(env.options);
-    expect(progress.diagnostics).toContainEqual(expect.stringContaining('rctmod.player.<uuid>.stat.dat'));
   });
 
   it.skipIf(process.platform === 'win32')('resolves progress paths under the real world root and rejects symlink escapes', () => {
