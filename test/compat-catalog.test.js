@@ -39,7 +39,7 @@ function gardevoirJson(overrides = {}) {
     weight: 484,
     abilities: ['synchronize', 'trace', 'h:telepathy'],
     baseStats: {hp: 68, attack: 65, defence: 65, special_attack: 125, special_defence: 115, speed: 80},
-    forms: [{name: 'Mega'}],
+    forms: [{name: 'Mega', battleOnly: true}],
     ...overrides,
   };
 }
@@ -54,7 +54,7 @@ describe('fatos da espécie', () => {
       baseStats: {hp: 68, atk: 65, def: 65, spa: 125, spd: 115, spe: 80},
       weightHg: 484,
       abilities: ['synchronize', 'telepathy'],
-      forms: 1,
+      forms: [],
     });
   });
 
@@ -62,7 +62,58 @@ describe('fatos da espécie', () => {
     const facts = speciesFacts(gardevoirJson({implemented: undefined, secondaryType: undefined, forms: undefined}));
     expect(facts.implemented).toBe(false);
     expect(facts.types).toEqual(['Psychic']);
-    expect(facts.forms).toBe(0);
+    expect(facts.forms).toEqual([]);
+  });
+
+  describe('formas alternativas', () => {
+    const slowking = (forms) => ({
+      name: 'Slowking',
+      primaryType: 'water',
+      secondaryType: 'psychic',
+      weight: 799,
+      abilities: ['oblivious', 'h:regenerator'],
+      baseStats: {hp: 95, attack: 75, defence: 80, special_attack: 100, special_defence: 110, speed: 30},
+      forms,
+    });
+
+    it('herda o que a forma não declara e ignora formas só de batalha', () => {
+      const [form, ...rest] = speciesFacts(
+        slowking([
+          {
+            name: 'Galar',
+            aspects: ['galarian', 'a'],
+            primaryType: 'poison',
+            secondaryType: 'psychic',
+            abilities: ['h:curiousmedicine', 'curiousmedicine'],
+          },
+          {name: 'Mega', battleOnly: true},
+        ]),
+      ).forms;
+      expect(rest).toEqual([]);
+      expect(form).toEqual({
+        name: 'Slowking-Galar',
+        key: 'galar',
+        aspects: ['a', 'galarian'],
+        types: ['Poison', 'Psychic'],
+        baseStats: {hp: 95, atk: 75, def: 80, spa: 100, spd: 110, spe: 30},
+        weightHg: 799,
+        abilities: ['curiousmedicine'],
+      });
+    });
+
+    it('forma que redefine o tipo primário sem secundário fica monotipo; sem nenhum dos dois herda os tipos', () => {
+      const [mono, inherits, explicitNone] = speciesFacts(
+        slowking([
+          {name: 'Galar', primaryType: 'fighting'},
+          {name: 'Low-Key'},
+          {name: 'Zero', primaryType: 'fighting', secondaryType: null},
+        ]),
+      ).forms;
+      expect(mono.types).toEqual(['Fighting']);
+      expect(inherits.types).toEqual(['Water', 'Psychic']);
+      expect(inherits.key).toBe('lowkey');
+      expect(explicitNone.types).toEqual(['Fighting']);
+    });
   });
 
   it('usa o nome do arquivo, sem subpastas, como identificador', () => {
@@ -136,6 +187,32 @@ describe('regra do catálogo de espécies', () => {
     const derived = deriveSpeciesCatalog(species, supported);
     expect(Object.keys(derived)).toEqual(['cobblemon:abra', 'cobblemon:zubat']);
     expect(derived['cobblemon:abra'].name).toBe('Abra');
+  });
+
+  it('emite as formas por chave, só as que batem com o calc e têm habilidade compatível', () => {
+    const base = speciesFacts(gardevoirJson());
+    const form = (key, overrides = {}) => ({
+      name: `Gardevoir-${key}`,
+      key,
+      aspects: [key],
+      abilities: ['synchronize'],
+      calcMatches: true,
+      ...overrides,
+    });
+    const derived = deriveSpeciesCatalog(
+      {
+        gardevoir: entry({
+          facts: {
+            ...base,
+            forms: [form('alola'), form('galar', {calcMatches: false}), form('hisui', {abilities: ['trace']})],
+          },
+        }),
+      },
+      supported,
+    );
+    expect(derived['cobblemon:gardevoir'].forms).toEqual({
+      alola: {name: 'Gardevoir-alola', aspects: ['alola'], abilities: ['cobblemon:synchronize']},
+    });
   });
 });
 
@@ -241,16 +318,35 @@ describe('fatos e regras dos golpes do Showdown', () => {
     ['nonstandard', {isNonstandard: 'LGPE'}, ok],
     ['nonstandard', {isNonstandard: 'Gigantamax'}, ok],
     ['target', {target: 'self'}, ok],
-    ['mechanics', {multihit: true}, ok],
-    ['mechanics', {damage: true}, ok],
     ['mechanics', {ohko: true}, ok],
     ['mechanics', {selfdestruct: true}, ok],
-    ['mechanics', {willCrit: true}, ok],
-    ['callbacks', {callbacks: ['onHit']}, ok],
+    ['mechanics', {multiaccuracy: true}, ok],
+    ['usage', {callbacks: ['onTry']}, ok],
+    ['usage', {name: 'Dream Eater', callbacks: ['onTryImmunity']}, ok],
+    ['callbacks', {callbacks: ['basePowerCallback']}, ok],
     ['calc-missing', {}, {...ok, calcHasMove: false}],
+    ['calc-zero', {}, {...ok, calcDamageProbe: 0}],
     ['pack-override', {}, {...ok, packDiffers: true}],
   ])('exclui por %s', (reason, overrides, context) => {
     expect(moveStatus({...valid, ...overrides}, context)).toEqual({status: 'excluded', reason});
+  });
+
+  it('multi-hit, dano fixo, acerto garantido de crítico e callbacks inofensivos não excluem', () => {
+    for (const overrides of [{multihit: true}, {damage: true}, {willCrit: true}, {callbacks: ['onHit', 'onAfterMove']}]) {
+      expect(moveStatus({...valid, ...overrides}, ok)).toEqual({status: 'derived'});
+    }
+  });
+
+  it('callback que muda o dano só vale se o calc cita o golpe pelo nome', () => {
+    const facts = {...valid, name: 'Acrobatics', callbacks: ['basePowerCallback']};
+    expect(moveStatus(facts, {...ok, calcNamesMove: true, calcDamageProbe: 55})).toEqual({status: 'derived'});
+  });
+
+  it('Sucker Punch e Fake Out passam pela lista de uso; outro golpe com onTry não', () => {
+    const suckerPunch = {...valid, name: 'Sucker Punch', callbacks: ['onTry']};
+    expect(moveStatus(suckerPunch, ok)).toEqual({status: 'derived'});
+    expect(moveStatus({...suckerPunch, name: 'Fake Out'}, ok)).toEqual({status: 'derived'});
+    expect(moveStatus({...suckerPunch, name: 'Dream Eater'}, ok)).toEqual({status: 'excluded', reason: 'usage'});
   });
 
   it('Past continua permitido; só LGPE e Gigantamax são não padrão excluídos', () => {
@@ -265,6 +361,17 @@ describe('fatos e regras dos golpes do Showdown', () => {
     });
     expect(Object.keys(derived)).toEqual(['cobblemon:alfa', 'alfa', 'cobblemon:zeta', 'zeta']);
     expect(derived.zeta).toEqual({name: 'Zeta'});
+  });
+
+  it('marca como só do primeiro turno os golpes de Fake Out e First Impression', () => {
+    const derived = deriveMovesCatalog({
+      fakeout: {name: 'Fake Out', status: 'derived'},
+      firstimpression: {name: 'First Impression', status: 'base'},
+      suckerpunch: {name: 'Sucker Punch', status: 'derived'},
+    });
+    expect(derived['cobblemon:fakeout']).toEqual({name: 'Fake Out', firstTurnOnly: true});
+    expect(derived.firstimpression).toEqual({name: 'First Impression', firstTurnOnly: true});
+    expect(derived.suckerpunch).toEqual({name: 'Sucker Punch'});
   });
 });
 
@@ -334,8 +441,11 @@ describe('artefatos versionados do catálogo', () => {
 
   it('a lista-base revisada nunca perde golpes e os derivados esperados entram', () => {
     for (const id of Object.keys(baseMoves)) expect(catalog.moves[`cobblemon:${id}`], id).toBeDefined();
-    for (const id of ['earthquake', 'slash', 'airslash']) expect(catalog.moves[`cobblemon:${id}`], id).toBeDefined();
-    for (const id of ['dig', 'fakeout', 'bulletseed', 'seismictoss']) expect(catalog.moves[`cobblemon:${id}`], id).toBeUndefined();
+    for (const id of ['earthquake', 'slash', 'airslash', 'knockoff', 'suckerpunch', 'doublekick', 'bulletseed', 'seismictoss']) {
+      expect(catalog.moves[`cobblemon:${id}`], id).toBeDefined();
+    }
+    expect(catalog.moves['cobblemon:fakeout'].firstTurnOnly).toBe(true);
+    for (const id of ['dig', 'superfang']) expect(catalog.moves[`cobblemon:${id}`], id).toBeUndefined();
   });
 
   it('o resultado de coincidência com o calc registrado no manifesto é reproduzível com o calc fixado', () => {
@@ -379,9 +489,26 @@ describe('artefatos versionados do catálogo', () => {
   });
 
   it('Gardevoir continua oferecendo Synchronize e Telepathy, sem Trace', () => {
-    expect(catalog.species['cobblemon:gardevoir']).toEqual({
+    expect(catalog.species['cobblemon:gardevoir']).toMatchObject({
       name: 'Gardevoir',
       abilities: ['cobblemon:synchronize', 'cobblemon:telepathy'],
     });
+  });
+
+  it('inclui espécies habilitadas por adição e as formas regionais que o save grava', () => {
+    expect(catalog.species['cobblemon:groudon']).toBeDefined();
+    expect(catalog.species['cobblemon:slowking'].forms.galar.name).toBe('Slowking-Galar');
+    for (const [species, form] of [
+      ['goodra', 'hisui'],
+      ['sneasel', 'hisui'],
+      ['growlithe', 'hisui'],
+      ['mrmime', 'galar'],
+      ['farfetchd', 'galar'],
+      ['raichu', 'alola'],
+      ['ursaluna', 'bloodmoon'],
+      ['toxtricity', 'lowkey'],
+    ]) {
+      expect(catalog.species[`cobblemon:${species}`].forms[form], `${species}/${form}`).toBeDefined();
+    }
   });
 });

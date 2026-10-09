@@ -91,13 +91,13 @@ describe('versioned real damage adapter', () => {
       return calculateRealDamage(makeSnapshot(gardevoir), makeRequest());
     });
 
-    expect(COMPATIBILITY.species['cobblemon:gardevoir']).toEqual({
+    expect(COMPATIBILITY.species['cobblemon:gardevoir']).toMatchObject({
       name: 'Gardevoir',
       abilities: ['cobblemon:synchronize', 'cobblemon:telepathy'],
     });
     for (const result of results) {
-      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v13');
-      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v11');
+      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v14');
+      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v12');
       expect(result.actor.speciesId).toBe('cobblemon:gardevoir');
       expect(result.current.rollCount).toBe(16);
       expect(result.candidate.rollCount).toBe(16);
@@ -280,18 +280,12 @@ describe('versioned real damage adapter', () => {
       'belch',
       'burnup',
       'doubleshock',
-      'fakeout',
-      'firstimpression',
       'lastresort',
       'focuspunch',
-      'suckerpunch',
-      'thunderclap',
       'upperhand',
       'poltergeist',
       'dreameater',
       'snore',
-      'ragingbull',
-      'terastarstorm',
       'aciddownpour',
       'alloutpummeling',
       'blackholeeclipse',
@@ -778,7 +772,7 @@ describe('versioned real damage adapter', () => {
     expect(result.ruleset.cobblemonVersion).toBe(COMPATIBILITY.ruleset.cobblemonVersion);
     expect(result.ruleset.showdownVersion).toBe(COMPATIBILITY.ruleset.showdownVersion);
     expect(result.ruleset.calcVersion).toBe('0.11.0');
-    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v11');
+    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v12');
   });
 
   it('accepts bare ability IDs without cobblemon: prefix', () => {
@@ -1043,10 +1037,10 @@ describe('perfil do indivíduo que ataca', () => {
       }),
     ).toThrow('precisa ser um golpe aprendido ainda não equipado');
     expect(() => run(() => {}, {candidateMoveId: 'cobblemon:earthquake'})).toThrow('não foi observado como aprendido');
-    expect(() => run((a) => (a.learnedMoves = [{id: 'cobblemon:fakeout', ppUps: 0}]), {candidateMoveId: 'cobblemon:fakeout'})).toThrow(
+    expect(() => run((a) => (a.learnedMoves = [{id: 'cobblemon:dig', ppUps: 0}]), {candidateMoveId: 'cobblemon:dig'})).toThrow(
       'Cálculo real: request.candidateMoveId está fora do subconjunto',
     );
-    expect(() => run((a) => (a.equippedMoves = [{id: 'cobblemon:fakeout', pp: 10, ppUps: 0}]))).toThrow(
+    expect(() => run((a) => (a.equippedMoves = [{id: 'cobblemon:dig', pp: 10, ppUps: 0}]))).toThrow(
       'Cálculo real: actor.equippedMoves[0].id está fora do subconjunto',
     );
     expect(() => run(() => {}, {candidateMoveId: ''})).toThrow('Cálculo real: request.candidateMoveId');
@@ -1164,7 +1158,7 @@ describe('motor de dano e saída', () => {
       cobblemonVersion: COMPATIBILITY.ruleset.cobblemonVersion,
       showdownVersion: COMPATIBILITY.ruleset.showdownVersion,
       calcVersion: '0.11.0',
-      adapterVersion: 'real-damage-adapter-v11',
+      adapterVersion: 'real-damage-adapter-v12',
       sourceSha256: COMPATIBILITY.ruleset.sourceSha256,
     });
     expect(result.ruleset.sourceSha256).not.toBe(COMPATIBILITY.ruleset.sourceSha256);
@@ -1244,6 +1238,6 @@ describe('guardas de carga do adaptador', () => {
   });
 
   it('carrega normalmente com os arquivos reais', () => {
-    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v11');
+    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v12');
   });
 });

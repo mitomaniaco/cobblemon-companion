@@ -26,23 +26,56 @@ function titleCase(type) {
   return type ? type[0].toUpperCase() + type.slice(1) : null;
 }
 
-/** Extrai só os fatos que afetam o cálculo de dano da forma normal. */
-export function speciesFacts(json) {
+function abilityIds(list) {
   const abilities = [];
-  for (const entry of Array.isArray(json.abilities) ? json.abilities : []) {
+  for (const entry of Array.isArray(list) ? list : []) {
     const id = String(entry).replace(/^h:/, '');
     if (id && !abilities.includes(id)) abilities.push(id);
   }
+  return abilities;
+}
+
+function mapBaseStats(source) {
   const baseStats = {};
-  for (const [source, target] of Object.entries(STAT_KEYS)) baseStats[target] = json.baseStats?.[source] ?? null;
+  for (const [key, target] of Object.entries(STAT_KEYS)) baseStats[target] = source?.[key] ?? null;
+  return baseStats;
+}
+
+/**
+ * Fatos de uma forma alternativa (`forms[]` do JSON da espécie). A forma herda o que não declara; o tipo secundário
+ * só é herdado se a forma também não redefine o primário (Farfetch'd-Galar vira só Lutador).
+ */
+function formFacts(json, form) {
+  const primary = form.primaryType ?? json.primaryType;
+  let secondary = json.secondaryType;
+  if (Object.hasOwn(form, 'secondaryType')) secondary = form.secondaryType;
+  else if (form.primaryType !== undefined) secondary = null;
+  return {
+    name: `${json.name}-${form.name}`,
+    key: String(form.name)
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, ''),
+    aspects: Array.isArray(form.aspects) ? [...form.aspects].sort() : [],
+    types: [titleCase(primary), titleCase(secondary)].filter(Boolean),
+    baseStats: mapBaseStats(form.baseStats ?? json.baseStats),
+    weightHg: typeof (form.weight ?? json.weight) === 'number' ? (form.weight ?? json.weight) : null,
+    abilities: abilityIds(form.abilities ?? json.abilities),
+  };
+}
+
+/** Extrai só os fatos que afetam o cálculo de dano (forma normal e formas alternativas fora de batalha). */
+export function speciesFacts(json) {
+  const forms = (Array.isArray(json.forms) ? json.forms : [])
+    .filter((form) => typeof form?.name === 'string' && form.name.length > 0 && form.battleOnly !== true)
+    .map((form) => formFacts(json, form));
   return {
     name: typeof json.name === 'string' ? json.name : null,
     implemented: json.implemented === true,
     types: [titleCase(json.primaryType), titleCase(json.secondaryType)].filter(Boolean),
-    baseStats,
+    baseStats: mapBaseStats(json.baseStats),
     weightHg: typeof json.weight === 'number' ? json.weight : null,
-    abilities,
-    forms: Array.isArray(json.forms) ? json.forms.length : 0,
+    abilities: abilityIds(json.abilities),
+    forms,
   };
 }
 
@@ -105,9 +138,23 @@ export function deriveSpeciesCatalog(manifestSpecies, supportedAbilityIds) {
   for (const slug of Object.keys(manifestSpecies).sort()) {
     const entry = manifestSpecies[slug];
     const verdict = speciesStatus(entry, supportedAbilityIds);
-    if (verdict.status === 'included') output[`cobblemon:${slug}`] = {name: entry.facts.name, abilities: verdict.abilities};
+    if (verdict.status !== 'included') continue;
+    const forms = {};
+    for (const form of entry.facts.forms) {
+      const formVerdict = formStatus(form, supportedAbilityIds);
+      if (formVerdict.status === 'included') forms[form.key] = {name: form.name, aspects: form.aspects, abilities: formVerdict.abilities};
+    }
+    output[`cobblemon:${slug}`] = {name: entry.facts.name, abilities: verdict.abilities, forms};
   }
   return output;
+}
+
+/** Regra das formas de uma espécie incluída: dados idênticos aos do calc e ao menos uma habilidade compatível. */
+export function formStatus(form, supportedAbilityIds) {
+  if (!form.calcMatches) return {status: 'excluded', reason: 'form-calc-mismatch'};
+  const abilities = form.abilities.map((id) => `cobblemon:${id}`).filter((id) => supportedAbilityIds.has(id));
+  if (abilities.length === 0) return {status: 'excluded', reason: 'form-no-supported-ability'};
+  return {status: 'included', abilities};
 }
 
 const IGNORED_AST_KEYS = new Set(['start', 'end', 'loc', 'range', 'raw']);
@@ -196,7 +243,7 @@ function scalarValue(node) {
 
 const MOVE_FACT_KEYS = ['name', 'category', 'target', 'basePower', 'critRatio', 'isNonstandard'];
 const MOVE_FLAG_KEYS = ['isZ', 'isMax'];
-const MOVE_PRESENCE_KEYS = ['multihit', 'damage', 'ohko', 'selfdestruct', 'willCrit'];
+const MOVE_PRESENCE_KEYS = ['multihit', 'damage', 'ohko', 'selfdestruct', 'willCrit', 'multiaccuracy'];
 
 /**
  * Lê `var Moves = {...}` do Showdown já compilado e devolve os fatos estruturais de cada golpe
@@ -242,23 +289,66 @@ export function showdownMoveFacts(source) {
   throw new Error('Objeto Moves não encontrado no arquivo do Showdown');
 }
 
-const DERIVABLE_TARGETS = new Set(['normal', 'any', 'allAdjacent', 'allAdjacentFoes', 'adjacentFoe']);
+const DERIVABLE_TARGETS = new Set(['normal', 'any', 'allAdjacent', 'allAdjacentFoes', 'adjacentFoe', 'randomNormal']);
 const EXCLUDED_NONSTANDARD = new Set(['LGPE', 'Gigantamax']);
+
+/** Callbacks que decidem se o golpe pode ser usado (e não quanto ele causa). */
+const USAGE_CALLBACKS = Object.freeze([
+  'onTry',
+  'onTryMove',
+  'onDisableMove',
+  'beforeMoveCallback',
+  'priorityChargeCallback',
+  'onTryImmunity',
+  'onModifyPriority',
+  'onModifyTarget',
+]);
+/** Golpes de uso condicionado que o modelo aceita: o alvo sempre ataca; Fake Out/First Impression só no primeiro turno. */
+export const USAGE_ALLOWLIST = Object.freeze({
+  suckerpunch: 'targetAttacks',
+  thunderclap: 'targetAttacks',
+  fakeout: 'firstTurnOnly',
+  firstimpression: 'firstTurnOnly',
+});
+/** Golpes que só funcionam sob condição do alvo (prioridade) que o modelo não representa, mesmo sem callback de uso. */
+const USAGE_DENYLIST = Object.freeze(['upperhand']);
+/** Callbacks sem efeito no dano que o app calcula (efeitos secundários, mensagens, preparação). */
+const HARMLESS_CALLBACKS = Object.freeze([
+  'onHit',
+  'onAfterHit',
+  'onAfterMove',
+  'onAfterMoveSecondarySelf',
+  'onAfterSubDamage',
+  'onUseMoveMessage',
+  'onMoveFail',
+  'onPrepareHit',
+  'onTryHit',
+  'beforeTurnCallback',
+]);
 
 /**
  * Decide se um golpe entra no catálogo. Golpes da lista-base revisada ficam sempre; os demais só entram se o
- * dano depender só de poder base, tipo, categoria e alvo simples, e se o @smogon/calc e os outros pacotes concordarem.
+ * dano depender só de mecânicas que o @smogon/calc modela, e se o calc e os outros pacotes concordarem.
+ * `calcNamesMove`: o código do calc cita o golpe pelo nome (callbacks de dano só valem então).
+ * `calcDamageProbe`: maior dos 16 rolls de Mew contra Mew; 0 = o calc não modela o dano do golpe.
  * `critRatio` não exclui: o app não pede crítico ao calc.
  */
-export function moveStatus(facts, {isBase, calcHasMove, packDiffers}) {
+export function moveStatus(facts, {isBase, calcHasMove, packDiffers, calcNamesMove = false, calcDamageProbe = null}) {
   if (isBase) return {status: 'base'};
   const exclude = (reason) => ({status: 'excluded', reason});
   if (facts.category !== 'Physical' && facts.category !== 'Special') return exclude('not-damaging');
   if (facts.isZ || facts.isMax || EXCLUDED_NONSTANDARD.has(facts.isNonstandard)) return exclude('nonstandard');
   if (!DERIVABLE_TARGETS.has(facts.target)) return exclude('target');
-  if (facts.multihit || facts.damage || facts.ohko || facts.selfdestruct || facts.willCrit) return exclude('mechanics');
-  if (facts.callbacks.length > 0) return exclude('callbacks');
+  if (facts.ohko || facts.selfdestruct || facts.multiaccuracy) return exclude('mechanics');
+  const id = String(facts.name ?? '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+  const usageCallback = facts.callbacks.some((name) => USAGE_CALLBACKS.includes(name));
+  if ((usageCallback && !Object.hasOwn(USAGE_ALLOWLIST, id)) || USAGE_DENYLIST.includes(id)) return exclude('usage');
+  const damageCallback = facts.callbacks.some((name) => !USAGE_CALLBACKS.includes(name) && !HARMLESS_CALLBACKS.includes(name));
+  if (damageCallback && !calcNamesMove) return exclude('callbacks');
   if (!calcHasMove) return exclude('calc-missing');
+  if (calcDamageProbe === 0) return exclude('calc-zero');
   if (packDiffers) return exclude('pack-override');
   return {status: 'derived'};
 }
@@ -269,8 +359,9 @@ export function deriveMovesCatalog(manifestMoves) {
   for (const id of Object.keys(manifestMoves).sort()) {
     const entry = manifestMoves[id];
     if (entry.status !== 'base' && entry.status !== 'derived') continue;
-    output[`cobblemon:${id}`] = {name: entry.name};
-    output[id] = {name: entry.name};
+    const record = USAGE_ALLOWLIST[id] === 'firstTurnOnly' ? {name: entry.name, firstTurnOnly: true} : {name: entry.name};
+    output[`cobblemon:${id}`] = record;
+    output[id] = {...record};
   }
   return output;
 }

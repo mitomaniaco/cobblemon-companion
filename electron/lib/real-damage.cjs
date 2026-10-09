@@ -6,7 +6,7 @@ const {damageRange, pokemonFromSpec} = require('./calc-profile.cjs');
 const compatibility = require('./combat-compatibility.json');
 
 const CALC_VERSION = '0.11.0';
-const ADAPTER_VERSION = 'real-damage-adapter-v11';
+const ADAPTER_VERSION = 'real-damage-adapter-v12';
 const STATS = Object.freeze(['hp', 'atk', 'def', 'spa', 'spd', 'spe']);
 const SOURCE_KINDS = Object.freeze(['party', 'pc']);
 const ASSUMPTION_KEYS = Object.freeze([
@@ -20,7 +20,7 @@ const ASSUMPTION_KEYS = Object.freeze([
 if (calcPackage.version !== CALC_VERSION || compatibility.ruleset.calcVersion !== CALC_VERSION) {
   throw new Error(`Real damage requires @smogon/calc ${CALC_VERSION} and its matching compatibility catalog`);
 }
-if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v13') {
+if (compatibility.schemaVersion !== 2 || compatibility.ruleset.id !== 'cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v14') {
   throw new Error('Real damage compatibility catalog is not a reviewed version');
 }
 
