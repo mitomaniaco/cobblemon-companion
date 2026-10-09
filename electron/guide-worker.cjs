@@ -25,7 +25,7 @@ async function checkpoint(jobId) {
 }
 
 async function run(message) {
-  const {jobId, snapshot, goal, levelCap, respectLevelCap, request, task} = message;
+  const {jobId, snapshot, goal, levelCap, respectLevelCap, previousTeamUuids, request, task} = message;
   running = jobId;
   try {
     const input = {snapshot, data: loadGuideData(), checkpoint: () => checkpoint(jobId)};
@@ -34,7 +34,14 @@ async function run(message) {
     else if (task === 'evolution-plan') result = await buildEvolutionPlan({...input, request});
     else if (task === 'training-plan') result = await buildTrainingPlan({...input, request});
     else if (task === 'capture-plan') result = await buildCapturePlan({...input, data: {...input.data, spawns: loadSpawnData()}, request});
-    else result = await buildGuide({...input, goal, levelCap: levelCap ?? null, respectLevelCap: respectLevelCap !== false});
+    else
+      result = await buildGuide({
+        ...input,
+        goal,
+        levelCap: levelCap ?? null,
+        respectLevelCap: respectLevelCap !== false,
+        previousTeamUuids: previousTeamUuids ?? [],
+      });
     post({type: 'result', jobId, result});
   } catch (error) {
     if (error?.code === 'CANCELLED') post({type: 'cancelled', jobId});

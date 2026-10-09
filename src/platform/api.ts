@@ -115,6 +115,11 @@ export type GuideRequest = {
    * independente do nível, e `GuideResult.overCap` lista quem está acima do cap para baixar o nível ou guardar no PC (campo ausente = ninguém).
    */
   respectLevelCap?: boolean;
+  /**
+   * UUIDs do time da montagem anterior do mesmo objetivo (até 6). Num empate de cobertura, quem já estava nele fica à frente,
+   * para o time não trocar de membros sem ganho. Ausente = sem preferência.
+   */
+  previousTeamUuids?: string[];
   /** Identificador opcional para cancelar a construção com `cancel(jobId)`. */
   jobId?: string;
 };

@@ -5,6 +5,7 @@ import {
   currentGuideGoal,
   guideBuildCause,
   guideBuildKey,
+  guidePreviousTeamUuids,
   guideRequestLevelCap,
   guideReducer,
   guideSourcesKey,
@@ -88,6 +89,7 @@ export function useGuide(
             goal: currentGoal,
             levelCap: requestCap,
             respectLevelCap: respectRef.current,
+            previousTeamUuids: guidePreviousTeamUuids(stateRef.current.result, currentGoal),
             jobId,
           }),
         )

@@ -24,6 +24,8 @@ export type GuideState = {
   trainers: {status: 'idle' | 'loading' | 'ready' | 'failed'; items: GuideTrainer[]; error: string | null};
   phase: 'idle' | 'building' | 'ready' | 'error' | 'canceled';
   result: GuideResult | null;
+  /** O `result` anterior à última montagem bem-sucedida; base do aviso "o time mudou". */
+  previousResult: GuideResult | null;
   /** Chave das fontes (hashes do save) com que `result` foi montado. */
   resultSources: string | null;
   requestId: number;
@@ -58,6 +60,7 @@ export function createGuideState(): GuideState {
     trainers: {status: 'idle', items: [], error: null},
     phase: 'idle',
     result: null,
+    previousResult: null,
     resultSources: null,
     requestId: 0,
     buildCause: 'initial',
@@ -143,6 +146,7 @@ export function guideReducer(state: GuideState, action: GuideAction): GuideState
       return {
         ...state,
         phase: 'ready',
+        previousResult: state.result,
         result: action.result,
         resultSources: action.sources,
         noticeSeq,
@@ -238,4 +242,36 @@ export function guideCapWarnings(input: {
     warnings.push({uuid: individual.uuid, level: individual.level, text});
   }
   return warnings;
+}
+
+function sameGoal(left: GuideGoal, right: GuideGoal): boolean {
+  return left.kind === right.kind && (left.kind === 'pve' || (right.kind === 'trainer' && left.trainerId === right.trainerId));
+}
+
+/** UUIDs do time da montagem anterior, só se ela foi para o mesmo objetivo; senão não há preferência. */
+export function guidePreviousTeamUuids(previous: Pick<GuideResult, 'goal' | 'team'> | null, goal: GuideGoal): string[] {
+  return previous && sameGoal(previous.goal, goal) ? previous.team.map((member) => member.uuid) : [];
+}
+
+const REPLACED_REASON = 'outra escolha cobre mais adversários ou com mais margem neste cálculo';
+
+/**
+ * O que mudou no time entre duas montagens do mesmo objetivo. Quem saiu traz o motivo: a exclusão registrada pelo motor
+ * (por exemplo, "acima do level cap (N)") ou a explicação genérica de que outra escolha cobre mais. `null` sem montagem anterior
+ * ou com objetivo diferente.
+ */
+export function guideTeamChanges(
+  previous: GuideResult | null,
+  next: GuideResult,
+): {left: Array<{uuid: string; reason: string}>; entered: string[]} | null {
+  if (!previous || !sameGoal(previous.goal, next.goal)) return null;
+  const nextUuids = new Set(next.team.map((member) => member.uuid));
+  const previousUuids = new Set(previous.team.map((member) => member.uuid));
+  const excludedReason = new Map(next.excluded.map((entry) => [entry.uuid, entry.reason]));
+  return {
+    left: previous.team
+      .filter((member) => !nextUuids.has(member.uuid))
+      .map((member) => ({uuid: member.uuid, reason: excludedReason.get(member.uuid) ?? REPLACED_REASON})),
+    entered: next.team.filter((member) => !previousUuids.has(member.uuid)).map((member) => member.uuid),
+  };
 }
