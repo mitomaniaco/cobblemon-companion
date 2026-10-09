@@ -191,9 +191,10 @@ export type BattlePlanEntry = {
   ability: string;
   /** Alternativas do `heldItem` do adversário. Várias alternativas ficam todas listadas; o plano nunca escolhe uma. */
   heldItemAlternatives: string[];
-  /** `bloqueado`: alguma mecânica deste confronto está fora do catálogo ou do adaptador; `blockedReason` diz qual. */
-  status: 'planejado' | 'bloqueado';
+  /** `bloqueado`: alguma mecânica deste confronto está fora do catálogo ou do adaptador; `blockedReason` diz qual. `parcial`: os números valem só se o adversário não segurar o item fora do adaptador (`partialReason`). */
+  status: 'planejado' | 'parcial' | 'bloqueado';
   blockedReason: string | null;
+  partialReason: string | null;
   /** Quem responde a este adversário, e com qual golpe. Nulo quando o confronto está bloqueado. */
   responder: {uuid: string; speciesId: string; moveId: string} | null;
   /** O que o respondedor causa ao adversário e o que recebe do melhor golpe dele. Nulos quando bloqueado. */
@@ -205,21 +206,6 @@ export type BattlePlanEntry = {
   risks: BattlePlanRisk[];
 };
 
-export type BattlePlanStep = {
-  step: number;
-  opponentId: string;
-  opponentSpeciesId: string;
-  opponentLevel: number;
-  memberUuid: string;
-  memberSpeciesId: string;
-  action: 'iniciar' | 'manter' | 'trocar' | 'entrar-apos-ko';
-  hpBeforePercent: number;
-  hpAfterPercent: number;
-  moveId: string;
-  damageDealtPercent: number;
-  turnsTaken: number;
-  opponentDefeated: boolean;
-};
 export type BattlePlanResult = {
   /** Só com `respectLevelCap: false` e cap conhecido: membros do plano acima do cap (baixar o nível ou guardar no PC antes da luta). Ausente = nenhum. */
   overCap?: OverCapMember[];
@@ -229,10 +215,6 @@ export type BattlePlanResult = {
   scopeReason: string | null;
   lead: {uuid: string; speciesId: string; reason: string} | null;
   entries: BattlePlanEntry[];
-  /** Sequência simulada da batalha passo a passo com fluxo de HP e trocas. */
-  sequence?: BattlePlanStep[];
-  /** Estimativa de HP restante (%) de cada membro da equipe ao final do combate. */
-  teamRemainingHp?: Record<string, number>;
   /** Riscos do treinador como um todo: bolsa × `maxItemUses`, IA não modelada. */
   trainerRisks: BattlePlanRisk[];
   assumptions: string[];

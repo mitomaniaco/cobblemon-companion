@@ -3,6 +3,7 @@
 const calc = require('@smogon/calc');
 const {damageRange, pokemonFromSpec} = require('../calc-profile.cjs');
 const {COMPATIBILITY, baseActorProfile} = require('../real-damage.cjs');
+const {resolveOpponentSpecies} = require('../species-forms.cjs');
 const {averagePercent, effectiveSpeed, matchupOutcome} = require('./engine.cjs');
 const {lookup, namedFromCatalog} = require('./opponents.cjs');
 
@@ -12,47 +13,46 @@ const MAX_TEAM = 6;
 const MAX_MOVES = 4;
 const DOUBLES_REASON = 'batalha em dupla, fora do escopo';
 const LIMITS = Object.freeze([
-  'Singles; sem simulação de turnos, IA do RCT nem golpes de status; HP e PP cheios; sem status; campo neutro; sem críticos ou precisão.',
+  'Singles; IA do RCT não modelada; HP e PP cheios no início; sem status, críticos ou precisão; clima, terreno e Intimidate de habilidade de entrada são modelados; itens alternativos do adversário: vale o pior caso entre os catalogados.',
   'O plano mostra números e riscos declarados; não estima chance de resultado.',
 ]);
 
-const ABILITY_TERRAINS = Object.freeze({
-  electricsurge: 'Electric',
-  hadronengine: 'Electric',
-  grassysurge: 'Grassy',
-  seedsower: 'Grassy',
-  psychicsurge: 'Psychic',
-  mistysurge: 'Misty',
+/** Habilidade → clima/terreno do calc e o nome em português para o jogador. */
+const WEATHER_ABILITIES = Object.freeze({
+  drizzle: ['Rain', 'Chuva'],
+  drought: ['Sun', 'Sol forte'],
+  orichalcumpulse: ['Sun', 'Sol forte'],
+  sandstream: ['Sand', 'Tempestade de Areia'],
+  snowwarning: ['Snow', 'Neve'],
+  primordialsea: ['Heavy Rain', 'Chuva Pesada'],
+  desolateland: ['Harsh Sunshine', 'Sol Extremamente Forte'],
+  deltastream: ['Strong Winds', 'Ventos Fortes'],
 });
-const ABILITY_WEATHERS = Object.freeze({
-  drizzle: 'Rain',
-  primordialsea: 'Rain',
-  drought: 'Sun',
-  desolateland: 'Sun',
-  orichalcumpulse: 'Sun',
-  sandstream: 'Sand',
-  snowwarning: 'Snow',
+const TERRAIN_ABILITIES = Object.freeze({
+  electricsurge: ['Electric', 'Terreno Elétrico'],
+  hadronengine: ['Electric', 'Terreno Elétrico'],
+  grassysurge: ['Grassy', 'Terreno de Grama'],
+  psychicsurge: ['Psychic', 'Terreno Psíquico'],
+  mistysurge: ['Misty', 'Terreno Enevoado'],
 });
-const ENTRY_RISK_ABILITIES = Object.freeze({
-  electricsurge: 'ativa Terreno Elétrico na entrada',
-  hadronengine: 'ativa Terreno Elétrico na entrada',
-  grassysurge: 'ativa Terreno de Grama na entrada',
-  seedsower: 'ativa Terreno de Grama ao sofrer dano',
-  psychicsurge: 'ativa Terreno Psíquico na entrada',
-  mistysurge: 'ativa Terreno Enevoado na entrada',
-  drizzle: 'ativa Chuva na entrada',
-  primordialsea: 'ativa Mar Primordial na entrada',
-  drought: 'ativa Sol Forte na entrada',
-  desolateland: 'ativa Sol Extremamente Forte na entrada',
-  orichalcumpulse: 'ativa Sol Forte na entrada',
-  sandstream: 'ativa Tempestade de Areia na entrada',
-  snowwarning: 'ativa Neve na entrada',
-  intimidate: 'reduz o Ataque na entrada com Intimidate (-1 Atk)',
-  download: 'ajusta os atributos na entrada com Download',
-  trace: 'copia a habilidade do adversário na entrada',
-  imposter: 'transforma-se no adversário na entrada',
-  neutralizinggas: 'anula as habilidades em campo',
+/** Habilidades de entrada que o adaptador não modela: o confronto fica bloqueado em vez de calculado errado. */
+const UNMODELED_ENTRY_ABILITIES = Object.freeze({
+  trace: 'cópia de habilidade',
+  imposter: 'transformação',
+  neutralizinggas: 'supressão de habilidades',
+  seedsower: 'terreno de grama ao sofrer dano',
 });
+/** Alvos que não sofrem a queda de Ataque do Intimidate. */
+const INTIMIDATE_IMMUNE = new Set([
+  'clearbody',
+  'hypercutter',
+  'whitesmoke',
+  'fullmetalbody',
+  'innerfocus',
+  'oblivious',
+  'owntempo',
+  'scrappy',
+]);
 const IMMUNITY_ABILITIES = Object.freeze({
   voltabsorb: 'Electric',
   lightningrod: 'Electric',
@@ -100,34 +100,6 @@ function calcMove(moveId) {
   return generation.moves.get(calc.toID(moveId.replace(/^[^:]+:/, '')));
 }
 const priorityOf = (moveId) => calcMove(moveId)?.priority ?? 0;
-const moveNameOf = (moveId) => COMPATIBILITY.moves[moveId]?.name ?? calcMove(moveId)?.name ?? titleCase(moveId);
-
-function resolveCalcSpeciesName(baseName, aspects = []) {
-  if (!aspects || aspects.length === 0) {
-    if (baseName.toLowerCase() === 'aegislash') return 'Aegislash-Shield';
-    return baseName;
-  }
-  const suffixMap = {
-    alolan: '-Alola',
-    alola: '-Alola',
-    galarian: '-Galar',
-    galar: '-Galar',
-    hisuian: '-Hisui',
-    hisui: '-Hisui',
-    paldean: '-Paldea',
-    paldea: '-Paldea',
-  };
-  for (const aspect of aspects) {
-    const suffix = suffixMap[aspect.toLowerCase()];
-    if (suffix) {
-      const candidate = baseName + suffix;
-      if (generation.species.get(calc.toID(candidate))) return candidate;
-      if (generation.species.get(calc.toID(`${candidate}-Combat`))) return `${candidate}-Combat`;
-    }
-  }
-  if (baseName.toLowerCase() === 'aegislash') return 'Aegislash-Shield';
-  return baseName;
-}
 
 // --- Time do jogador ---------------------------------------------------------------------------------------------
 
@@ -154,9 +126,7 @@ function buildTeam(request, individuals, assumptions) {
     } catch (error) {
       throw new Error(`membro ${member.uuid} não é elegível: ${error.message.replace(/^Cálculo real: /, '')}`);
     }
-    const moveIds = [...new Set(member.moveIds ?? [])]
-      .filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) || (calcMove(id)?.category && calcMove(id).category !== 'Status'))
-      .slice(0, MAX_MOVES);
+    const moveIds = [...new Set(member.moveIds ?? [])].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id)).slice(0, MAX_MOVES);
     if (moveIds.length === 0) throw new Error(`membro ${member.uuid} não tem golpes do catálogo compatível`);
     const pokemon = pokemonFromSpec({...profile, item: itemCalcName(member.itemId)});
     return {uuid: member.uuid, speciesId: individual.speciesId, level: individual.level, pokemon, moveIds};
@@ -183,70 +153,79 @@ function buildTeam(request, individuals, assumptions) {
 
 // --- Adversário --------------------------------------------------------------------------------------------------
 
-/** Constrói o adversário ou lista o que bloqueia este confronto. IV ausente vale 31 e EV ausente vale 0. */
+/**
+ * Constrói o adversário ou lista o que bloqueia este confronto. IV ausente vale 31 e EV ausente vale 0.
+ * Tudo vem do catálogo versionado: espécie/forma, habilidade, natureza e golpes de dano. Fora dele o confronto bloqueia.
+ * `variants` são os Pokémon por item alternativo catalogado (o RCT sorteia um deles).
+ */
 function buildOpponent(member, index, trainerId) {
   const blockers = [];
-  const baseSlug = member.speciesId.replace(/^[^:]+:/, '');
-  let species = lookup(COMPATIBILITY.species, member.speciesId);
-  if (!species) {
-    const cs =
-      generation.species.get(calc.toID(baseSlug)) ||
-      (baseSlug.toLowerCase() === 'aegislash' ? generation.species.get('aegislashshield') : null);
-    if (cs) species = {name: cs.name};
-    else blockers.push(`espécie ${speciesName(member.speciesId)} fora do catálogo compatível`);
+  const resolved = resolveOpponentSpecies(member.speciesId, member.aspects);
+  const label = resolved.ok ? resolved.name : speciesName(member.speciesId);
+  if (!resolved.ok) blockers.push(`${resolved.reason} de ${label}`);
+
+  const abilityName = namedFromCatalog(COMPATIBILITY.abilities, member.ability);
+  const abilityKey = abilityName ? calc.toID(abilityName) : '';
+  if (!abilityName) blockers.push(`habilidade ${member.ability} fora do catálogo compatível`);
+  else if (Object.hasOwn(UNMODELED_ENTRY_ABILITIES, abilityKey)) {
+    blockers.push(`habilidade ${abilityName}: ${UNMODELED_ENTRY_ABILITIES[abilityKey]}, fora do adaptador`);
   }
-  const calcSpeciesName = species ? resolveCalcSpeciesName(species.name, member.aspects) : null;
-  const label = species
-    ? calcSpeciesName !== species.name
-      ? `${species.name} (${member.aspects.map(titleCase).join(', ')})`
-      : species.name
-    : speciesName(member.speciesId);
 
-  const ability = namedFromCatalog(COMPATIBILITY.abilities, member.ability) || generation.abilities.get(calc.toID(member.ability))?.name;
-  if (!ability) blockers.push(`habilidade ${member.ability} fora do catálogo compatível`);
-
-  const nature =
-    namedFromCatalog(COMPATIBILITY.natures, member.nature) || generation.natures.get(calc.toID(member.nature))?.name || 'Hardy';
+  const nature = namedFromCatalog(COMPATIBILITY.natures, member.nature);
+  if (!nature) blockers.push(`natureza ${member.nature} fora do catálogo compatível`);
 
   const alternatives = Array.isArray(member.heldItem) ? member.heldItem : member.heldItem ? [member.heldItem] : [];
+  const modeled = alternatives.filter((id) => itemKey(id) !== null);
+  const unmodeled = alternatives.filter((id) => itemKey(id) === null);
+  let partial = null;
+  if (alternatives.length > 0 && modeled.length === 0) {
+    blockers.push(`${joinOr(unmodeled.map(itemLabel))}: item fora do adaptador (Mega Evolução, Cristal Z ou item não catalogado)`);
+  } else if (unmodeled.length > 0) {
+    partial = `Se segurar ${joinOr(unmodeled.map(itemLabel))}, os números não valem (fora do adaptador).`;
+  }
+
   const moves = [];
+  const firstTurnMoves = [];
   const statusMoves = [];
   for (const moveId of member.moves ?? []) {
-    if (Object.hasOwn(COMPATIBILITY.moves, moveId)) {
-      moves.push({id: moveId, name: COMPATIBILITY.moves[moveId].name});
+    const cataloged = lookup(COMPATIBILITY.moves, moveId);
+    if (cataloged) {
+      (cataloged.firstTurnOnly ? firstTurnMoves : moves).push({id: moveId, name: cataloged.name});
+    } else if (calcMove(moveId)?.category === 'Status') {
+      statusMoves.push({id: moveId, name: calcMove(moveId).name});
     } else {
-      const cm = calcMove(moveId);
-      if (cm?.category && cm.category !== 'Status') {
-        moves.push({id: moveId, name: cm.name});
-      } else if (cm?.category === 'Status') {
-        statusMoves.push({id: moveId, name: cm.name});
-      } else {
-        blockers.push(`golpe ${titleCase(moveId)} desconhecido`);
-      }
+      blockers.push(`golpe de dano ${calcMove(moveId)?.name ?? titleCase(moveId)} fora do catálogo compatível`);
     }
   }
-  const base = {
+
+  const opponent = {
     id: `${trainerId}#${index}`,
     speciesId: member.speciesId,
     level: member.level,
     abilityId: member.ability,
+    abilityName: abilityName ?? '',
+    abilityKey,
     alternatives,
     moves,
+    firstTurnMoves,
     statusMoves,
     label,
-    pokemon: null,
+    partial,
+    variants: [],
     blockers,
   };
-  if (blockers.length > 0) return base;
+  if (blockers.length > 0) return opponent;
   const ivs = Object.fromEntries(STATS.map((stat) => [stat, member.ivs?.[stat] ?? 31]));
   const evs = Object.fromEntries(STATS.map((stat) => [stat, member.evs?.[stat] ?? 0]));
-  const item = alternatives.length === 1 ? itemCalcName(alternatives[0]) : '';
   try {
-    base.pokemon = pokemonFromSpec({species: {name: calcSpeciesName}, level: member.level, nature, ability, ivs, evs, item});
+    const items = modeled.length > 0 ? modeled.map(itemCalcName) : [''];
+    opponent.variants = items.map((item) =>
+      pokemonFromSpec({species: {name: resolved.name}, level: member.level, nature, ability: abilityName, ivs, evs, item}),
+    );
   } catch (error) {
-    base.blockers.push(`o motor de cálculo recusou o adversário (${error.message})`);
+    opponent.blockers.push(`o motor de cálculo recusou o adversário (${error.message})`);
   }
-  return base;
+  return opponent;
 }
 
 function opponentRisks(opponent, dealt, firstToAct) {
@@ -254,18 +233,22 @@ function opponentRisks(opponent, dealt, firstToAct) {
   const {alternatives, label} = opponent;
   const multi = alternatives.length > 1;
   const hedge = (id) => (multi ? ` (se segurar ${itemLabel(id)})` : '');
-  const modded = alternatives.find((id) => id.startsWith('mega_showdown:'));
-  if (modded) {
-    risks.push({kind: 'item', text: `${label} pode portar ${itemLabel(modded)} (Mega Evolução ou Cristal Z).`});
+  const [, weatherLabel] = WEATHER_ABILITIES[opponent.abilityKey] ?? [];
+  const [, terrainLabel] = TERRAIN_ABILITIES[opponent.abilityKey] ?? [];
+  for (const effect of [weatherLabel, terrainLabel]) {
+    if (effect) risks.push({kind: 'habilidade', text: `${label} ativa ${effect} na entrada; o dano já considera isso.`});
   }
-  const entryRisk = ENTRY_RISK_ABILITIES[opponent.abilityId];
-  if (entryRisk) {
-    risks.push({kind: 'habilidade', text: `${label} ${entryRisk}.`});
+  if (opponent.abilityKey === 'intimidate') {
+    risks.push({kind: 'habilidade', text: `${label} usa Intimidate na entrada; o dano já considera a queda de Ataque.`});
   }
-  for (const sm of opponent.statusMoves ?? []) {
-    risks.push({kind: 'golpe', text: `${label} conhece o golpe de status ${sm.name}.`});
+  for (const move of opponent.firstTurnMoves) {
+    risks.push({kind: 'golpe', text: `${label} pode usar ${move.name} só no primeiro turno.`});
   }
-  const sturdy = opponent.abilityId === 'sturdy';
+  if (opponent.statusMoves.length > 0) {
+    const names = opponent.statusMoves.map((move) => move.name);
+    risks.push({kind: 'golpe', text: `${label} também tem ${joinOr(names)} (golpes de status não entram nos números).`});
+  }
+  const sturdy = opponent.abilityKey === 'sturdy';
   const sash = alternatives.includes('cobblemon:focus_sash');
   const custap = alternatives.includes('cobblemon:custap_berry');
   if (sturdy || sash) {
@@ -289,12 +272,12 @@ function opponentRisks(opponent, dealt, firstToAct) {
   if (multi) {
     risks.push({
       kind: 'item',
-      text: `${label} pode segurar ${joinOr(alternatives.map(itemLabel))}: o plano não escolhe um item, e o dano recebido não conta o item do adversário.`,
+      text: `${label} pode segurar ${joinOr(alternatives.map(itemLabel))}: o plano usa o pior caso entre os itens catalogados.`,
     });
   }
-  const immunity = lookup(IMMUNITY_ABILITIES, opponent.abilityId);
+  const immunity = lookup(IMMUNITY_ABILITIES, opponent.abilityKey);
   if (immunity && dealt && dealt.max === 0) {
-    risks.push({kind: 'habilidade', text: `${label} anula golpes do tipo ${immunity} com ${titleCase(opponent.abilityId)}.`});
+    risks.push({kind: 'habilidade', text: `${label} anula golpes do tipo ${immunity} com ${opponent.abilityName}.`});
   }
   if (firstToAct === 'incerto' && alternatives.some((id) => SPEED_ITEMS.includes(id)) && risks.length === 0) {
     risks.push({kind: 'item', text: `${label} pode alterar a ordem de ação com o item.`});
@@ -304,10 +287,39 @@ function opponentRisks(opponent, dealt, firstToAct) {
 
 // --- Confrontos --------------------------------------------------------------------------------------------------
 
-function battleFieldFor(oppAbility, playAbility) {
-  const terrain = ABILITY_TERRAINS[oppAbility] ?? (playAbility ? ABILITY_TERRAINS[playAbility] : undefined);
-  const weather = ABILITY_WEATHERS[oppAbility] ?? (playAbility ? ABILITY_WEATHERS[playAbility] : undefined);
-  return new calc.Field({terrain, weather});
+/** Clima e terreno de entrada dos dois lados; dois efeitos diferentes da mesma classe ficam em disputa (depende de quem entra por último). */
+function fieldFor(opponentKey, opponentName, memberKey, memberName) {
+  const pick = (table, kind) => {
+    const ours = table[memberKey];
+    const theirs = table[opponentKey];
+    if (ours && theirs && ours[0] !== theirs[0]) {
+      return {conflict: `${kind} em disputa entre ${opponentName} e ${memberName}: depende de quem entra por último`};
+    }
+    return {value: (theirs ?? ours)?.[0]};
+  };
+  const weather = pick(WEATHER_ABILITIES, 'clima');
+  if (weather.conflict) return weather;
+  const terrain = pick(TERRAIN_ABILITIES, 'terreno');
+  if (terrain.conflict) return terrain;
+  return {field: new calc.Field({weather: weather.value, terrain: terrain.value})};
+}
+
+function boosted(pokemon, deltas) {
+  const copy = pokemon.clone();
+  for (const [stat, delta] of Object.entries(deltas)) {
+    copy.boosts[stat] = Math.max(-6, Math.min(6, (copy.boosts[stat] || 0) + delta));
+  }
+  return copy;
+}
+
+/** Intimidate de `source` sobre `target`. Devolve os dois Pokémon (clonados quando mudam). */
+function applyIntimidate(target, source) {
+  const key = calc.toID(target.ability ?? '');
+  if (INTIMIDATE_IMMUNE.has(key)) return {target, source};
+  if (key === 'guarddog' || key === 'contrary' || key === 'defiant') return {target: boosted(target, {atk: 1}), source};
+  if (key === 'competitive') return {target: boosted(target, {atk: -1, spa: 2}), source};
+  if (key === 'mirrorarmor') return {target, source: boosted(source, {atk: -1})};
+  return {target: boosted(target, {atk: -1}), source};
 }
 
 function bestDamaging(attacker, defender, moves, field) {
@@ -319,30 +331,35 @@ function bestDamaging(attacker, defender, moves, field) {
   return best;
 }
 
+/**
+ * Confronto de um membro contra o adversário, na pior variante de item para o jogador (menor pontuação; empate: maior
+ * dano recebido). Devolve `{conflict}` quando clima ou terreno de entrada estão em disputa.
+ */
 function evaluateMember(member, opponent) {
-  const field = battleFieldFor(opponent.abilityId, member.pokemon.ability);
-  let effectivePlayer = member.pokemon;
-  let effectiveOpponent = opponent.pokemon;
-
-  if (opponent.abilityId === 'intimidate') {
-    effectivePlayer = member.pokemon.clone();
-    effectivePlayer.boosts.atk = Math.max(-6, Math.min(6, (effectivePlayer.boosts.atk || 0) - 1));
+  const memberKey = calc.toID(member.pokemon.ability ?? '');
+  const fieldResult = fieldFor(opponent.abilityKey, opponent.abilityName, memberKey, member.pokemon.ability);
+  if (fieldResult.conflict) return {member, conflict: fieldResult.conflict};
+  const {field} = fieldResult;
+  const ourMoves = member.moveIds.map((id) => ({id, name: COMPATIBILITY.moves[id].name}));
+  let worst = null;
+  for (const variant of opponent.variants) {
+    let attacker = member.pokemon;
+    let defender = variant;
+    if (opponent.abilityKey === 'intimidate') ({target: attacker, source: defender} = applyIntimidate(attacker, defender));
+    if (memberKey === 'intimidate') ({target: defender, source: attacker} = applyIntimidate(defender, attacker));
+    const ours = bestDamaging(attacker, defender, ourMoves, field);
+    const theirs = bestDamaging(defender, attacker, opponent.moves, field);
+    const outcome = matchupOutcome(ours?.percent ?? 0, theirs?.percent ?? 0, effectiveSpeed(attacker), effectiveSpeed(defender));
+    const candidate = {member, ours, theirs, outcome, field, attacker, defender};
+    if (
+      !worst ||
+      candidate.outcome.score < worst.outcome.score ||
+      (candidate.outcome.score === worst.outcome.score && (candidate.theirs?.percent ?? 0) > (worst.theirs?.percent ?? 0))
+    ) {
+      worst = candidate;
+    }
   }
-  if (member.pokemon.ability === 'intimidate') {
-    effectiveOpponent = opponent.pokemon.clone();
-    effectiveOpponent.boosts.atk = Math.max(-6, Math.min(6, (effectiveOpponent.boosts.atk || 0) - 1));
-  }
-
-  const ourMoves = member.moveIds.map((id) => ({id, name: moveNameOf(id)}));
-  const ours = bestDamaging(effectivePlayer, effectiveOpponent, ourMoves, field);
-  const theirs = bestDamaging(effectiveOpponent, effectivePlayer, opponent.moves, field);
-  const outcome = matchupOutcome(
-    ours?.percent ?? 0,
-    theirs?.percent ?? 0,
-    effectiveSpeed(effectivePlayer),
-    effectiveSpeed(effectiveOpponent),
-  );
-  return {member, ours, theirs, outcome, field, effectivePlayer, effectiveOpponent};
+  return worst;
 }
 
 function compareEvaluations(left, right) {
@@ -360,11 +377,11 @@ function compareEvaluations(left, right) {
 }
 
 function actOrder(evaluation, opponent) {
-  const {member, ours, theirs} = evaluation;
+  const {member, ours, theirs, attacker, defender} = evaluation;
   const ourPriority = priorityOf(ours.id);
   const theirPriority = theirs ? priorityOf(theirs.id) : 0;
-  const ourSpeed = effectiveSpeed(member.pokemon);
-  const theirSpeed = effectiveSpeed(opponent.pokemon);
+  const ourSpeed = effectiveSpeed(attacker);
+  const theirSpeed = effectiveSpeed(defender);
   const ourName = speciesName(member.speciesId);
   let first;
   let reason;
@@ -398,38 +415,50 @@ function planEntry(opponent, team, trainerId) {
     ability: opponent.abilityId,
     heldItemAlternatives: [...opponent.alternatives],
   };
-  if (opponent.blockers.length > 0) {
-    return {
-      ...header,
-      status: 'bloqueado',
-      blockedReason: opponent.blockers.join('; '),
-      responder: null,
-      dealt: null,
-      received: null,
-      firstToAct: null,
-      actReason: null,
-      risks: opponentRisks(opponent, null, null),
-      evaluation: null,
-      trainerId,
-    };
+  const blocked = (reason, risks) => ({
+    ...header,
+    status: 'bloqueado',
+    blockedReason: reason,
+    partialReason: null,
+    responder: null,
+    dealt: null,
+    received: null,
+    firstToAct: null,
+    actReason: null,
+    risks,
+    evaluation: null,
+    trainerId,
+  });
+  if (opponent.blockers.length > 0) return blocked(opponent.blockers.join('; '), opponentRisks(opponent, null, null));
+
+  const evaluated = team.map((member) => evaluateMember(member, opponent));
+  const conflicts = evaluated.filter((evaluation) => evaluation.conflict);
+  const evaluations = evaluated.filter((evaluation) => !evaluation.conflict).sort(compareEvaluations);
+  const conflictRisks = conflicts.map((evaluation) => ({
+    kind: 'habilidade',
+    text: `${speciesName(evaluation.member.speciesId)} não foi avaliado contra ${opponent.label}: ${evaluation.conflict}.`,
+  }));
+  if (evaluations.length === 0) {
+    const reasons = [...new Set(conflicts.map((evaluation) => evaluation.conflict))];
+    return blocked(reasons.join('; '), [...opponentRisks(opponent, null, null), ...conflictRisks]);
   }
-  const evaluations = team.map((member) => evaluateMember(member, opponent)).sort(compareEvaluations);
   const best = evaluations[0];
-  const dealt = {moveId: best.ours.id, ...damageRange(best.effectivePlayer, best.effectiveOpponent, best.ours.name, best.field)};
+  const dealt = {moveId: best.ours.id, ...damageRange(best.attacker, best.defender, best.ours.name, best.field)};
   const received = best.theirs
-    ? {moveId: best.theirs.id, ...damageRange(best.effectiveOpponent, best.effectivePlayer, best.theirs.name, best.field)}
+    ? {moveId: best.theirs.id, ...damageRange(best.defender, best.attacker, best.theirs.name, best.field)}
     : null;
   const order = actOrder(best, opponent);
   return {
     ...header,
-    status: 'planejado',
+    status: opponent.partial ? 'parcial' : 'planejado',
     blockedReason: null,
+    partialReason: opponent.partial,
     responder: {uuid: best.member.uuid, speciesId: best.member.speciesId, moveId: best.ours.id},
     dealt,
     received,
     firstToAct: order.first,
     actReason: order.reason,
-    risks: opponentRisks(opponent, dealt, order.first),
+    risks: [...opponentRisks(opponent, dealt, order.first), ...conflictRisks],
     evaluation: best,
     opponent,
     trainerId,
@@ -453,145 +482,24 @@ function trainerRisks(trainer) {
   return {bag, maxItemUses, risks};
 }
 
+/** O lead é o respondedor do primeiro adversário (o RCT abre com o slot 0); com ele bloqueado não há sugestão. */
 function pickLead(entries, team) {
-  const slotZero = entries[0];
-  if (!slotZero?.responder) return null;
-  const planned = entries.filter((entry) => entry.status === 'planejado' && entry.evaluation);
-  const advantages = (uuid) => planned.filter((entry) => entry.evaluation.member.uuid === uuid && entry.evaluation.outcome.wins).length;
-  const member = team.find((candidate) => candidate.uuid === slotZero.responder.uuid);
+  const first = entries[0];
+  if (!first || first.status === 'bloqueado' || !first.responder) return null;
+  const member = team.find((candidate) => candidate.uuid === first.responder.uuid);
   if (!member) return null;
-  const wins = advantages(member.uuid);
+  const planned = entries.filter((entry) => entry.status !== 'bloqueado' && entry.evaluation);
+  const wins = planned.filter((entry) => entry.evaluation.member.uuid === member.uuid && entry.evaluation.outcome.wins).length;
   return {
     uuid: member.uuid,
     speciesId: member.speciesId,
-    reason: `${speciesName(member.speciesId)} abre porque é o melhor respondedor ao primeiro adversário do plano (${speciesName(slotZero.speciesId)}) e responde com vantagem de turnos a ${wins} de ${planned.length} adversários planejados.`,
+    reason: `${speciesName(member.speciesId)} abre contra o primeiro adversário (${speciesName(first.speciesId)}) e responde com vantagem de turnos a ${wins} de ${planned.length} adversários planejados.`,
   };
 }
 
 /**
- * Simulação sequencial de batalha completa (6v6): rastreia dano acumulado,
- * HP residual transportado de confronto a confronto, trocas e KO replacements.
- */
-function simulateTeamBattle(team, entries, lead) {
-  const teamRemainingHp = Object.fromEntries(team.map((m) => [m.uuid, 100]));
-  const sequence = [];
-
-  const plannedEntries = entries.filter((entry) => entry.status === 'planejado' && entry.evaluation && entry.opponent);
-  if (plannedEntries.length === 0) {
-    return {sequence, teamRemainingHp};
-  }
-
-  let currentMemberUuid = lead?.uuid || team[0].uuid;
-
-  for (let i = 0; i < plannedEntries.length; i++) {
-    const entry = plannedEntries[i];
-    const opponent = entry.opponent;
-
-    const evals = new Map(team.map((m) => [m.uuid, evaluateMember(m, opponent)]));
-    const living = team.filter((m) => teamRemainingHp[m.uuid] > 0);
-    if (living.length === 0) break;
-
-    let activeMemberUuid = currentMemberUuid;
-    let action = 'manter';
-
-    if (i === 0) {
-      action = 'iniciar';
-      activeMemberUuid = currentMemberUuid;
-    } else if (teamRemainingHp[currentMemberUuid] <= 0) {
-      action = 'entrar-apos-ko';
-      const bestLiving = [...living].sort((a, b) => compareEvaluations(evals.get(a.uuid), evals.get(b.uuid)))[0];
-      activeMemberUuid = bestLiving.uuid;
-    } else {
-      const currentEval = evals.get(currentMemberUuid);
-      const bestLiving = [...living].sort((a, b) => compareEvaluations(evals.get(a.uuid), evals.get(b.uuid)))[0];
-      const bestLivingEval = evals.get(bestLiving.uuid);
-
-      const shouldSwitch =
-        bestLiving.uuid !== currentMemberUuid &&
-        (!currentEval.outcome.wins ||
-          currentEval.outcome.ourTurns > bestLivingEval.outcome.ourTurns ||
-          (teamRemainingHp[currentMemberUuid] <= 30 && teamRemainingHp[bestLiving.uuid] > 50));
-
-      if (shouldSwitch) {
-        action = 'trocar';
-        activeMemberUuid = bestLiving.uuid;
-      } else {
-        action = 'manter';
-        activeMemberUuid = currentMemberUuid;
-      }
-    }
-
-    currentMemberUuid = activeMemberUuid;
-    const member = team.find((m) => m.uuid === activeMemberUuid);
-    const evaluation = evals.get(activeMemberUuid);
-    const order = actOrder(evaluation, opponent);
-
-    const hpBefore = teamRemainingHp[activeMemberUuid];
-    const ourTurns = Math.max(1, evaluation.outcome.ourTurns || 1);
-    const theirHit = evaluation.theirs?.percent ?? 0;
-
-    let opponentHits = 0;
-    if (order.first === 'jogador') {
-      opponentHits = Math.max(0, ourTurns - 1);
-    } else {
-      opponentHits = ourTurns;
-    }
-
-    const damageTaken = opponentHits * theirHit;
-    const hpAfter = Math.max(0, Math.round((hpBefore - damageTaken) * 10) / 10);
-    teamRemainingHp[activeMemberUuid] = hpAfter;
-
-    const opponentDefeated = hpAfter > 0 || hpBefore > damageTaken;
-
-    sequence.push({
-      step: sequence.length + 1,
-      opponentId: entry.opponentId,
-      opponentSpeciesId: entry.speciesId,
-      opponentLevel: entry.level,
-      memberUuid: member.uuid,
-      memberSpeciesId: member.speciesId,
-      action,
-      hpBeforePercent: hpBefore,
-      hpAfterPercent: hpAfter,
-      moveId: evaluation.ours ? evaluation.ours.id : member.moveIds[0],
-      damageDealtPercent: Math.min(100, Math.round((evaluation.ours?.percent ?? 0) * ourTurns)),
-      turnsTaken: ourTurns,
-      opponentDefeated,
-    });
-
-    if (!opponentDefeated) {
-      const remainingLiving = team.filter((m) => teamRemainingHp[m.uuid] > 0);
-      if (remainingLiving.length > 0) {
-        const finisher = [...remainingLiving].sort((a, b) => compareEvaluations(evals.get(a.uuid), evals.get(b.uuid)))[0];
-        const finisherEval = evals.get(finisher.uuid);
-        const finisherHpBefore = teamRemainingHp[finisher.uuid];
-        const finisherHpAfter = finisherHpBefore;
-        currentMemberUuid = finisher.uuid;
-
-        sequence.push({
-          step: sequence.length + 1,
-          opponentId: entry.opponentId,
-          opponentSpeciesId: entry.speciesId,
-          opponentLevel: entry.level,
-          memberUuid: finisher.uuid,
-          memberSpeciesId: finisher.speciesId,
-          action: 'entrar-apos-ko',
-          hpBeforePercent: finisherHpBefore,
-          hpAfterPercent: finisherHpAfter,
-          moveId: finisherEval.ours ? finisherEval.ours.id : finisher.moveIds[0],
-          damageDealtPercent: 100,
-          turnsTaken: 1,
-          opponentDefeated: true,
-        });
-      }
-    }
-  }
-
-  return {sequence, teamRemainingHp};
-}
-/**
  * Plano de batalha contra um treinador singles: respondedor, golpe, dano nos dois sentidos, ordem de ação e riscos
- * declarados por adversário. Não simula turnos nem estima chance de resultado.
+ * declarados por adversário. Não estima chance de resultado.
  */
 async function buildBattlePlan({snapshot, request, data, checkpoint = async () => {}}) {
   const trainer = data.trainers.find((candidate) => candidate.id === request.trainerId);
@@ -610,9 +518,10 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     };
   }
   const assumptions = [
-    'Hipóteses: HP e PP cheios, sem status, campo neutro e sem críticos; a IA do RCT não é modelada.',
+    'Hipóteses: HP e PP cheios, sem status e sem críticos; clima, terreno e Intimidate de habilidade de entrada entram no dano; a IA do RCT não é modelada.',
     'O time usa os golpes e o item recomendados pelo guia; o app não verifica se você tem os itens.',
-    'O item do adversário só entra no dano quando a definição tem uma única alternativa no catálogo; golpes de status são ignorados.',
+    'Item do adversário com várias alternativas: vale o pior caso entre as catalogadas. Golpes de status não entram nos números.',
+    'Golpes de vários acertos usam o número de acertos padrão do cálculo (3; 5 com Skill Link).',
   ];
   const {team, over} = buildTeam(request, snapshot.individuals, assumptions);
   const overCap = over.map((member) => ({
@@ -628,7 +537,6 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     entries.push(planEntry(buildOpponent(member, index, trainer.id), team, trainer.id));
   }
   const lead = pickLead(entries, team);
-  const {sequence, teamRemainingHp} = simulateTeamBattle(team, entries, lead);
   const blocked = entries.filter((entry) => entry.status === 'bloqueado').length;
   if (blocked > 0)
     assumptions.push(`${blocked} de ${entries.length} adversário(s) ficaram sem plano por mecânica fora do catálogo ou do adaptador.`);
@@ -638,8 +546,6 @@ async function buildBattlePlan({snapshot, request, data, checkpoint = async () =
     overCap,
     scopeReason: null,
     lead,
-    sequence,
-    teamRemainingHp,
     entries: entries.map(({evaluation: _evaluation, opponent: _opponent, trainerId: _trainerId, ...entry}) => entry),
     assumptions,
   };

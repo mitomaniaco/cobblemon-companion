@@ -74,37 +74,40 @@ function EntryRow({
           <strong>Confronto bloqueado.</strong> {entry.blockedReason ?? 'Mecânica fora do catálogo ou do adaptador.'}
         </p>
       ) : (
-        <dl className={styles.facts}>
-          <div>
-            <dt>Respondedor</dt>
-            <dd>
-              {individualName(entry.responder.uuid, entry.responder.speciesId)} com {moveDisplay(entry.responder.moveId).name}
-            </dd>
-          </div>
-          {entry.dealt && (
+        <>
+          {entry.partialReason && <p className={styles.partial}>{entry.partialReason}</p>}
+          <dl className={styles.facts}>
             <div>
-              <dt>Você causa</dt>
+              <dt>Respondedor</dt>
               <dd>
-                {moveDisplay(entry.dealt.moveId).name}: {battlePlanDamageLabel(entry.dealt)}
+                {individualName(entry.responder.uuid, entry.responder.speciesId)} com {moveDisplay(entry.responder.moveId).name}
               </dd>
             </div>
-          )}
-          {entry.received && (
+            {entry.dealt && (
+              <div>
+                <dt>Você causa</dt>
+                <dd>
+                  {moveDisplay(entry.dealt.moveId).name}: {battlePlanDamageLabel(entry.dealt)}
+                </dd>
+              </div>
+            )}
+            {entry.received && (
+              <div>
+                <dt>Você recebe</dt>
+                <dd>
+                  {moveDisplay(entry.received.moveId).name}: {battlePlanDamageLabel(entry.received)}
+                </dd>
+              </div>
+            )}
             <div>
-              <dt>Você recebe</dt>
-              <dd>
-                {moveDisplay(entry.received.moveId).name}: {battlePlanDamageLabel(entry.received)}
+              <dt>Ordem de ação</dt>
+              <dd data-order={entry.firstToAct ?? 'none'}>
+                {battlePlanFirstToActLabel(entry.firstToAct)}
+                {entry.actReason && <span className={styles.muted}> · {entry.actReason}</span>}
               </dd>
             </div>
-          )}
-          <div>
-            <dt>Ordem de ação</dt>
-            <dd data-order={entry.firstToAct ?? 'none'}>
-              {battlePlanFirstToActLabel(entry.firstToAct)}
-              {entry.actReason && <span className={styles.muted}> · {entry.actReason}</span>}
-            </dd>
-          </div>
-        </dl>
+          </dl>
+        </>
       )}
 
       <Risks risks={entry.risks} />
@@ -124,11 +127,20 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
         </StatusMessage>
       ) : (
         <>
-          {result.lead && (
+          {result.lead ? (
             <section className={styles.lead} aria-label="Sugestão de lead">
               <strong>Sugestão de lead: {individualName(result.lead.uuid, result.lead.speciesId)}</strong>
               <span>{result.lead.reason}</span>
             </section>
+          ) : (
+            result.entries[0]?.status === 'bloqueado' && (
+              <section className={styles.lead} aria-label="Sugestão de lead">
+                <span>
+                  Sem sugestão de lead: o primeiro adversário ({speciesDisplay(result.entries[0].speciesId, 'normal').name}) está bloqueado
+                  — {result.entries[0].blockedReason}
+                </span>
+              </section>
+            )
           )}
 
           {(result.trainerRisks.length > 0 || bag) && (

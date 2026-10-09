@@ -127,6 +127,7 @@
         ],
         "status": "planejado",
         "blockedReason": null,
+        "partialReason": null,
         "responder": {
           "uuid": "00000000-0000-4000-8000-000000000001",
           "speciesId": "cobblemon:gardevoir",
@@ -161,6 +162,7 @@
         "heldItemAlternatives": [],
         "status": "bloqueado",
         "blockedReason": "habilidade Electric Surge: terreno elétrico, fora do adaptador",
+        "partialReason": null,
         "responder": null,
         "dealt": null,
         "received": null,
