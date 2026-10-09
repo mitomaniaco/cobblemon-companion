@@ -101,10 +101,7 @@ export type StageEntry = {
 export function stageVictoryCount(stage: CampaignStage, victoryCounts: Readonly<Record<string, number>> | null): number {
   if (!victoryCounts) return 0;
   let total = 0;
-  for (const variant of stage.variants) {
-    const rawId = variant.id.replace(/^rctmod:/, '');
-    total += victoryCounts[rawId] ?? victoryCounts[variant.id] ?? 0;
-  }
+  for (const variant of stage.variants) total += victoryCounts[variant.id] ?? 0;
   return total;
 }
 

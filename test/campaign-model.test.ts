@@ -76,6 +76,7 @@ const viewOptions: CampaignViewOptions = {seriesId: 'radicalred', defeated: [], 
 describe('estado das etapas', () => {
   it('sem progresso lido tudo é "progresso desconhecido": nunca vencido nem liberado', () => {
     const states = computeStageStates(series, null);
+    expect([...states.values()].every((state) => state === 'progresso desconhecido')).toBe(true);
     expect(states.size).toBe(series.length);
   });
 
@@ -231,11 +232,11 @@ describe('variantes e duplas', () => {
 });
 
 describe('contagem de vitórias e level cap da etapa', () => {
-  it('soma vitórias das variantes a partir de victoryCounts com ou sem prefixo de namespace', () => {
+  it('soma vitórias das variantes a partir de victoryCounts com o id canônico (rctmod:)', () => {
     const multiVariant = stage('s:rival', 1, {
       variants: [variant('rctmod:rival_terry_014c'), variant('rctmod:rival_terry_014d')],
     });
-    const victoryCounts = {rival_terry_014c: 2, 'rctmod:rival_terry_014d': 1, outro: 5};
+    const victoryCounts = {'rctmod:rival_terry_014c': 2, 'rctmod:rival_terry_014d': 1, 'rctmod:outro': 5};
     expect(stageVictoryCount(multiVariant, victoryCounts)).toBe(3);
     expect(stageVictoryCount(multiVariant, null)).toBe(0);
   });
@@ -243,7 +244,7 @@ describe('contagem de vitórias e level cap da etapa', () => {
   it('injeta victoryCount nas entradas da visão da campanha', () => {
     const view = buildCampaignView(campaign.radicalred, {
       ...viewOptions,
-      victoryCounts: {leader_brock_019e: 1, 's:brock': 2},
+      victoryCounts: {'rctmod:s:brock': 2},
     });
     const brockEntry = view.groups.flatMap((g) => g.entries).find((e) => e.stage.stageId === 's:brock');
     expect(brockEntry?.victoryCount).toBe(2);

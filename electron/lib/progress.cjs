@@ -165,14 +165,12 @@ function readGuideProgressFromConfig(options = {}) {
     levelCap: null,
     pikaStar: Object.fromEntries(REGIONS.map((region) => [region, null])),
     sources: [],
-    diagnostics: [],
   };
   let paths;
   try {
     paths = resolveProgressSourcePaths(options);
   } catch (error) {
     if (error?.code === 'ERR_IMPORT_CHANGED') throw error;
-    result.diagnostics.push(error.message || 'Não foi possível resolver os caminhos do mundo ativo.');
     return result;
   }
 
@@ -195,22 +193,24 @@ function readGuideProgressFromConfig(options = {}) {
         if (ids.every(safeDataId)) result.completedSeries = ids;
       }
       if (isRecord(data.progressDefeats)) {
+        // O jogo grava a chave sem namespace (`leader_brock_019e`); o id canônico do guia é `rctmod:<chave>`.
+        // Uma entrada inválida torna o progresso inteiro desconhecido: contagem parcial poderia marcar etapa vencida errada.
         const counts = {};
         const defeated = [];
-        for (const [id, count] of Object.entries(data.progressDefeats)) {
-          if (!safeDataId(id)) continue;
-          const numericCount = typeof count === 'number' || typeof count === 'string' ? Number(count) : null;
-          if (numericCount !== null && Number.isSafeInteger(numericCount) && numericCount >= 0) {
-            Object.defineProperty(counts, id, {value: numericCount, enumerable: true, writable: true, configurable: true});
-            if (numericCount > 0) defeated.push(id);
+        let valid = true;
+        for (const [key, raw] of Object.entries(data.progressDefeats)) {
+          const count = typeof raw === 'string' ? (/^\d{1,15}$/.test(raw) ? Number(raw) : Number.NaN) : raw;
+          if (!safeDataId(key) || !Number.isSafeInteger(count) || count < 0) {
+            valid = false;
+            break;
           }
+          const id = key.includes(':') ? key : `rctmod:${key}`;
+          Object.defineProperty(counts, id, {value: count, enumerable: true, writable: true, configurable: true});
+          if (count > 0) defeated.push(id);
         }
-        if (Object.keys(counts).length > 0) {
+        if (valid) {
           result.victoryCounts = counts;
           result.defeated = defeated;
-        } else if (Object.keys(data.progressDefeats).length === 0) {
-          result.victoryCounts = {};
-          result.defeated = [];
         }
       }
     } catch (error) {
@@ -219,9 +219,6 @@ function readGuideProgressFromConfig(options = {}) {
     }
   } catch (error) {
     if (error?.code === 'ERR_IMPORT_CHANGED') throw error;
-    if (error?.code === 'ERR_IMPORT_SOURCE_MISSING') {
-      result.diagnostics.push('Arquivo de estatísticas do RCT (rctmod.player.<uuid>.stat.dat) não encontrado no mundo ativo.');
-    }
     /* Missing or unreadable source leaves its fields unknown. */
   }
 
@@ -238,9 +235,6 @@ function readGuideProgressFromConfig(options = {}) {
     }
   } catch (error) {
     if (error?.code === 'ERR_IMPORT_CHANGED') throw error;
-    if (error?.code === 'ERR_IMPORT_SOURCE_MISSING') {
-      result.diagnostics.push('Arquivo de advancements (<uuid>.json) não encontrado no mundo ativo.');
-    }
     /* Invalid or unreadable source leaves its fields unknown. */
   }
 

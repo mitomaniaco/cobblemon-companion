@@ -12,6 +12,7 @@ import {
   seriesLabel,
   stageLevelSummary,
   stageStateLabel,
+  stageVictoryCount,
   stageTypeLabel,
   variantLabel,
   visibleSeriesIds,
@@ -131,18 +132,10 @@ export function CampaignPicker({campaign, progress, selectedTrainerId, onSelect,
   const matches = view.groups.reduce((sum, group) => sum + group.entries.length, 0);
 
   // Estatísticas do Trainer Card
-  const totalVictories = useMemo(() => {
-    return series.stages.reduce((sum, st) => {
-      let stageWins = 0;
-      if (victoryCounts) {
-        for (const v of st.variants) {
-          const raw = v.id.replace(/^rctmod:/, '');
-          stageWins += victoryCounts[raw] ?? victoryCounts[v.id] ?? 0;
-        }
-      }
-      return sum + stageWins;
-    }, 0);
-  }, [series, victoryCounts]);
+  const totalVictories = useMemo(
+    () => series.stages.reduce((sum, stage) => sum + stageVictoryCount(stage, victoryCounts), 0),
+    [series, victoryCounts],
+  );
 
   function handleSelection(keys: Selection) {
     const [key] = keys === 'all' ? [] : [...keys];
