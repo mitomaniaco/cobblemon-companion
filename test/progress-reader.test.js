@@ -118,6 +118,30 @@ describe('RCT and Pika progress reader', () => {
     expect(Object.keys(progress.victoryCounts).every((id) => id.startsWith('rctmod:'))).toBe(true);
   });
 
+  it('conquistas de derrota concluídas contam como vitória mesmo com progressDefeats zerado', () => {
+    const env = setup();
+    fs.writeFileSync(env.statsPath, syntheticNbt());
+    fs.writeFileSync(
+      env.pikaPath,
+      JSON.stringify({
+        'rctmod:trainers/defeat_leader_brock': {done: true, criteria: {defeat_leader_brock: 'x'}},
+        'rctmod:trainers/defeat_rival_terry_2': {done: false, criteria: {}},
+      }),
+    );
+    const progress = readGuideProgressFromConfig(env.options);
+    expect(progress.victoryCounts['rctmod:leader_brock_019e']).toBe(1);
+    expect(progress.defeated).toContain('rctmod:leader_brock_019e');
+    expect(progress.defeated).not.toContain('rctmod:rival_terry_01b0');
+    expect(progress.victoryCounts['rctmod:trainer_a']).toBe(2);
+  });
+
+  it('sem o contador de progresso, as conquistas ainda dão as derrotas', () => {
+    const env = setup();
+    fs.writeFileSync(env.pikaPath, JSON.stringify({'rctmod:trainers/defeat_leader_clair': {done: true, criteria: {}}}));
+    const progress = readGuideProgressFromConfig(env.options);
+    expect(progress.defeated).toEqual(['rctmod:leader_clair_004a']);
+  });
+
   it('suporta TAG_Long (strings 64-bit do parser NBT) em progressDefeats', () => {
     const env = setup();
     fs.writeFileSync(env.statsPath, syntheticNbt({withLong: true}));

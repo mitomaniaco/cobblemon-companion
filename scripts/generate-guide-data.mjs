@@ -7,14 +7,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {loadMergedSpecies} from './lib/game-species.mjs';
-import {deriveArtworkSources, deriveCampaign, deriveEvolutions, deriveLearnset, deriveSeries, deriveTrainer} from './lib/guide-data.mjs';
+import {
+  deriveArtworkSources,
+  deriveAdvancements,
+  deriveCampaign,
+  deriveEvolutions,
+  deriveLearnset,
+  deriveSeries,
+  deriveTrainer,
+} from './lib/guide-data.mjs';
 import {parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MANIFEST_PATH = path.join(ROOT, 'data/compat/manifest.json');
 const OUTPUT_DIRECTORY = path.join(ROOT, 'data/guide');
 const TRAINER_ENTRY = /^data\/[^/]+\/trainers\/[^/]+\.json$/;
-const RCT_ENTRY = /^data\/[^/]+\/(?:trainers\/[^/]+|series\/[^/]+|mobs\/trainers\/[^/]+\/[^/]+)\.json$/;
+const RCT_ENTRY = /^data\/[^/]+\/(?:trainers\/[^/]+|series\/[^/]+|mobs\/trainers\/[^/]+\/[^/]+|advancement\/trainers\/[^/]+)\.json$/;
 
 function fail(message) {
   console.error(`ERRO: ${message}`);
@@ -94,12 +102,17 @@ function main() {
 
   const seriesParts = {namespace: null, seriesMeta: {}, mobs: {}, groups: {}, trainerIds: []};
   const trainerFiles = [];
+  const advancementFiles = [];
   for (const [name, entry] of [...rctFiles].sort(([a], [b]) => (a < b ? -1 : 1))) {
     const parts = name.split('/');
     const base = path.basename(name, '.json');
     if (TRAINER_ENTRY.test(name)) {
       seriesParts.trainerIds.push(base);
       trainerFiles.push([name, entry]);
+      continue;
+    }
+    if (parts[2] === 'advancement') {
+      advancementFiles.push({namespace: parts[1], name: base, json: parseJsonBytes(entry.bytes, `${entry.origin}:${name}`)});
       continue;
     }
     seriesParts.namespace = parts[1];
@@ -128,6 +141,7 @@ function main() {
     ['trainers.json', jsonText(trainers)],
     ['series.json', jsonText(series)],
     ['campaign.json', jsonText(deriveCampaign({series, trainers, levelCapConfig: readLevelCapConfig(instance)}))],
+    ['advancements.json', jsonText(deriveAdvancements(advancementFiles))],
     ['artwork-sources.json', jsonText(deriveArtworkSources(species, slugs, trainers))],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 

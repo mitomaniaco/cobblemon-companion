@@ -413,3 +413,21 @@ function computeStageCaps({entry, ordered, byId, config}) {
   }
   return {rule, byStage};
 }
+
+/**
+ * Conquistas de derrota de treinador (`<ns>:trainers/<nome>`) do RCT: cada uma vale por derrotar qualquer um dos treinadores
+ * listados, uma vez. O save do jogador marca `done` nelas mesmo quando o contador de progresso (`progressDefeats`) está zerado.
+ * Só entram as de gatilho `rctmod:defeat_count` com ids de treinador e `count` 1. `files`: `[{namespace, name, json}]`.
+ */
+export function deriveAdvancements(files) {
+  const output = {};
+  for (const {namespace, name, json} of [...files].sort((a, b) => (a.name < b.name ? -1 : 1))) {
+    const criteria = Object.values(json.criteria ?? {});
+    if (criteria.length !== 1) continue;
+    const [{trigger, conditions}] = criteria;
+    const ids = conditions?.trainer_ids;
+    if (trigger !== 'rctmod:defeat_count' || conditions?.count !== 1 || !Array.isArray(ids) || ids.length === 0) continue;
+    output[`${namespace}:trainers/${name}`] = ids.map((id) => (String(id).includes(':') ? String(id) : `${namespace}:${id}`)).sort();
+  }
+  return output;
+}

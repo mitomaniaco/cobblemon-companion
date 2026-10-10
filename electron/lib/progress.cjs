@@ -5,6 +5,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const zlib = require('node:zlib');
 const {parseNbt} = require('./nbt.cjs');
+const {loadDefeatAdvancements} = require('./guide/data.cjs');
 
 const DEFAULT_CONFIG_PATH = path.join(__dirname, '..', '..', 'config.json');
 const REGIONS = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'hisui', 'paldea'];
@@ -155,6 +156,33 @@ function resolveProgressSourcePaths(options = {}) {
   }
 }
 
+/**
+ * O contador `progressDefeats` pode ficar zerado mesmo com a campanha adiantada; as conquistas `<ns>:trainers/defeat_*` do
+ * arquivo de advancements registram as derrotas de verdade. Cada conquista concluída vale pelo menos uma vitória contra
+ * cada treinador que ela lista (derrotar qualquer um deles a concluiu). Sem o arquivo de conquistas versionado, nada muda.
+ */
+function mergeAdvancementDefeats(result, parsed) {
+  let known;
+  try {
+    known = loadDefeatAdvancements();
+  } catch {
+    return;
+  }
+  const counts = result.victoryCounts === null ? {} : {...result.victoryCounts};
+  let found = false;
+  for (const [advancementId, trainerIds] of Object.entries(known)) {
+    if (parsed[advancementId]?.done !== true) continue;
+    for (const id of trainerIds) {
+      if (!safeDataId(id)) continue;
+      found = true;
+      if (!(counts[id] > 0)) Object.defineProperty(counts, id, {value: 1, enumerable: true, writable: true, configurable: true});
+    }
+  }
+  if (!found) return;
+  result.victoryCounts = counts;
+  result.defeated = Object.keys(counts).filter((id) => counts[id] > 0);
+}
+
 function readGuideProgressFromConfig(options = {}) {
   const result = {
     defeated: null,
@@ -233,6 +261,7 @@ function readGuideProgressFromConfig(options = {}) {
       else if (isRecord(advancement) && isRecord(advancement.criteria) && typeof advancement.done === 'boolean')
         result.pikaStar[region] = advancement.done;
     }
+    mergeAdvancementDefeats(result, parsed);
   } catch (error) {
     if (error?.code === 'ERR_IMPORT_CHANGED') throw error;
     /* Invalid or unreadable source leaves its fields unknown. */
