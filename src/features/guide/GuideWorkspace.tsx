@@ -1,4 +1,4 @@
-import {useEffect, useId, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import type {CSSProperties} from 'react';
 import {speciesDisplay} from '../../domain/dex';
 import type {CompanionApi, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
@@ -298,7 +298,6 @@ export function GuideWorkspace({
   onRefresh,
   onOpenCalculation,
 }: GuideWorkspaceProps) {
-  const headingId = useId();
   // Treinador e campanha são gerenciados pelo TrainerCard
   const lookup = useMemo<Lookup>(
     () => ({
@@ -316,30 +315,27 @@ export function GuideWorkspace({
   const building = guide.phase === 'building';
 
   return (
-    <section className={styles.workspace} aria-labelledby={headingId}>
-      <header className={styles.heading}>
-        <h2 id={headingId}>Guia</h2>
-        <p className={styles.lead}>Um time de 6 montado com o que você já tem (equipe e PC) para o objetivo escolhido.</p>
-      </header>
-
+    <section className={styles.workspace} aria-label="Guia">
       {notice && <Toast key={notice.id} id={notice.id} text={notice.text} onDismiss={dismissNotice} />}
-      <TrainerCard
-        api={api}
-        campaign={CAMPAIGN}
-        progress={progress}
-        nextGoal={guide.nextGoal?.status === 'ready' ? guide.nextGoal.value : null}
-        guide={guide}
-        playerName={playerName}
-        playerAvatar={playerAvatar}
-        individuals={lookup.individuals}
-        onOpenCalculation={onOpenCalculation}
-        levelCapInput={levelCapInput}
-        onLevelCapInputChange={onLevelCapInputChange}
-        respectLevelCap={respectLevelCap}
-        onRespectLevelCapChange={onRespectLevelCapChange}
-        levelCap={levelCap}
-        progressLevelCap={progressLevelCap}
-      />
+      <div className={styles.stage}>
+        <TrainerCard
+          api={api}
+          campaign={CAMPAIGN}
+          progress={progress}
+          nextGoal={guide.nextGoal?.status === 'ready' ? guide.nextGoal.value : null}
+          guide={guide}
+          playerName={playerName}
+          playerAvatar={playerAvatar}
+          individuals={lookup.individuals}
+          onOpenCalculation={onOpenCalculation}
+          levelCapInput={levelCapInput}
+          onLevelCapInputChange={onLevelCapInputChange}
+          respectLevelCap={respectLevelCap}
+          onRespectLevelCapChange={onRespectLevelCapChange}
+          levelCap={levelCap}
+          progressLevelCap={progressLevelCap}
+        />
+      </div>
 
       {!snapshot && loading ? (
         <TeamSkeleton />

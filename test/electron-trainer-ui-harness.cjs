@@ -1493,8 +1493,10 @@ async function exerciseGuideWorkspace(window) {
   const progressText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card"]')?.innerText || ''`);
   check(
     progressText.includes('Level cap') &&
-      progressText.toLowerCase().includes('pika star') &&
-      progressText.toLowerCase().includes('insígnias'),
+      (await evaluate(
+        contents,
+        `Boolean(document.querySelector('[aria-label="Trainer Card"] [aria-label^="Insígnias"]') && document.querySelector('[aria-label="Trainer Card"] [aria-label^="Pika Star"]'))`,
+      )),
     'O Trainer Card não mostrou o cap, as insígnias e os selos Pika Star da leitura sintética.',
   );
   const defaultCap = await evaluate(
@@ -1550,8 +1552,9 @@ async function exerciseGuideWorkspace(window) {
   await waitFor(
     contents,
     `(() => {
-      const hero = document.querySelector('[aria-label="Próximo desafio"]')?.innerText || '';
-      return hero.includes('Como encontrar') && hero.includes('Item de Assinatura') && hero.includes('Level cap') && hero.includes('ELE') && hero.includes('VOCÊ');
+      const heroNode = document.querySelector('[aria-label="Próximo desafio"]');
+      const hero = heroNode?.innerText || '';
+      return Boolean(heroNode?.querySelector('[aria-label="Como encontrar"]')) && Boolean(heroNode.querySelector('section[aria-label="Quem responde a cada um"]')) && hero.includes('Item de Assinatura') && hero.includes('Level cap');
     })()`,
     'dados de spawn do próximo desafio no Trainer Card',
   );
@@ -1559,7 +1562,7 @@ async function exerciseGuideWorkspace(window) {
   check(
     trainerCardText.includes('Trainer Card') &&
       trainerCardText.toLowerCase().includes('radical red') &&
-      trainerCardText.includes('Vitórias na série'),
+      (await evaluate(contents, `Boolean(document.querySelector('[aria-label="Trainer Card"] [aria-label*="Vitórias na série"]'))`)),
     'O Trainer Card não exibiu o título, a série e as vitórias.',
   );
   const optionCount = `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length`;
@@ -1567,7 +1570,7 @@ async function exerciseGuideWorkspace(window) {
   check(stagesCount > 0, 'A lista de etapas da campanha está vazia.');
   await waitFor(
     contents,
-    `document.querySelector('[aria-label="Treinador"]')?.innerText.includes('informado por você') && !document.querySelector('[aria-label="Treinador"]').innerText.includes('—')`,
+    `(() => { const button = document.querySelector('[aria-label="Treinador"] button[aria-label*="informado por você"]'); return Boolean(button) && !button.getAttribute('aria-label').includes('desconhecido'); })()`,
     'level cap informado exibido no Trainer Card',
   );
   await capture(window, screenshotPaths.trainerCard, '[aria-label="Trainer Card"]');
@@ -1635,7 +1638,9 @@ async function exerciseGuideWorkspace(window) {
     `document.querySelector('[aria-label="Desafio escolhido"], [aria-label="Próximo desafio"]')?.innerText || ''`,
   );
   check(
-    brockText.includes('15 → 21') && brockText.includes('Como encontrar') && brockText.includes('Líder de Ginásio'),
+    brockText.includes('15 → 21') &&
+      brockText.includes('Líder de Ginásio') &&
+      (await evaluate(contents, `Boolean(document.querySelector('[aria-label="Trainer Card"] [aria-label="Como encontrar"]'))`)),
     'O desafio de Leader Brock não mostrou a progressão de level cap e "Como encontrar".',
   );
   // Montado para o desafio escolhido: a equipe recomendada vive dentro do Trainer Card.
@@ -1758,7 +1763,7 @@ async function exerciseGuideWorkspace(window) {
       btn.click();
     })()`,
   );
-  await setSearch('');
+  // Selecionar o resultado fecha o painel de busca e volta para a campanha.
   await switchGuideView('Campanha');
   await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha da campanha visível após restaurar treinador sintético');
 
@@ -1777,26 +1782,36 @@ async function exerciseGuideWorkspace(window) {
     'Choice Specs aumenta as vitórias de 1 para 2.',
     'obter',
     'Abre a batalha contra Floatzel',
-    'Responde a',
-    'Estimativa 1 contra 1, HP cheio, sem status nem crítico',
-    'Ninguém do time vence Floatzel',
     'Vale adquirir',
     'Moonblast (nível 35) no lugar de Confusion · +12.5%',
   ]) {
     check(detailText.includes(expected), `O painel de detalhes do Gardevoir não mostrou "${expected}".`);
   }
+  check(/\d+–\d+%/.test(detailText), 'O painel de detalhes do Gardevoir não mostrou a faixa de dano dos golpes.');
   const answers = await evaluate(
     contents,
-    `[...document.querySelectorAll('section[aria-label="Detalhes de Gardevoir"] section[aria-label="Responde a"] > ul:first-of-type > li')].map(item => item.textContent)`,
+    `(() => {
+      const section = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Quem responde a cada um"]');
+      return {
+        note: section?.textContent.includes('Estimativa 1 contra 1, HP cheio, sem status nem crítico') ?? false,
+        rows: [...(section?.querySelectorAll('ul > li') ?? [])].map(item => ({
+          text: item.textContent,
+          lost: Boolean(item.querySelector('[data-outcome="perde"][data-unanswered]')),
+          won: Boolean(item.querySelector('[data-outcome="vence"]')),
+        })),
+      };
+    })()`,
   );
   check(
-    answers.length === 2 &&
-      answers[0].includes('Bulbasaur') &&
-      answers[0].includes('vence') &&
-      answers[0].includes('Psychic') &&
-      answers[1].includes('Floatzel') &&
-      answers[1].includes('perde'),
-    'O painel não listou as vitórias antes das derrotas em "Responde a", com o golpe a usar.',
+    answers.note &&
+      answers.rows.length === 2 &&
+      answers.rows[0].text.includes('Floatzel') &&
+      answers.rows[0].lost &&
+      answers.rows[0].text.includes('sem resposta boa') &&
+      answers.rows[1].text.includes('Bulbasaur') &&
+      answers.rows[1].won &&
+      answers.rows[1].text.includes('Psychic'),
+    'A coluna "Quem responde a cada um" não mostrou Floatzel sem resposta e Bulbasaur vencido com o golpe a usar.',
   );
   const slotButtons = await evaluate(
     contents,
@@ -1828,7 +1843,10 @@ async function exerciseGuideWorkspace(window) {
     pveText.includes('PvE geral') &&
       pveText.includes('nível 30') &&
       pveText.includes('2 adversários de referência') &&
-      !pveText.includes('ELE'),
+      !(await evaluate(
+        contents,
+        `Boolean(document.querySelector('[aria-label="Objetivo PvE"] section[aria-label="Quem responde a cada um"]'))`,
+      )),
     'O PvE geral não mostrou o nível de referência e os adversários, ou ainda tem a linha "Ele".',
   );
   check(pveText.includes('MONTAR DE NOVO') || pveText.includes('Montar de novo'), 'O PvE geral não mostrou o rodapé com "Montar de novo".');

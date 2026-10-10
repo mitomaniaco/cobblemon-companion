@@ -1,5 +1,6 @@
 import type {
   GuideGoal,
+  GuideMatchup,
   GuideNextGoal,
   GuidePartyPlan,
   GuideResult,
@@ -211,28 +212,39 @@ export function guidePartySteps(plan: GuidePartyPlan, nameOf: (uuid: string, spe
   return steps;
 }
 
-/** Melhor membro do time para um adversário: vence com menos turnos; sem vitória, a maior folga `theirTurns - ourTurns`. */
-export function guideBestAnswerUuid(team: readonly GuideTeamMember[], opponentId: string): string | null {
-  const BIG = 1e9;
-  const finite = (value: number) => (Number.isFinite(value) ? value : BIG);
-  let best: {uuid: string; wins: boolean; ourTurns: number; margin: number} | null = null;
-  for (const member of team) {
+/**
+ * Membros do time que têm confronto com o adversário, do melhor para o pior: vitórias primeiro (menos turnos),
+ * depois derrotas pela maior folga `theirTurns - ourTurns`. Empates ficam na ordem do time.
+ */
+export function guideAnswerRanking(
+  team: readonly GuideTeamMember[],
+  opponentId: string,
+): Array<{uuid: string; outcome: 'vence' | 'perde'}> {
+  const rows = team.flatMap((member, order) => {
     const matchup = member.matchups.find((entry) => entry.opponentId === opponentId);
-    if (!matchup) continue;
-    const candidate = {
-      uuid: member.uuid,
-      wins: matchup.outcome === 'vence',
-      ourTurns: matchup.ourTurns,
-      margin: finite(matchup.theirTurns) - finite(matchup.ourTurns),
-    };
-    const better =
-      best === null ||
-      (candidate.wins && !best.wins) ||
-      (candidate.wins && best.wins && candidate.ourTurns < best.ourTurns) ||
-      (!candidate.wins && !best.wins && candidate.margin > best.margin);
-    if (better) best = candidate;
-  }
-  return best?.uuid ?? null;
+    return matchup
+      ? [
+          {
+            uuid: member.uuid,
+            outcome: matchup.outcome,
+            ourTurns: finiteTurns(matchup.ourTurns),
+            margin: finiteTurns(matchup.theirTurns) - finiteTurns(matchup.ourTurns),
+            order,
+          },
+        ]
+      : [];
+  });
+  rows.sort((left, right) => {
+    if (left.outcome !== right.outcome) return left.outcome === 'vence' ? -1 : 1;
+    const byRank = left.outcome === 'vence' ? left.ourTurns - right.ourTurns : right.margin - left.margin;
+    return byRank || left.order - right.order;
+  });
+  return rows.map(({uuid, outcome}) => ({uuid, outcome}));
+}
+
+/** Melhor membro do time para um adversário (primeiro de `guideAnswerRanking`). */
+export function guideBestAnswerUuid(team: readonly GuideTeamMember[], opponentId: string): string | null {
+  return guideAnswerRanking(team, opponentId)[0]?.uuid ?? null;
 }
 
 /** Adversários que nenhum membro do time vence, na ordem dos adversários. */
@@ -242,19 +254,29 @@ export function guideUnansweredOpponents<T extends {id: string}>(team: readonly 
   );
 }
 
-/** Confrontos do membro na ordem de leitura: vitórias primeiro (menos turnos, depois ordem dos adversários), depois derrotas. */
-export function guideAnswers(member: GuideTeamMember, opponents: readonly {id: string}[]): GuideTeamMember['matchups'] {
-  const order = (opponentId: string) => {
-    const index = opponents.findIndex((opponent) => opponent.id === opponentId);
-    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
-  };
-  const byOrder = (left: GuideTeamMember['matchups'][number], right: GuideTeamMember['matchups'][number]) =>
-    order(left.opponentId) - order(right.opponentId);
-  const wins = member.matchups
-    .filter((matchup) => matchup.outcome === 'vence')
-    .sort((left, right) => left.ourTurns - right.ourTurns || byOrder(left, right));
-  const losses = member.matchups.filter((matchup) => matchup.outcome !== 'vence').sort(byOrder);
-  return [...wins, ...losses];
+/** Fim de um confronto sem fim: o JSON troca `Infinity` por null. */
+const BIG_TURNS = 1e9;
+const finiteTurns = (value: number | null) => (value !== null && Number.isFinite(value) ? value : BIG_TURNS);
+
+/** Texto curto de turnos para a linha do adversário: `1 vs 3 turnos`, ou `sem dano` quando o membro não derruba. */
+export function guideTurnsShort(matchup: Pick<GuideMatchup, 'ourTurns' | 'theirTurns'>): string {
+  if (finiteTurns(matchup.ourTurns) === BIG_TURNS) return 'sem dano';
+  return `${matchup.ourTurns} vs ${finiteTurns(matchup.theirTurns) === BIG_TURNS ? '—' : matchup.theirTurns} turnos`;
+}
+
+/** Dano do golpe contra cada adversário que ele atinge: o melhor golpe do confronto primeiro, depois o maior dano máximo. */
+export function guideMoveDamage(
+  member: GuideTeamMember,
+  moveId: string,
+): Array<{opponentId: string; minPercent: number; maxPercent: number; best: boolean}> {
+  const entries = member.matchups.flatMap((matchup, order) => {
+    const hit = matchup.damage.find((entry) => entry.moveId === moveId);
+    return hit && hit.maxPercent > 0
+      ? [{opponentId: matchup.opponentId, minPercent: hit.minPercent, maxPercent: hit.maxPercent, best: matchup.moveId === moveId, order}]
+      : [];
+  });
+  entries.sort((left, right) => Number(right.best) - Number(left.best) || right.maxPercent - left.maxPercent || left.order - right.order);
+  return entries.map(({order: _order, ...entry}) => entry);
 }
 
 export function guideOpponentTurnsLabel(matchup: {outcome: 'vence' | 'perde'; ourTurns: number; theirTurns: number}): string {
