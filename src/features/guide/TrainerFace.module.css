@@ -1,0 +1,23 @@
+.face {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--color-sunken);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.mark {
+  position: absolute;
+  inset: 22%;
+  width: 56%;
+  height: 56%;
+  color: var(--color-muted);
+}

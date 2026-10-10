@@ -1,0 +1,537 @@
+.card {
+  container: trainer-card / inline-size;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, var(--color-card-frame-top), var(--color-card-frame-bottom));
+  box-shadow: var(--shadow-raised);
+  animation: card-enter 180ms var(--ease-out) both;
+}
+
+.bar {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding: 2px var(--space-2) var(--space-3);
+  color: #ffffff;
+}
+
+.barMark {
+  width: 28px;
+  height: 28px;
+  flex: none;
+}
+
+.barTitle {
+  display: grid;
+  min-width: 0;
+  margin-right: auto;
+}
+
+.barTitle h3 {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: 800;
+  line-height: var(--line-title);
+}
+
+.barTitle span {
+  font-size: var(--text-caption);
+  opacity: 0.85;
+}
+
+.seriesField {
+  min-width: min(100%, 200px);
+}
+
+.modes {
+  max-width: 100%;
+}
+
+.body {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: 14px;
+  background: var(--color-surface);
+}
+
+.body > * {
+  min-width: 0;
+}
+
+@container trainer-card (min-width: 760px) {
+  .body {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
+  .side {
+    grid-column: 1 / -1;
+  }
+}
+
+@container trainer-card (min-width: 1100px) {
+  .body {
+    grid-template-columns: 240px minmax(0, 1fr) 340px;
+  }
+
+  .side {
+    grid-column: auto;
+  }
+}
+
+.player,
+.hero,
+.side {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+}
+
+.caption,
+.muted {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
+}
+
+.blockTitle {
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: 700;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.playerName {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--text-title);
+  line-height: var(--line-title);
+}
+
+.player > * {
+  min-width: 0;
+}
+
+.player input {
+  box-sizing: border-box;
+}
+
+.capBlock {
+  display: grid;
+  gap: 2px;
+}
+
+.capNumber {
+  color: var(--color-highlight);
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.badges,
+.pika {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.badgeRow,
+.sealRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.badge {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--color-control-border);
+  border-radius: 50%;
+  background: var(--color-sunken);
+}
+
+.badge[data-won="true"] {
+  border-color: var(--color-highlight);
+  background: var(--color-highlight);
+}
+
+.seal {
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 2px solid var(--color-control-border);
+  border-radius: 8px;
+  background: var(--color-sunken);
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+  font-weight: 700;
+}
+
+.seal[data-status="obtido"] {
+  border-color: var(--color-highlight);
+  background: var(--color-highlight);
+}
+
+.seal[data-status="não obtido"] {
+  opacity: 0.55;
+}
+
+.heroHeader {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.heroTitle {
+  display: grid;
+  min-width: 0;
+  justify-items: start;
+  gap: var(--space-1);
+}
+
+.heroName {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--text-section);
+  line-height: var(--line-section);
+}
+
+.typeChip {
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.teamRow {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.smallArt {
+  display: inline-block;
+  zoom: 0.62;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+}
+
+.facts div {
+  display: grid;
+  gap: 2px;
+}
+
+.facts dt {
+  color: var(--color-muted);
+  font-size: var(--text-caption);
+}
+
+.facts dd {
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+
+.findHow {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-sunken);
+  font-size: var(--text-label);
+}
+
+.findHow p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.itemLine {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.variants {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.variantGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: var(--space-2);
+}
+
+.variantCard {
+  display: grid;
+  min-width: 0;
+  justify-items: start;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-card);
+  background: var(--color-raised);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color var(--duration-hover) var(--ease-out),
+    filter var(--duration-hover) var(--ease-out);
+}
+
+.variantCard:hover {
+  filter: brightness(1.08);
+}
+
+.variantCard[aria-checked="true"] {
+  border-color: var(--color-highlight);
+}
+
+.variantCard:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.goalChip {
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-highlight);
+  color: #11141c;
+  font-size: var(--text-caption);
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.trail {
+  display: grid;
+  max-height: 420px;
+  min-width: 0;
+  gap: 2px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2);
+  border-radius: var(--radius-card);
+  background: var(--color-sunken);
+  outline: none;
+}
+
+.trailRow {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  outline: none;
+  transition: background var(--duration-hover) var(--ease-out);
+}
+
+.trailRow[data-hovered] {
+  background: var(--color-raised);
+}
+
+.trailRow[data-selected] {
+  box-shadow: inset 0 0 0 2px var(--color-highlight);
+}
+
+.trailRow[data-focus-visible] {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.trailRow[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.trailRow[data-state="próximo"] {
+  background: color-mix(in srgb, var(--color-highlight) 10%, transparent);
+}
+
+.trailRow[data-state="bloqueado"] {
+  opacity: 0.6;
+}
+
+.node {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-sunken);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.node[data-state="vencido"] {
+  border-color: var(--color-success);
+  background: var(--color-success);
+}
+
+.node[data-state="próximo"] {
+  border-color: var(--color-highlight);
+  background: var(--color-highlight);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-highlight) 30%, transparent);
+}
+
+.node[data-state="liberado"] {
+  border-color: var(--color-success);
+}
+
+.node[data-state="bloqueado"] {
+  border-color: var(--color-error);
+}
+
+.trailName {
+  display: grid;
+  min-width: 0;
+}
+
+.trailTitle {
+  overflow: hidden;
+  font-size: var(--text-label);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trailMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.wins {
+  color: var(--color-success);
+  font-size: var(--text-caption);
+  font-weight: 700;
+}
+
+.free {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.freeList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+.freeButton {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--color-raised);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.freeButton[data-selected="true"] {
+  box-shadow: inset 0 0 0 2px var(--color-highlight);
+}
+
+.freeButton:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.skeletonBlocks {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.skeletonLine,
+.skeletonCircle {
+  display: block;
+  background: linear-gradient(90deg, var(--color-sunken) 25%, var(--color-raised) 50%, var(--color-sunken) 75%);
+  background-size: 200% 100%;
+  animation: card-shimmer 1.2s var(--ease-out) infinite;
+}
+
+.skeletonLine {
+  height: 1.25rem;
+  border-radius: var(--radius-card);
+}
+
+.skeletonCircle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes card-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .skeletonLine,
+  .skeletonCircle {
+    animation: none;
+  }
+
+  .trailRow,
+  .variantCard {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .card,
+  .body {
+    border: 1px solid CanvasText;
+    background: Canvas;
+  }
+
+  .trailRow[data-selected] {
+    outline: 2px solid Highlight;
+  }
+}

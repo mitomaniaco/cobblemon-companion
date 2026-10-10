@@ -44,6 +44,11 @@ function groupOf(type: string): {key: string; label: string} {
   return TYPE_GROUP.find((group) => group.match.test(type)) ?? OTHER_GROUP;
 }
 
+/** Grupo do tipo da etapa (líder, Elite 4…), para colorir o chip do desafio. */
+export function stageGroupKey(type: string): 'leader' | 'e4' | 'champ' | 'rival' | 'team' | 'other' {
+  return groupOf(type).key as 'leader' | 'e4' | 'champ' | 'rival' | 'team' | 'other';
+}
+
 /** Sem acento, minúsculo e sem pontuação: a busca por "pokemon" acha "Pokémon", "rival terry" acha "Rival Terry · 1º encontro". */
 export function normalizeSearch(text: string): string {
   return text
@@ -197,16 +202,6 @@ export function stageStateLabel(state: StageState): string {
   return 'Progresso desconhecido';
 }
 
-export function stageLevelSummary(entry: StageEntry): string {
-  const variants = entry.stage.variants.filter((variant) => variant.format === 'singles');
-  const levels = variants.map((variant) => variant.maxLevel);
-  const sizes = variants.map((variant) => variant.teamSize);
-  if (variants.length === 0) return DOUBLES_NOT_SUPPORTED;
-  const range = (values: number[]) =>
-    Math.min(...values) === Math.max(...values) ? `${values[0]}` : `${Math.min(...values)}–${Math.max(...values)}`;
-  return `nível máx. ${range(levels)} · ${range(sizes)} Pokémon`;
-}
-
 /** Etapa (e série) que contém a variante RCT escolhida como objetivo; nulo se o id não é da campanha. */
 export function findStageByVariant(campaign: Campaign, trainerId: string | null): {seriesId: string; stage: CampaignStage} | null {
   if (trainerId === null) return null;
@@ -230,16 +225,6 @@ export function seriesLabel(seriesId: string): string {
   return SERIES_LABEL[seriesId] ?? `${seriesId.charAt(0).toUpperCase()}${seriesId.slice(1)}`;
 }
 
-/** Rótulo de uma variante da etapa: o app só sabe a ordem, o nível máximo e o tamanho da equipe. */
-export function variantLabel(variant: CampaignVariant, index: number): string {
-  return `Variante ${index + 1} · nível ${variant.maxLevel} · ${variant.teamSize} Pokémon`;
-}
-
-/** De onde vem o progresso: lido do mundo (`defeated` conhecido) ou estimado pelo nível da party (sem leitura). */
-export function progressOriginLabel(defeated: readonly string[] | null): string {
-  return defeated === null ? 'Estimado pelo nível da party (progresso do save não lido)' : 'Lido do save';
-}
-
 /** Rótulo legível do tipo da etapa no Trainer Card. */
 export function stageTypeLabel(type: string): string {
   const group = groupOf(type);
@@ -249,11 +234,4 @@ export function stageTypeLabel(type: string): string {
   if (group.key === 'rival') return 'Rival';
   if (group.key === 'team') return 'Equipe ou Chefe';
   return 'Outro';
-}
-
-/** Formata o avanço de level cap de uma etapa: ex.: "15 → 21". */
-export function formatStageCap(capBefore: number | null | undefined, capAfter: number | null | undefined): string | null {
-  if (capBefore === null && capAfter === null) return null;
-  if (capBefore === undefined && capAfter === undefined) return null;
-  return `Level cap: ${capBefore ?? 'desconhecido'} → ${capAfter ?? 'desconhecido'}`;
 }

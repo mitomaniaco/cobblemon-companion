@@ -28,6 +28,8 @@ const screenshotPaths = Object.freeze({
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
   trainerCard: path.join(runDirectory, 'guide-trainer-card.png'),
+  trainerCard1200: path.join(runDirectory, 'guide-trainer-card-1200.png'),
+  trainerCard800: path.join(runDirectory, 'guide-trainer-card-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
   battlePlan1200: path.join(runDirectory, 'battle-plan-1200.png'),
   battlePlan800: path.join(runDirectory, 'battle-plan-800.png'),
@@ -1485,16 +1487,13 @@ async function exerciseGuideWorkspace(window) {
   await navigate(contents, 'Guia');
   await waitFor(
     contents,
-    `document.querySelector('[aria-label="Progresso do mundo"]')?.innerText.includes('Level cap padrão')`,
-    'progresso do mundo no guia',
+    `Boolean(document.querySelector('[aria-label="Trainer Card"]')?.innerText.includes('Level cap') && document.querySelector('[aria-label="Kanto: Não obtido"]'))`,
+    'Trainer Card com o progresso do mundo no guia',
   );
-  const progressText = await evaluate(contents, `document.querySelector('[aria-label="Progresso do mundo"]')?.innerText || ''`);
+  const progressText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card"]')?.innerText || ''`);
   check(
-    progressText.includes('Level cap padrão') &&
-      progressText.includes('Pika Star por região') &&
-      progressText.includes('Kanto') &&
-      progressText.includes('Não obtido'),
-    'A tela Guia não mostrou o cap nem o estado Pika Star conhecido na leitura sintética.',
+    progressText.includes('Level cap') && progressText.includes('Pika Star') && progressText.includes('Insígnias'),
+    'O Trainer Card não mostrou o cap, as insígnias e os selos Pika Star da leitura sintética.',
   );
   const defaultCap = await evaluate(
     contents,
@@ -1521,8 +1520,6 @@ async function exerciseGuideWorkspace(window) {
     "document.querySelector('[aria-labelledby]')?.closest('main')?.innerText || document.body.innerText",
   );
   for (const expected of [
-    'Próxima etapa',
-    'Próxima etapa de radicalred',
     'Gardevoir entra porque vence 1 de 2 adversários',
     'Choice Specs aumenta as vitórias de 1 para 2.',
     'obter',
@@ -1531,6 +1528,10 @@ async function exerciseGuideWorkspace(window) {
   ]) {
     check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
   }
+  check(
+    !text.includes('Próxima etapa') && !text.includes('Comparado à sua party') && !text.includes('Progresso do mundo'),
+    'A tela Guia ainda mostra interface substituída pelo Trainer Card.',
+  );
   await waitFor(
     contents,
     `Boolean(document.querySelector('ol[aria-label="Time recomendado"] > li[data-change="mantém"][data-slot="1"]'))`,
@@ -1547,38 +1548,136 @@ async function exerciseGuideWorkspace(window) {
   check(partyText.pc.includes('Bulbasaur'), 'A caixa "Fora do time recomendado" não mostrou o Bulbasaur.');
   check(partyText.steps.includes('Guarde no PC: Bulbasaur.'), 'Os passos da party não mandaram guardar o Bulbasaur no PC.');
   check(partyText.leaving, 'A party de hoje não marcou quem vai ao PC.');
-  check(
-    progressText.includes('Próxima etapa') && progressText.includes('Atual:') && progressText.includes('Level cap da etapa: 15 → 21.'),
-    'O painel de progresso não explicou a próxima etapa e a progressão de level cap da campanha.',
-  );
-  // Valida o seletor de campanha no estilo Trainer Card (Issue #129)
+
+  // Próximo desafio: equipe e dados de spawn vêm do trainers.json real pelo IPC de detalhe.
   await waitFor(
     contents,
-    `Boolean(document.querySelector('[aria-label="Trainer Card da Campanha"]'))`,
-    'Trainer Card da campanha presente no guia',
+    `(() => {
+      const hero = document.querySelector('[aria-label="Próximo desafio"]')?.innerText || '';
+      return hero.includes('Como encontrar') && hero.includes('Item de Assinatura') && hero.includes('Level cap');
+    })()`,
+    'dados de spawn do próximo desafio no Trainer Card',
   );
-  const trainerCardText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card da Campanha"]')?.innerText || ''`);
+  const trainerCardText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card"]')?.innerText || ''`);
   check(
-    trainerCardText.includes('Trainer Card · Radical Red') &&
-      trainerCardText.includes('Vitórias na série:') &&
-      trainerCardText.includes('Level cap da campanha:'),
-    'O Trainer Card não exibiu o cabeçalho com a série, vitórias e level cap.',
+    trainerCardText.includes('Trainer Card') && trainerCardText.includes('Radical Red') && trainerCardText.includes('Vitórias na série'),
+    'O Trainer Card não exibiu o título, a série e as vitórias.',
   );
-  const stagesCount = await evaluate(contents, `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length`);
+  const optionCount = `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length`;
+  const stagesCount = await evaluate(contents, optionCount);
   check(stagesCount > 0, 'A lista de etapas da campanha está vazia.');
-  await capture(window, screenshotPaths.trainerCard, '[aria-label="Trainer Card da Campanha"]');
+  await waitFor(
+    contents,
+    `document.querySelector('[aria-label="Treinador"]')?.innerText.includes('informado por você') && !document.querySelector('[aria-label="Treinador"]').innerText.includes('—')`,
+    'level cap informado exibido no Trainer Card',
+  );
+  await capture(window, screenshotPaths.trainerCard, '[aria-label="Trainer Card"]');
+  for (const layout of [
+    {width: 1200, shot: 'trainerCard1200'},
+    {width: 800, shot: 'trainerCard800'},
+  ]) {
+    window.setContentSize(layout.width, 1000);
+    await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport do Trainer Card em ${layout.width}px`);
+    const overflow = await evaluate(
+      contents,
+      `(() => {
+        const card = document.querySelector('[aria-label="Trainer Card"]');
+        return document.documentElement.scrollWidth > document.documentElement.clientWidth || card.scrollWidth > card.clientWidth;
+      })()`,
+    );
+    check(!overflow, `O Trainer Card em ${layout.width}px gerou rolagem horizontal.`);
+    await capture(window, screenshotPaths[layout.shot], '[aria-label="Trainer Card"]');
+  }
+  window.setContentSize(1440, 1000);
+  await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após o Trainer Card');
 
-  // Testa busca no Trainer Card
+  const campaignData = require('../data/guide/campaign.json');
+  const switchGuideView = (label) =>
+    evaluate(
+      contents,
+      `(() => {
+        const option = [...document.querySelectorAll('[aria-label="Objetivo do guia"] label')].find(node => node.textContent.trim() === ${JSON.stringify(label)});
+        if (!option) throw new Error('Opção ${label} do Objetivo do guia não encontrada.');
+        option.click();
+      })()`,
+    );
+  const clickCardButton = (labelStart) =>
+    evaluate(
+      contents,
+      `(() => {
+        const button = [...document.querySelectorAll('[aria-label="Trainer Card"] button')].find(node => node.textContent.trim().startsWith(${JSON.stringify(labelStart)}));
+        if (!button) throw new Error('Botão ${labelStart} não encontrado no Trainer Card.');
+        button.click();
+      })()`,
+    );
+
+  // Trilha: mostrar todas as etapas e voltar ao recorte.
+  await clickCardButton('Mostrar todas as etapas');
+  await waitFor(contents, `${optionCount} === ${campaignData.radicalred.stages.length}`, 'todas as etapas da série na trilha');
+  // Leader Brock (vencido na leitura sintética) só aparece com todas as etapas; o desafio mostra os dados reais do RCT.
   await evaluate(
     contents,
     `(() => {
-      const search = document.querySelector('[aria-label="Trainer Card da Campanha"] input');
-      if (!search) throw new Error('Campo de busca do Trainer Card não encontrado.');
-      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-      setter.call(search, 'Misty');
-      search.dispatchEvent(new Event('input', {bubbles: true}));
+      const option = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')].find(node => node.getAttribute('aria-label') === 'Leader Brock');
+      if (!option) throw new Error('Leader Brock não está na trilha completa.');
+      option.click();
     })()`,
   );
+  await waitFor(
+    contents,
+    `(() => {
+      const hero = document.querySelector('[aria-label="Desafio escolhido"], [aria-label="Próximo desafio"]')?.innerText || '';
+      return hero.includes('Leader Brock') && hero.includes('Hard Stone') && hero.includes('Caverna');
+    })()`,
+    'Leader Brock com item de assinatura e biomas no Trainer Card',
+  );
+  const brockText = await evaluate(
+    contents,
+    `document.querySelector('[aria-label="Desafio escolhido"], [aria-label="Próximo desafio"]')?.innerText || ''`,
+  );
+  check(
+    brockText.includes('15 → 21') && brockText.includes('Como encontrar') && brockText.includes('Líder de Ginásio'),
+    'O desafio de Leader Brock não mostrou a progressão de level cap e "Como encontrar".',
+  );
+  await clickCardButton('Mostrar menos');
+  await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha recolhida de volta');
+
+  // Seleção de etapa e detalhe do desafio.
+  const firstStage = await evaluate(
+    contents,
+    `(() => {
+      const stageOption = document.querySelector('[aria-label="Etapas da campanha"] [role="option"]');
+      if (!stageOption) throw new Error('Nenhuma etapa encontrada no Trainer Card.');
+      stageOption.click();
+      return stageOption.getAttribute('aria-label');
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `(() => {
+      const hero = document.querySelector('[aria-label="Próximo desafio"], [aria-label="Desafio escolhido"]')?.innerText || '';
+      return hero.includes(${JSON.stringify(firstStage)}) && hero.includes('Level cap') && hero.includes('Pré-requisitos');
+    })()`,
+    'desafio da etapa selecionada no Trainer Card',
+  );
+
+  // Busca livre: filtra a campanha e alcança qualquer treinador fora dela; depois restaura o objetivo sintético da fixture.
+  const searchInput = `document.querySelector('[aria-label="Trainer Card"] input[type="search"]')`;
+  const setSearch = (value) =>
+    evaluate(
+      contents,
+      `(() => {
+        const search = ${searchInput};
+        if (!search) throw new Error('Campo de busca do Trainer Card não encontrado.');
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+        setter.call(search, ${JSON.stringify(value)});
+        search.dispatchEvent(new Event('input', {bubbles: true}));
+      })()`,
+    );
+  await switchGuideView('Busca livre');
+  const allStages = Object.values(campaignData).reduce((sum, series) => sum + series.stages.length, 0);
+  await waitFor(contents, `${optionCount} === ${allStages}`, 'todas as séries listadas na busca livre sem filtro');
+  await setSearch('Misty');
   await waitFor(
     contents,
     `(() => {
@@ -1587,108 +1686,32 @@ async function exerciseGuideWorkspace(window) {
     })()`,
     'filtro de busca do Trainer Card por "Misty"',
   );
-
-  // Limpa busca clicando no botão Limpar busca ou despachando evento
   await evaluate(
     contents,
     `(() => {
-      const clearBtn = document.querySelector('[aria-label="Trainer Card da Campanha"] button[aria-label="Limpar busca"]');
-      if (clearBtn) {
-        clearBtn.click();
-      } else {
-        const search = document.querySelector('[aria-label="Trainer Card da Campanha"] input');
-        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-        setter.call(search, '');
-        search.dispatchEvent(new Event('input', {bubbles: true}));
-        search.dispatchEvent(new Event('change', {bubbles: true}));
-      }
+      const clearBtn = document.querySelector('[aria-label="Trainer Card"] button[aria-label="Limpar busca"]');
+      if (!clearBtn) throw new Error('Botão Limpar busca não encontrado.');
+      clearBtn.click();
     })()`,
   );
+  await waitFor(contents, `${optionCount} === ${allStages}`, 'restauração da lista completa após limpar busca');
+  await setSearch('Sintetico');
   await waitFor(
     contents,
-    `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length === ${stagesCount}`,
-    'restauração da lista completa após limpar busca',
-  );
-
-  // Testa seleção de etapa e detalhes
-  await evaluate(
-    contents,
-    `(() => {
-      const options = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')];
-      const stageOption = options[0];
-      if (!stageOption) throw new Error('Nenhuma etapa encontrada no Trainer Card.');
-      stageOption.click();
-    })()`,
-  );
-  await waitFor(
-    contents,
-    `Boolean(document.querySelector('[aria-label^="Detalhes de "]'))`,
-    'painel de detalhes da etapa selecionada no Trainer Card',
-  );
-  const detailText = await evaluate(contents, `document.querySelector('[aria-label^="Detalhes de "]')?.innerText || ''`);
-  check(
-    detailText.includes('Tipo') && (detailText.includes('Level cap') || detailText.includes('Pré-requisitos')),
-    'Os detalhes da etapa selecionada não exibiram tipo, cap ou requisitos.',
-  );
-  // Testa filtro "Só campanha atual" exibindo etapas já vencidas quando desligado
-  await evaluate(
-    contents,
-    `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Só campanha atual'))?.click()`,
-  );
-  await waitFor(
-    contents,
-    `(() => {
-      const names = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')].map(n => n.innerText);
-      return names.some(n => n.includes('Brock'));
-    })()`,
-    'etapas vencidas (Brock) visíveis ao desligar "Só campanha atual"',
-  );
-  // Restaura o filtro ligado
-  await evaluate(
-    contents,
-    `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Só campanha atual'))?.click()`,
-  );
-  await waitFor(
-    contents,
-    `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length === ${stagesCount}`,
-    'filtro "Só campanha atual" restaurado',
-  );
-
-  // Testa busca livre por qualquer treinador fora da campanha e restaura o objetivo sintético da fixture
-  await evaluate(
-    contents,
-    `(() => {
-      const search = document.querySelector('[aria-label="Trainer Card da Campanha"] input');
-      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-      setter.call(search, 'Sintetico');
-      search.dispatchEvent(new Event('input', {bubbles: true}));
-    })()`,
-  );
-  await waitFor(
-    contents,
-    `[...document.querySelectorAll('button')].some(b => b.textContent.includes('Treinador Sintético'))`,
+    `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].some(b => b.textContent.includes('Treinador Sintético'))`,
     'treinador sintético disponível na busca livre fora da campanha',
   );
   await evaluate(
     contents,
     `(() => {
-      const btn = [...document.querySelectorAll('button')].find(b => b.textContent.includes('Treinador Sintético'));
+      const btn = [...document.querySelectorAll('[aria-label="Trainer Card"] button')].find(b => b.textContent.includes('Treinador Sintético'));
       if (!btn) throw new Error('Botão do Treinador Sintético não encontrado na busca livre.');
       btn.click();
     })()`,
   );
-  await evaluate(
-    contents,
-    `(() => {
-      const clearBtn = document.querySelector('[aria-label="Trainer Card da Campanha"] button[aria-label="Limpar busca"]');
-      if (clearBtn) clearBtn.click();
-    })()`,
-  );
-  await waitFor(
-    contents,
-    `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length === ${stagesCount}`,
-    'lista da campanha visível após restaurar treinador sintético',
-  );
+  await setSearch('');
+  await switchGuideView('Campanha');
+  await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha da campanha visível após restaurar treinador sintético');
 
   // Cap abaixo do nível do membro (Gardevoir Nv. 30): ele sai do time e aparece como excluído pelo level cap.
   await setLevelCapField(contents, 20);
