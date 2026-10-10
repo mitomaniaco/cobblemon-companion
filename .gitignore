@@ -16,3 +16,6 @@ public/types/*.svg
 public/categories/*.png
 public/items/*.png
 src/data/ui-icons.json
+public/trainers/
+src/data/trainer-portraits.json
+.prepare-trainer-portraits-*/

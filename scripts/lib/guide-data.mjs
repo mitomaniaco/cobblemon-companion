@@ -81,6 +81,8 @@ export function deriveTrainer(json, {id, jar, sha256, file, mob}) {
           type: mob.type ?? null,
           signatureItem: mob.signatureItem ? withNamespace(mob.signatureItem) : null,
           optional: mob.optional === true,
+          biomes: Array.isArray(mob.biomeTagWhitelist) ? [...mob.biomeTagWhitelist] : [],
+          excludedBiomes: Array.isArray(mob.biomeTagBlacklist) ? [...mob.biomeTagBlacklist] : [],
         }
       : null,
     team: json.team.map((pokemon) => {

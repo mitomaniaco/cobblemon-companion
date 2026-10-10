@@ -80,7 +80,8 @@ const {loadGuideData} = require('./lib/guide/data.cjs');
 const {planPartySlots} = require('./lib/guide/party-order.cjs');
 const {readGuideProgressFromConfig, resolveProgressSourcePaths, publicProgressError} = require('./lib/progress.cjs');
 const {deriveProgressLevelCap} = require('./lib/guide/trainers.cjs');
-const {guideNextGoal, listGuideTrainers} = require('./lib/guide/trainers.cjs');
+const {guideNextGoal, guideTrainerDetail, listGuideTrainers} = require('./lib/guide/trainers.cjs');
+const {readPlayerAvatar} = require('./lib/player-avatar.cjs');
 const PROTOCOL = 'cobblemon';
 const ORIGIN = `${PROTOCOL}://app`;
 const IPC_CALCULATE = 'companion:calculate';
@@ -95,6 +96,8 @@ const IPC_EVOLUTION_PLAN_BUILD = 'companion:evolution-plan-build';
 const IPC_CAPTURE_PLAN_BUILD = 'companion:capture-plan-build';
 const IPC_TRAINING_PLAN_BUILD = 'companion:training-plan-build';
 const IPC_GUIDE_TRAINERS = 'companion:guide-trainers';
+const IPC_GUIDE_TRAINER_DETAIL = 'companion:guide-trainer-detail';
+const IPC_PLAYER_AVATAR = 'companion:player-avatar';
 const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
 const IPC_READ_PROGRESS = 'companion:read-progress';
 const IPC_PROGRESS_CHANGED = 'companion:progress-changed';
@@ -587,6 +590,23 @@ function handleGuideTrainers(event, ...args) {
   if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_GUIDE.trainers);
   return listGuideTrainers(loadGuideData());
 }
+function handleGuideTrainerDetail(event, ...args) {
+  requireSender(event);
+  if (args.length !== 1 || typeof args[0] !== 'string' || args[0].length < 1 || args[0].length > 200)
+    throw new TypeError('trainerId precisa ser texto');
+  const trainerId = args[0];
+  if (TRAINER_UI_TEST_MODE && trainerId === TRAINER_UI_GUIDE.trainers[0].id) return structuredClone(TRAINER_UI_GUIDE.trainerDetail);
+  return guideTrainerDetail(loadGuideData(), trainerId);
+}
+function handlePlayerAvatar(event, ...args) {
+  requireSender(event);
+  if (args.length !== 0) throw new TypeError('A skin do jogador não aceita argumentos');
+  if (TRAINER_UI_TEST_MODE) return null;
+  return readPlayerAvatar({
+    configPath: path.join(__dirname, '..', 'config.json'),
+    cachePath: path.join(app.getPath('userData'), 'player-skin.json'),
+  });
+}
 function guideDataForRenderer() {
   return TRAINER_UI_TEST_MODE ? {trainers: TRAINER_UI_GUIDE.trainers, series: {}, campaign: TRAINER_UI_CAMPAIGN} : loadGuideData();
 }
@@ -893,6 +913,8 @@ function installIpc() {
   ipcMain.handle(IPC_CAPTURE_PLAN_BUILD, handleCapturePlanBuild);
   ipcMain.handle(IPC_TRAINING_PLAN_BUILD, handleTrainingPlanBuild);
   ipcMain.handle(IPC_GUIDE_TRAINERS, handleGuideTrainers);
+  ipcMain.handle(IPC_GUIDE_TRAINER_DETAIL, handleGuideTrainerDetail);
+  ipcMain.handle(IPC_PLAYER_AVATAR, handlePlayerAvatar);
   ipcMain.handle(IPC_GUIDE_NEXT_GOAL, handleGuideNextGoal);
   ipcMain.handle(IPC_READ_PROGRESS, handleReadGuideProgress);
   if (TRAINER_UI_TEST_MODE) {

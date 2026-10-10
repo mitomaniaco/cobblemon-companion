@@ -9631,7 +9631,13 @@
     "mob": {
       "type": "team_allthemods_trainer",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -9838,7 +9844,13 @@
     "mob": {
       "type": "team_allthemods_trainer",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -11382,7 +11394,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -11582,7 +11601,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -11780,7 +11806,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -11978,7 +12011,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -12176,7 +12216,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -12373,7 +12420,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -12571,7 +12625,14 @@
     "mob": {
       "type": "battleground",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -22412,7 +22473,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:destiny_knot",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "has_structure/end_city",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -22619,7 +22690,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:upgrade",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -22799,7 +22880,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:dubious_disc",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -23125,7 +23216,18 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": "minecraft:ender_pearl",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "has_structure/ancient_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -23187,7 +23289,16 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": "cobblemon:black_augurite",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -29014,7 +29125,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": "cobblemon:prism_scale",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -29215,7 +29333,14 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -29416,7 +29541,14 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -29617,7 +29749,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": "minecraft:totem_of_undying",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -29939,7 +30078,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -30145,7 +30291,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -30351,7 +30504,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -30557,7 +30717,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -30729,7 +30898,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -30901,7 +31079,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -33129,7 +33316,18 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "cobblemon:scope_lens",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_underground",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -33313,7 +33511,18 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "cobblemon:wide_lens",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_underground",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -33387,7 +33596,17 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "minecraft:fire_charge",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -33595,7 +33814,17 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "cobblemon:smoke_ball",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "is_nether",
+        "is_end"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -33675,7 +33904,17 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "cobblemon:zoom_lens",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -33781,7 +34020,17 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "minecraft:wind_charge",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "is_nether",
+        "is_end"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -33887,7 +34136,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -34111,7 +34366,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -34335,7 +34596,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -34545,7 +34812,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -34771,7 +35044,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": "allthemodium:allthemodium_ingot",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -34977,7 +35256,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -35201,7 +35486,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": "minecraft:white_concrete",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -35425,7 +35716,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": "allthemodium:allthemodium_ingot",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -35609,7 +35906,13 @@
     "mob": {
       "type": "contentcreators",
       "signatureItem": "allthemodium:allthemodium_ingot",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -41373,7 +41676,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:silver_powder",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_forest",
+        "is_swamp"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -41549,7 +41861,16 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_forest",
+        "is_swamp"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -41719,7 +42040,16 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_forest",
+        "is_swamp"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -41915,7 +42245,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_swamp"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -42125,7 +42463,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_swamp"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -42622,7 +42968,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:fairy_feather",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_river"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -42825,7 +43180,19 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:soft_sand",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_spooky"
+      ]
     },
     "team": [
       {
@@ -43003,7 +43370,19 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_spooky"
+      ]
     },
     "team": [
       {
@@ -43171,7 +43550,19 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_spooky"
+      ]
     },
     "team": [
       {
@@ -43368,7 +43759,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -43576,7 +43976,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -44076,7 +44485,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:spell_tag",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_swamp",
+        "is_spooky",
+        "has_structure/ancient_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -44279,7 +44697,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:fire_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_hot"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end",
+        "is_wet"
+      ]
     },
     "team": [
       {
@@ -44453,7 +44879,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_hot"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end",
+        "is_wet"
+      ]
     },
     "team": [
       {
@@ -44624,7 +45058,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_hot"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end",
+        "is_wet"
+      ]
     },
     "team": [
       {
@@ -44819,7 +45261,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_mountain",
+        "is_peak"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -45026,7 +45476,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_mountain",
+        "is_peak"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -45523,7 +45981,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cold"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -45736,7 +46202,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cold"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -46235,7 +46709,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:psychic_seed",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_sparse_vegetation",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -46402,7 +46885,16 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_sparse_vegetation",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -46572,7 +47064,16 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_sparse_vegetation",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -46766,7 +47267,16 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:iron_ball",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_mountain",
+        "is_peak",
+        "is_underground"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -46970,7 +47480,15 @@
     "mob": {
       "type": "e4",
       "signatureItem": "cobblemon:quick_claw",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_peak",
+        "has_structure/end_city",
+        "is_mountain"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -50484,7 +51002,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": "cobblemon:power_anklet",
-      "optional": true
+      "optional": true,
+      "biomes": [],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -50634,7 +51160,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": "cobblemon:power_bracer",
-      "optional": true
+      "optional": true,
+      "biomes": [],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -50784,7 +51318,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": "cobblemon:power_belt",
-      "optional": true
+      "optional": true,
+      "biomes": [],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -50934,7 +51476,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": "cobblemon:power_lens",
-      "optional": true
+      "optional": true,
+      "biomes": [],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -51084,7 +51634,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": "cobblemon:power_band",
-      "optional": true
+      "optional": true,
+      "biomes": [],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -51234,7 +51792,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": "cobblemon:power_weight",
-      "optional": true
+      "optional": true,
+      "biomes": [],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -53753,7 +54319,18 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:metal_coat",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -53863,7 +54440,18 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -54065,7 +54653,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:ice_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cold"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -54204,7 +54800,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_cold"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -54410,7 +55014,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": "minecraft:ender_eye",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -54532,7 +55144,15 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_spooky",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -54739,7 +55359,16 @@
     "mob": {
       "type": "leader",
       "signatureItem": "minecraft:sunflower",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_dense_vegetation",
+        "is_lush"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -54831,7 +55460,16 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_dense_vegetation",
+        "is_lush"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -55036,7 +55674,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:black_belt",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_peak",
+        "is_hill",
+        "is_mountain"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -55146,7 +55796,19 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_peak",
+        "is_hill",
+        "is_mountain"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -55352,7 +56014,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:smooth_rock",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_spooky"
+      ]
     },
     "team": [
       {
@@ -55429,7 +56103,19 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_spooky"
+      ]
     },
     "team": [
       {
@@ -55633,7 +56319,17 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:thunder_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -55785,7 +56481,17 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -55991,7 +56697,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "minecraft:nautilus_shell",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_wet",
+        "is_water",
+        "is_river",
+        "is_beach"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -56105,7 +56823,19 @@
     "mob": {
       "type": "normal",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_wet",
+        "is_water",
+        "is_river",
+        "is_beach"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -62982,7 +63712,17 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:flying_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_hill",
+        "is_mountain",
+        "is_peak"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -63156,7 +63896,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:bug_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_forest",
+        "is_jungle",
+        "is_dense_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -63363,7 +64115,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:fighting_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_peak",
+        "is_hill",
+        "is_mountain"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_water",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -63540,7 +64304,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:charcoal_stick",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_hot"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end",
+        "is_wet"
+      ]
     },
     "team": [
       {
@@ -63949,7 +64721,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:hard_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_cave",
+        "is_plateau",
+        "is_mountain",
+        "is_hill"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_spooky"
+      ]
     },
     "team": [
       {
@@ -64848,7 +65632,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_mountain",
+        "is_peak"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -65058,7 +65850,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:dragon_scale",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_mountain",
+        "is_peak"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -65467,7 +66267,16 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:miracle_seed",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_dense_vegetation",
+        "is_lush"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -65939,7 +66748,17 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:electric_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -66117,7 +66936,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -67075,7 +67904,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:poison_barb",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_swamp",
+        "is_jungle"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -67421,7 +68258,17 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:magnet",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -67604,7 +68451,16 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:normal_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -67778,7 +68634,17 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:medicinal_leek",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_forest",
+        "is_dense_vegetation",
+        "is_swamp"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -68332,7 +69198,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:mystic_water",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_wet",
+        "is_water",
+        "is_river",
+        "is_beach"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -69690,7 +70568,15 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:twisted_spoon",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_spooky",
+        "is_sparse_vegetation"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether"
+      ]
     },
     "team": [
       {
@@ -69889,7 +70775,19 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:water_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_wet",
+        "is_water",
+        "is_river",
+        "is_beach"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_underground",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -70094,7 +70992,18 @@
     "mob": {
       "type": "leader",
       "signatureItem": "cobblemon:dark_gem",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "has_structure/ancient_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -70602,7 +71511,17 @@
     "mob": {
       "type": "ligh_of_ruin",
       "signatureItem": "cobblemon:relic_coin",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/ancient_city",
+        "has_structure/desert_pyramid",
+        "has_structure/end_city",
+        "has_structure/jungle_temple",
+        "has_structure/nether_fortress"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -70795,7 +71714,17 @@
     "mob": {
       "type": "ligh_of_ruin",
       "signatureItem": "cobblemon:sky_tumblestone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/ancient_city",
+        "has_structure/desert_pyramid",
+        "has_structure/end_city",
+        "has_structure/jungle_temple",
+        "has_structure/nether_fortress"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -70992,7 +71921,17 @@
     "mob": {
       "type": "ligh_of_ruin",
       "signatureItem": "cobblemon:kings_rock",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/ancient_city",
+        "has_structure/desert_pyramid",
+        "has_structure/end_city",
+        "has_structure/jungle_temple",
+        "has_structure/nether_fortress"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -71185,7 +72124,14 @@
     "mob": {
       "type": "ligh_of_ruin",
       "signatureItem": "minecraft:nether_star",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/ancient_city",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -71383,7 +72329,17 @@
     "mob": {
       "type": "ligh_of_ruin",
       "signatureItem": "cobblemon:black_glasses",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/ancient_city",
+        "has_structure/desert_pyramid",
+        "has_structure/end_city",
+        "has_structure/jungle_temple",
+        "has_structure/nether_fortress"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -82657,7 +83613,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:everstone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -82803,7 +83768,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:everstone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -82949,7 +83923,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:everstone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -83095,7 +84078,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:eviolite",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -83250,7 +84242,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:eviolite",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -83405,7 +84406,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:eviolite",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -83560,7 +84570,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:dawn_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -83745,7 +84764,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:dawn_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -83930,7 +84958,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:dawn_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -84115,7 +85152,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:shiny_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -84328,7 +85374,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:shiny_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -84541,7 +85596,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:shiny_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94421,7 +95485,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94470,7 +95543,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94519,7 +95601,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94567,7 +95658,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:guard_spec",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94639,7 +95739,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:guard_spec",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94711,7 +95820,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:guard_spec",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94782,7 +95900,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:dire_hit",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94881,7 +96008,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:dire_hit",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -94984,7 +96120,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:dire_hit",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -95087,7 +96232,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:binding_band",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -95251,7 +96405,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:binding_band",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -95415,7 +96578,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:binding_band",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -95579,7 +96751,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:link_cable",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -95778,7 +96959,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:link_cable",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -95977,7 +97167,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:link_cable",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -96487,7 +97686,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "minecraft:gold_nugget",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -96611,7 +97819,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "minecraft:gold_nugget",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -96737,7 +97954,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "minecraft:gold_nugget",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -97587,7 +98813,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:soothe_bell",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -97755,7 +98990,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:soothe_bell",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -97923,7 +99167,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:soothe_bell",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -98091,7 +99344,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:lucky_egg",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -98288,7 +99550,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:lucky_egg",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -98485,7 +99756,16 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:lucky_egg",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -99038,7 +100318,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "has_structure/end_city",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -99246,7 +100536,18 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:black_tumblestone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_underground",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -99362,7 +100663,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -99482,7 +100793,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:covert_cloak",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "has_structure/end_city",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -99631,7 +100952,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:black_sludge",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -99838,7 +101169,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "has_structure/end_city",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -100045,7 +101386,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -100165,7 +101516,17 @@
     "mob": {
       "type": "team_rocket",
       "signatureItem": "cobblemon:utility_umbrella",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "has_structure/end_city",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -104488,7 +105849,17 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": "cobblemon:black_apricorn_seed",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -104595,7 +105966,17 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -104703,7 +106084,17 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": "cobblemon:black_apricorn",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -104862,7 +106253,17 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -104967,7 +106368,17 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": "cobblemon:colbur_berry",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "has_structure/ancient_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -105131,7 +106542,17 @@
     "mob": {
       "type": "ligh_of_ruin",
       "signatureItem": "cobblemon:dusk_stone",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "has_structure/ancient_city",
+        "has_structure/desert_pyramid",
+        "has_structure/end_city",
+        "has_structure/jungle_temple",
+        "has_structure/nether_fortress"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -105329,7 +106750,17 @@
     "mob": {
       "type": "team_shadow",
       "signatureItem": "minecraft:ink_sac",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_nether",
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -106981,7 +108412,19 @@
     "mob": {
       "type": "rival",
       "signatureItem": "minecraft:diamond",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end",
+        "is_underground"
+      ]
     },
     "team": [
       {
@@ -113883,7 +115326,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -114062,7 +115511,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -114268,7 +115723,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -114480,7 +115941,13 @@
     "mob": {
       "type": "team_allthemods_custom_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -114676,7 +116143,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -114847,7 +116320,13 @@
     "mob": {
       "type": "team_allthemods_custom_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -115060,7 +116539,13 @@
     "mob": {
       "type": "team_allthemods_custom_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -115252,7 +116737,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -115444,7 +116935,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -115653,7 +117150,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -115879,7 +117382,13 @@
     "mob": {
       "type": "team_allthemods_custom_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -116028,7 +117537,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -116234,7 +117749,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -116422,7 +117943,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -116615,7 +118142,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -116824,7 +118357,13 @@
     "mob": {
       "type": "team_allthemods_custom_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -117030,7 +118569,13 @@
     "mob": {
       "type": "team_allthemods_wandering",
       "signatureItem": "allthemodium:unobtainium_block",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -117233,7 +118778,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -117441,7 +118992,13 @@
     "mob": {
       "type": "team_allthemods_elite_gym",
       "signatureItem": null,
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "allthemodium:other_biomes"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -117643,7 +119200,17 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "minecraft:clock",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "is_nether",
+        "is_end"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -117749,7 +119316,17 @@
     "mob": {
       "type": "team_galactic",
       "signatureItem": "minecraft:echo_shard",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_badlands",
+        "is_wasteland",
+        "is_savanna",
+        "is_nether",
+        "is_end"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -125059,7 +126636,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -125256,7 +126840,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -125453,7 +127044,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -125652,7 +127250,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -125851,7 +127456,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -126050,7 +127662,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -126249,7 +127868,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -126446,7 +128072,14 @@
     "mob": {
       "type": "champ",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -126656,7 +128289,14 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -126868,7 +128508,14 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "has_structure/end_city",
+        "is_rare"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {
@@ -127043,7 +128690,17 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:choice_scarf",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "is_underground"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -127327,7 +128984,17 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:silk_scarf",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "is_underground"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -127594,7 +129261,17 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:expert_belt",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "is_underground"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -128618,7 +130295,18 @@
     "mob": {
       "type": "rival",
       "signatureItem": "cobblemon:vivichoke",
-      "optional": false
+      "optional": false,
+      "biomes": [
+        "is_plains",
+        "is_sparse_vegetation",
+        "is_rare",
+        "is_forest"
+      ],
+      "excludedBiomes": [
+        "is_void",
+        "is_nether",
+        "is_end"
+      ]
     },
     "team": [
       {
@@ -128826,7 +130514,14 @@
     "mob": {
       "type": "rival",
       "signatureItem": null,
-      "optional": true
+      "optional": true,
+      "biomes": [
+        "is_rare",
+        "has_structure/end_city"
+      ],
+      "excludedBiomes": [
+        "is_void"
+      ]
     },
     "team": [
       {

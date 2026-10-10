@@ -40,7 +40,7 @@ O repositório tem `npm run check` (typecheck + Vitest + build), o harness Elect
 
 - O mapa `species` de `electron/lib/combat-compatibility.json` é gerado: altere as regras em `scripts/lib/compat-catalog.mjs` ou o conjunto de habilidades e rode `npm run catalog:generate -- --instance <pasta com mods/> --write`; nunca edite espécies à mão. O gerador só lê arquivos do jogo (mods, datapacks), nunca saves ou `config.json`.
 - Nunca versionar `config.json`, saves, `.runtime/` ou logs locais (já estão no `.gitignore`). Fixtures em `test/fixtures/` são sintéticas.
-- O app é local e não envia dados pela rede; Sentry/OpenTelemetry, quando adotados, não podem transmitir dados do jogador, caminhos locais ou UUIDs de jogador. Qualquer exportação de telemetria exige decisão explícita do usuário.
+- O app é local e não envia dados pela rede; Sentry/OpenTelemetry, quando adotados, não podem transmitir dados do jogador, caminhos locais ou UUIDs de jogador. Qualquer exportação de telemetria exige decisão explícita do usuário. Exceção: a busca da skin do jogador (D17).
 - Observabilidade local-first já adotada: `src/app/AppErrorBoundary.tsx` mostra um diagnóstico sanitizado (`src/platform/diagnostics.ts`) em vez de uma janela vazia, sem rede e sem IPC. Todo texto de erro exibido ou copiado deve passar por `scrubDiagnosticText`. Telemetria externa só entra por decisão explícita do dono do projeto e com o mesmo scrub.
 
 ## Precedência entre skills

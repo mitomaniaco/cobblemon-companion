@@ -166,6 +166,13 @@ export type GuidePartyPlan = {
   toPc: Array<{uuid: string; speciesId: string; fromSlot: number}>;
 };
 
+export type GuideTrainerDetail = {
+  id: string;
+  name: string;
+  team: Array<{speciesId: string; level: number; formId: string}>;
+  spawn: {signatureItem: string | null; biomes: string[]; excludedBiomes: string[]} | null;
+};
+
 /** Membro do time acima do level cap quando o jogador desligou "respeitar o level cap": o app só avisa, não exclui. */
 export type OverCapMember = {uuid: string; speciesId: string; level: number; levelCap: number; text: string};
 
@@ -565,6 +572,8 @@ export type CompanionApi = {
   /** Treinadores disponíveis como objetivo (radicalred primeiro, na ordem da campanha). */
   listGuideTrainers(): Promise<GuideTrainer[]>;
   guideNextGoal(): Promise<GuideNextGoal>;
+  guideTrainerDetail(trainerId: string): Promise<GuideTrainerDetail>;
+  readPlayerAvatar(): Promise<{dataUrl: string} | null>;
   /** Lê o progresso do mundo (somente leitura). Campos que não puderem ser lidos vêm `null`. */
   readGuideProgress(): Promise<GuideProgress>;
   /** Avisa quando os arquivos de progresso mudam; devolve a função que cancela a inscrição. */

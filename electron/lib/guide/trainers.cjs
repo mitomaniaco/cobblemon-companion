@@ -149,4 +149,26 @@ function deriveProgressLevelCap(campaign, progress) {
   return result?.progress.levelCap ?? null;
 }
 
-module.exports = {listGuideTrainers, guideNextGoal, deriveProgressLevelCap};
+/** Time e dados de spawn de um treinador do RCT; `formId` segue a chave de forma de `resolveArtwork`. */
+function guideTrainerDetail({trainers}, trainerId) {
+  const trainer = trainers.find((candidate) => candidate.id === trainerId);
+  if (!trainer) throw new Error(`treinador ${trainerId} não encontrado`);
+  return {
+    id: trainer.id,
+    name: trainer.name,
+    team: trainer.team.map((member) => ({
+      speciesId: member.speciesId,
+      level: member.level,
+      formId: member.aspects?.length ? [...member.aspects].sort().join('+') : 'normal',
+    })),
+    spawn: trainer.mob
+      ? {
+          signatureItem: trainer.mob.signatureItem,
+          biomes: trainer.mob.biomes ?? [],
+          excludedBiomes: trainer.mob.excludedBiomes ?? [],
+        }
+      : null,
+  };
+}
+
+module.exports = {listGuideTrainers, guideNextGoal, deriveProgressLevelCap, guideTrainerDetail};

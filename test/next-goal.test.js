@@ -2,7 +2,8 @@ import {createRequire} from 'node:module';
 import {describe, expect, it} from 'vitest';
 
 const require = createRequire(import.meta.url);
-const {guideNextGoal, listGuideTrainers} = require('../electron/lib/guide/trainers.cjs');
+const {guideNextGoal, guideTrainerDetail, listGuideTrainers} = require('../electron/lib/guide/trainers.cjs');
+const {loadGuideData} = require('../electron/lib/guide/data.cjs');
 const data = require('./fixtures/guide-data.json');
 
 const REASON = 'Sem progresso legível; sugestão pelo nível da sua party.';
@@ -180,5 +181,18 @@ describe('próximo objetivo pelo progresso RCT', () => {
       basis: 'nível',
       trainerId: null,
     });
+  });
+});
+
+describe('detalhe do treinador', () => {
+  it('traz os dados de spawn do RCT do líder e recusa id desconhecido', () => {
+    const detail = guideTrainerDetail(loadGuideData(), 'rctmod:leader_brock_019e');
+    expect(detail.spawn).toEqual({
+      signatureItem: 'cobblemon:hard_stone',
+      biomes: ['is_cave', 'is_plateau', 'is_mountain', 'is_hill'],
+      excludedBiomes: ['is_void', 'is_nether', 'is_end', 'is_spooky'],
+    });
+    expect(detail.team.length).toBeGreaterThan(0);
+    expect(() => guideTrainerDetail(loadGuideData(), 'rctmod:nao_existe')).toThrow('não encontrado');
   });
 });

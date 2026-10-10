@@ -7,7 +7,8 @@
   "main": "electron/main.cjs",
   "scripts": {
     "build": "vite build",
-    "prepare:ui-assets": "node scripts/prepare-ui-assets.mjs",
+    "prepare:ui-assets": "node scripts/prepare-ui-assets.mjs && node scripts/prepare-trainer-portraits.mjs",
+    "prepare:trainer-portraits": "node scripts/prepare-trainer-portraits.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check": "npm run typecheck && npm run test && npm run build",
