@@ -9,6 +9,15 @@
       "series": "radicalred"
     }
   ],
+  "trainerDetail": {
+    "id": "synthetic:trainer",
+    "name": "Treinador Sintético",
+    "team": [
+      {"speciesId": "cobblemon:floatzel", "level": 30, "formId": "normal"},
+      {"speciesId": "cobblemon:bulbasaur", "level": 28, "formId": "normal"}
+    ],
+    "spawn": {"signatureItem": "cobblemon:mystic_water", "biomes": ["is_river"], "excludedBiomes": ["is_void"]}
+  },
   "nextGoal": {
     "trainerId": "synthetic:trainer",
     "basis": "nível",

@@ -16,7 +16,7 @@ const trainers: {
   bag: {item: string; quantity: number}[];
   battleRules: {maxItemUses: number | null};
   ai: {type: string} | null;
-  mob: {type: string | null; signatureItem: string | null; optional: boolean} | null;
+  mob: {type: string | null; signatureItem: string | null; optional: boolean; biomes: string[]; excludedBiomes: string[]} | null;
   source: {jar: string; sha256: string; file: string};
 }[] = read('trainers.json');
 

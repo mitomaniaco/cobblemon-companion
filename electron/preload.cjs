@@ -25,6 +25,8 @@ const bridge = {
   buildGuide: (request) => ipcRenderer.invoke('companion:guide-build', request),
   listGuideTrainers: () => ipcRenderer.invoke('companion:guide-trainers'),
   guideNextGoal: () => ipcRenderer.invoke('companion:guide-next-goal'),
+  guideTrainerDetail: (trainerId) => ipcRenderer.invoke('companion:guide-trainer-detail', trainerId),
+  readPlayerAvatar: () => ipcRenderer.invoke('companion:player-avatar'),
   readGuideProgress: () => ipcRenderer.invoke('companion:read-progress'),
   onProgressChanged: (callback) => {
     if (typeof callback !== 'function') throw new TypeError('onProgressChanged precisa de uma função');
