@@ -1,0 +1,467 @@
+{
+  "rctmod:trainers/defeat_battleground_alice": [
+    "rctmod:battleground_alice_05f4"
+  ],
+  "rctmod:trainers/defeat_battleground_benjamin": [
+    "rctmod:battleground_benjamin_05f9"
+  ],
+  "rctmod:trainers/defeat_battleground_big_mo": [
+    "rctmod:battleground_big_mo_05f7"
+  ],
+  "rctmod:trainers/defeat_battleground_mel": [
+    "rctmod:battleground_mel_05f5"
+  ],
+  "rctmod:trainers/defeat_battleground_mirskle": [
+    "rctmod:battleground_mirskle_05f2"
+  ],
+  "rctmod:trainers/defeat_battleground_tessy": [
+    "rctmod:battleground_tessy_05f8"
+  ],
+  "rctmod:trainers/defeat_battleground_vega": [
+    "rctmod:battleground_vega_05f3"
+  ],
+  "rctmod:trainers/defeat_boss_giovanni_1": [
+    "rctmod:boss_giovanni_015c"
+  ],
+  "rctmod:trainers/defeat_boss_giovanni_2": [
+    "rctmod:boss_giovanni_015d"
+  ],
+  "rctmod:trainers/defeat_boss_giovanni_3": [
+    "rctmod:boss_giovanni_0045"
+  ],
+  "rctmod:trainers/defeat_boss_zeph_1": [
+    "rctmod:boss_zeph_1_05bb"
+  ],
+  "rctmod:trainers/defeat_boss_zeph_2": [
+    "rctmod:boss_zeph_2_05bf"
+  ],
+  "rctmod:trainers/defeat_champion_cynthia_1": [
+    "rctmod:champion_cynthia_03a5"
+  ],
+  "rctmod:trainers/defeat_champion_cynthia_2": [
+    "rctmod:champion_cynthia_05a2"
+  ],
+  "rctmod:trainers/defeat_champion_cynthia_3": [
+    "rctmod:champion_cynthia_05a7"
+  ],
+  "rctmod:trainers/defeat_champion_jax": [
+    "rctmod:champion_jax_05b7"
+  ],
+  "rctmod:trainers/defeat_champion_terry": [
+    "rctmod:champion_terry_01b6",
+    "rctmod:champion_terry_01b7",
+    "rctmod:champion_terry_01b8"
+  ],
+  "rctmod:trainers/defeat_commander_jupiter_1": [
+    "rctmod:commander_jupiter_041d"
+  ],
+  "rctmod:trainers/defeat_commander_mars_1": [
+    "rctmod:commander_mars_03c2"
+  ],
+  "rctmod:trainers/defeat_commander_mars_2": [
+    "rctmod:commander_mars_041c"
+  ],
+  "rctmod:trainers/defeat_commander_mars_jupiter": [
+    "rctmod:commander_mars_jupiter_m009"
+  ],
+  "rctmod:trainers/defeat_commander_saturn_1": [
+    "rctmod:commander_saturn_041f"
+  ],
+  "rctmod:trainers/defeat_commander_saturn_2": [
+    "rctmod:commander_saturn_0420"
+  ],
+  "rctmod:trainers/defeat_contentcreators_bucketst": [
+    "rctmod:contentcreators_bucketst"
+  ],
+  "rctmod:trainers/defeat_contentcreators_chosenarchitect": [
+    "rctmod:contentcreators_chosenarchitect"
+  ],
+  "rctmod:trainers/defeat_contentcreators_danrique": [
+    "rctmod:contentcreators_danrique"
+  ],
+  "rctmod:trainers/defeat_contentcreators_direwolf20": [
+    "rctmod:contentcreators_direwolf20"
+  ],
+  "rctmod:trainers/defeat_contentcreators_mitinhoplayer": [
+    "rctmod:contentcreators_mitinhoplayer"
+  ],
+  "rctmod:trainers/defeat_contentcreators_nofaxu": [
+    "rctmod:contentcreators_nofaxu"
+  ],
+  "rctmod:trainers/defeat_contentcreators_pilpoh": [
+    "rctmod:contentcreators_pilpoh"
+  ],
+  "rctmod:trainers/defeat_contentcreators_princessstellar": [
+    "rctmod:contentcreators_princessstellar"
+  ],
+  "rctmod:trainers/defeat_contentcreators_virtuositas": [
+    "rctmod:contentcreators_virtuositas"
+  ],
+  "rctmod:trainers/defeat_elite_four_aaron_1": [
+    "rctmod:elite_four_aaron_039f"
+  ],
+  "rctmod:trainers/defeat_elite_four_aaron_2": [
+    "rctmod:elite_four_aaron_059e"
+  ],
+  "rctmod:trainers/defeat_elite_four_aaron_3": [
+    "rctmod:elite_four_aaron_05a3"
+  ],
+  "rctmod:trainers/defeat_elite_four_agatha": [
+    "rctmod:elite_four_agatha_0053",
+    "rctmod:elite_four_agatha_0054"
+  ],
+  "rctmod:trainers/defeat_elite_four_arabella": [
+    "rctmod:elite_four_arabella_05b5"
+  ],
+  "rctmod:trainers/defeat_elite_four_bertha_1": [
+    "rctmod:elite_four_bertha_03a0"
+  ],
+  "rctmod:trainers/defeat_elite_four_bertha_2": [
+    "rctmod:elite_four_bertha_059f"
+  ],
+  "rctmod:trainers/defeat_elite_four_bertha_3": [
+    "rctmod:elite_four_bertha_05a4"
+  ],
+  "rctmod:trainers/defeat_elite_four_bruno": [
+    "rctmod:elite_four_bruno_0050",
+    "rctmod:elite_four_bruno_0051"
+  ],
+  "rctmod:trainers/defeat_elite_four_elias": [
+    "rctmod:elite_four_elias_05b4"
+  ],
+  "rctmod:trainers/defeat_elite_four_flint_1": [
+    "rctmod:elite_four_flint_03a1"
+  ],
+  "rctmod:trainers/defeat_elite_four_flint_2": [
+    "rctmod:elite_four_flint_05a0"
+  ],
+  "rctmod:trainers/defeat_elite_four_flint_3": [
+    "rctmod:elite_four_flint_05a5"
+  ],
+  "rctmod:trainers/defeat_elite_four_lance": [
+    "rctmod:elite_four_lance_0056",
+    "rctmod:elite_four_lance_0057"
+  ],
+  "rctmod:trainers/defeat_elite_four_lorelei": [
+    "rctmod:elite_four_lorelei_004d",
+    "rctmod:elite_four_lorelei_004e"
+  ],
+  "rctmod:trainers/defeat_elite_four_lucian_1": [
+    "rctmod:elite_four_lucian_03a2"
+  ],
+  "rctmod:trainers/defeat_elite_four_lucian_2": [
+    "rctmod:elite_four_lucian_05a1"
+  ],
+  "rctmod:trainers/defeat_elite_four_lucian_3": [
+    "rctmod:elite_four_lucian_05a6"
+  ],
+  "rctmod:trainers/defeat_elite_four_moleman": [
+    "rctmod:elite_four_moleman_05b3"
+  ],
+  "rctmod:trainers/defeat_elite_four_penny": [
+    "rctmod:elite_four_penny_05b6"
+  ],
+  "rctmod:trainers/defeat_gym_leader_byron_1": [
+    "rctmod:gym_leader_byron_0399"
+  ],
+  "rctmod:trainers/defeat_gym_leader_byron_2": [
+    "rctmod:gym_leader_byron_0590"
+  ],
+  "rctmod:trainers/defeat_gym_leader_candice_1": [
+    "rctmod:gym_leader_candice_03da"
+  ],
+  "rctmod:trainers/defeat_gym_leader_candice_2": [
+    "rctmod:gym_leader_candice_058f"
+  ],
+  "rctmod:trainers/defeat_gym_leader_fantina_1": [
+    "rctmod:gym_leader_fantina_03d9"
+  ],
+  "rctmod:trainers/defeat_gym_leader_fantina_2": [
+    "rctmod:gym_leader_fantina_058e"
+  ],
+  "rctmod:trainers/defeat_gym_leader_gardenia_1": [
+    "rctmod:gym_leader_gardenia_03d6"
+  ],
+  "rctmod:trainers/defeat_gym_leader_gardenia_2": [
+    "rctmod:gym_leader_gardenia_058b"
+  ],
+  "rctmod:trainers/defeat_gym_leader_maylene_1": [
+    "rctmod:gym_leader_maylene_03d8"
+  ],
+  "rctmod:trainers/defeat_gym_leader_maylene_2": [
+    "rctmod:gym_leader_maylene_058d"
+  ],
+  "rctmod:trainers/defeat_gym_leader_roark_1": [
+    "rctmod:gym_leader_roark_0395"
+  ],
+  "rctmod:trainers/defeat_gym_leader_roark_2": [
+    "rctmod:gym_leader_roark_058a"
+  ],
+  "rctmod:trainers/defeat_gym_leader_volkner_1": [
+    "rctmod:gym_leader_volkner_03db"
+  ],
+  "rctmod:trainers/defeat_gym_leader_volkner_2": [
+    "rctmod:gym_leader_volkner_0591"
+  ],
+  "rctmod:trainers/defeat_gym_leader_wake_1": [
+    "rctmod:gym_leader_wake_03d7"
+  ],
+  "rctmod:trainers/defeat_gym_leader_wake_2": [
+    "rctmod:gym_leader_wake_058c"
+  ],
+  "rctmod:trainers/defeat_leader_alice": [
+    "rctmod:leader_alice_05ac"
+  ],
+  "rctmod:trainers/defeat_leader_benjamin": [
+    "rctmod:leader_benjamin_05b2"
+  ],
+  "rctmod:trainers/defeat_leader_big_mo": [
+    "rctmod:leader_big_mo_05b0"
+  ],
+  "rctmod:trainers/defeat_leader_blaine": [
+    "rctmod:leader_blaine_01a3"
+  ],
+  "rctmod:trainers/defeat_leader_brock": [
+    "rctmod:leader_brock_019e"
+  ],
+  "rctmod:trainers/defeat_leader_clair": [
+    "rctmod:leader_clair_004a"
+  ],
+  "rctmod:trainers/defeat_leader_erika": [
+    "rctmod:leader_erika_01a1"
+  ],
+  "rctmod:trainers/defeat_leader_galavan": [
+    "rctmod:leader_galavan_05af"
+  ],
+  "rctmod:trainers/defeat_leader_giovanni": [
+    "rctmod:leader_giovanni_015e"
+  ],
+  "rctmod:trainers/defeat_leader_koga": [
+    "rctmod:leader_koga_01a2"
+  ],
+  "rctmod:trainers/defeat_leader_lt_surge": [
+    "rctmod:leader_lt_surge_01a0"
+  ],
+  "rctmod:trainers/defeat_leader_mel": [
+    "rctmod:leader_mel_05ad"
+  ],
+  "rctmod:trainers/defeat_leader_mirskle": [
+    "rctmod:leader_mirskle_05aa"
+  ],
+  "rctmod:trainers/defeat_leader_misty": [
+    "rctmod:leader_misty_019f"
+  ],
+  "rctmod:trainers/defeat_leader_sabrina": [
+    "rctmod:leader_sabrina_01a4"
+  ],
+  "rctmod:trainers/defeat_leader_tessy": [
+    "rctmod:leader_tessy_05b1"
+  ],
+  "rctmod:trainers/defeat_leader_vega": [
+    "rctmod:leader_vega_05ab"
+  ],
+  "rctmod:trainers/defeat_light_of_ruin_admin_ivory_3": [
+    "rctmod:light_of_ruin_admin_ivory_3_05c3"
+  ],
+  "rctmod:trainers/defeat_light_of_ruin_aklove_1": [
+    "rctmod:light_of_ruin_aklove_1_05c2"
+  ],
+  "rctmod:trainers/defeat_light_of_ruin_aklove_2": [
+    "rctmod:light_of_ruin_aklove_2_05c4"
+  ],
+  "rctmod:trainers/defeat_light_of_ruin_aklove_3": [
+    "rctmod:light_of_ruin_aklove_3_05c5"
+  ],
+  "rctmod:trainers/defeat_light_of_ruin_vega": [
+    "rctmod:light_of_ruin_vega_05c1"
+  ],
+  "rctmod:trainers/defeat_pokemon_trainer_cedric_1": [
+    "rctmod:pokemon_trainer_cedric_0445",
+    "rctmod:pokemon_trainer_cedric_0446",
+    "rctmod:pokemon_trainer_cedric_0447"
+  ],
+  "rctmod:trainers/defeat_pokemon_trainer_cedric_2": [
+    "rctmod:pokemon_trainer_cedric_0448",
+    "rctmod:pokemon_trainer_cedric_0449",
+    "rctmod:pokemon_trainer_cedric_044a"
+  ],
+  "rctmod:trainers/defeat_pokemon_trainer_cedric_3": [
+    "rctmod:pokemon_trainer_cedric_044b",
+    "rctmod:pokemon_trainer_cedric_044c",
+    "rctmod:pokemon_trainer_cedric_044d"
+  ],
+  "rctmod:trainers/defeat_pokemon_trainer_cedric_4": [
+    "rctmod:pokemon_trainer_cedric_044e",
+    "rctmod:pokemon_trainer_cedric_044f",
+    "rctmod:pokemon_trainer_cedric_0450"
+  ],
+  "rctmod:trainers/defeat_rival_terry_1": [
+    "rctmod:rival_terry_014c",
+    "rctmod:rival_terry_014d",
+    "rctmod:rival_terry_014e"
+  ],
+  "rctmod:trainers/defeat_rival_terry_2": [
+    "rctmod:rival_terry_01b0",
+    "rctmod:rival_terry_01b1",
+    "rctmod:rival_terry_01b2"
+  ],
+  "rctmod:trainers/defeat_rival_terry_3": [
+    "rctmod:champion_terry_02e3",
+    "rctmod:champion_terry_02e4",
+    "rctmod:champion_terry_02e5"
+  ],
+  "rctmod:trainers/defeat_rival_terry_4": [
+    "rctmod:rival_terry_01b3",
+    "rctmod:rival_terry_01b4",
+    "rctmod:rival_terry_01b5"
+  ],
+  "rctmod:trainers/defeat_rival_wayne_1": [
+    "rctmod:rival_2_player_chose_beldum_060a",
+    "rctmod:rival_2_player_chose_gible_0609",
+    "rctmod:rival_2_player_chose_larvitar_060b"
+  ],
+  "rctmod:trainers/defeat_rival_wayne_2": [
+    "rctmod:rival_3_player_chose_beldum_05fb",
+    "rctmod:rival_3_player_chose_gible_05fa",
+    "rctmod:rival_3_player_chose_larvitar_05fc"
+  ],
+  "rctmod:trainers/defeat_rival_wayne_3": [
+    "rctmod:rival_4_player_chose_beldum_05fe",
+    "rctmod:rival_4_player_chose_gible_05fd",
+    "rctmod:rival_4_player_chose_larvitar_05ff"
+  ],
+  "rctmod:trainers/defeat_rival_wayne_4": [
+    "rctmod:rival_5_player_chose_beldum_0601",
+    "rctmod:rival_5_player_chose_gible_0600",
+    "rctmod:rival_5_player_chose_larvitar_0602"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_archer_1": [
+    "rctmod:rocket_admin_archer_002e"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_archer_2": [
+    "rctmod:rocket_admin_archer_0035"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_archer_3": [
+    "rctmod:rocket_admin_archer_0043"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_archer_4": [
+    "rctmod:rocket_admin_archer_002a"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_archer_and_ariana": [
+    "rctmod:rocket_admin_archer_ariana_m000"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_ariana_1": [
+    "rctmod:rocket_admin_ariana_0036"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_ariana_2": [
+    "rctmod:rocket_admin_ariana_0044"
+  ],
+  "rctmod:trainers/defeat_rocket_admin_ariana_3": [
+    "rctmod:rocket_admin_ariana_0029"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_ivory_1": [
+    "rctmod:shadow_admin_ivory_1_05ba"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_ivory_2": [
+    "rctmod:shadow_admin_ivory_2_05bc"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_ivory_grunt": [
+    "rctmod:shadow_admin_ivory_grunt_m00f"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_marlon_1": [
+    "rctmod:shadow_admin_marlon_1_05b8"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_marlon_2": [
+    "rctmod:shadow_admin_marlon_2_05be"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_marlon_3": [
+    "rctmod:shadow_admin_marlon_3_05c0"
+  ],
+  "rctmod:trainers/defeat_shadow_admin_marlon_grunt": [
+    "rctmod:shadow_admin_marlon_grunt_m00e"
+  ],
+  "rctmod:trainers/defeat_sucessor_maxima": [
+    "rctmod:sucessor_maxima_05ae"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_cesarzorak": [
+    "rctmod:team_allthemods_cesarzorak"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_dragondogemaster": [
+    "rctmod:team_allthemods_dragondogemaster"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_joeychin01": [
+    "rctmod:team_allthemods_joeychin01"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_lobsterjonn": [
+    "rctmod:team_allthemods_lobsterjonn"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_notch": [
+    "rctmod:team_allthemods_notch"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_oly2o6": [
+    "rctmod:team_allthemods_oly2o6"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_rosary": [
+    "rctmod:team_allthemods_rosary"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_satherov": [
+    "rctmod:team_allthemods_satherov"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_thevortex": [
+    "rctmod:team_allthemods_thevortex"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_toblerone0508": [
+    "rctmod:team_allthemods_toblerone0508"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_uncandango": [
+    "rctmod:team_allthemods_uncandango"
+  ],
+  "rctmod:trainers/defeat_team_allthemods_whatthedrunk": [
+    "rctmod:team_allthemods_whatthedrunk"
+  ],
+  "rctmod:trainers/defeat_team_galactic_boss_cyrus_1": [
+    "rctmod:team_galactic_boss_cyrus_041a"
+  ],
+  "rctmod:trainers/defeat_team_galactic_boss_cyrus_2": [
+    "rctmod:team_galactic_boss_cyrus_041b"
+  ],
+  "rctmod:trainers/defeat_title_defense_jax": [
+    "rctmod:title_defense_jax_05ee"
+  ],
+  "rctmod:trainers/defeat_title_defense_marlon": [
+    "rctmod:title_defense_marlon_05eb"
+  ],
+  "rctmod:trainers/defeat_title_defense_milo": [
+    "rctmod:title_defense_milo_05ed"
+  ],
+  "rctmod:trainers/defeat_title_defense_rival_wayne": [
+    "rctmod:title_defense_rival_player_chose_beldum_05f0",
+    "rctmod:title_defense_rival_player_chose_gible_05ef",
+    "rctmod:title_defense_rival_player_chose_larvitar_05f1"
+  ],
+  "rctmod:trainers/defeat_title_defense_solenk": [
+    "rctmod:title_defense_solenk_05ec"
+  ],
+  "rctmod:trainers/defeat_title_defense_zeph": [
+    "rctmod:title_defense_zeph_05ea"
+  ],
+  "rctmod:trainers/defeat_trainer_blue": [
+    "rctmod:trainer_77_05f6",
+    "rctmod:trainer_92_0605"
+  ],
+  "rctmod:trainers/defeat_trainer_brendan_1": [
+    "rctmod:trainer_brendan_0032"
+  ],
+  "rctmod:trainers/defeat_trainer_brendan_2": [
+    "rctmod:trainer_brendan_0039"
+  ],
+  "rctmod:trainers/defeat_trainer_brendan_3": [
+    "rctmod:trainer_brendan_001a"
+  ],
+  "rctmod:trainers/defeat_trainer_may": [
+    "rctmod:trainer_may_003d"
+  ],
+  "rctmod:trainers/defeat_trainer_red": [
+    "rctmod:trainer_red_0003"
+  ]
+}
