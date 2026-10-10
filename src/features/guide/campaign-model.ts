@@ -49,6 +49,19 @@ export function stageGroupKey(type: string): 'leader' | 'e4' | 'champ' | 'rival'
   return groupOf(type).key as 'leader' | 'e4' | 'champ' | 'rival' | 'team' | 'other';
 }
 
+/** Tipo de cada líder de ginásio conhecido, pelo nome da etapa; líder fora do mapa não ganha ícone de tipo. */
+export const LEADER_TYPES: Readonly<Record<string, string>> = {
+  'Leader Brock': 'Rock',
+  'Leader Misty': 'Water',
+  'Leader Lt. Surge': 'Electric',
+  'Leader Erika': 'Grass',
+  'Leader Koga': 'Poison',
+  'Leader Sabrina': 'Psychic',
+  'Leader Blaine': 'Fire',
+  'Leader Giovanni': 'Ground',
+  'Leader Clair': 'Dragon',
+};
+
 /** Sem acento, minúsculo e sem pontuação: a busca por "pokemon" acha "Pokémon", "rival terry" acha "Rival Terry · 1º encontro". */
 export function normalizeSearch(text: string): string {
   return text

@@ -1492,7 +1492,9 @@ async function exerciseGuideWorkspace(window) {
   );
   const progressText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card"]')?.innerText || ''`);
   check(
-    progressText.includes('Level cap') && progressText.includes('Pika Star') && progressText.includes('Insígnias'),
+    progressText.includes('Level cap') &&
+      progressText.toLowerCase().includes('pika star') &&
+      progressText.toLowerCase().includes('insígnias'),
     'O Trainer Card não mostrou o cap, as insígnias e os selos Pika Star da leitura sintética.',
   );
   const defaultCap = await evaluate(
@@ -1537,30 +1539,38 @@ async function exerciseGuideWorkspace(window) {
     `Boolean(document.querySelector('ol[aria-label="Time recomendado"] > li[data-change="mantém"][data-slot="1"]'))`,
     'o primeiro slot da party recomendada mantém o Pokémon do slot atual',
   );
-  const partyText = await evaluate(
-    contents,
-    `({
-      pc: document.querySelector('section[aria-label="Fora do time recomendado"]')?.innerText || '',
-      steps: document.querySelector('ol[aria-label="Como arrumar a party"]')?.innerText || '',
-      leaving: Boolean(document.querySelector('[aria-label="Party de hoje"] [data-leaving="true"]')),
-    })`,
+  check(
+    await evaluate(
+      contents,
+      `(() => {
+        const hero = document.querySelector('[aria-label="Próximo desafio"], [aria-label="Desafio escolhido"]');
+        return !hero?.querySelector('ol[aria-label="Equipe recomendada"]') && hero?.innerText.includes('Monte o time para este desafio para ver a sua equipe aqui.');
+      })()`,
+    ),
+    'O Trainer Card mostrou a equipe de outro treinador em vez do aviso para montar o time do desafio.',
   );
-  check(partyText.pc.includes('Bulbasaur'), 'A caixa "Fora do time recomendado" não mostrou o Bulbasaur.');
-  check(partyText.steps.includes('Guarde no PC: Bulbasaur.'), 'Os passos da party não mandaram guardar o Bulbasaur no PC.');
-  check(partyText.leaving, 'A party de hoje não marcou quem vai ao PC.');
+  check(
+    !(await evaluate(
+      contents,
+      `Boolean(document.querySelector('[aria-label="Party de hoje"], section[aria-label="Fora do time recomendado"]'))`,
+    )),
+    'A aba de detalhes ainda mostra a arrumação da party que agora vive no Trainer Card.',
+  );
 
   // Próximo desafio: equipe e dados de spawn vêm do trainers.json real pelo IPC de detalhe.
   await waitFor(
     contents,
     `(() => {
       const hero = document.querySelector('[aria-label="Próximo desafio"]')?.innerText || '';
-      return hero.includes('Como encontrar') && hero.includes('Item de Assinatura') && hero.includes('Level cap');
+      return hero.includes('Como encontrar') && hero.includes('Item de Assinatura') && hero.includes('Level cap') && hero.includes('ELE') && hero.includes('VOCÊ');
     })()`,
     'dados de spawn do próximo desafio no Trainer Card',
   );
   const trainerCardText = await evaluate(contents, `document.querySelector('[aria-label="Trainer Card"]')?.innerText || ''`);
   check(
-    trainerCardText.includes('Trainer Card') && trainerCardText.includes('Radical Red') && trainerCardText.includes('Vitórias na série'),
+    trainerCardText.includes('Trainer Card') &&
+      trainerCardText.toLowerCase().includes('radical red') &&
+      trainerCardText.includes('Vitórias na série'),
     'O Trainer Card não exibiu o título, a série e as vitórias.',
   );
   const optionCount = `document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]').length`;
@@ -1639,6 +1649,35 @@ async function exerciseGuideWorkspace(window) {
     brockText.includes('15 → 21') && brockText.includes('Como encontrar') && brockText.includes('Líder de Ginásio'),
     'O desafio de Leader Brock não mostrou a progressão de level cap e "Como encontrar".',
   );
+  // Montado para o desafio escolhido: a equipe recomendada vive dentro do Trainer Card.
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Trainer Card"] ol[aria-label="Equipe recomendada"] > li[data-change="mantém"][data-slot="1"]'))`,
+    'equipe recomendada dentro do Trainer Card para o desafio escolhido',
+  );
+  await capture(window, screenshotPaths.trainerCard, '[aria-label="Trainer Card"]');
+  const partyCard = await evaluate(
+    contents,
+    `({
+      swap: Boolean(document.querySelector('[aria-label="Trainer Card"] [aria-label="no lugar de Bulbasaur"]')),
+      footer: document.querySelector('[aria-label="Próximo desafio"], [aria-label="Desafio escolhido"]')?.innerText || '',
+      details: document.querySelectorAll('ol[aria-label="Equipe recomendada"] > li[data-change="mantém"][data-slot="1"]').length,
+    })`,
+  );
+  check(!partyCard.swap, 'O Trainer Card mostrou uma troca de Pokémon que o fixture não tem.');
+  check(
+    partyCard.footer.includes('0 entram · 1 saem da party'),
+    'O rodapé do Trainer Card não resumiu a arrumação da party (0 entram · 1 saem).',
+  );
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].find(node => node.textContent.trim().startsWith('Como arrumar a party')).click()`,
+  );
+  await waitFor(
+    contents,
+    `document.querySelector('ol[aria-label="Como arrumar a party"]')?.innerText.includes('Guarde no PC: Bulbasaur.')`,
+    'passos de arrumação da party no rodapé do Trainer Card',
+  );
   await clickCardButton('Mostrar menos');
   await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha recolhida de volta');
 
@@ -1656,7 +1695,7 @@ async function exerciseGuideWorkspace(window) {
     contents,
     `(() => {
       const hero = document.querySelector('[aria-label="Próximo desafio"], [aria-label="Desafio escolhido"]')?.innerText || '';
-      return hero.includes(${JSON.stringify(firstStage)}) && hero.includes('Level cap') && hero.includes('Pré-requisitos');
+      return hero.includes(${JSON.stringify(firstStage)}) && hero.includes('Level cap') && hero.includes('Requisitos');
     })()`,
     'desafio da etapa selecionada no Trainer Card',
   );
@@ -1920,7 +1959,7 @@ async function exerciseGuideWorkspace(window) {
   // Informar o cap remonta o time de líder (cap 30 não exclui a Gardevoir Nv. 30); os planos derivados do time antigo são descartados.
   await setLevelCapField(contents, 30);
   // Confirme o resultado atualizado com o cap efetivo 30, não só o valor recém-digitado.
-  await selectGuideTab(contents, 'Time recomendado');
+  await selectGuideTab(contents, 'Detalhes do time');
   await clickButton(contents, 'Exclusões, hipóteses e limites');
   await waitFor(
     contents,
@@ -1966,7 +2005,7 @@ async function exerciseGuideWorkspace(window) {
   );
   await capture(window, screenshotPaths.training, 'ol[aria-label="Treino por membro"]');
 
-  await selectGuideTab(contents, 'Time recomendado');
+  await selectGuideTab(contents, 'Detalhes do time');
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
   await evaluate(
@@ -2000,7 +2039,7 @@ async function exerciseGuideWorkspace(window) {
   check(
     await evaluate(
       contents,
-      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.textContent.trim() === 'Time recomendado'`,
+      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.textContent.trim() === 'Detalhes do time'`,
     ),
     'A aba ativa do guia não sobreviveu à ida ao Dano e à volta.',
   );

@@ -33,3 +33,4 @@ export type {TabListProps, TabPanelProps, TabPanelsProps, TabsProps, TabProps} f
 export {TypeBadge} from './TypeBadge';
 export type {TypeBadgeProps} from './TypeBadge';
 export {typeColorVar, typeInkVar, typeLabel} from './types';
+export {typeIconPath} from './assets';
