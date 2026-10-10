@@ -12,7 +12,7 @@ import type {
 export type GuideMode = 'pve' | 'trainer';
 
 /** Ferramentas do guia, cada uma em sua aba; a aba ativa fica no app para sobreviver à ida ao Dano e à volta. */
-export type GuideTab = 'team' | 'battle' | 'evolutions' | 'training' | 'captures';
+export type GuideTab = 'battle' | 'evolutions' | 'training' | 'captures';
 type GuideBuildCause = 'initial' | 'goal' | 'snapshot' | 'manual';
 
 export const GUIDE_SNAPSHOT_NOTICE = 'Save mudou · time recalculado';
@@ -133,8 +133,14 @@ export function guideReducer(state: GuideState, action: GuideAction): GuideState
     case 'next-goal-loaded': {
       const next: GuideState = {...state, nextGoal: {key: action.key, status: 'ready', value: action.next}};
       if (state.goalChosen) return next;
-      const trainerId = action.next.stage?.ambiguous ? null : action.next.trainerId;
-      return trainerId === null ? {...next, mode: 'pve', trainerId: null} : {...next, mode: 'trainer', trainerId};
+      if (!action.next.stage?.ambiguous) {
+        return action.next.trainerId === null
+          ? {...next, mode: 'pve', trainerId: null}
+          : {...next, mode: 'trainer', trainerId: action.next.trainerId};
+      }
+      // Etapa com várias equipes possíveis: abre na campanha, na primeira equipe individual; PvE só sem nenhuma.
+      const firstSingles = action.next.stage.variants.find((variant) => variant.format === 'singles');
+      return firstSingles ? {...next, mode: 'trainer', trainerId: firstSingles.trainerId} : {...next, mode: 'pve', trainerId: null};
     }
     case 'next-goal-failed':
       return {...state, nextGoal: {key: action.key, status: 'failed', error: action.error}};
@@ -203,6 +209,52 @@ export function guidePartySteps(plan: GuidePartyPlan, nameOf: (uuid: string, spe
   if (entrants.length > 0) steps.push(`Pegue do PC: ${listNames(entrants.map(label))}.`);
   if (plan.slots.some((slot) => slot.change !== 'mantém')) steps.push(`Arrume a party nesta ordem: ${listNames(plan.slots.map(label))}.`);
   return steps;
+}
+
+/** Melhor membro do time para um adversário: vence com menos turnos; sem vitória, a maior folga `theirTurns - ourTurns`. */
+export function guideBestAnswerUuid(team: readonly GuideTeamMember[], opponentId: string): string | null {
+  const BIG = 1e9;
+  const finite = (value: number) => (Number.isFinite(value) ? value : BIG);
+  let best: {uuid: string; wins: boolean; ourTurns: number; margin: number} | null = null;
+  for (const member of team) {
+    const matchup = member.matchups.find((entry) => entry.opponentId === opponentId);
+    if (!matchup) continue;
+    const candidate = {
+      uuid: member.uuid,
+      wins: matchup.outcome === 'vence',
+      ourTurns: matchup.ourTurns,
+      margin: finite(matchup.theirTurns) - finite(matchup.ourTurns),
+    };
+    const better =
+      best === null ||
+      (candidate.wins && !best.wins) ||
+      (candidate.wins && best.wins && candidate.ourTurns < best.ourTurns) ||
+      (!candidate.wins && !best.wins && candidate.margin > best.margin);
+    if (better) best = candidate;
+  }
+  return best?.uuid ?? null;
+}
+
+/** Adversários que nenhum membro do time vence, na ordem dos adversários. */
+export function guideUnansweredOpponents<T extends {id: string}>(team: readonly GuideTeamMember[], opponents: readonly T[]): T[] {
+  return opponents.filter((opponent) =>
+    team.every((member) => !member.matchups.some((matchup) => matchup.opponentId === opponent.id && matchup.outcome === 'vence')),
+  );
+}
+
+/** Confrontos do membro na ordem de leitura: vitórias primeiro (menos turnos, depois ordem dos adversários), depois derrotas. */
+export function guideAnswers(member: GuideTeamMember, opponents: readonly {id: string}[]): GuideTeamMember['matchups'] {
+  const order = (opponentId: string) => {
+    const index = opponents.findIndex((opponent) => opponent.id === opponentId);
+    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+  };
+  const byOrder = (left: GuideTeamMember['matchups'][number], right: GuideTeamMember['matchups'][number]) =>
+    order(left.opponentId) - order(right.opponentId);
+  const wins = member.matchups
+    .filter((matchup) => matchup.outcome === 'vence')
+    .sort((left, right) => left.ourTurns - right.ourTurns || byOrder(left, right));
+  const losses = member.matchups.filter((matchup) => matchup.outcome !== 'vence').sort(byOrder);
+  return [...wins, ...losses];
 }
 
 export function guideOpponentTurnsLabel(matchup: {outcome: 'vence' | 'perde'; ourTurns: number; theirTurns: number}): string {

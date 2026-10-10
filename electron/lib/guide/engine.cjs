@@ -110,8 +110,15 @@ function evaluateSet(table, moveIds, theirs, opponents, pokemon) {
   const ourSpeed = effectiveSpeed(pokemon);
   const outcomes = opponents.map((opponent, index) => {
     let best = 0;
-    for (const moveId of moveIds) best = Math.max(best, table.get(moveId)[index]);
-    return matchupOutcome(best, theirs[index], ourSpeed, effectiveSpeed(opponent.pokemon));
+    let bestMoveId = null;
+    for (const moveId of moveIds) {
+      const value = table.get(moveId)[index];
+      if (value > best) {
+        best = value;
+        bestMoveId = moveId;
+      }
+    }
+    return {...matchupOutcome(best, theirs[index], ourSpeed, effectiveSpeed(opponent.pokemon)), moveId: bestMoveId};
   });
   return {
     outcomes,
@@ -236,6 +243,7 @@ function acquireSuggestions(result, opponents, learnsets) {
   const all = new Map([...table, ...extra]);
   const baseScore = result.evaluated.score;
   let keep = chosen;
+  let replacesMoveId = null;
   if (chosen.length >= MAX_MOVES) {
     // O pior golpe é o que menos faz falta ao conjunto atual.
     let bestWithout = -1;
@@ -245,6 +253,7 @@ function acquireSuggestions(result, opponents, learnsets) {
       if (score > bestWithout) {
         bestWithout = score;
         keep = rest;
+        replacesMoveId = moveId;
       }
     }
   }
@@ -252,13 +261,15 @@ function acquireSuggestions(result, opponents, learnsets) {
   for (const moveId of candidates) {
     const {score} = evaluateSet(all, [...keep, moveId], theirs, opponents, pokemon);
     const gain = ((score - baseScore) / Math.max(baseScore, 1)) * 100;
-    if (gain >= MIN_ACQUIRE_GAIN) suggestions.push({moveId, requirement: routes.get(moveId), gainPercent: roundOne(gain)});
+    if (gain >= MIN_ACQUIRE_GAIN) suggestions.push({moveId, requirement: routes.get(moveId), replacesMoveId, gainPercent: roundOne(gain)});
   }
   suggestions.sort((left, right) => right.gainPercent - left.gainPercent || (left.moveId < right.moveId ? -1 : 1));
-  return suggestions.slice(0, MAX_ACQUIRE).map((suggestion) => ({
-    ...suggestion,
-    reason: `${COMPATIBILITY.moves[suggestion.moveId].name} (${suggestion.requirement}) melhora o time em ${suggestion.gainPercent}%.`,
-  }));
+  return suggestions.slice(0, MAX_ACQUIRE).map((suggestion) => {
+    const name = COMPATIBILITY.moves[suggestion.moveId].name;
+    const replaced = suggestion.replacesMoveId ? COMPATIBILITY.moves[suggestion.replacesMoveId]?.name : null;
+    const where = replaced ? `${name} (${suggestion.requirement}) no lugar de ${replaced}` : `${name} (${suggestion.requirement})`;
+    return {...suggestion, reason: `${where} melhora o time em ${suggestion.gainPercent}%.`};
+  });
 }
 
 // --- Time ------------------------------------------------------------------------------------------------------
@@ -476,6 +487,7 @@ async function buildGuide({
         outcome: outcome.wins ? 'vence' : 'perde',
         ourTurns: outcome.ourTurns,
         theirTurns: outcome.theirTurns,
+        moveId: outcome.moveId,
       })),
       acquire: acquireSuggestions(result, opponents, data.learnsets),
     });

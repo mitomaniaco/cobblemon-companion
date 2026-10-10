@@ -478,56 +478,50 @@
 }
 
 .variants {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-2);
+  color: var(--color-muted);
+  font-size: var(--text-caption);
 }
 
-.variantGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
-  gap: var(--space-2);
-}
-
-.variantCard {
-  display: grid;
-  min-width: 0;
-  justify-items: start;
+.pills {
+  display: flex;
   gap: var(--space-1);
-  padding: var(--space-3);
-  border: 2px solid transparent;
-  border-radius: var(--radius-card);
-  background: var(--color-raised);
-  color: inherit;
+}
+
+.pill {
+  display: grid;
+  width: 30px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid #ffffff1a;
+  border-radius: 9px;
+  background: #0a0e1999;
+  color: var(--color-muted);
   cursor: pointer;
-  text-align: left;
+  font: inherit;
+  font-size: var(--text-caption);
+  font-weight: 700;
   transition:
     border-color var(--duration-hover) var(--ease-out),
-    filter var(--duration-hover) var(--ease-out);
+    color var(--duration-hover) var(--ease-out);
 }
 
-.variantCard:hover {
-  filter: brightness(1.08);
+.pill:hover {
+  color: var(--color-text);
 }
 
-.variantCard[aria-checked="true"] {
+.pill[aria-checked="true"] {
   border-color: var(--color-highlight);
+  box-shadow: 0 0 0 2px #ffcb0522;
+  color: var(--color-highlight);
 }
 
-.variantCard:focus-visible {
+.pill:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
-}
-
-.teamRow {
-  display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-}
-
-.smallArt {
-  display: inline-block;
-  zoom: 0.62;
 }
 
 .vs {
@@ -591,7 +585,12 @@
 
 .mine {
   position: relative;
+  min-width: 0;
+}
+
+.mineCard {
   display: grid;
+  width: 100%;
   min-width: 0;
   justify-items: center;
   padding: 8px 4px;
@@ -602,13 +601,71 @@
     radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--tint) 42%, transparent), transparent 62%),
     linear-gradient(180deg, #1c2342, #10152a);
   box-shadow: 0 8px 18px #0006;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
   text-align: center;
+  transition: filter var(--duration-hover) var(--ease-out);
 }
 
-.mine[data-first="true"] {
+.mineCard:hover {
+  filter: brightness(1.12);
+}
+
+.mineCard:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.mine[data-selected="true"] .mineCard {
   box-shadow:
     0 0 0 2px var(--color-highlight),
     0 8px 22px #ffcb0533;
+}
+
+.mine[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  margin-left: -8px;
+  border: 8px solid transparent;
+  border-top-color: var(--color-highlight);
+  border-bottom: 0;
+  pointer-events: none;
+}
+
+.mineTypes {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.mineTypes i {
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.oppButton {
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color var(--duration-hover) var(--ease-out);
+}
+
+.oppButton:hover {
+  border-color: var(--color-highlight);
+}
+
+.oppButton:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
 .mineArt {
@@ -967,8 +1024,7 @@
   gap: var(--space-2);
 }
 
-.skeletonLine,
-.skeletonCircle {
+.skeletonLine {
   display: block;
   background: linear-gradient(90deg, var(--color-sunken) 25%, var(--color-raised) 50%, var(--color-sunken) 75%);
   background-size: 200% 100%;
@@ -980,15 +1036,14 @@
   border-radius: var(--radius-card);
 }
 
-.skeletonCircle {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-}
-
 .oppTile.skeletonLine {
   height: 62px;
   border-radius: 12px;
+}
+
+.mineSkeleton.skeletonLine {
+  height: 132px;
+  border-radius: 16px;
 }
 
 @keyframes card-enter {
@@ -1006,13 +1061,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .card,
-  .skeletonLine,
-  .skeletonCircle {
+  .skeletonLine {
     animation: none;
   }
 
   .trailRow,
-  .variantCard {
+  .pill {
     transition: none;
   }
 }

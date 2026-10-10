@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useReducer, useRef} from 'react';
+import {useCallback, useLayoutEffect, useReducer, useRef} from 'react';
 import type {CompanionApi, GuideResult, PlayerSnapshot} from '../../platform/api';
 import {createJobState, jobReducer, type JobState} from './job-model';
 
@@ -49,8 +49,9 @@ export function useGuideJob<Result, Request>(options: GuideJobOptions<Result, Re
     [api],
   );
 
+  // Layout effect: o reset roda antes do efeito da aba ativa, que pede o plano do resultado novo.
   // biome-ignore lint/correctness/useExhaustiveDependencies: o gatilho é a identidade do resultado do guia
-  useEffect(() => {
+  useLayoutEffect(() => {
     cancelJob(jobRef.current);
     jobRef.current = null;
     requestRef.current += 1;

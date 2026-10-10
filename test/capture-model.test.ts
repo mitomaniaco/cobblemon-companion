@@ -38,24 +38,24 @@ describe('lacunas do time', () => {
   it('são os adversários que nenhum membro vence, na ordem do guia', () => {
     const team = [
       member('u1', [
-        {opponentId: 'o0', outcome: 'perde', ourTurns: 3, theirTurns: 1},
-        {opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3},
+        {opponentId: 'o0', outcome: 'perde', ourTurns: 3, theirTurns: 1, moveId: null},
+        {opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3, moveId: null},
       ]),
-      member('u2', [{opponentId: 'o2', outcome: 'perde', ourTurns: 3, theirTurns: 2}]),
+      member('u2', [{opponentId: 'o2', outcome: 'perde', ourTurns: 3, theirTurns: 2, moveId: null}]),
     ];
     expect(guideGapOpponentIds({opponents, team})).toEqual(['o0', 'o2']);
   });
 
   it('adversário sem nenhum confronto calculado também é lacuna, e vencer por qualquer membro fecha a lacuna', () => {
     expect(guideGapOpponentIds({opponents, team: [member('u1', [])]})).toEqual(['o0', 'o1', 'o2']);
-    const beaten = (opponentId: string) => ({opponentId, outcome: 'vence' as const, ourTurns: 1, theirTurns: 2});
+    const beaten = (opponentId: string) => ({opponentId, outcome: 'vence' as const, ourTurns: 1, theirTurns: 2, moveId: null});
     expect(guideGapOpponentIds({opponents, team: [member('u1', [beaten('o0')]), member('u2', [beaten('o1'), beaten('o2')])]})).toEqual([]);
   });
 });
 
 describe('pedido de capturas', () => {
   const goal = {kind: 'trainer', trainerId: 'misty'} as const;
-  const team = [member('u1', [{opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3}])];
+  const team = [member('u1', [{opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3, moveId: null}])];
 
   it('leva o objetivo, o time, Pika Star e só as lacunas, com os hashes das fontes', () => {
     const pikaStar = Object.fromEntries(
@@ -82,7 +82,7 @@ describe('pedido de capturas', () => {
     const beatAll = [
       member(
         'u1',
-        opponents.map((opponent) => ({opponentId: opponent.id, outcome: 'vence' as const, ourTurns: 1, theirTurns: 2})),
+        opponents.map((opponent) => ({opponentId: opponent.id, outcome: 'vence' as const, ourTurns: 1, theirTurns: 2, moveId: null})),
       ),
     ];
     expect(buildCapturePlanRequest(snapshot, {goal, opponents, team: beatAll}, pikaStar)).toBeNull();

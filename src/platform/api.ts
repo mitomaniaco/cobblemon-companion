@@ -134,7 +134,23 @@ export type GuideTrainer = {
   series: string | null;
 };
 
-export type GuideMatchup = {opponentId: string; outcome: 'vence' | 'perde'; ourTurns: number; theirTurns: number};
+export type GuideMatchup = {
+  opponentId: string;
+  outcome: 'vence' | 'perde';
+  ourTurns: number;
+  theirTurns: number;
+  /** Melhor golpe do membro contra o adversário; null quando nenhum causa dano. */
+  moveId: string | null;
+};
+
+export type GuideAcquireEntry = {
+  moveId: string;
+  requirement: string;
+  /** Golpe que sai do conjunto; null quando havia espaço livre. */
+  replacesMoveId: string | null;
+  gainPercent: number;
+  reason: string;
+};
 
 export type GuideTeamMember = {
   uuid: string;
@@ -146,7 +162,7 @@ export type GuideTeamMember = {
   /** `tem`: já é o item segurado; `obter`: sugestão que o app não sabe se o jogador possui; `nenhum`: sem item. */
   item: {id: string | null; status: 'tem' | 'obter' | 'nenhum'; reason: string};
   matchups: GuideMatchup[];
-  acquire: Array<{moveId: string; requirement: string; gainPercent: number; reason: string}>;
+  acquire: GuideAcquireEntry[];
 };
 
 export type GuidePartySlot = {
