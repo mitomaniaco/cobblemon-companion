@@ -2,15 +2,7 @@ import {useEffect, useId, useMemo, useState} from 'react';
 import type {CSSProperties} from 'react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
-import type {
-  GuideNextGoal,
-  GuidePartySlot,
-  GuideProgress,
-  GuideResult,
-  GuideTeamMember,
-  PlayerIndividual,
-  PlayerSnapshot,
-} from '../../platform/api';
+import type {CompanionApi, GuidePartySlot, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
 import {
   Button,
   Disclosure,
@@ -18,9 +10,7 @@ import {
   MoveChip,
   PokemonArtwork,
   PokeBallMark,
-  SegmentedControl,
   StatusMessage,
-  Switch,
   Tab,
   TabList,
   TabPanel,
@@ -36,7 +26,6 @@ import {
   guidePartySteps,
   guideOpponentTurnsLabel,
   guideTeamChanges,
-  type GuideMode,
   type GuideTab,
 } from './guide-model';
 import type {GuideController} from './useGuide';
@@ -47,12 +36,10 @@ import type {EvolutionPlanController} from './useEvolutionPlan';
 import {guideGapOpponentIds} from './capture-model';
 import {CaptureSection} from './CaptureSection';
 import type {CapturePlanController} from './useCapturePlan';
-import {LevelCapField} from './LevelCapField';
 import {TrainingSection} from './TrainingSection';
 import type {TrainingPlanController} from './useTrainingPlan';
-import {pikaStarDisplayStatus} from './progress-display-model';
 import rawCampaign from '../../../data/guide/campaign.json';
-import {CampaignPicker} from './CampaignPicker';
+import {TrainerCard} from './TrainerCard';
 import type {Campaign} from './campaign-model';
 import styles from './GuideWorkspace.module.css';
 
@@ -60,10 +47,6 @@ const CAMPAIGN = rawCampaign as unknown as Campaign;
 
 const NOTICE_DURATION_MS = 4000;
 const TEAM_SIZE = 6;
-const MODE_OPTIONS: ReadonlyArray<{key: GuideMode; label: string}> = [
-  {key: 'pve', label: 'PvE geral'},
-  {key: 'trainer', label: 'Líder ou treinador'},
-];
 
 const GUIDE_TABS: ReadonlyArray<{key: GuideTab; label: string}> = [
   {key: 'team', label: 'Time recomendado'},
@@ -72,116 +55,6 @@ const GUIDE_TABS: ReadonlyArray<{key: GuideTab; label: string}> = [
   {key: 'training', label: 'Treino até o cap'},
   {key: 'captures', label: 'Capturas'},
 ];
-const PROGRESS_REGIONS: ReadonlyArray<{id: keyof GuideProgress['pikaStar']; label: string}> = [
-  {id: 'kanto', label: 'Kanto'},
-  {id: 'johto', label: 'Johto'},
-  {id: 'hoenn', label: 'Hoenn'},
-  {id: 'sinnoh', label: 'Sinnoh'},
-  {id: 'unova', label: 'Unova'},
-  {id: 'kalos', label: 'Kalos'},
-  {id: 'alola', label: 'Alola'},
-  {id: 'galar', label: 'Galar'},
-  {id: 'hisui', label: 'Hisui'},
-  {id: 'paldea', label: 'Paldea'},
-];
-
-function StageDetails({stage, label}: {stage: NonNullable<GuideNextGoal['stage']>; label: string}) {
-  return (
-    <li className={styles.stageItem}>
-      <div className={styles.stageItemHeader}>
-        <strong>
-          {label}: {stage.name}
-        </strong>
-      </div>
-      {stage.capBefore !== null || stage.capAfter !== null ? (
-        <p>
-          Level cap da etapa: {stage.capBefore ?? 'desconhecido'} → {stage.capAfter ?? 'desconhecido'}.
-        </p>
-      ) : (
-        stage.capUnknownReason && <p>{stage.capUnknownReason}</p>
-      )}
-      {stage.ambiguous && (
-        <>
-          {stage.ambiguousReason && <p>{stage.ambiguousReason}</p>}
-          <ul aria-label={`Variantes de ${stage.name}`}>
-            {stage.variants
-              .filter((variant) => variant.format === 'singles')
-              .map((variant, index) => (
-                <li key={variant.trainerId}>
-                  Variante {index + 1} · formato {variant.format} · nível máx. {variant.maxLevel} · equipe {variant.teamSize}
-                </li>
-              ))}
-          </ul>
-        </>
-      )}
-    </li>
-  );
-}
-
-function ProgressPanel({progress, nextGoal}: {progress: GuideProgressState; nextGoal: GuideNextGoal | null}) {
-  if (progress.status === 'loading') {
-    return (
-      <section className={styles.progressPanel} aria-label="Progresso do mundo" aria-busy="true">
-        <h3>Progresso do mundo</h3>
-        <div className={styles.progressSkeleton} />
-        <div className={styles.progressSkeleton} />
-      </section>
-    );
-  }
-  if (progress.status === 'error') {
-    return (
-      <StatusMessage tone="warning" title="Progresso do mundo indisponível">
-        {progress.error}
-      </StatusMessage>
-    );
-  }
-  const value = progress.value;
-  return (
-    <section className={styles.progressPanel} aria-label="Progresso do mundo">
-      <h3>Progresso do mundo</h3>
-      <dl className={styles.progressFacts}>
-        <div>
-          <dt>Série atual</dt>
-          <dd>{value.currentSeries || 'Nenhuma série selecionada'}</dd>
-        </div>
-        <div>
-          <dt>Level cap padrão</dt>
-          <dd>{value.levelCap === null ? 'Não verificado' : value.levelCap}</dd>
-        </div>
-        <div>
-          <dt>Treinadores vencidos</dt>
-          <dd>{value.defeated === null ? 'Não verificado' : value.defeated.length}</dd>
-        </div>
-      </dl>
-      {nextGoal && (
-        <div className={styles.progressNextGoal}>
-          <strong>Próxima etapa</strong>
-          <p>{nextGoal.reason}</p>
-          {nextGoal.stage && (
-            <ul className={styles.stageList}>
-              <StageDetails stage={nextGoal.stage} label="Atual" />
-              {(nextGoal.upcoming ?? []).map((stage) => (
-                <StageDetails key={stage.stageId} stage={stage} label="Depois" />
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-      <div className={styles.pikaStatus}>
-        <strong>Pika Star por região</strong>
-        <ul>
-          {PROGRESS_REGIONS.map(({id, label}) => (
-            <li key={id} data-status={value.pikaStar[id] === true ? 'verified' : value.pikaStar[id] === false ? 'not-achieved' : 'unknown'}>
-              <span>{label}</span>
-              <span>{pikaStarDisplayStatus(value.pikaStar[id])}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
 const ITEM_STATUS_LABEL = {tem: 'já segura', obter: 'obter', nenhum: 'sem item'} as const;
 
 export interface GuideWorkspaceProps {
@@ -207,6 +80,11 @@ export interface GuideWorkspaceProps {
   /** Aba ativa do resultado do guia; fica no app para sobreviver à ida ao Dano e à volta. */
   guideTab: GuideTab;
   onGuideTabChange(tab: GuideTab): void;
+  api: () => CompanionApi;
+  /** Nome da conta selecionada, já sem dados sensíveis; nulo sem conta. */
+  playerName: string | null;
+  /** Skin do jogador como data URL; nulo mostra a Poké Ball. */
+  playerAvatar: string | null;
 }
 
 type Lookup = {
@@ -708,11 +586,14 @@ export function GuideWorkspace({
   guideTab,
   onGuideTabChange,
   loading,
+  api,
+  playerName,
+  playerAvatar,
   onRefresh,
   onOpenCalculation,
 }: GuideWorkspaceProps) {
   const headingId = useId();
-  // Treinador e campanha gerenciados pelo CampaignPicker
+  // Treinador e campanha são gerenciados pelo TrainerCard
   const lookup = useMemo<Lookup>(
     () => ({
       individuals: new Map((snapshot?.individuals ?? []).map((individual) => [individual.uuid, individual])),
@@ -724,9 +605,7 @@ export function GuideWorkspace({
     const individual = lookup.individuals.get(uuid);
     return speciesDisplay(individual?.speciesId ?? fallbackSpeciesId, individual?.formId ?? 'normal').name;
   };
-  const {trainerId, trainers, dismissNotice, notice} = guide;
-
-  // Sincronização de busca movida para o CampaignPicker
+  const {dismissNotice, notice} = guide;
 
   const building = guide.phase === 'building';
 
@@ -738,7 +617,21 @@ export function GuideWorkspace({
       </header>
 
       {notice && <Toast key={notice.id} id={notice.id} text={notice.text} onDismiss={dismissNotice} />}
-      <ProgressPanel progress={progress} nextGoal={guide.nextGoal?.status === 'ready' ? guide.nextGoal.value : null} />
+      <TrainerCard
+        api={api}
+        campaign={CAMPAIGN}
+        progress={progress}
+        nextGoal={guide.nextGoal?.status === 'ready' ? guide.nextGoal.value : null}
+        guide={guide}
+        playerName={playerName}
+        playerAvatar={playerAvatar}
+        levelCapInput={levelCapInput}
+        onLevelCapInputChange={onLevelCapInputChange}
+        respectLevelCap={respectLevelCap}
+        onRespectLevelCapChange={onRespectLevelCapChange}
+        levelCap={levelCap}
+        progressLevelCap={progressLevelCap}
+      />
 
       {!snapshot && loading ? (
         <TeamSkeleton />
@@ -752,59 +645,13 @@ export function GuideWorkspace({
         </div>
       ) : (
         <>
-          <section className={styles.goal} aria-label="Objetivo">
-            {guide.nextGoal?.status === 'ready' && progress.status === 'error' && (
-              <p className={styles.suggestion}>
-                <strong>Próximo objetivo sugerido</strong>
-                <span>{guide.nextGoal.value.reason}</span>
-              </p>
-            )}
-            {guide.nextGoal?.status === 'failed' && <p className={styles.muted}>Sem sugestão de objetivo: {guide.nextGoal.error}</p>}
-
-            <div className={styles.goalToolbar}>
-              <SegmentedControl label="Objetivo do guia" options={MODE_OPTIONS} value={guide.mode} onChange={guide.selectMode} />
-              <LevelCapField
-                value={levelCapInput}
-                onChange={onLevelCapInputChange}
-                required={guide.mode === 'trainer'}
-                defaultLevelCap={levelCapInput.trim() === '' ? progressLevelCap : null}
-              />
-              {guide.mode === 'trainer' && (
-                <Switch isSelected={respectLevelCap} onChange={onRespectLevelCapChange}>
-                  Respeitar level cap
-                </Switch>
-              )}
-              <div className={styles.goalActions}>
-                {building ? (
-                  <Button variant="secondary" onPress={guide.cancel}>
-                    Cancelar
-                  </Button>
-                ) : (
-                  <Button variant="secondary" isDisabled={guide.goal === null} onPress={guide.rebuild}>
-                    Montar de novo
-                  </Button>
-                )}
-              </div>
-            </div>
-
-            {guide.mode === 'trainer' && (
-              <div className={styles.campaignContainer}>
-                <CampaignPicker
-                  campaign={CAMPAIGN}
-                  progress={progress.status === 'ready' ? progress.value : null}
-                  selectedTrainerId={trainerId}
-                  onSelect={(id) => guide.selectTrainer(id)}
-                  allTrainers={trainers.status === 'ready' ? trainers.items : []}
-                />
-              </div>
-            )}
-            {guide.mode === 'trainer' && trainers.status === 'failed' && (
-              <StatusMessage tone="warning" title="Lista de treinadores indisponível">
-                {trainers.error}
-              </StatusMessage>
-            )}
-            {building && <div className={styles.progress} role="progressbar" aria-label="Montando o time" />}
-          </section>
+          {guide.mode === 'trainer' && guide.trainers.status === 'failed' && (
+            <StatusMessage tone="warning" title="Lista de treinadores indisponível">
+              {guide.trainers.error}
+            </StatusMessage>
+          )}
+          {guide.nextGoal?.status === 'failed' && <p className={styles.muted}>Sem sugestão de objetivo: {guide.nextGoal.error}</p>}
+          {building && <div className={styles.progress} role="progressbar" aria-label="Montando o time" />}
 
           {guide.goal === null && <StatusMessage tone="info">Escolha um líder ou treinador para montar o time.</StatusMessage>}
           {guide.phase === 'error' && (

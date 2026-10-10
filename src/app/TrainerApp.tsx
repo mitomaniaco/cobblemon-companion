@@ -14,6 +14,7 @@ import {useCapturePlan} from '../features/guide/useCapturePlan';
 import {useTrainingPlan} from '../features/guide/useTrainingPlan';
 import {resolveEffectiveLevelCap, useLevelCapState} from '../features/guide/level-cap-state';
 import {useGuideProgress} from '../features/guide/useGuideProgress';
+import {usePlayerAvatar} from '../features/guide/usePlayerAvatar';
 import {accountWriteTimestamp, formatAccountTimestamp, saveAccountWarnings, selectedSaveAccount} from './account-source-model';
 import type {SaveAccount} from './account-source-model';
 import {useSaveAccounts, type SaveAccountsUiState} from './useSaveAccounts';
@@ -460,6 +461,9 @@ export function TrainerApp() {
     progress.status === 'ready' ? progress.value.levelCap : null,
   );
   const guide = useGuide(api, session.snapshot, workspace === 'guide', effectiveLevelCap, respectLevelCap, progressKey);
+  const playerAvatar = usePlayerAvatar(api, workspace === 'guide');
+  const selectedAccountName = selectedSaveAccount(saveAccounts.state)?.name;
+  const playerName = selectedAccountName ? safeAccountName(selectedAccountName) : null;
   // Modo de teste da UI: a ponte de teste entrega um manifesto de artwork sintético (a produção não tem essa ponte).
   useEffect(() => {
     const testBridge = (window.cobblemonCompanion as {test?: {getArtworkManifest?: () => Promise<ArtworkManifest>}} | undefined)?.test;
@@ -696,6 +700,9 @@ export function TrainerApp() {
             ) : workspace === 'guide' ? (
               <Suspense fallback={<RouteFallback blocks={3} />}>
                 <GuideWorkspace
+                  api={api}
+                  playerAvatar={playerAvatar}
+                  playerName={playerName}
                   snapshot={session.snapshot}
                   guide={guide}
                   battlePlan={battlePlan}

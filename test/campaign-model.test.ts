@@ -6,17 +6,14 @@ import {
   goalTrainerId,
   normalizeSearch,
   stageEntry,
-  stageLevelSummary,
   stageStateLabel,
   visibleSeriesIds,
   type Campaign,
   type CampaignStage,
   type CampaignVariant,
   type CampaignViewOptions,
-  formatStageCap,
   stageTypeLabel,
   stageVictoryCount,
-  variantLabel,
 } from '../src/features/guide/campaign-model';
 
 const variant = (id: string, overrides: Partial<CampaignVariant> = {}): CampaignVariant => ({
@@ -198,7 +195,6 @@ describe('variantes e duplas', () => {
     const doubles = stageEntry(series[4], 'liberado');
     expect(doubles.disabledReason).toBe(DOUBLES_NOT_SUPPORTED);
     expect(goalTrainerId(doubles, 'rctmod:lorelei')).toBeNull();
-    expect(stageLevelSummary(doubles)).toBe(DOUBLES_NOT_SUPPORTED);
   });
 
   it('escolher variante em dupla dentro de etapa mista não é aceito', () => {
@@ -212,25 +208,6 @@ describe('variantes e duplas', () => {
     expect(mixed.needsVariantChoice).toBe(true);
     expect(goalTrainerId(mixed, 'rctmod:m3')).toBeNull();
     expect(goalTrainerId(mixed, 'rctmod:m2')).toBe('rctmod:m2');
-  });
-
-  it('resume nível e tamanho do time, com faixa quando as variantes diferem', () => {
-    expect(stageLevelSummary(stageEntry(series[0], 'próximo'))).toBe('nível máx. 20 · 3 Pokémon');
-    const ranged = stageEntry(
-      stage('s:range', 9, {
-        ambiguous: true,
-        variants: [variant('rctmod:r1', {maxLevel: 40, teamSize: 4}), variant('rctmod:r2', {maxLevel: 44, teamSize: 5})],
-      }),
-      'liberado',
-    );
-    expect(stageLevelSummary(ranged)).toBe('nível máx. 40–44 · 4–5 Pokémon');
-  });
-
-  it('rotula as variantes só pelo que o app sabe: ordem, nível máximo e tamanho da equipe', () => {
-    expect(variantLabel(variant('rctmod:rival_starter_squirtle', {maxLevel: 15, teamSize: 3}), 0)).toBe(
-      'Variante 1 · nível 15 · 3 Pokémon',
-    );
-    expect(variantLabel(variant('rctmod:rival_terry_014c', {maxLevel: 12, teamSize: 4}), 2)).toBe('Variante 3 · nível 12 · 4 Pokémon');
   });
 });
 
@@ -254,8 +231,6 @@ describe('contagem de vitórias e level cap da etapa', () => {
   });
 
   it('formata level cap antes -> depois e tipo legível do treinador', () => {
-    expect(formatStageCap(15, 21)).toBe('Level cap: 15 → 21');
-    expect(formatStageCap(null, null)).toBeNull();
     expect(stageTypeLabel('leader')).toBe('Líder de Ginásio');
     expect(stageTypeLabel('e4')).toBe('Elite 4');
     expect(stageTypeLabel('rival')).toBe('Rival');
