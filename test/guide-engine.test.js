@@ -49,6 +49,25 @@ describe('motor do guia', () => {
     expect(member.moves[0]).toEqual({id: 'cobblemon:surf', evaluated: true, source: 'equipado'});
   });
 
+  it('cada confronto traz a faixa de dano de cada golpe avaliado, e o melhor golpe tem o maior dano médio', async () => {
+    const blastoise = individual({species: 'blastoise', level: 40, moves: ['tackle', 'bite', 'watergun', 'headbutt']});
+    const result = await run([blastoise], trainerGoal('synthetic:fire'));
+    const member = result.team[0];
+    const evaluated = member.moves.filter((move) => move.evaluated).map((move) => move.id);
+    expect(member.matchups.length).toBeGreaterThan(0);
+    for (const matchup of member.matchups) {
+      expect(matchup.damage.map((entry) => entry.moveId)).toEqual(evaluated);
+      for (const entry of matchup.damage) {
+        expect(entry.minPercent).toBeGreaterThanOrEqual(0);
+        expect(entry.maxPercent).toBeGreaterThanOrEqual(entry.minPercent);
+      }
+      const average = (entry) => (entry.minPercent + entry.maxPercent) / 2;
+      const best = matchup.damage.find((entry) => entry.moveId === matchup.moveId);
+      expect(best).toBeDefined();
+      expect(average(best) + 0.1).toBeGreaterThanOrEqual(Math.max(...matchup.damage.map(average)));
+    }
+  });
+
   it('imunidade de tipo perde: golpe de Ground não acerta Flying e o adversário vence', async () => {
     const golem = individual({species: 'golem', moves: ['earthquake']});
     const result = await run([golem], trainerGoal('synthetic:flyer'));

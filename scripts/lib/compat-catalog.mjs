@@ -249,7 +249,7 @@ const MOVE_PRESENCE_KEYS = ['multihit', 'damage', 'ohko', 'selfdestruct', 'willC
  * Lê `var Moves = {...}` do Showdown já compilado e devolve os fatos estruturais de cada golpe
  * (categoria, alvo, mecânicas especiais e callbacks). Chaves ausentes ficam `null`. O código nunca é executado.
  */
-export function showdownMoveFacts(source) {
+export function showdownMoveFacts(source, {extraKeys = []} = {}) {
   const ast = parse(source.replace(/\r\n/g, '\n'), {ecmaVersion: 'latest', sourceType: 'script'});
   for (const statement of ast.body) {
     if (statement.type !== 'VariableDeclaration') continue;
@@ -262,7 +262,7 @@ export function showdownMoveFacts(source) {
         const id = propertyName(property);
         if (id === null) continue;
         const facts = {};
-        for (const key of [...MOVE_FACT_KEYS, ...MOVE_FLAG_KEYS, ...MOVE_PRESENCE_KEYS]) facts[key] = null;
+        for (const key of [...MOVE_FACT_KEYS, ...extraKeys, ...MOVE_FLAG_KEYS, ...MOVE_PRESENCE_KEYS]) facts[key] = null;
         for (const key of [...MOVE_FLAG_KEYS, ...MOVE_PRESENCE_KEYS]) facts[key] = false;
         facts.callbacks = [];
         for (const inner of property.value.properties) {
@@ -271,7 +271,7 @@ export function showdownMoveFacts(source) {
           if (name === null) continue;
           if (inner.method || inner.value.type === 'FunctionExpression' || inner.value.type === 'ArrowFunctionExpression') {
             facts.callbacks.push(name);
-          } else if (MOVE_FACT_KEYS.includes(name)) {
+          } else if (MOVE_FACT_KEYS.includes(name) || extraKeys.includes(name)) {
             facts[name] = scalarValue(inner.value);
           } else if (MOVE_FLAG_KEYS.includes(name)) {
             // `isZ` e `isMax` trazem o nome do cristal/espécie (string) ou `true`: qualquer valor diferente de false marca o golpe.

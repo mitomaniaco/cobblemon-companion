@@ -30,7 +30,7 @@ const dexId = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 type Named = {name: string};
 type CalcGeneration = {
-  species: Iterable<Named & {types: string[]}>;
+  species: Iterable<Named & {types: string[]; baseStats: Record<'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe', number>}>;
   moves: Iterable<Named & {type: string; category: string; basePower: number}>;
   abilities: Iterable<Named>;
   natures: Iterable<Named & {plus?: string; minus?: string}>;
@@ -39,7 +39,8 @@ type CalcGeneration = {
 function buildDisplayDex() {
   const require = createRequire(import.meta.url);
   const generation = require('@smogon/calc').Generations.get(9) as CalcGeneration;
-  const species: Record<string, {name: string; types: string[]}> = {};
+  const species: Record<string, {name: string; types: string[]; baseStats: Record<'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe', number>}> =
+    {};
   const moves: Record<string, {name: string; type: string; category: string; basePower: number}> = {};
   const abilities: Record<string, string> = {};
   const natures: Record<string, {name: string; plus: string | null; minus: string | null}> = {};
@@ -53,7 +54,12 @@ function buildDisplayDex() {
     const isBase = cobblemonSpecies.has(dexId(entry.name));
     const isForm = baseNames.some((baseName) => entry.name.startsWith(`${baseName}-`)) && !excludedToken(entry.name);
     if (!isBase && !isForm) continue;
-    species[dexId(entry.name)] = {name: entry.name, types: entry.types.filter((type) => TYPES.has(type))};
+    const {hp, atk, def, spa, spd, spe} = entry.baseStats;
+    species[dexId(entry.name)] = {
+      name: entry.name,
+      types: entry.types.filter((type) => TYPES.has(type)),
+      baseStats: {hp, atk, def, spa, spd, spe},
+    };
   }
   for (const entry of generation.moves) {
     if (!TYPES.has(entry.type)) continue;
