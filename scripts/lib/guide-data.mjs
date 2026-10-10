@@ -431,3 +431,22 @@ export function deriveAdvancements(files) {
   }
   return output;
 }
+
+const ABILITY_DESCRIPTION_KEY = /^cobblemon\.ability\.([a-z0-9]+)\.desc$/;
+
+/**
+ * PP base e descrição em português dos golpes, e descrição em português das habilidades.
+ * `lang`: pt_br.json do Cobblemon; `movePp`: PP base por id de golpe (null quando o Showdown não traz).
+ */
+export function deriveTexts({lang, movePp}) {
+  const moves = {};
+  for (const id of Object.keys(movePp).sort()) {
+    moves[id] = {pp: movePp[id] ?? null, description: lang[`cobblemon.move.${id}.desc`] ?? null};
+  }
+  const abilities = {};
+  for (const key of Object.keys(lang).sort()) {
+    const match = ABILITY_DESCRIPTION_KEY.exec(key);
+    if (match) abilities[match[1]] = lang[key];
+  }
+  return {moves, abilities};
+}

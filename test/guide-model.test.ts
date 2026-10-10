@@ -349,6 +349,7 @@ describe('respostas do time aos adversários', () => {
     ourTurns,
     theirTurns,
     moveId: outcome === 'vence' ? 'cobblemon:surf' : null,
+    damage: [],
   });
   const teamMember = (uuid: string, matchups: Matchup[]) => ({uuid, matchups}) as GuideResult['team'][number];
   const opponents = [{id: 'o#0'}, {id: 'o#1'}, {id: 'o#2'}, {id: 'o#3'}];

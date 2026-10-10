@@ -141,6 +141,8 @@ export type GuideMatchup = {
   theirTurns: number;
   /** Melhor golpe do membro contra o adversário; null quando nenhum causa dano. */
   moveId: string | null;
+  /** Faixa de dano de cada golpe avaliado do membro contra este adversário, em % do HP (HP cheio, sem crítico). */
+  damage: Array<{moveId: string; minPercent: number; maxPercent: number}>;
 };
 
 export type GuideAcquireEntry = {

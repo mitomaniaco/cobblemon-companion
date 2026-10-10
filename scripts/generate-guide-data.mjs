@@ -1,4 +1,4 @@
-// Gera data/guide/{learnsets,evolutions,trainers}.json a partir dos arquivos instalados (somente leitura).
+// Gera data/guide/{learnsets,evolutions,trainers,series,campaign,advancements,artwork-sources,texts}.json a partir dos arquivos instalados (somente leitura).
 //
 //   node scripts/generate-guide-data.mjs --instance <pasta com mods/> [--write]
 //
@@ -6,6 +6,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {strFromU8, unzipSync} from 'fflate';
+import {showdownMoveFacts} from './lib/compat-catalog.mjs';
 import {loadMergedSpecies} from './lib/game-species.mjs';
 import {
   deriveArtworkSources,
@@ -14,6 +16,7 @@ import {
   deriveEvolutions,
   deriveLearnset,
   deriveSeries,
+  deriveTexts,
   deriveTrainer,
 } from './lib/guide-data.mjs';
 import {parseJsonBytes, sha256, unzipSelected} from './lib/jar.mjs';
@@ -135,6 +138,23 @@ function main() {
   if (trainers.length === 0) fail('nenhum treinador do RCT encontrado (JARs com "rct" no nome e data/<ns>/trainers/*.json)');
   trainers.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 
+  const cobblemonJar = jars.find((name) => /^Cobblemon-neoforge-.+\.jar$/.test(name));
+  const base = unzipSelected(
+    path.join(modsDirectory, cobblemonJar),
+    (name) => name === 'assets/cobblemon/lang/pt_br.json' || name === 'data/cobblemon/showdown.zip',
+  );
+  const langBytes = base['assets/cobblemon/lang/pt_br.json'];
+  const showdownZip = base['data/cobblemon/showdown.zip'];
+  if (!langBytes || !showdownZip) fail('pt_br.json ou showdown.zip ausente no JAR do Cobblemon');
+  const movesJs = unzipSync(showdownZip, {filter: (entry) => entry.name === 'data/moves.js'})['data/moves.js'];
+  if (!movesJs) fail('data/moves.js ausente no showdown.zip do Cobblemon');
+  const movePp = Object.fromEntries(
+    Object.entries(showdownMoveFacts(strFromU8(movesJs), {extraKeys: ['pp']})).map(([id, facts]) => [
+      id,
+      typeof facts.pp === 'number' ? facts.pp : null,
+    ]),
+  );
+
   const outputs = [
     ['learnsets.json', jsonText(learnsets)],
     ['evolutions.json', jsonText(evolutions)],
@@ -143,6 +163,7 @@ function main() {
     ['campaign.json', jsonText(deriveCampaign({series, trainers, levelCapConfig: readLevelCapConfig(instance)}))],
     ['advancements.json', jsonText(deriveAdvancements(advancementFiles))],
     ['artwork-sources.json', jsonText(deriveArtworkSources(species, slugs, trainers))],
+    ['texts.json', jsonText(deriveTexts({lang: parseJsonBytes(langBytes, 'pt_br.json'), movePp}))],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 
   if (options.write) {

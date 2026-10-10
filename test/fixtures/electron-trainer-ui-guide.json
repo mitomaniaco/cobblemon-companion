@@ -72,14 +72,22 @@
             "outcome": "perde",
             "ourTurns": 3,
             "theirTurns": 2,
-            "moveId": "cobblemon:psychic"
+            "moveId": "cobblemon:psychic",
+            "damage": [
+              {"moveId": "cobblemon:psychic", "minPercent": 30.2, "maxPercent": 36.4},
+              {"moveId": "cobblemon:confusion", "minPercent": 11.1, "maxPercent": 13.2}
+            ]
           },
           {
             "opponentId": "synthetic:trainer#1",
             "outcome": "vence",
             "ourTurns": 1,
             "theirTurns": 4,
-            "moveId": "cobblemon:psychic"
+            "moveId": "cobblemon:psychic",
+            "damage": [
+              {"moveId": "cobblemon:psychic", "minPercent": 104.5, "maxPercent": 123.1},
+              {"moveId": "cobblemon:confusion", "minPercent": 40.3, "maxPercent": 47.9}
+            ]
           }
         ],
         "acquire": [

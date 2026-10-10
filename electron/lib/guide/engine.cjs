@@ -85,6 +85,14 @@ function averagePercent(attacker, defender, moveName, field) {
   return ((min + max) / 2 / targetHP) * 100;
 }
 
+/** Faixa de dano (% do HP do alvo, HP cheio, sem crítico) de cada golpe contra um adversário. */
+function damagePercents(pokemon, opponentPokemon, moveIds) {
+  return moveIds.map((moveId) => {
+    const {min, max, targetHP} = damageRange(pokemon, opponentPokemon, COMPATIBILITY.moves[moveId].name);
+    return {moveId, minPercent: roundOne((min / targetHP) * 100), maxPercent: roundOne((max / targetHP) * 100)};
+  });
+}
+
 /** Melhor dano médio (em % do HP do alvo) dos golpes do adversário contra o nosso Pokémon. */
 function theirBestPercents(opponents, pokemon) {
   return opponents.map((opponent) => {
@@ -488,6 +496,7 @@ async function buildGuide({
         ourTurns: outcome.ourTurns,
         theirTurns: outcome.theirTurns,
         moveId: outcome.moveId,
+        damage: damagePercents(result.pokemon, opponents[index].pokemon, result.chosen),
       })),
       acquire: acquireSuggestions(result, opponents, data.learnsets),
     });

@@ -300,6 +300,12 @@ describe('fatos e regras dos golpes do Showdown', () => {
     expect(() => showdownMoveFacts('var Other = {};')).toThrow(/Moves/);
   });
 
+  it('lê chaves extras só quando pedidas', () => {
+    const pp = 'var Moves = {tackle: {name: "Tackle", pp: 35, basePower: 40}};';
+    expect(showdownMoveFacts(pp, {extraKeys: ['pp']}).tackle.pp).toBe(35);
+    expect(showdownMoveFacts(pp).tackle).not.toHaveProperty('pp');
+  });
+
   const valid = {category: 'Physical', target: 'normal', callbacks: [], critRatio: 2};
   const ok = {isBase: false, calcHasMove: true, packDiffers: false};
 
