@@ -481,18 +481,11 @@ async function buildGuide({
     });
   }
 
-  const partyUuids = individuals.filter((individual) => individual.location.container === 'party').map((individual) => individual.uuid);
-  const teamUuids = members.map((member) => member.uuid);
   return {
     goal,
     referenceLevel,
     opponents: opponents.map(({id, speciesId, level, trainerId}) => ({id, speciesId, level, trainerId})),
     team: members,
-    currentPartyComparison: {
-      kept: teamUuids.filter((uuid) => partyUuids.includes(uuid)),
-      added: teamUuids.filter((uuid) => !partyUuids.includes(uuid)),
-      removed: partyUuids.filter((uuid) => !teamUuids.includes(uuid)),
-    },
     excluded,
     overCap: overCapOf(members, overCapEntries, levelCap),
     assumptions,

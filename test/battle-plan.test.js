@@ -413,3 +413,36 @@ describe('plano de batalha contra o líder', () => {
     ).rejects.toMatchObject({code: 'CANCELLED'});
   });
 });
+
+describe('ordem da party recomendada', () => {
+  const {withPartyPlan} = require('../electron/lib/guide/party-order.cjs');
+  const guideTeam = team.map((member, index) => ({
+    uuid: member.uuid,
+    speciesId: [blastoise, pikachu][index].speciesId,
+    moves: member.moveIds.map((id) => ({id, evaluated: true, source: 'equipado'})),
+    item: {id: null, status: 'nenhum', reason: ''},
+  }));
+  const guide = (goal) => ({goal, team: guideTeam});
+  const run = (goal, checkpoint) => withPartyPlan({result: guide(goal), snapshot, data, levelCap: null, respectLevelCap: true, checkpoint});
+
+  it('o primeiro slot é quem abre a batalha no plano', async () => {
+    const result = await run({kind: 'trainer', trainerId: 'synthetic:brock'});
+    const battle = await plan('synthetic:brock');
+    expect(result.partyPlan.basis).toBe('simulação');
+    expect(result.partyPlan.slots[0].uuid).toBe(battle.lead.uuid);
+    expect(result.team.map((member) => member.uuid)).toEqual(result.partyPlan.slots.map((slot) => slot.uuid));
+  });
+
+  it('PvE geral mantém a party atual e diz por quê', async () => {
+    const result = await run({kind: 'pve'});
+    expect(result.partyPlan.basis).toBe('party atual');
+    expect(result.partyPlan.basisReason).toContain('PvE geral');
+  });
+
+  it('cancelamento do plano não vira fallback', async () => {
+    const checkpoint = async () => {
+      throw Object.assign(new Error('cancelado'), {code: 'CANCELLED'});
+    };
+    await expect(run({kind: 'trainer', trainerId: 'synthetic:brock'}, checkpoint)).rejects.toMatchObject({code: 'CANCELLED'});
+  });
+});

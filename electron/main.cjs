@@ -77,6 +77,7 @@ const {createAutoRefresh} = require('./lib/auto-refresh.cjs');
 const {createSaveWatcher} = require('./lib/save-watcher.cjs');
 const {assertFreshSources, calculateRealDamage} = require('./lib/real-damage.cjs');
 const {loadGuideData} = require('./lib/guide/data.cjs');
+const {planPartySlots} = require('./lib/guide/party-order.cjs');
 const {readGuideProgressFromConfig, resolveProgressSourcePaths, publicProgressError} = require('./lib/progress.cjs');
 const {deriveProgressLevelCap} = require('./lib/guide/trainers.cjs');
 const {guideNextGoal, listGuideTrainers} = require('./lib/guide/trainers.cjs');
@@ -319,6 +320,17 @@ const overCapOf = (member, levelCap) => ({
   levelCap,
   text: `Nível ${member.level} acima do level cap (${levelCap}): baixe o nível para ${levelCap} antes da luta ou guarde no PC.`,
 });
+function withFixturePartyPlan(result) {
+  result.partyPlan = planPartySlots({
+    team: result.team,
+    individuals: TRAINER_UI_SNAPSHOT.individuals,
+    entryOrder: result.partyPlan.slots.map((slot) => slot.uuid),
+    roles: Object.fromEntries(result.partyPlan.slots.map((slot) => [slot.uuid, slot.role])),
+    basis: result.partyPlan.basis,
+    basisReason: result.partyPlan.basisReason,
+  });
+  return result;
+}
 function applyLevelCapToFixture(result, goal, levelCap, respectLevelCap = true) {
   if (goal.kind !== 'trainer') return result;
   if (levelCap === null) {
@@ -334,12 +346,7 @@ function applyLevelCapToFixture(result, goal, levelCap, respectLevelCap = true) 
   }
   result.team = result.team.filter((member) => member.level <= levelCap);
   for (const member of above) result.excluded.push({uuid: member.uuid, reason: `acima do level cap (${levelCap})`});
-  const kept = new Set(result.team.map((member) => member.uuid));
-  result.currentPartyComparison.kept = result.currentPartyComparison.kept.filter((uuid) => kept.has(uuid));
-  result.currentPartyComparison.removed.push(
-    ...above.map((member) => member.uuid).filter((uuid) => !result.currentPartyComparison.removed.includes(uuid)),
-  );
-  return result;
+  return withFixturePartyPlan(result);
 }
 function validateGuideRequest(request) {
   exactKeys(request, ['sources', 'goal', 'levelCap', 'respectLevelCap', 'previousTeamUuids', 'jobId'], 'request');

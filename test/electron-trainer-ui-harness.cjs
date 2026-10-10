@@ -1526,12 +1526,27 @@ async function exerciseGuideWorkspace(window) {
     'Gardevoir entra porque vence 1 de 2 adversários',
     'Choice Specs aumenta as vitórias de 1 para 2.',
     'obter',
-    'Comparado à sua party',
     'Vale adquirir',
     'Moonblast',
   ]) {
     check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
   }
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('ol[aria-label="Time recomendado"] > li[data-change="mantém"][data-slot="1"]'))`,
+    'o primeiro slot da party recomendada mantém o Pokémon do slot atual',
+  );
+  const partyText = await evaluate(
+    contents,
+    `({
+      pc: document.querySelector('section[aria-label="Fora do time recomendado"]')?.innerText || '',
+      steps: document.querySelector('ol[aria-label="Como arrumar a party"]')?.innerText || '',
+      leaving: Boolean(document.querySelector('[aria-label="Party de hoje"] [data-leaving="true"]')),
+    })`,
+  );
+  check(partyText.pc.includes('Bulbasaur'), 'A caixa "Fora do time recomendado" não mostrou o Bulbasaur.');
+  check(partyText.steps.includes('Guarde no PC: Bulbasaur.'), 'Os passos da party não mandaram guardar o Bulbasaur no PC.');
+  check(partyText.leaving, 'A party de hoje não marcou quem vai ao PC.');
   check(
     progressText.includes('Próxima etapa') && progressText.includes('Atual:') && progressText.includes('Level cap da etapa: 15 → 21.'),
     'O painel de progresso não explicou a próxima etapa e a progressão de level cap da campanha.',

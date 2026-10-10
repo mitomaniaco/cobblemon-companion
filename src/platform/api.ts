@@ -149,6 +149,23 @@ export type GuideTeamMember = {
   acquire: Array<{moveId: string; requirement: string; gainPercent: number; reason: string}>;
 };
 
+export type GuidePartySlot = {
+  uuid: string;
+  speciesId: string;
+  /** Slot atual na party (0–5) ou null se vem do PC. */
+  fromSlot: number | null;
+  change: 'mantém' | 'muda de slot' | 'entra';
+  replaces: {uuid: string; speciesId: string} | null;
+  role: string | null;
+};
+
+export type GuidePartyPlan = {
+  basis: 'simulação' | 'party atual';
+  basisReason: string | null;
+  slots: GuidePartySlot[];
+  toPc: Array<{uuid: string; speciesId: string; fromSlot: number}>;
+};
+
 /** Membro do time acima do level cap quando o jogador desligou "respeitar o level cap": o app só avisa, não exclui. */
 export type OverCapMember = {uuid: string; speciesId: string; level: number; levelCap: number; text: string};
 
@@ -156,8 +173,9 @@ export type GuideResult = {
   goal: GuideGoal;
   referenceLevel: number;
   opponents: Array<{id: string; speciesId: string; level: number; trainerId: string | null}>;
+  /** Na ordem de `partyPlan.slots`. */
   team: GuideTeamMember[];
-  currentPartyComparison: {kept: string[]; added: string[]; removed: string[]};
+  partyPlan: GuidePartyPlan;
   excluded: Array<{uuid: string; reason: string}>;
   /** Só com `respectLevelCap: false` e cap conhecido em objetivo de treinador: quem do time passa do cap (não excluído). Vazio caso contrário. */
   overCap?: OverCapMember[];
