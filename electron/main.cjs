@@ -401,7 +401,7 @@ function handleGuideBuild(event, request) {
   const snapshot = readSnapshotForRenderer();
   assertFreshSources(request.sources, snapshot.sources);
   if (TRAINER_UI_TEST_MODE) {
-    if (goal.kind === 'trainer' && goal.trainerId !== TRAINER_UI_GUIDE.result.goal.trainerId)
+    if (goal.kind === 'trainer' && goal.trainerId !== TRAINER_UI_GUIDE.result.goal.trainerId && !goal.trainerId.startsWith('rctmod:'))
       throw new Error('Treinador sintético não encontrado');
     return applyLevelCapToFixture(structuredClone({...TRAINER_UI_GUIDE.result, goal}), goal, levelCap, respectLevelCap);
   }

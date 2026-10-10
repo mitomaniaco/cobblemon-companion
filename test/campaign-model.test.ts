@@ -1,6 +1,8 @@
 import {describe, expect, it} from 'vitest';
 import {
   buildCampaignView,
+  LEADER_TYPES,
+  stageGroupKey,
   computeStageStates,
   DOUBLES_NOT_SUPPORTED,
   goalTrainerId,
@@ -15,6 +17,7 @@ import {
   stageTypeLabel,
   stageVictoryCount,
 } from '../src/features/guide/campaign-model';
+import campaignData from '../data/guide/campaign.json';
 
 const variant = (id: string, overrides: Partial<CampaignVariant> = {}): CampaignVariant => ({
   id,
@@ -234,5 +237,14 @@ describe('contagem de vitórias e level cap da etapa', () => {
     expect(stageTypeLabel('leader')).toBe('Líder de Ginásio');
     expect(stageTypeLabel('e4')).toBe('Elite 4');
     expect(stageTypeLabel('rival')).toBe('Rival');
+  });
+});
+
+describe('tipos dos líderes', () => {
+  it('cobre os líderes de Radical Red pelo nome da etapa, com um tipo conhecido', () => {
+    const leaders = (campaignData as unknown as Campaign).radicalred.stages.filter((entry) => stageGroupKey(entry.type) === 'leader');
+    expect(leaders).toHaveLength(8);
+    for (const entry of leaders) expect(LEADER_TYPES[entry.name], entry.name).toMatch(/^[A-Z][a-z]+$/);
+    expect(LEADER_TYPES['Leader Brock']).toBe('Rock');
   });
 });

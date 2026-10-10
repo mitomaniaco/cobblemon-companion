@@ -205,11 +205,6 @@ export function guidePartySteps(plan: GuidePartyPlan, nameOf: (uuid: string, spe
   return steps;
 }
 
-/** Os Pokémon da party do jogador, na ordem dos slots. */
-export function guideCurrentParty(individuals: readonly PlayerIndividual[]): PlayerIndividual[] {
-  return individuals.filter((individual) => individual.location.container === 'party').sort((a, b) => a.location.slot - b.location.slot);
-}
-
 export function guideOpponentTurnsLabel(matchup: {outcome: 'vence' | 'perde'; ourTurns: number; theirTurns: number}): string {
   const plural = (count: number) => `${count} ${count === 1 ? 'turno' : 'turnos'}`;
   return matchup.outcome === 'vence'

@@ -19,15 +19,7 @@ import {
   TypeBadge,
 } from '../../ui';
 import type {GuideProgressState} from './useGuideProgress';
-import {
-  guideCapExcluded,
-  guideCapWarnings,
-  guideCurrentParty,
-  guidePartySteps,
-  guideOpponentTurnsLabel,
-  guideTeamChanges,
-  type GuideTab,
-} from './guide-model';
+import {guideCapExcluded, guideCapWarnings, guideOpponentTurnsLabel, guideTeamChanges, type GuideTab} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
@@ -49,7 +41,7 @@ const NOTICE_DURATION_MS = 4000;
 const TEAM_SIZE = 6;
 
 const GUIDE_TABS: ReadonlyArray<{key: GuideTab; label: string}> = [
-  {key: 'team', label: 'Time recomendado'},
+  {key: 'team', label: 'Detalhes do time'},
   {key: 'battle', label: 'Plano de batalha'},
   {key: 'evolutions', label: 'Evoluções'},
   {key: 'training', label: 'Treino até o cap'},
@@ -121,6 +113,7 @@ function MemberDetails({
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
 }) {
   const [expanded, setExpanded] = useState(false);
+  const statusMoves = member.moves.filter((move) => !move.evaluated);
   return (
     <Disclosure headingLevel={4} title="Ver detalhes" isExpanded={expanded} onExpandedChange={setExpanded} className={styles.details}>
       <div className={styles.detailsBody}>
@@ -145,20 +138,27 @@ function MemberDetails({
         <section aria-label="Cálculo por golpe">
           <h5 className={styles.detailsTitle}>Cálculo por golpe</h5>
           <ul className={styles.calcList}>
-            {member.moves.map((move) => (
-              <li key={`${move.source}-${move.id}`}>
-                <span>{moveDisplay(move.id).name}</span>
-                <Button
-                  variant="quiet"
-                  className={styles.calcButton}
-                  isDisabled={!move.evaluated || !individual}
-                  onPress={() => onOpenCalculation(member.uuid, move)}
-                >
-                  Ver cálculo
-                </Button>
-              </li>
-            ))}
+            {member.moves
+              .filter((move) => move.evaluated)
+              .map((move) => (
+                <li key={`${move.source}-${move.id}`}>
+                  <span>{moveDisplay(move.id).name}</span>
+                  <Button
+                    variant="quiet"
+                    className={styles.calcButton}
+                    isDisabled={!individual}
+                    onPress={() => onOpenCalculation(member.uuid, move)}
+                  >
+                    Ver cálculo
+                  </Button>
+                </li>
+              ))}
           </ul>
+          {statusMoves.length > 0 && (
+            <p className={styles.muted}>
+              Golpes de status (não avaliados): {statusMoves.map((move) => moveDisplay(move.id).name).join(', ')}.
+            </p>
+          )}
         </section>
       </div>
     </Disclosure>
@@ -241,18 +241,17 @@ function MemberCard({
       <p className={styles.reason}>{member.reason}</p>
 
       <ul className={styles.moves} aria-label={`Golpes de ${species.name}`}>
-        {member.moves.map((move) => {
-          const display = moveDisplay(move.id);
-          return (
-            <li key={`${move.source}-${move.id}`} data-evaluated={move.evaluated ? 'true' : 'false'}>
-              <MoveChip name={display.name} type={display.type} category={display.category} variant="chip" />
-              <span className={styles.moveNote}>
-                {move.source}
-                {!move.evaluated && ' · status, não avaliado'}
-              </span>
-            </li>
-          );
-        })}
+        {member.moves
+          .filter((move) => move.evaluated)
+          .map((move) => {
+            const display = moveDisplay(move.id);
+            return (
+              <li key={`${move.source}-${move.id}`}>
+                <MoveChip name={display.name} type={display.type} category={display.category} variant="chip" />
+                <span className={styles.moveNote}>{move.source}</span>
+              </li>
+            );
+          })}
       </ul>
 
       <div className={styles.item}>
@@ -314,9 +313,6 @@ function GuideResultView({
   captures: CapturePlanController;
 }) {
   const [infoExpanded, setInfoExpanded] = useState(false);
-  const currentParty = guideCurrentParty(snapshot.individuals);
-  const leaving = new Set(result.partyPlan.toPc.map((entry) => entry.uuid));
-  const partySteps = guidePartySteps(result.partyPlan, (uuid) => individualName(lookup, uuid));
   const slotOf = new Map(result.partyPlan.slots.map((slot) => [slot.uuid, slot]));
   const acquire = result.team
     .flatMap((member) => member.acquire.map((entry) => ({member, entry})))
@@ -406,22 +402,6 @@ function GuideResultView({
                 </StatusMessage>
               )}
 
-              <section className={styles.todaySection} aria-label="Party de hoje">
-                <div className={styles.todayRow}>
-                  <span className={styles.todayLabel}>Hoje</span>
-                  {currentParty.map((individual) => (
-                    <span key={individual.uuid} data-leaving={leaving.has(individual.uuid) ? 'true' : undefined}>
-                      <PokemonArtwork
-                        speciesId={individual.speciesId}
-                        formId={individual.formId}
-                        shiny={individual.shiny === true}
-                        variant="slot"
-                      />
-                    </span>
-                  ))}
-                </div>
-              </section>
-
               <ol className={styles.cards} aria-label="Time recomendado">
                 {result.team.map((member, index) => (
                   <MemberCard
@@ -435,46 +415,6 @@ function GuideResultView({
                   />
                 ))}
               </ol>
-
-              {result.partyPlan.toPc.length > 0 && (
-                <section className={styles.pcSection} aria-label="Fora do time recomendado">
-                  <h3 className={styles.sectionTitle}>Guarde no PC</h3>
-                  <div className={styles.pcChips}>
-                    {result.partyPlan.toPc.map((entry) => (
-                      <span key={entry.uuid} className={styles.pcChip}>
-                        <PokemonArtwork
-                          speciesId={entry.speciesId}
-                          formId={lookup.individuals.get(entry.uuid)?.formId ?? 'normal'}
-                          variant="slot"
-                        />
-                        {individualName(lookup, entry.uuid)}
-                      </span>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              <section className={styles.stepsSection}>
-                <h3 className={styles.sectionTitle}>Como arrumar a party</h3>
-                {partySteps.length === 0 ? (
-                  <p>Sua party já está como o guia recomenda.</p>
-                ) : (
-                  <ol className={styles.steps} aria-label="Como arrumar a party">
-                    {partySteps.map((step) => (
-                      <li key={step}>{step}</li>
-                    ))}
-                  </ol>
-                )}
-              </section>
-
-              {result.partyPlan.basis !== 'simulação' && result.partyPlan.basisReason && (
-                <p className={styles.muted}>
-                  {result.partyPlan.basis === 'confronto'
-                    ? 'A ordem usa o confronto com o primeiro adversário: '
-                    : 'A ordem não veio da simulação: '}
-                  {result.partyPlan.basisReason}
-                </p>
-              )}
 
               <section className={styles.acquire} aria-labelledby="guide-acquire-title">
                 <h3 id="guide-acquire-title" className={styles.sectionTitle}>
@@ -630,6 +570,7 @@ export function GuideWorkspace({
         guide={guide}
         playerName={playerName}
         playerAvatar={playerAvatar}
+        individuals={lookup.individuals}
         levelCapInput={levelCapInput}
         onLevelCapInputChange={onLevelCapInputChange}
         respectLevelCap={respectLevelCap}
