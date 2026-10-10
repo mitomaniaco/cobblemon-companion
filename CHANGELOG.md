@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Trainer Card do Guia em três colunas que ocupam a altura visível (Issues #210 e #212): equipe, Pokémon selecionado com habilidade, atributos base, descrição e faixa de dano por golpe, e o adversário com quem responde a cada Pokémon dele. Cada confronto do guia traz `damage` por golpe; novo `data/guide/texts.json` (PP e descrições em português); insígnias achatadas com `TypeIcon`, sem brilhos coloridos.
+
 - Revisão do motor de batalha, do guia e da UI (Issues #175–#191): `damageRolls` normaliza dano fixo e multi-hit do calc; catálogo v14 com espécies habilitadas por adição, 158 formas alternativas e golpes com mecânica modelada (Sucker Punch, Fake Out só no primeiro turno, multi-hit, dano fixo); forma do jogador (`formId`) e do adversário (`aspects`) resolvidas pelo catálogo; plano de batalha de volta ao fail-closed, com clima, terreno, Intimidate, itens alternativos pelo pior caso e lead do slot 0; simulação determinística da batalha inteira (D16); estabilidade do time pela recomendação anterior com aviso de mudança; golpes do save sem namespace deixam de ser sugeridos como aquisição; progresso do RCT com ids `rctmod:` e leitura fail-closed; guia em abas por ferramenta com cálculo ao abrir; tinta das cores de tipo com contraste ≥ 4,5:1 e tipos/arte de forma pela chave `formId` sem tabelas de alias.
 
 - Planos de captura agora recebem o progresso regional Pika Star de `GuideProgress` e marcam o requisito como cumprido, pendente ou não verificado conforme conhecido.

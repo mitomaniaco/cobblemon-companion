@@ -3,7 +3,9 @@ import {
   createGuideState,
   currentGuideGoal,
   GUIDE_SNAPSHOT_NOTICE,
-  guideAnswers,
+  guideAnswerRanking,
+  guideMoveDamage,
+  guideTurnsShort,
   guideBestAnswerUuid,
   guideUnansweredOpponents,
   guideBuildCause,
@@ -354,9 +356,39 @@ describe('respostas do time aos adversários', () => {
   const teamMember = (uuid: string, matchups: Matchup[]) => ({uuid, matchups}) as GuideResult['team'][number];
   const opponents = [{id: 'o#0'}, {id: 'o#1'}, {id: 'o#2'}, {id: 'o#3'}];
 
-  it('guideAnswers põe vitórias primeiro (menos turnos, depois ordem) e derrotas por último', () => {
-    const member = teamMember('a', [m('o#0', 'perde', 3, 1), m('o#1', 'vence', 2, 3), m('o#2', 'vence', 1, 3), m('o#3', 'vence', 2, 4)]);
-    expect(guideAnswers(member, opponents).map((matchup) => matchup.opponentId)).toEqual(['o#2', 'o#1', 'o#3', 'o#0']);
+  it('guideAnswerRanking põe vitórias primeiro (menos turnos) e derrotas pela maior folga; sem confronto fica de fora', () => {
+    const team = [
+      teamMember('a', [m('o#0', 'vence', 2, 3)]),
+      teamMember('b', [m('o#0', 'vence', 1, 3)]),
+      teamMember('c', [m('o#0', 'perde', 3, 1)]),
+      teamMember('d', [m('o#1', 'vence', 1, 3)]),
+    ];
+    expect(guideAnswerRanking(team, 'o#0')).toEqual([
+      {uuid: 'b', outcome: 'vence'},
+      {uuid: 'a', outcome: 'vence'},
+      {uuid: 'c', outcome: 'perde'},
+    ]);
+  });
+
+  it('guideTurnsShort resume os turnos e avisa quando o membro não causa dano', () => {
+    expect(guideTurnsShort({ourTurns: Number.POSITIVE_INFINITY, theirTurns: 2})).toBe('sem dano');
+    expect(guideTurnsShort({ourTurns: 1, theirTurns: 3})).toBe('1 vs 3 turnos');
+    expect(guideTurnsShort({ourTurns: 2, theirTurns: Number.POSITIVE_INFINITY})).toBe('2 vs — turnos');
+  });
+
+  it('guideMoveDamage põe o melhor golpe do confronto primeiro, descarta dano zero e ordena o resto pelo máximo', () => {
+    const hit = (moveId: string, maxPercent: number) => ({moveId, minPercent: maxPercent / 2, maxPercent});
+    const member = teamMember('a', [
+      {...m('o#0', 'vence', 1, 2), moveId: 'cobblemon:surf', damage: [hit('cobblemon:surf', 40), hit('cobblemon:tackle', 10)]},
+      {...m('o#1', 'vence', 1, 2), moveId: 'cobblemon:tackle', damage: [hit('cobblemon:surf', 90), hit('cobblemon:tackle', 20)]},
+      {...m('o#2', 'perde', 3, 1), moveId: 'cobblemon:surf', damage: [hit('cobblemon:surf', 0)]},
+      {...m('o#3', 'vence', 1, 2), moveId: 'cobblemon:surf', damage: [hit('cobblemon:surf', 60)]},
+    ]);
+    expect(guideMoveDamage(member, 'cobblemon:surf').map((entry) => [entry.opponentId, entry.best])).toEqual([
+      ['o#3', true],
+      ['o#0', true],
+      ['o#1', false],
+    ]);
   });
 
   it('guideBestAnswerUuid escolhe quem vence em menos turnos, com empate no menor slot', () => {

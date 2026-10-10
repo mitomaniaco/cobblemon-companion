@@ -12,6 +12,7 @@ import {
   Button,
   Disclosure,
   MoveChip,
+  MovePpMeta,
   PokeBallMark,
   PokemonArtwork,
   Tab,
@@ -58,24 +59,11 @@ function timestampLabel(value: string) {
   return Number.isFinite(timestamp) ? new Intl.DateTimeFormat('pt-BR', {dateStyle: 'short', timeStyle: 'medium'}).format(timestamp) : value;
 }
 
-function moveMeta(move: MoveEntry) {
-  return (
-    <>
-      <span>PP {move.pp ?? '?'}</span>
-      <span className={styles.ppUps} role="img" aria-label={move.ppUps === null ? 'PP Ups não capturado' : `PP Ups ${move.ppUps}`}>
-        {[0, 1, 2].map((dot) => (
-          <span key={dot} className={styles.ppDot} data-filled={move.ppUps !== null && dot < move.ppUps ? 'true' : undefined} />
-        ))}
-      </span>
-    </>
-  );
-}
-
 function MoveTile({move}: {move: MoveEntry}) {
   const display = moveDisplay(move.id);
   return (
     <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
-      {moveMeta(move)}
+      <MovePpMeta pp={move.pp} ppUps={move.ppUps} />
     </MoveChip>
   );
 }
@@ -379,7 +367,7 @@ export function IndividualWorkspace({
             type: display.type,
             category: display.category,
             power: display.power,
-            meta: moveMeta(move),
+            meta: <MovePpMeta pp={move.pp} ppUps={move.ppUps} />,
           };
         })}
         selectedKey={planned && moveSwapPlan.slotIndex !== null ? String(moveSwapPlan.slotIndex) : null}

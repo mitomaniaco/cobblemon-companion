@@ -231,22 +231,6 @@
   text-align: center;
 }
 
-.ppUps {
-  display: inline-flex;
-  gap: 3px;
-}
-
-.ppDot {
-  width: 6px;
-  height: 6px;
-  border-radius: var(--radius-pill);
-  background: var(--color-border);
-}
-
-.ppDot[data-filled="true"] {
-  background: var(--color-highlight);
-}
-
 .statsContent {
   display: grid;
   min-width: 0;

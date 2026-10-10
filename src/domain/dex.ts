@@ -53,7 +53,7 @@ export function dexId(id: string): string {
 const isPokemonType = (value: string): value is PokemonType => TYPE_SET.has(value);
 
 /** Entrada de forma alternativa no dex: o id do calc é o da espécie seguido do `formId` do save (`slowking` + `galar`). */
-function formEntry(speciesId: string, formId: string): {name: string; types: string[]} | undefined {
+function formEntry(speciesId: string, formId: string): (typeof dexData.species)[string] | undefined {
   return dexData.species[`${dexId(speciesId)}${dexId(formId)}`];
 }
 
@@ -75,6 +75,12 @@ export function speciesDisplay(speciesId: string, formId: string): {name: string
     name: baseEntry?.name ?? titleCaseId(speciesId),
     types: entry ? entry.types.filter(isPokemonType) : [],
   };
+}
+
+/** Atributos base do Showdown da espécie (forma incluída); null quando o dex não tem a entrada. */
+export function speciesBaseStats(speciesId: string, formId: string): Record<PlayerStat, number> | null {
+  const entry = formId === 'normal' ? dexData.species[dexId(speciesId)] : formEntry(speciesId, formId);
+  return entry?.baseStats ?? null;
 }
 
 export function moveDisplay(moveId: string): {name: string; type: PokemonType | null; category: MoveCategory | null; power: number | null} {
