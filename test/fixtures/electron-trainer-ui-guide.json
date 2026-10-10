@@ -71,21 +71,24 @@
             "opponentId": "synthetic:trainer#0",
             "outcome": "perde",
             "ourTurns": 3,
-            "theirTurns": 2
+            "theirTurns": 2,
+            "moveId": "cobblemon:psychic"
           },
           {
             "opponentId": "synthetic:trainer#1",
             "outcome": "vence",
             "ourTurns": 1,
-            "theirTurns": 4
+            "theirTurns": 4,
+            "moveId": "cobblemon:psychic"
           }
         ],
         "acquire": [
           {
             "moveId": "cobblemon:moonblast",
             "requirement": "nível 35",
+            "replacesMoveId": "cobblemon:confusion",
             "gainPercent": 12.5,
-            "reason": "Moonblast (nível 35) melhora o time em 12.5%."
+            "reason": "Moonblast (nível 35) no lugar de Confusion melhora o time em 12.5%."
           }
         ]
       }

@@ -1508,36 +1508,25 @@ async function exerciseGuideWorkspace(window) {
   check(defaultCap.placeholder === '21' && !defaultCap.required, 'O cap do progresso não foi aplicado como padrão editável.');
   await waitFor(
     contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 0 && document.querySelector('[aria-label="Excluídos pelo level cap"]')?.innerText.includes('acima do level cap (21)')`,
+    `document.body.innerText.includes('Time de 0 contra') && document.querySelector('[aria-label="Excluídos pelo level cap"]')?.innerText.includes('acima do level cap (21)')`,
     'o cap padrão do progresso exclui o Gardevoir acima do limite',
   );
   await setLevelCapField(contents, 30);
-  await waitFor(
-    contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
-    'time do guia montado com o override manual do cap',
-  );
+  await waitFor(contents, `document.body.innerText.includes('Time de 1 contra')`, 'time do guia montado com o override manual do cap');
   const text = await evaluate(
     contents,
     "document.querySelector('[aria-labelledby]')?.closest('main')?.innerText || document.body.innerText",
   );
-  for (const expected of [
-    'Gardevoir entra porque vence 1 de 2 adversários',
-    'Choice Specs aumenta as vitórias de 1 para 2.',
-    'obter',
-    'Vale adquirir',
-    'Moonblast',
-  ]) {
-    check(text.includes(expected), `A tela Guia não mostrou "${expected}".`);
-  }
   check(
     !text.includes('Próxima etapa') && !text.includes('Comparado à sua party') && !text.includes('Progresso do mundo'),
     'A tela Guia ainda mostra interface substituída pelo Trainer Card.',
   );
-  await waitFor(
-    contents,
-    `Boolean(document.querySelector('ol[aria-label="Time recomendado"] > li[data-change="mantém"][data-slot="1"]'))`,
-    'o primeiro slot da party recomendada mantém o Pokémon do slot atual',
+  check(
+    await evaluate(
+      contents,
+      `Boolean(document.querySelector('[aria-label="Trainer Card"]')) && !document.querySelector('[aria-label="Trainer Card"] [aria-label="Equipe recomendada"]')?.closest('[aria-label="Próximo desafio"]')`,
+    ),
+    'A equipe do objetivo sintético não deveria aparecer no desafio de outra etapa.',
   );
   check(
     await evaluate(
@@ -1678,6 +1667,27 @@ async function exerciseGuideWorkspace(window) {
     `document.querySelector('ol[aria-label="Como arrumar a party"]')?.innerText.includes('Guarde no PC: Bulbasaur.')`,
     'passos de arrumação da party no rodapé do Trainer Card',
   );
+  // Etapa com várias equipes possíveis: linha compacta "RCT sorteia a equipe" com pílulas A, B, C.
+  const ambiguousStage = Object.values(campaignData.radicalred.stages).find(
+    (stage) => stage.ambiguous && stage.variants.filter((variant) => variant.format === 'singles').length > 1,
+  );
+  await evaluate(
+    contents,
+    `(() => {
+      const option = [...document.querySelectorAll('[aria-label="Etapas da campanha"] [role="option"]')].find(node => node.getAttribute('aria-label') === ${JSON.stringify(ambiguousStage.name)});
+      if (!option) throw new Error('Etapa ambígua não está na trilha completa.');
+      option.click();
+    })()`,
+  );
+  await waitFor(
+    contents,
+    `(() => {
+      const group = document.querySelector('[role="radiogroup"][aria-label=${JSON.stringify(`Equipe de ${ambiguousStage.name}`)}]');
+      const hero = document.querySelector('[aria-label="Desafio escolhido"], [aria-label="Próximo desafio"]');
+      return group && group.querySelectorAll('[role="radio"]').length >= 2 && hero.innerText.includes('RCT sorteia a equipe:') && hero.innerText.includes('vencer qualquer uma conta');
+    })()`,
+    'seletor compacto de equipe da etapa ambígua',
+  );
   await clickCardButton('Mostrar menos');
   await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha recolhida de volta');
 
@@ -1752,11 +1762,84 @@ async function exerciseGuideWorkspace(window) {
   await switchGuideView('Campanha');
   await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha da campanha visível após restaurar treinador sintético');
 
+  // Treinador da busca livre: a equipe e os detalhes do membro selecionado vivem dentro do Trainer Card.
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Trainer Card"] ol[aria-label="Equipe recomendada"] > li[data-change="mantém"][data-slot="1"] button[aria-pressed="true"]'))`,
+    'primeiro slot da equipe selecionado por padrão no Trainer Card',
+  );
+  const detailText = await evaluate(
+    contents,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Detalhes de Gardevoir"]')?.textContent || ''`,
+  );
+  for (const expected of [
+    'Gardevoir entra porque vence 1 de 2 adversários',
+    'Choice Specs aumenta as vitórias de 1 para 2.',
+    'obter',
+    'Abre a batalha contra Floatzel',
+    'Responde a',
+    'Estimativa 1 contra 1, HP cheio, sem status nem crítico',
+    'Ninguém do time vence Floatzel',
+    'Vale adquirir',
+    'Moonblast (nível 35) no lugar de Confusion · +12.5%',
+  ]) {
+    check(detailText.includes(expected), `O painel de detalhes do Gardevoir não mostrou "${expected}".`);
+  }
+  const answers = await evaluate(
+    contents,
+    `[...document.querySelectorAll('section[aria-label="Detalhes de Gardevoir"] section[aria-label="Responde a"] > ul:first-of-type > li')].map(item => item.textContent)`,
+  );
+  check(
+    answers.length === 2 &&
+      answers[0].includes('Bulbasaur') &&
+      answers[0].includes('vence') &&
+      answers[0].includes('Psychic') &&
+      answers[1].includes('Floatzel') &&
+      answers[1].includes('perde'),
+    'O painel não listou as vitórias antes das derrotas em "Responde a", com o golpe a usar.',
+  );
+  const slotButtons = await evaluate(
+    contents,
+    `(() => {
+      const tile = document.querySelector('[aria-label="Trainer Card"] button[aria-label="Ver quem responde a Floatzel"]');
+      if (!tile) throw new Error('Tile do adversário não encontrado no Trainer Card.');
+      tile.click();
+      return document.querySelectorAll('ol[aria-label="Equipe recomendada"] > li button').length;
+    })()`,
+  );
+  check(slotButtons === 1, 'Cada slot da equipe recomendada deve ser um botão selecionável.');
+  check(
+    !(await evaluate(contents, `/\\blead\\b|respondedor/i.test(document.querySelector('[aria-label="Trainer Card"]').innerText)`)),
+    'O Trainer Card usou "lead" ou "respondedor" no texto visível.',
+  );
+
+  // PvE geral no mesmo molde: cabeçalho com o nível de referência, sem a linha "Ele", com Você, detalhes e rodapé.
+  await switchGuideView('PvE geral');
+  await waitFor(
+    contents,
+    `(() => {
+      const hero = document.querySelector('[aria-label="Objetivo PvE"]');
+      return Boolean(hero?.querySelector('ol[aria-label="Equipe recomendada"] > li')) && Boolean(hero.querySelector('section[aria-label^="Detalhes de"]'));
+    })()`,
+    'PvE geral com equipe e detalhes dentro do Trainer Card',
+  );
+  const pveText = await evaluate(contents, `document.querySelector('[aria-label="Objetivo PvE"]').innerText`);
+  check(
+    pveText.includes('PvE geral') &&
+      pveText.includes('nível 30') &&
+      pveText.includes('2 adversários de referência') &&
+      !pveText.includes('ELE'),
+    'O PvE geral não mostrou o nível de referência e os adversários, ou ainda tem a linha "Ele".',
+  );
+  check(pveText.includes('MONTAR DE NOVO') || pveText.includes('Montar de novo'), 'O PvE geral não mostrou o rodapé com "Montar de novo".');
+  await switchGuideView('Campanha');
+  await waitFor(contents, `${optionCount} === ${stagesCount}`, 'campanha visível depois do PvE geral');
+
   // Cap abaixo do nível do membro (Gardevoir Nv. 30): ele sai do time e aparece como excluído pelo level cap.
   await setLevelCapField(contents, 20);
   await waitFor(
     contents,
-    `document.body.innerText.includes('Fora do time pelo level cap') && document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 0`,
+    `document.body.innerText.includes('Fora do time pelo level cap') && document.body.innerText.includes('Time de 0 contra')`,
     'time remontado sem o membro acima do level cap',
   );
   const capText = await evaluate(contents, `document.querySelector('section[aria-label="Excluídos pelo level cap"]')?.innerText || ''`);
@@ -1781,7 +1864,7 @@ async function exerciseGuideWorkspace(window) {
   );
   await waitFor(
     contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1 && !document.body.innerText.includes('Fora do time pelo level cap')`,
+    `document.body.innerText.includes('Time de 1 contra') && !document.body.innerText.includes('Fora do time pelo level cap')`,
     'time ideal sem exclusão com o toggle desligado',
   );
   const ignoredWarning = await evaluate(contents, `document.querySelector('section[aria-label="Acima do level cap"]')?.innerText || ''`);
@@ -1798,7 +1881,7 @@ async function exerciseGuideWorkspace(window) {
   await setLevelCapField(contents, '');
   await waitFor(
     contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 0 && document.body.innerText.includes('acima do level cap (21)')`,
+    `document.body.innerText.includes('Time de 0 contra') && document.body.innerText.includes('acima do level cap (21)')`,
     'limpar o cap manual restaura o cap padrão do progresso',
   );
   await evaluate(
@@ -1807,13 +1890,13 @@ async function exerciseGuideWorkspace(window) {
   );
   await waitFor(
     contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
+    `document.querySelectorAll('[aria-label="Trainer Card"] ol[aria-label="Equipe recomendada"] > li').length === 1`,
     'time mantido com cap do progresso e respeito desligado',
   );
-  await capture(window, screenshotPaths.guide1440, '[aria-label="Time recomendado"]');
+  await capture(window, screenshotPaths.guide1440, '[aria-label="Trainer Card"]');
   const guideArtwork = await evaluate(
     contents,
-    `[...document.querySelectorAll('ol[aria-label="Time recomendado"] figure[data-artwork]')].map(node => node.dataset.artwork)`,
+    `[...document.querySelectorAll('ol[aria-label="Equipe recomendada"] figure[data-artwork]')].map(node => node.dataset.artwork)`,
   );
   check(
     guideArtwork.length > 0 && guideArtwork.every((source) => source !== 'none'),
@@ -1959,15 +2042,15 @@ async function exerciseGuideWorkspace(window) {
   // Informar o cap remonta o time de líder (cap 30 não exclui a Gardevoir Nv. 30); os planos derivados do time antigo são descartados.
   await setLevelCapField(contents, 30);
   // Confirme o resultado atualizado com o cap efetivo 30, não só o valor recém-digitado.
-  await selectGuideTab(contents, 'Detalhes do time');
+  // O time vive no Trainer Card; as exclusões e hipóteses ficam logo abaixo dele.
   await clickButton(contents, 'Exclusões, hipóteses e limites');
   await waitFor(
     contents,
     `(() => {
       const label = [...document.querySelectorAll('label')].find(node => node.textContent.trim().startsWith('Level cap atual'));
       const input = label?.htmlFor ? document.getElementById(label.htmlFor) : null;
-      const team = document.querySelector('ol[aria-label="Time recomendado"]');
-      const result = team?.closest('[data-stale]');
+      const team = document.querySelector('[aria-label="Trainer Card"] ol[aria-label="Equipe recomendada"]');
+      const result = document.querySelector('[data-stale]');
       const assumptions = document.querySelector('section[aria-label="Hipóteses"]');
       return input?.value === '30' &&
         team?.children.length === 1 &&
@@ -2005,7 +2088,7 @@ async function exerciseGuideWorkspace(window) {
   );
   await capture(window, screenshotPaths.training, 'ol[aria-label="Treino por membro"]');
 
-  await selectGuideTab(contents, 'Detalhes do time');
+  await selectGuideTab(contents, 'Plano de batalha');
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
   await evaluate(
@@ -2033,13 +2116,13 @@ async function exerciseGuideWorkspace(window) {
   await clickButton(contents, 'Voltar ao guia');
   await waitFor(
     contents,
-    `document.querySelectorAll('ol[aria-label="Time recomendado"] > li').length === 1`,
+    `document.querySelectorAll('[aria-label="Trainer Card"] ol[aria-label="Equipe recomendada"] > li').length === 1`,
     'retorno ao guia sem perder o time',
   );
   check(
     await evaluate(
       contents,
-      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.textContent.trim() === 'Detalhes do time'`,
+      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.textContent.trim() === 'Plano de batalha'`,
     ),
     'A aba ativa do guia não sobreviveu à ida ao Dano e à volta.',
   );
@@ -2052,7 +2135,7 @@ async function exerciseGuideWorkspace(window) {
     await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport do guia em ${layout.width}px`);
     const overflow = await evaluate(contents, '(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)()');
     check(!overflow, `A tela Guia em ${layout.width}px gerou rolagem horizontal.`);
-    await capture(window, layout.shot, '[aria-label="Time recomendado"]');
+    await capture(window, layout.shot, '[aria-label="Trainer Card"]');
   }
   window.setContentSize(1440, 1000);
   await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após o guia');

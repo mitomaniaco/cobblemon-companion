@@ -46,7 +46,7 @@ describe('ordem pelo confronto quando a simulação não roda', () => {
     ...member(uuid),
     moves: [],
     item: {status: 'nenhum'},
-    matchups: [{opponentId: 'o0', outcome, ourTurns, theirTurns}],
+    matchups: [{opponentId: 'o0', outcome, ourTurns, theirTurns, moveId: null}],
   });
 
   it('abre quem derruba o primeiro adversário em menos turnos', async () => {

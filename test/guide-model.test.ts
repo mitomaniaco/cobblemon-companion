@@ -3,6 +3,9 @@ import {
   createGuideState,
   currentGuideGoal,
   GUIDE_SNAPSHOT_NOTICE,
+  guideAnswers,
+  guideBestAnswerUuid,
+  guideUnansweredOpponents,
   guideBuildCause,
   guideBuildKey,
   guideCalculationTarget,
@@ -59,7 +62,7 @@ describe('objetivo do guia', () => {
     expect(chosen.nextGoal?.status).toBe('ready');
   });
 
-  it('não escolhe automaticamente uma variante de campanha ambígua', () => {
+  it('etapa ambígua abre na campanha, na primeira equipe individual', () => {
     const state = apply(createGuideState(), {
       type: 'next-goal-loaded',
       key: 'snapshot',
@@ -86,7 +89,31 @@ describe('objetivo do guia', () => {
       },
     });
     expect(state.nextGoal?.status).toBe('ready');
-    expect(currentGuideGoal(state)).toEqual({kind: 'pve'});
+    expect(currentGuideGoal(state)).toEqual({kind: 'trainer', trainerId: 'rctmod:rival_a'});
+
+    const doublesOnly = apply(createGuideState(), {
+      type: 'next-goal-loaded',
+      key: 'snapshot',
+      next: {
+        trainerId: null,
+        basis: 'progresso',
+        reason: 'x',
+        stage: {
+          stageId: 'd',
+          name: 'Duplas',
+          type: 'team',
+          order: 1,
+          requires: [],
+          capBefore: 15,
+          capAfter: 20,
+          capUnknownReason: null,
+          ambiguous: true,
+          ambiguousReason: 'x',
+          variants: [{trainerId: 'rctmod:d', format: 'doubles', maxLevel: 20, teamSize: 3, optional: false, ambiguous: true, rule: null}],
+        },
+      },
+    });
+    expect(currentGuideGoal(doublesOnly)).toEqual({kind: 'pve'});
   });
 
   it('remove a sugestão anterior enquanto lê novamente o progresso', () => {
@@ -311,6 +338,48 @@ describe('textos do resultado', () => {
     expect(guideOpponentTurnsLabel({outcome: 'perde', ourTurns: 2, theirTurns: 1})).toBe(
       'perde: o adversário vence em 1 turno (você precisaria de 2 turnos)',
     );
+  });
+});
+
+describe('respostas do time aos adversários', () => {
+  type Matchup = GuideResult['team'][number]['matchups'][number];
+  const m = (opponentId: string, outcome: 'vence' | 'perde', ourTurns: number, theirTurns: number): Matchup => ({
+    opponentId,
+    outcome,
+    ourTurns,
+    theirTurns,
+    moveId: outcome === 'vence' ? 'cobblemon:surf' : null,
+  });
+  const teamMember = (uuid: string, matchups: Matchup[]) => ({uuid, matchups}) as GuideResult['team'][number];
+  const opponents = [{id: 'o#0'}, {id: 'o#1'}, {id: 'o#2'}, {id: 'o#3'}];
+
+  it('guideAnswers põe vitórias primeiro (menos turnos, depois ordem) e derrotas por último', () => {
+    const member = teamMember('a', [m('o#0', 'perde', 3, 1), m('o#1', 'vence', 2, 3), m('o#2', 'vence', 1, 3), m('o#3', 'vence', 2, 4)]);
+    expect(guideAnswers(member, opponents).map((matchup) => matchup.opponentId)).toEqual(['o#2', 'o#1', 'o#3', 'o#0']);
+  });
+
+  it('guideBestAnswerUuid escolhe quem vence em menos turnos, com empate no menor slot', () => {
+    const team = [
+      teamMember('a', [m('o#0', 'vence', 2, 3)]),
+      teamMember('b', [m('o#0', 'vence', 1, 3)]),
+      teamMember('c', [m('o#0', 'vence', 1, 2)]),
+    ];
+    expect(guideBestAnswerUuid(team, 'o#0')).toBe('b');
+    expect(guideBestAnswerUuid(team, 'ausente')).toBeNull();
+  });
+
+  it('guideBestAnswerUuid sem vitória usa a maior folga, tratando Infinity como 1e9', () => {
+    const team = [
+      teamMember('a', [m('o#0', 'perde', 3, 2)]),
+      teamMember('b', [m('o#0', 'perde', 4, Number.POSITIVE_INFINITY)]),
+      teamMember('c', [m('o#0', 'perde', 2, 3)]),
+    ];
+    expect(guideBestAnswerUuid(team, 'o#0')).toBe('b');
+  });
+
+  it('guideUnansweredOpponents lista quem ninguém do time vence, na ordem dos adversários', () => {
+    const team = [teamMember('a', [m('o#0', 'vence', 1, 2), m('o#1', 'perde', 3, 1)]), teamMember('b', [m('o#2', 'vence', 1, 2)])];
+    expect(guideUnansweredOpponents(team, opponents).map((opponent) => opponent.id)).toEqual(['o#1', 'o#3']);
   });
 });
 

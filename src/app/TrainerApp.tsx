@@ -389,7 +389,7 @@ export function TrainerApp() {
   const [workspace, setWorkspace] = useState<Workspace>('guide');
   const [damageReturnWorkspace, setDamageReturnWorkspace] = useState<Exclude<Workspace, 'damage'>>('team');
   const [detailTab, setDetailTab] = useState<IndividualWorkspaceTab>('summary');
-  const [guideTab, setGuideTab] = useState<GuideTab>('team');
+  const [guideTab, setGuideTab] = useState<GuideTab>('battle');
   const [compactPanel, setCompactPanel] = useState<CompactPanel>('collection');
   const [collectionStates, setCollectionStates] = useState(INITIAL_COLLECTION_STATE);
   const [snapshotRevision, setSnapshotRevision] = useState(0);

@@ -92,11 +92,22 @@ describe('motor do guia', () => {
     expect(byMove['cobblemon:scald']).toMatchObject({requirement: 'tutor'});
     expect(byMove['cobblemon:surf'].gainPercent).toBeGreaterThanOrEqual(5);
     expect(byMove['cobblemon:surf'].reason).toBe(`Surf (nível 45) melhora o time em ${byMove['cobblemon:surf'].gainPercent}%.`);
+    expect(byMove['cobblemon:surf'].replacesMoveId).toBeNull();
     expect(byMove['cobblemon:tackle']).toBeUndefined();
 
     const knows = individual({species: 'blastoise', level: 40, moves: ['tackle'], benched: ['surf']});
     const withSurf = await run([knows], trainerGoal('synthetic:fire'));
     expect(withSurf.team[0].acquire.some((entry) => entry.moveId === 'cobblemon:surf')).toBe(false);
+  });
+
+  it('com 4 golpes, a sugestão informa o golpe que sai do conjunto', async () => {
+    const blastoise = individual({species: 'blastoise', level: 40, moves: ['tackle', 'bite', 'watergun', 'headbutt']});
+    const result = await run([blastoise], trainerGoal('synthetic:fire'));
+    const surf = result.team[0].acquire.find((entry) => entry.moveId === 'cobblemon:surf');
+    expect(surf).toBeDefined();
+    expect(['cobblemon:tackle', 'cobblemon:bite', 'cobblemon:watergun', 'cobblemon:headbutt']).toContain(surf.replacesMoveId);
+    expect(surf.reason).toMatch(/^Surf \(nível 45\) no lugar de .+ melhora o time em [\d.]+%\.$/);
+    for (const matchup of result.team[0].matchups) expect(matchup.moveId).toMatch(/^cobblemon:/);
   });
 
   it('cláusula de espécie: múltiplos indivíduos da mesma espécie nunca entram juntos no time', async () => {

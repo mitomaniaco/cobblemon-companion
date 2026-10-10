@@ -10,6 +10,7 @@ import type {
   GuideProgressRegion,
   GuideResult,
   GuideTrainerDetail,
+  GuideTeamMember,
   PlayerIndividual,
 } from '../../platform/api';
 import {
@@ -25,6 +26,7 @@ import {
   typeColorVar,
   typeIconPath,
   typeInkVar,
+  typeLabel,
 } from '../../ui';
 import {
   buildCampaignView,
@@ -41,7 +43,8 @@ import {
   type Campaign,
   type StageEntry,
 } from './campaign-model';
-import {guidePartySteps} from './guide-model';
+import {guideBestAnswerUuid, guidePartySteps} from './guide-model';
+import {TeamDetail} from './TeamDetail';
 import {LevelCapField} from './LevelCapField';
 import {pikaStarDisplayStatus} from './progress-display-model';
 import {spawnLines} from './spawn-model';
@@ -115,33 +118,7 @@ export interface TrainerCardProps {
   onRespectLevelCapChange(value: boolean): void;
   levelCap: number | null;
   progressLevelCap: number | null;
-}
-
-function VariantTeam({detail}: {detail: DetailEntry | undefined}) {
-  if (detail === undefined || detail === 'loading') {
-    return (
-      <div className={styles.teamRow} aria-busy="true">
-        {SKELETON_TEAM.map((key) => (
-          <span key={key} className={styles.skeletonCircle} />
-        ))}
-      </div>
-    );
-  }
-  if (detail === 'error') return null;
-  return (
-    <div className={styles.teamRow}>
-      {detail.team.map((member, index) => (
-        <span
-          // biome-ignore lint/suspicious/noArrayIndexKey: a mesma espécie pode repetir na equipe
-          key={`${member.speciesId}-${index}`}
-          className={styles.smallArt}
-          title={speciesDisplay(member.speciesId, 'normal').name}
-        >
-          <PokemonArtwork speciesId={member.speciesId} formId={member.formId} variant="slot" />
-        </span>
-      ))}
-    </div>
-  );
+  onOpenCalculation(uuid: string, move: GuideTeamMember['moves'][number]): void;
 }
 
 function FindHow({detail}: {detail: DetailEntry | undefined}) {
@@ -323,7 +300,7 @@ function PlayerPanel({
   );
 }
 
-function OpponentRow({detail}: {detail: DetailEntry | undefined}) {
+function OpponentRow({detail, onPick}: {detail: DetailEntry | undefined; onPick: ((index: number) => void) | null}) {
   if (detail === 'error') return <p className={styles.muted}>Não foi possível carregar o time do treinador.</p>;
   const loading = detail === undefined || detail === 'loading';
   return (
@@ -332,9 +309,22 @@ function OpponentRow({detail}: {detail: DetailEntry | undefined}) {
         const member = loading ? undefined : detail.team[index];
         if (loading) return <span key={key} className={`${styles.oppTile} ${styles.skeletonLine}`} />;
         if (!member) return <span key={key} className={styles.oppTile} data-empty="true" />;
-        return (
-          <span key={key} className={styles.oppTile} title={speciesDisplay(member.speciesId, 'normal').name}>
-            <PokemonArtwork speciesId={member.speciesId} formId={member.formId} variant="slot" />
+        const name = speciesDisplay(member.speciesId, 'normal').name;
+        const art = <PokemonArtwork key={key} speciesId={member.speciesId} formId={member.formId} variant="slot" />;
+        return onPick ? (
+          <button
+            key={key}
+            type="button"
+            className={`${styles.oppTile} ${styles.oppButton}`}
+            title={name}
+            aria-label={`Ver quem responde a ${name}`}
+            onClick={() => onPick(index)}
+          >
+            {art}
+          </button>
+        ) : (
+          <span key={key} className={styles.oppTile} title={name}>
+            {art}
           </span>
         );
       })}
@@ -342,7 +332,17 @@ function OpponentRow({detail}: {detail: DetailEntry | undefined}) {
   );
 }
 
-function YourRow({result, individuals}: {result: GuideResult; individuals: ReadonlyMap<string, PlayerIndividual>}) {
+function YourRow({
+  result,
+  individuals,
+  selectedUuid,
+  onSelect,
+}: {
+  result: GuideResult;
+  individuals: ReadonlyMap<string, PlayerIndividual>;
+  selectedUuid: string | null;
+  onSelect(uuid: string): void;
+}) {
   const levelOf = new Map(result.team.map((member) => [member.uuid, member.level]));
   const slots = result.partyPlan.slots.slice(0, PARTY_SIZE);
   const nameOf = (uuid: string, speciesId: string) => speciesDisplay(speciesId, individuals.get(uuid)?.formId ?? 'normal').name;
@@ -361,8 +361,26 @@ function YourRow({result, individuals}: {result: GuideResult; individuals: Reado
             data-change={slot.change}
             data-slot={index + 1}
             data-first={index === 0 ? 'true' : undefined}
+            data-selected={slot.uuid === selectedUuid ? 'true' : undefined}
             title={index === 0 ? 'Abre a batalha' : undefined}
           >
+            <button type="button" className={styles.mineCard} aria-pressed={slot.uuid === selectedUuid} onClick={() => onSelect(slot.uuid)}>
+              <span className={styles.mineArt}>
+                <PokemonArtwork speciesId={slot.speciesId} formId={formId} shiny={individual?.shiny === true} variant="collection" />
+              </span>
+              <strong className={styles.mineName}>{display.name}</strong>
+              <small className={styles.mineLevel}>Nv. {levelOf.get(slot.uuid) ?? individual?.level ?? '—'}</small>
+              <span className={styles.mineTypes}>
+                {display.types.map((type) => {
+                  const icon = typeIconPath(type);
+                  return (
+                    <i key={type} style={{'--c': typeColorVar(type)} as CSSProperties} title={typeLabel(type)}>
+                      {icon && <img src={icon} alt="" width={10} height={10} decoding="async" />}
+                    </i>
+                  );
+                })}
+              </span>
+            </button>
             <span className={styles.slotNo}>{index + 1}</span>
             {slot.change === 'entra' && slot.replaces && (
               <span
@@ -386,11 +404,6 @@ function YourRow({result, individuals}: {result: GuideResult; individuals: Reado
                 slot {slot.fromSlot + 1}→{index + 1}
               </span>
             )}
-            <span className={styles.mineArt}>
-              <PokemonArtwork speciesId={slot.speciesId} formId={formId} shiny={individual?.shiny === true} variant="collection" />
-            </span>
-            <strong className={styles.mineName}>{display.name}</strong>
-            <small className={styles.mineLevel}>Nv. {levelOf.get(slot.uuid) ?? individual?.level ?? '—'}</small>
           </li>
         );
       })}
@@ -477,6 +490,7 @@ export function TrainerCard({
   onRespectLevelCapChange,
   levelCap,
   progressLevelCap,
+  onOpenCalculation,
 }: TrainerCardProps) {
   const [view, setView] = useState<CardView>('campaign');
   const [query, setQuery] = useState('');
@@ -484,6 +498,7 @@ export function TrainerCard({
   const [seriesChoice, setSeriesChoice] = useState<string | null>(null);
   const [expandedStageId, setExpandedStageId] = useState<string | null>(null);
   const [stepsOpen, setStepsOpen] = useState(false);
+  const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
   const stepsId = useId();
 
   const progressValue = progress.status === 'ready' ? progress.value : null;
@@ -541,24 +556,42 @@ export function TrainerCard({
     ? (heroStage.variants.find((variant) => variant.id === trainerId) ?? singles[0] ?? heroStage.variants[0] ?? null)
     : null;
   const choosingVariant = Boolean(heroEntry?.needsVariantChoice) && singles.length > 1;
-  const detailIds = [
-    ...new Set([...(heroVariant ? [heroVariant.id] : []), ...(choosingVariant ? singles.map((variant) => variant.id) : [])]),
-  ];
-  const details = useTrainerDetails(api, pveMode ? [] : detailIds);
+  // Treinador escolhido na busca livre (fora da campanha): o cartão mostra o time dele no lugar de uma etapa.
+  const freeTrainer =
+    !pveMode && guide.goalChosen && expandedStageId === null && trainerId !== null && selectedStage === null
+      ? (guide.trainers.items.find((trainer) => trainer.id === trainerId) ?? null)
+      : null;
+  const heroId = freeTrainer?.id ?? heroVariant?.id ?? null;
+  const details = useTrainerDetails(api, pveMode || heroId === null ? [] : [heroId]);
 
-  const isNextHero = heroStage !== null && heroStage.stageId === nextStageId;
+  const isNextHero = freeTrainer === null && heroStage !== null && heroStage.stageId === nextStageId;
   const heroLabel = isNextHero ? 'Próximo desafio' : 'Desafio escolhido';
-  const isCurrentGoal = heroEntry !== null && trainerId !== null && trainerId === goalTrainerId(heroEntry, trainerId);
+  const isCurrentGoal =
+    freeTrainer !== null || (heroEntry !== null && trainerId !== null && trainerId === goalTrainerId(heroEntry, trainerId));
 
   const result = guide.result;
   const heroResult =
-    result !== null && heroVariant !== null && result.goal.kind === 'trainer' && result.goal.trainerId === heroVariant.id ? result : null;
-  const plan = heroResult?.partyPlan ?? null;
+    result !== null && heroId !== null && result.goal.kind === 'trainer' && result.goal.trainerId === heroId ? result : null;
+  const pveResult = pveMode && result !== null && result.goal.kind === 'pve' ? result : null;
+  const activeResult = pveMode ? pveResult : heroResult;
+  const plan = activeResult?.partyPlan ?? null;
   const steps = plan
     ? guidePartySteps(plan, (uuid, speciesId) => speciesDisplay(speciesId, individuals.get(uuid)?.formId ?? 'normal').name)
     : [];
   const entering = plan ? plan.slots.filter((slot) => slot.change === 'entra').length : 0;
   const note = plan ? basisNote(plan) : null;
+  const activeUuid = plan
+    ? plan.slots.slice(0, PARTY_SIZE).some((slot) => slot.uuid === selectedUuid)
+      ? selectedUuid
+      : (plan.slots[0]?.uuid ?? null)
+    : null;
+  const selectedMember = activeResult?.team.find((member) => member.uuid === activeUuid) ?? null;
+
+  function pickOpponent(index: number) {
+    const opponent = heroResult?.opponents.find((entry) => entry.id.endsWith(`#${index}`));
+    const uuid = heroResult && opponent ? guideBestAnswerUuid(heroResult.team, opponent.id) : null;
+    if (uuid !== null) setSelectedUuid(uuid);
+  }
 
   const trailEntries = showAll ? allEntries : allEntries.filter((entry) => entry.state !== 'vencido');
   const heroIndex = heroStage ? trailEntries.findIndex((entry) => entry.stage.stageId === heroStage.stageId) : -1;
@@ -597,8 +630,8 @@ export function TrainerCard({
 
   const badgeEntries = allEntries.filter((entry) => stageGroupKey(entry.stage.type) === 'leader');
   const totalVictories = series.stages.reduce((sum, stage) => sum + stageVictoryCount(stage, victoryCounts), 0);
-  const heroDetail = heroVariant ? details.get(heroVariant.id) : undefined;
-  const selectedKey = heroStage?.stageId ?? null;
+  const heroDetail = heroId ? details.get(heroId) : undefined;
+  const selectedKey = freeTrainer ? null : (heroStage?.stageId ?? null);
 
   function handleSelection(keys: Selection) {
     const [key] = keys === 'all' ? [] : [...keys];
@@ -627,6 +660,120 @@ export function TrainerCard({
   const palette = heroStage ? heroPalette(heroStage.name, heroStage.type) : null;
   const heroType = heroStage ? LEADER_TYPES[heroStage.name] : undefined;
   const heroIcon = heroType ? typeIconPath(heroType) : null;
+
+  const lineup = (
+    <div className={styles.vs}>
+      {!pveMode && (
+        <>
+          <div className={styles.line}>
+            <span className={styles.label}>Ele</span>
+            <OpponentRow detail={heroDetail} onPick={heroResult ? pickOpponent : null} />
+          </div>
+          <div className={styles.divider} aria-hidden="true">
+            VS
+          </div>
+        </>
+      )}
+      <div className={styles.line}>
+        <span className={styles.label}>Você</span>
+        {activeResult ? (
+          <YourRow result={activeResult} individuals={individuals} selectedUuid={activeUuid} onSelect={setSelectedUuid} />
+        ) : guide.phase === 'building' ? (
+          <div className={styles.tiles} aria-busy="true">
+            {SKELETON_TEAM.map((key) => (
+              <span key={key} className={`${styles.mineSkeleton} ${styles.skeletonLine}`} />
+            ))}
+          </div>
+        ) : (
+          <p className={styles.muted}>
+            {pveMode ? 'Monte o time para ver a sua equipe aqui.' : 'Monte o time para este desafio para ver a sua equipe aqui.'}
+          </p>
+        )}
+      </div>
+      {activeResult && (
+        <div className={styles.key}>
+          <span>
+            <i className={styles.keyFirst}>1</i> abre a batalha
+          </span>
+          {entering > 0 && (
+            <span>
+              <i className={styles.keySwap}>⇄</i> no lugar de quem sai da party
+            </span>
+          )}
+        </div>
+      )}
+      {note && <p className={styles.muted}>{note}</p>}
+    </div>
+  );
+
+  const panel =
+    activeResult && selectedMember ? (
+      <TeamDetail
+        member={selectedMember}
+        slot={plan?.slots.find((slot) => slot.uuid === selectedMember.uuid)}
+        individual={individuals.get(selectedMember.uuid)}
+        result={activeResult}
+        onOpenCalculation={onOpenCalculation}
+      />
+    ) : null;
+
+  const isCurrent = pveMode || isCurrentGoal;
+  const footer = (
+    <div className={styles.footer}>
+      <div className={styles.footerInfo}>
+        {isCurrent && <span className={styles.goalChip}>Objetivo atual</span>}
+        {plan && (
+          <div className={styles.summary}>
+            <strong>
+              {steps.length === 0 ? 'Sua party já está como o guia recomenda' : `${entering} entram · ${plan.toPc.length} saem da party`}
+            </strong>
+            {steps.length > 0 && (
+              <button
+                type="button"
+                className={styles.stepsToggle}
+                aria-expanded={stepsOpen}
+                aria-controls={stepsId}
+                onClick={() => setStepsOpen((value) => !value)}
+              >
+                Como arrumar a party ▾
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+      <div className={styles.footerAction}>
+        {!pveMode && heroEntry?.disabledReason != null ? (
+          <p className={styles.muted}>{heroEntry.disabledReason}</p>
+        ) : isCurrent ? (
+          guide.phase === 'building' ? (
+            <Button variant="secondary" onPress={guide.cancel}>
+              Cancelar
+            </Button>
+          ) : (
+            <Button variant="secondary" onPress={guide.rebuild}>
+              Montar de novo
+            </Button>
+          )
+        ) : (
+          <>
+            {buildId === null && <span className={styles.muted}>Escolha a equipe acima.</span>}
+            <Button variant="primary" isDisabled={buildId === null} onPress={() => buildId !== null && guide.selectTrainer(buildId)}>
+              Montar time para este desafio
+            </Button>
+          </>
+        )}
+      </div>
+      <div id={stepsId} className={styles.stepsRegion} hidden={!(stepsOpen && steps.length > 0)}>
+        {stepsOpen && steps.length > 0 && (
+          <ol aria-label="Como arrumar a party" className={styles.steps}>
+            {steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <section className={styles.card} aria-label="Trainer Card">
@@ -676,178 +823,129 @@ export function TrainerCard({
           onRespectLevelCapChange={onRespectLevelCapChange}
         />
 
-        {pveMode ? (
-          <section className={styles.hero} aria-label="Objetivo PvE" style={{'--hero': typeColorVar('Normal')} as CSSProperties}>
-            <h3 className={styles.heroName}>PvE geral</h3>
-            <p>O time é montado contra os treinadores da sua faixa de nível; não há um desafio específico.</p>
-          </section>
-        ) : (
-          <section
-            className={styles.hero}
-            aria-label={heroLabel}
-            style={palette ? ({'--hero': palette.color} as CSSProperties) : undefined}
-          >
-            {heroStage && heroEntry && heroVariant ? (
-              <>
-                <div className={styles.heroHeader}>
-                  <span className={styles.heroFace}>
-                    <TrainerFace src={trainerPortraitPath(heroVariant.id)} label={heroStage.name} size={72} />
+        <section
+          className={styles.hero}
+          aria-label={pveMode ? 'Objetivo PvE' : heroLabel}
+          style={{'--hero': pveMode || freeTrainer ? typeColorVar('Normal') : palette?.color} as CSSProperties}
+        >
+          {pveMode ? (
+            <>
+              <div className={styles.heroHeader}>
+                <span className={styles.heroFace}>
+                  <TrainerFace src={null} label="PvE geral" size={72} />
+                </span>
+                <div className={styles.heroTitle}>
+                  <h3 className={styles.heroName}>PvE geral</h3>
+                  {pveResult && <span className={styles.caption}>{pveResult.opponents.length} adversários de referência</span>}
+                </div>
+                <dl className={styles.facts}>
+                  <div>
+                    <dt>Referência</dt>
+                    <dd>{pveResult ? `nível ${pveResult.referenceLevel}` : '—'}</dd>
+                  </div>
+                </dl>
+              </div>
+              {lineup}
+              {panel}
+              {footer}
+            </>
+          ) : freeTrainer ? (
+            <>
+              <div className={styles.heroHeader}>
+                <span className={styles.heroFace}>
+                  <TrainerFace src={trainerPortraitPath(freeTrainer.id)} label={freeTrainer.name} size={72} />
+                </span>
+                <div className={styles.heroTitle}>
+                  <h3 className={styles.heroName}>{freeTrainer.name}</h3>
+                  <span className={styles.caption}>Fora da campanha</span>
+                </div>
+                <dl className={styles.facts}>
+                  <div>
+                    <dt>Nível máx.</dt>
+                    <dd>{freeTrainer.maxLevel}</dd>
+                  </div>
+                  <div>
+                    <dt>Pokémon</dt>
+                    <dd>{freeTrainer.teamSize}</dd>
+                  </div>
+                </dl>
+              </div>
+              <FindHow detail={heroDetail} />
+              {lineup}
+              {panel}
+              {footer}
+            </>
+          ) : heroStage && heroEntry && heroVariant ? (
+            <>
+              <div className={styles.heroHeader}>
+                <span className={styles.heroFace}>
+                  <TrainerFace src={trainerPortraitPath(heroVariant.id)} label={heroStage.name} size={72} />
+                </span>
+                <div className={styles.heroTitle}>
+                  <span className={styles.typeChip} style={{color: palette?.ink}}>
+                    {heroIcon && <img className={styles.typeIcon} src={heroIcon} alt="" width={18} height={18} />}
+                    {stageTypeLabel(heroStage.type)}
                   </span>
-                  <div className={styles.heroTitle}>
-                    <span className={styles.typeChip} style={{color: palette?.ink}}>
-                      {heroIcon && <img className={styles.typeIcon} src={heroIcon} alt="" width={18} height={18} />}
-                      {stageTypeLabel(heroStage.type)}
-                    </span>
-                    <h3 className={styles.heroName}>{heroStage.name}</h3>
-                  </div>
-                  <dl className={styles.facts}>
-                    <div>
-                      <dt>Level cap</dt>
-                      <dd>
-                        {heroStage.capBefore != null && heroStage.capAfter != null
-                          ? `${heroStage.capBefore} → ${heroStage.capAfter}`
-                          : (heroStage.capUnknownReason ?? 'desconhecido')}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>Pokémon</dt>
-                      <dd>{heroVariant.teamSize}</dd>
-                    </div>
-                    <div>
-                      <dt>Requisitos</dt>
-                      <dd>
-                        {heroStage.requires.length > 0 ? heroStage.requires.map((id) => stageNames.get(id) ?? id).join(', ') : 'nenhum'}
-                      </dd>
-                    </div>
-                  </dl>
+                  <h3 className={styles.heroName}>{heroStage.name}</h3>
                 </div>
+                <dl className={styles.facts}>
+                  <div>
+                    <dt>Level cap</dt>
+                    <dd>
+                      {heroStage.capBefore != null && heroStage.capAfter != null
+                        ? `${heroStage.capBefore} → ${heroStage.capAfter}`
+                        : (heroStage.capUnknownReason ?? 'desconhecido')}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Pokémon</dt>
+                    <dd>{heroVariant.teamSize}</dd>
+                  </div>
+                  <div>
+                    <dt>Requisitos</dt>
+                    <dd>
+                      {heroStage.requires.length > 0 ? heroStage.requires.map((id) => stageNames.get(id) ?? id).join(', ') : 'nenhum'}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
 
-                <FindHow detail={heroDetail} />
+              <FindHow detail={heroDetail} />
 
-                {choosingVariant && (
-                  <div className={styles.variants}>
-                    {heroStage.ambiguousReason && <p className={styles.muted}>{heroStage.ambiguousReason}</p>}
-                    <div role="radiogroup" aria-label={`Equipe de ${heroStage.name}`} className={styles.variantGrid}>
-                      {singles.map((variant, index) => (
-                        // biome-ignore lint/a11y/useSemanticElements: o cartão inteiro é o rádio (equipe, nível e tamanho dentro)
-                        <button
-                          key={variant.id}
-                          type="button"
-                          role="radio"
-                          aria-checked={trainerId === variant.id}
-                          className={styles.variantCard}
-                          onClick={() => guide.selectTrainer(variant.id)}
-                        >
-                          <strong>Equipe {VARIANT_LETTERS[index]}</strong>
-                          <VariantTeam detail={details.get(variant.id)} />
-                          <span className={styles.caption}>
-                            nível {variant.maxLevel} · {variant.teamSize} Pokémon
-                          </span>
-                        </button>
-                      ))}
-                    </div>
+              {choosingVariant && (
+                <div className={styles.variants} title={heroStage.ambiguousReason ?? undefined}>
+                  <span>RCT sorteia a equipe:</span>
+                  <div role="radiogroup" aria-label={`Equipe de ${heroStage.name}`} className={styles.pills}>
+                    {singles.map((variant, index) => (
+                      // biome-ignore lint/a11y/useSemanticElements: pílula compacta; o botão com role radio mantém o grupo de rádio
+                      <button
+                        key={variant.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={trainerId === variant.id}
+                        aria-label={`Equipe ${VARIANT_LETTERS[index]}`}
+                        className={styles.pill}
+                        onClick={() => guide.selectTrainer(variant.id)}
+                      >
+                        {VARIANT_LETTERS[index]}
+                      </button>
+                    ))}
                   </div>
-                )}
-
-                <div className={styles.vs}>
-                  <div className={styles.line}>
-                    <span className={styles.label}>Ele</span>
-                    <OpponentRow detail={heroDetail} />
-                  </div>
-                  <div className={styles.divider} aria-hidden="true">
-                    VS
-                  </div>
-                  <div className={styles.line}>
-                    <span className={styles.label}>Você</span>
-                    {heroResult ? (
-                      <YourRow result={heroResult} individuals={individuals} />
-                    ) : (
-                      <p className={styles.muted}>Monte o time para este desafio para ver a sua equipe aqui.</p>
-                    )}
-                  </div>
-                  {heroResult && (
-                    <div className={styles.key}>
-                      <span>
-                        <i className={styles.keyFirst}>1</i> abre a batalha
-                      </span>
-                      {entering > 0 && (
-                        <span>
-                          <i className={styles.keySwap}>⇄</i> no lugar de quem sai da party
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  {note && <p className={styles.muted}>{note}</p>}
+                  <span className={styles.muted}>vencer qualquer uma conta</span>
                 </div>
+              )}
 
-                {progressValue === null && nextGoal?.basis === 'nível' && <p className={styles.muted}>{nextGoal.reason}</p>}
+              {lineup}
+              {panel}
 
-                <div className={styles.footer}>
-                  <div className={styles.footerInfo}>
-                    {isCurrentGoal && <span className={styles.goalChip}>Objetivo atual</span>}
-                    {plan && (
-                      <div className={styles.summary}>
-                        <strong>
-                          {steps.length === 0
-                            ? 'Sua party já está como o guia recomenda'
-                            : `${entering} entram · ${plan.toPc.length} saem da party`}
-                        </strong>
-                        {steps.length > 0 && (
-                          <button
-                            type="button"
-                            className={styles.stepsToggle}
-                            aria-expanded={stepsOpen}
-                            aria-controls={stepsId}
-                            onClick={() => setStepsOpen((value) => !value)}
-                          >
-                            Como arrumar a party ▾
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div className={styles.footerAction}>
-                    {heroEntry.disabledReason !== null ? (
-                      <p className={styles.muted}>{heroEntry.disabledReason}</p>
-                    ) : isCurrentGoal ? (
-                      guide.phase === 'building' ? (
-                        <Button variant="secondary" onPress={guide.cancel}>
-                          Cancelar
-                        </Button>
-                      ) : (
-                        <Button variant="secondary" onPress={guide.rebuild}>
-                          Montar de novo
-                        </Button>
-                      )
-                    ) : (
-                      <>
-                        {buildId === null && <span className={styles.muted}>Escolha a equipe acima.</span>}
-                        <Button
-                          variant="primary"
-                          isDisabled={buildId === null}
-                          onPress={() => buildId !== null && guide.selectTrainer(buildId)}
-                        >
-                          Montar time para este desafio
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                  <div id={stepsId} className={styles.stepsRegion} hidden={!(stepsOpen && steps.length > 0)}>
-                    {stepsOpen && steps.length > 0 && (
-                      <ol aria-label="Como arrumar a party" className={styles.steps}>
-                        {steps.map((step) => (
-                          <li key={step}>{step}</li>
-                        ))}
-                      </ol>
-                    )}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <p className={styles.muted}>Nenhuma etapa disponível nesta série.</p>
-            )}
-          </section>
-        )}
+              {progressValue === null && nextGoal?.basis === 'nível' && <p className={styles.muted}>{nextGoal.reason}</p>}
+
+              {footer}
+            </>
+          ) : (
+            <p className={styles.muted}>Nenhuma etapa disponível nesta série.</p>
+          )}
+        </section>
 
         <div className={styles.side}>
           {showTrail ? (
@@ -877,7 +975,10 @@ export function TrainerCard({
                             <button
                               type="button"
                               className={styles.freeButton}
-                              onClick={() => guide.selectTrainer(trainer.id)}
+                              onClick={() => {
+                                setExpandedStageId(null);
+                                guide.selectTrainer(trainer.id);
+                              }}
                               data-selected={trainerId === trainer.id ? 'true' : undefined}
                             >
                               <span className={styles.trailTitle}>{trainer.name}</span>

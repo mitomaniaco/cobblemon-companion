@@ -29,7 +29,7 @@ const team: GuideResult['team'] = [
     ],
     item: {id: null, status: 'nenhum', reason: 'y'},
     matchups: [],
-    acquire: [{moveId: 'cobblemon:psychic', requirement: 'nível 24', gainPercent: 5, reason: 'z'}],
+    acquire: [{moveId: 'cobblemon:psychic', requirement: 'nível 24', gainPercent: 5, replacesMoveId: null, reason: 'z'}],
   },
 ];
 

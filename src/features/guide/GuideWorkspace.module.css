@@ -29,8 +29,7 @@
 }
 
 .lead,
-.muted,
-.moveNote {
+.muted {
   margin: 0;
   color: var(--color-muted);
   font-size: var(--text-caption);
@@ -102,141 +101,12 @@
   min-width: 0;
 }
 
-.acquire {
-  min-width: 0;
-  padding: var(--space-4);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-}
-
-.acquireList,
-.infoBody ul,
-.matchups,
-.calcList {
+.infoBody ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.cards {
-  display: grid;
-  min-width: 0;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
-  gap: var(--space-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.card {
-  display: grid;
-  min-width: 0;
-  align-content: start;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-raised);
-  animation: card-in var(--duration-enter) var(--ease-out) both;
-  animation-delay: calc(var(--card-index, 0) * 40ms);
-}
-
-.cardHeader {
-  position: relative;
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.cardIdentity {
-  display: grid;
-  min-width: 0;
-  gap: var(--space-1);
-}
-
-.cardName {
-  margin: 0;
-  overflow: hidden;
-  font-size: var(--text-title);
-  line-height: var(--line-title);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.cardMeta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-1) var(--space-2);
-  color: var(--color-muted);
-  font-size: var(--text-caption);
-}
-
-.reason {
-  margin: 0;
-  font-size: var(--text-label);
-  line-height: var(--line-body);
-  overflow-wrap: anywhere;
-}
-
-.moves {
-  display: grid;
-  min-width: 0;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.moves li {
-  display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-1) var(--space-2);
-}
-
-.item {
-  display: grid;
-  gap: var(--space-1);
-}
-
-.itemLine {
-  display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.itemName {
-  font-weight: 600;
-}
-
-.itemBadge {
-  padding: 0 var(--space-2);
-  border-radius: var(--radius-pill);
-  color: var(--color-muted);
-  background: var(--color-sunken);
-  font-size: var(--text-caption);
-  font-weight: 600;
-  line-height: 20px;
-}
-
-.itemBadge[data-status="tem"] {
-  color: var(--color-success);
-}
-
-.itemBadge[data-status="obter"] {
-  color: var(--color-warning);
-}
-
-.details {
-  background: var(--color-sunken);
-}
-
-.detailsBody,
 .infoBody {
   display: grid;
   gap: var(--space-3);
@@ -246,58 +116,6 @@
   margin: 0 0 var(--space-1);
   font-size: var(--text-label);
   font-weight: 600;
-}
-
-.matchups {
-  display: grid;
-  gap: var(--space-1);
-  font-size: var(--text-caption);
-  line-height: var(--line-caption);
-}
-
-.matchups li[data-outcome="vence"] {
-  color: var(--color-success);
-}
-
-.matchups li[data-outcome="perde"] {
-  color: var(--color-error);
-}
-
-.calcList {
-  display: grid;
-  gap: var(--space-1);
-}
-
-.calcList li {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.calcButton {
-  min-height: 32px;
-  height: 32px;
-}
-
-.acquireList {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.acquireList li {
-  display: grid;
-  min-width: 0;
-  gap: var(--space-1);
-  font-size: var(--text-label);
-  overflow-wrap: anywhere;
-}
-
-.gain {
-  color: var(--color-success);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
 }
 
 .skeleton {
@@ -329,13 +147,6 @@
   animation:
     toast-in var(--duration-enter) var(--ease-out) both,
     toast-out 300ms var(--ease-out) 3700ms forwards;
-}
-
-@keyframes card-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
 }
 
 @keyframes toast-in {
@@ -373,8 +184,6 @@
 }
 
 @media (forced-colors: active) {
-  .acquire,
-  .card,
   .toast {
     border: 1px solid CanvasText;
     background: Canvas;
@@ -402,65 +211,4 @@
   margin: 0;
   padding: 0;
   list-style: none;
-}
-.slotNumber {
-  display: inline-grid;
-  flex: none;
-  width: 28px;
-  height: 28px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--color-sunken);
-  font-size: var(--text-caption);
-  font-weight: 700;
-}
-
-.slotNumber[data-first="true"] {
-  background: var(--color-highlight);
-  color: #11141c;
-}
-
-.slotRole {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: var(--text-caption);
-}
-
-.slotChange {
-  display: grid;
-  margin-left: auto;
-  justify-items: end;
-  gap: var(--space-1);
-  font-size: var(--text-caption);
-}
-
-.enterTag {
-  color: var(--color-success);
-  letter-spacing: 0.04em;
-}
-
-.slotReplaces {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  color: var(--color-text-muted);
-}
-
-.replacesArt {
-  display: inline-block;
-  zoom: 0.62;
-  opacity: 0.5;
-}
-
-.slotChip {
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-pill);
-  background: var(--color-sunken);
-  color: var(--color-text-muted);
-  font-size: var(--text-caption);
-}
-
-.card[data-change="entra"] {
-  border: 1px solid var(--color-success);
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color-success) 18%, transparent), transparent), var(--color-surface);
 }
