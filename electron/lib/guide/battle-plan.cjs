@@ -629,7 +629,7 @@ async function simulateBattle(team, entries, lead, checkpoint) {
     let freeHit = false;
     if (index === 0) {
       active = lead ? team.find((member) => member.uuid === lead.uuid) : null;
-      if (!active || !contextOf(active)) return finish('interrompida', 'sem lead para abrir contra o primeiro adversário');
+      if (!active || !contextOf(active)) return finish('interrompida', 'ninguém pode abrir a batalha contra o primeiro adversário');
       entryKind = 'lead';
     } else if (beats(active, false)) {
       entryKind = 'mantém';

@@ -81,7 +81,7 @@ function EntryRow({
           {entry.partialReason && <p className={styles.partial}>{entry.partialReason}</p>}
           <dl className={styles.facts}>
             <div>
-              <dt>Respondedor</dt>
+              <dt>Quem enfrenta</dt>
               <dd>
                 {individualName(entry.responder.uuid, entry.responder.speciesId)} com {moveDisplay(entry.responder.moveId).name}
               </dd>
@@ -176,16 +176,16 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
       ) : (
         <>
           {result.lead ? (
-            <section className={styles.lead} aria-label="Sugestão de lead">
-              <strong>Sugestão de lead: {individualName(result.lead.uuid, result.lead.speciesId)}</strong>
+            <section className={styles.lead} aria-label="Quem abre a batalha">
+              <strong>Quem abre a batalha: {individualName(result.lead.uuid, result.lead.speciesId)}</strong>
               <span>{result.lead.reason}</span>
             </section>
           ) : (
             result.entries[0]?.status === 'bloqueado' && (
-              <section className={styles.lead} aria-label="Sugestão de lead">
+              <section className={styles.lead} aria-label="Quem abre a batalha">
                 <span>
-                  Sem sugestão de lead: o primeiro adversário ({speciesDisplay(result.entries[0].speciesId, 'normal').name}) está bloqueado
-                  — {result.entries[0].blockedReason}
+                  Ninguém foi sugerido para abrir a batalha: o primeiro adversário (
+                  {speciesDisplay(result.entries[0].speciesId, 'normal').name}) está bloqueado — {result.entries[0].blockedReason}
                 </span>
               </section>
             )
@@ -246,7 +246,7 @@ export function BattlePlanSection({plan, individualName, hasTeam}: BattlePlanSec
           </Button>
           <p className={styles.muted}>
             {hasTeam
-              ? 'Lead, respondedor por adversário e riscos do líder. As hipóteses aparecem junto do plano.'
+              ? 'Quem abre a batalha, quem enfrenta cada adversário e os riscos do treinador. As hipóteses aparecem junto do plano.'
               : 'O guia não montou nenhum membro: não há plano de batalha para este objetivo.'}
           </p>
         </div>
