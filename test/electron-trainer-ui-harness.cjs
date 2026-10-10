@@ -1752,7 +1752,7 @@ async function exerciseGuideWorkspace(window) {
   const planText = await evaluate(contents, `document.querySelector('[aria-label="Plano de batalha"]')?.innerText || ''`);
   for (const expected of [
     'Plano de batalha contra',
-    'Sugestão de lead',
+    'Quem abre a batalha',
     'Simulação da batalha',
     'Adversários derrotados: 1 de 2',
     'Riscos do treinador',
@@ -1773,7 +1773,7 @@ async function exerciseGuideWorkspace(window) {
   check(entries.length >= 1, 'O plano de batalha não listou adversários.');
   for (const entry of entries) {
     check(
-      entry.blocked || (entry.facts.Respondedor?.includes(' com ') && entry.facts['Ordem de ação']),
+      entry.blocked || (entry.facts['Quem enfrenta']?.includes(' com ') && entry.facts['Ordem de ação']),
       'Um adversário do plano não mostrou o respondedor com o golpe sugerido e a ordem de ação.',
     );
   }

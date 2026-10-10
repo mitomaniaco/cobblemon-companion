@@ -338,7 +338,7 @@ describe('plano de batalha contra o líder', () => {
     });
   });
 
-  it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem lead', async () => {
+  it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem ninguém para abrir a batalha', async () => {
     const result = await plan('synthetic:duo');
     expect(result).toMatchObject({status: 'fora-do-escopo', scopeReason: 'batalha em dupla, fora do escopo', entries: [], lead: null});
   });
