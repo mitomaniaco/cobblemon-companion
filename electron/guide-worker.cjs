@@ -4,6 +4,7 @@ const {buildBattlePlan} = require('./lib/guide/battle-plan.cjs');
 const {buildCapturePlan} = require('./lib/guide/capture-plan.cjs');
 const {buildEvolutionPlan} = require('./lib/guide/evolution-plan.cjs');
 const {buildGuide} = require('./lib/guide/engine.cjs');
+const {withPartyPlan} = require('./lib/guide/party-order.cjs');
 const {buildTrainingPlan} = require('./lib/guide/training-plan.cjs');
 const {loadGuideData, loadSpawnData} = require('./lib/guide/data.cjs');
 
@@ -34,14 +35,23 @@ async function run(message) {
     else if (task === 'evolution-plan') result = await buildEvolutionPlan({...input, request});
     else if (task === 'training-plan') result = await buildTrainingPlan({...input, request});
     else if (task === 'capture-plan') result = await buildCapturePlan({...input, data: {...input.data, spawns: loadSpawnData()}, request});
-    else
-      result = await buildGuide({
+    else {
+      const guide = await buildGuide({
         ...input,
         goal,
         levelCap: levelCap ?? null,
         respectLevelCap: respectLevelCap !== false,
         previousTeamUuids: previousTeamUuids ?? [],
       });
+      result = await withPartyPlan({
+        result: guide,
+        snapshot,
+        data: input.data,
+        levelCap: levelCap ?? null,
+        respectLevelCap: respectLevelCap !== false,
+        checkpoint: input.checkpoint,
+      });
+    }
     post({type: 'result', jobId, result});
   } catch (error) {
     if (error?.code === 'CANCELLED') post({type: 'cancelled', jobId});

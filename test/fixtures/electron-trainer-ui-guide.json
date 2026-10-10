@@ -81,12 +81,26 @@
         ]
       }
     ],
-    "currentPartyComparison": {
-      "kept": [
-        "00000000-0000-4000-8000-000000000001"
+    "partyPlan": {
+      "basis": "simulação",
+      "basisReason": null,
+      "slots": [
+        {
+          "uuid": "00000000-0000-4000-8000-000000000001",
+          "speciesId": "cobblemon:gardevoir",
+          "fromSlot": 0,
+          "change": "mantém",
+          "replaces": null,
+          "role": "Abre a batalha contra Floatzel"
+        }
       ],
-      "added": [],
-      "removed": []
+      "toPc": [
+        {
+          "uuid": "00000000-0000-4000-8000-000000000002",
+          "speciesId": "cobblemon:bulbasaur",
+          "fromSlot": 1
+        }
+      ]
     },
     "excluded": [],
     "assumptions": [

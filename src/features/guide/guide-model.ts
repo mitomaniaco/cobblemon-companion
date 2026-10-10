@@ -1,6 +1,7 @@
 import type {
   GuideGoal,
   GuideNextGoal,
+  GuidePartyPlan,
   GuideResult,
   GuideTeamMember,
   GuideTrainer,
@@ -190,14 +191,23 @@ export function guideCalculationTarget(
   return slotIndex === -1 ? {} : {slotIndex};
 }
 
-export type GuideComparisonRow = {key: 'added' | 'removed' | 'kept'; label: string; uuids: string[]};
+const listNames = (names: string[]): string =>
+  names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} e ${names[names.length - 1]}`;
 
-export function guideComparisonRows(comparison: GuideResult['currentPartyComparison']): GuideComparisonRow[] {
-  return [
-    {key: 'added', label: 'Entra', uuids: comparison.added},
-    {key: 'removed', label: 'Sai', uuids: comparison.removed},
-    {key: 'kept', label: 'Fica', uuids: comparison.kept},
-  ];
+/** Passos para arrumar a party como o guia recomenda; vazio quando nada muda. */
+export function guidePartySteps(plan: GuidePartyPlan, nameOf: (uuid: string, speciesId: string) => string): string[] {
+  const label = (entry: {uuid: string; speciesId: string}) => nameOf(entry.uuid, entry.speciesId);
+  const entrants = plan.slots.filter((slot) => slot.change === 'entra');
+  const steps: string[] = [];
+  if (plan.toPc.length > 0) steps.push(`Guarde no PC: ${listNames(plan.toPc.map(label))}.`);
+  if (entrants.length > 0) steps.push(`Pegue do PC: ${listNames(entrants.map(label))}.`);
+  if (plan.slots.some((slot) => slot.change !== 'mantém')) steps.push(`Arrume a party nesta ordem: ${listNames(plan.slots.map(label))}.`);
+  return steps;
+}
+
+/** Os Pokémon da party do jogador, na ordem dos slots. */
+export function guideCurrentParty(individuals: readonly PlayerIndividual[]): PlayerIndividual[] {
+  return individuals.filter((individual) => individual.location.container === 'party').sort((a, b) => a.location.slot - b.location.slot);
 }
 
 export function guideOpponentTurnsLabel(matchup: {outcome: 'vence' | 'perde'; ourTurns: number; theirTurns: number}): string {

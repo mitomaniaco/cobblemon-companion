@@ -2,7 +2,15 @@ import {useEffect, useId, useMemo, useState} from 'react';
 import type {CSSProperties} from 'react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
-import type {GuideNextGoal, GuideProgress, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
+import type {
+  GuideNextGoal,
+  GuidePartySlot,
+  GuideProgress,
+  GuideResult,
+  GuideTeamMember,
+  PlayerIndividual,
+  PlayerSnapshot,
+} from '../../platform/api';
 import {
   Button,
   Disclosure,
@@ -24,7 +32,8 @@ import type {GuideProgressState} from './useGuideProgress';
 import {
   guideCapExcluded,
   guideCapWarnings,
-  guideComparisonRows,
+  guideCurrentParty,
+  guidePartySteps,
   guideOpponentTurnsLabel,
   guideTeamChanges,
   type GuideMode,
@@ -283,18 +292,35 @@ function MemberCard({
   index,
   individual,
   lookup,
+  slot,
   onOpenCalculation,
 }: {
   member: GuideTeamMember;
   index: number;
+  slot: GuidePartySlot | undefined;
   individual: PlayerIndividual | undefined;
   lookup: Lookup;
   onOpenCalculation: GuideWorkspaceProps['onOpenCalculation'];
 }) {
   const species = speciesDisplay(member.speciesId, individual?.formId ?? 'normal');
   return (
-    <li className={styles.card} style={{'--card-index': index} as CSSProperties} data-uuid={member.uuid}>
+    <li
+      className={styles.card}
+      style={{'--card-index': index} as CSSProperties}
+      data-uuid={member.uuid}
+      data-change={slot?.change}
+      data-slot={index + 1}
+    >
       <div className={styles.cardHeader}>
+        <span
+          className={styles.slotNumber}
+          role="img"
+          data-first={index === 0 ? 'true' : undefined}
+          aria-label={`Slot ${index + 1}`}
+          title={index === 0 ? 'Abre a batalha' : undefined}
+        >
+          {index + 1}
+        </span>
         <PokemonArtwork
           speciesId={member.speciesId}
           formId={individual?.formId ?? 'normal'}
@@ -309,7 +335,30 @@ function MemberCard({
               <TypeBadge key={type} type={type} size="sm" />
             ))}
           </div>
+          {slot?.role && <p className={styles.slotRole}>{slot.role}</p>}
         </div>
+        {slot?.change === 'entra' && (
+          <div className={styles.slotChange}>
+            <strong className={styles.enterTag}>ENTRA</strong>
+            {slot.replaces ? (
+              <span className={styles.slotReplaces}>
+                no lugar de {individualName(lookup, slot.replaces.uuid)}
+                <span className={styles.replacesArt}>
+                  <PokemonArtwork
+                    speciesId={slot.replaces.speciesId}
+                    formId={lookup.individuals.get(slot.replaces.uuid)?.formId ?? 'normal'}
+                    variant="slot"
+                  />
+                </span>
+              </span>
+            ) : (
+              <span className={styles.slotReplaces}>ocupa um espaço livre</span>
+            )}
+          </div>
+        )}
+        {slot?.change === 'muda de slot' && slot.fromSlot !== null && (
+          <span className={styles.slotChip}>era o slot {slot.fromSlot + 1}</span>
+        )}
       </div>
       <p className={styles.reason}>{member.reason}</p>
 
@@ -387,7 +436,10 @@ function GuideResultView({
   captures: CapturePlanController;
 }) {
   const [infoExpanded, setInfoExpanded] = useState(false);
-  const comparison = guideComparisonRows(result.currentPartyComparison);
+  const currentParty = guideCurrentParty(snapshot.individuals);
+  const leaving = new Set(result.partyPlan.toPc.map((entry) => entry.uuid));
+  const partySteps = guidePartySteps(result.partyPlan, (uuid) => individualName(lookup, uuid));
+  const slotOf = new Map(result.partyPlan.slots.map((slot) => [slot.uuid, slot]));
   const acquire = result.team
     .flatMap((member) => member.acquire.map((entry) => ({member, entry})))
     .sort((left, right) => right.entry.gainPercent - left.entry.gainPercent);
@@ -476,24 +528,20 @@ function GuideResultView({
                 </StatusMessage>
               )}
 
-              <section className={styles.comparison} aria-label="Comparado à sua party">
-                <h3 className={styles.sectionTitle}>Comparado à sua party</h3>
-                {comparison.every((row) => row.uuids.length === 0) ? (
-                  <p className={styles.muted}>Nenhuma alteração em relação à sua party atual.</p>
-                ) : (
-                  <div className={styles.comparisonChips}>
-                    {comparison.flatMap((row) =>
-                      row.uuids.map((uuid) => (
-                        <span key={`${row.key}-${uuid}`} className={styles.comparisonChip} data-kind={row.key}>
-                          <span className={styles.chipBadge} data-kind={row.key}>
-                            {row.key === 'added' ? 'Entra' : row.key === 'removed' ? 'Sai' : 'Fica'}
-                          </span>
-                          <span className={styles.chipName}>{individualName(lookup, uuid)}</span>
-                        </span>
-                      )),
-                    )}
-                  </div>
-                )}
+              <section className={styles.todaySection} aria-label="Party de hoje">
+                <div className={styles.todayRow}>
+                  <span className={styles.todayLabel}>Hoje</span>
+                  {currentParty.map((individual) => (
+                    <span key={individual.uuid} data-leaving={leaving.has(individual.uuid) ? 'true' : undefined}>
+                      <PokemonArtwork
+                        speciesId={individual.speciesId}
+                        formId={individual.formId}
+                        shiny={individual.shiny === true}
+                        variant="slot"
+                      />
+                    </span>
+                  ))}
+                </div>
               </section>
 
               <ol className={styles.cards} aria-label="Time recomendado">
@@ -504,10 +552,47 @@ function GuideResultView({
                     index={index}
                     individual={lookup.individuals.get(member.uuid)}
                     lookup={lookup}
+                    slot={slotOf.get(member.uuid)}
                     onOpenCalculation={onOpenCalculation}
                   />
                 ))}
               </ol>
+
+              {result.partyPlan.toPc.length > 0 && (
+                <section className={styles.pcSection} aria-label="Fora do time recomendado">
+                  <h3 className={styles.sectionTitle}>Guarde no PC</h3>
+                  <div className={styles.pcChips}>
+                    {result.partyPlan.toPc.map((entry) => (
+                      <span key={entry.uuid} className={styles.pcChip}>
+                        <PokemonArtwork
+                          speciesId={entry.speciesId}
+                          formId={lookup.individuals.get(entry.uuid)?.formId ?? 'normal'}
+                          variant="slot"
+                        />
+                        {individualName(lookup, entry.uuid)}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              <section className={styles.stepsSection}>
+                <h3 className={styles.sectionTitle}>Como arrumar a party</h3>
+                {partySteps.length === 0 ? (
+                  <p>Sua party já está como o guia recomenda.</p>
+                ) : (
+                  <ol className={styles.steps} aria-label="Como arrumar a party">
+                    {partySteps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                )}
+              </section>
+
+              {result.partyPlan.basis === 'party atual' && result.partyPlan.basisReason && (
+                <p className={styles.muted}>A ordem não veio da simulação: {result.partyPlan.basisReason}</p>
+              )}
+
               <section className={styles.acquire} aria-labelledby="guide-acquire-title">
                 <h3 id="guide-acquire-title" className={styles.sectionTitle}>
                   Vale adquirir

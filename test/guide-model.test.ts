@@ -7,7 +7,7 @@ import {
   guideBuildKey,
   guideCalculationTarget,
   guideRequestLevelCap,
-  guideComparisonRows,
+  guidePartySteps,
   guideOpponentTurnsLabel,
   guidePreviousTeamUuids,
   guideReducer,
@@ -25,7 +25,7 @@ const result = (): GuideResult => ({
   referenceLevel: 30,
   opponents: [],
   team: [],
-  currentPartyComparison: {kept: [], added: [], removed: []},
+  partyPlan: {basis: 'party atual', basisReason: null, slots: [], toPc: []},
   excluded: [],
   assumptions: [],
   limits: [],
@@ -276,13 +276,32 @@ describe('ver cálculo de um golpe do guia', () => {
 });
 
 describe('textos do resultado', () => {
-  it('compara a party na ordem entra, sai e fica', () => {
-    const rows = guideComparisonRows({kept: ['k'], added: ['a'], removed: ['r']});
-    expect(rows.map((row) => [row.label, row.uuids])).toEqual([
-      ['Entra', ['a']],
-      ['Sai', ['r']],
-      ['Fica', ['k']],
+  it('descreve como arrumar a party: guardar, pegar do PC e a ordem', () => {
+    const names: Record<string, string> = {A: 'A', B: 'B', C: 'C', D: 'D', E: 'E', F: 'F'};
+    const slot = (uuid: string, change: 'mantém' | 'muda de slot' | 'entra') => ({
+      uuid,
+      speciesId: 'cobblemon:x',
+      fromSlot: change === 'entra' ? null : 0,
+      change,
+      replaces: null,
+      role: null,
+    });
+    const nameOf = (uuid: string) => names[uuid] ?? uuid;
+    const plan = {
+      basis: 'simulação' as const,
+      basisReason: null,
+      slots: [slot('E', 'entra'), slot('A', 'muda de slot'), slot('F', 'entra'), slot('C', 'muda de slot')],
+      toPc: [
+        {uuid: 'B', speciesId: 'cobblemon:x', fromSlot: 1},
+        {uuid: 'D', speciesId: 'cobblemon:x', fromSlot: 3},
+      ],
+    };
+    expect(guidePartySteps(plan, nameOf)).toEqual([
+      'Guarde no PC: B e D.',
+      'Pegue do PC: E e F.',
+      'Arrume a party nesta ordem: E, A, F e C.',
     ]);
+    expect(guidePartySteps({...plan, slots: [slot('A', 'mantém')], toPc: []}, nameOf)).toEqual([]);
   });
 
   it('descreve o confronto com singular e plural de turnos', () => {

@@ -170,13 +170,6 @@ describe('motor do guia', () => {
       expect(member.reason.length).toBeGreaterThan(0);
     }
     expect(result.limits).toEqual(LIMITS);
-    const partyUuids = party.map((member) => member.uuid);
-    const {kept, added, removed} = result.currentPartyComparison;
-    expect([...kept, ...added].sort()).toEqual(result.team.map((member) => member.uuid).sort());
-    expect(kept.every((uuid) => partyUuids.includes(uuid))).toBe(true);
-    expect(added.every((uuid) => !partyUuids.includes(uuid))).toBe(true);
-    expect(removed.every((uuid) => partyUuids.includes(uuid))).toBe(true);
-    expect(removed).toHaveLength(partyUuids.length - kept.length);
   });
 
   it('remove adversário com espécie fora do catálogo e cita na lista de hipóteses', async () => {
@@ -247,7 +240,6 @@ describe('level cap do RCT no guia (Issue #142)', () => {
         .map((entry) => entry.uuid)
         .sort(),
     ).toEqual([members[0].uuid, members[1].uuid].sort());
-    expect(result.currentPartyComparison.removed).toEqual(expect.arrayContaining([members[0].uuid, members[1].uuid]));
   });
 
   it('avisa que o treinador não luta com nenhum Pokémon da party acima do cap, mesmo fora do time', async () => {
