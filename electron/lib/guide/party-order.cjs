@@ -17,7 +17,7 @@ function planPartySlots({team, individuals, entryOrder, roles, basis, basisReaso
   const teamByUuid = new Map(team.map((member) => [member.uuid, member]));
 
   let ordered;
-  if (basis === 'simulação') {
+  if (basis === 'simulação' || basis === 'confronto') {
     const listed = [...new Set(entryOrder.filter((uuid) => teamByUuid.has(uuid)))];
     const seen = new Set(listed);
     const rest = team.filter((member) => !seen.has(member.uuid));
@@ -62,15 +62,48 @@ function planPartySlots({team, individuals, entryOrder, roles, basis, basisReaso
   return {basis, basisReason, slots, toPc};
 }
 
-function fallbackPlan(result, snapshot, basisReason) {
+function fallbackPlan(result, snapshot, basisReason, byMatchup = false) {
+  const opener = byMatchup ? openerByMatchup(result) : null;
+  const nameOf = (speciesId) => lookup(COMPATIBILITY.species, speciesId)?.name ?? speciesId;
   return planPartySlots({
     team: result.team,
     individuals: snapshot.individuals,
-    entryOrder: [],
-    roles: {},
-    basis: 'party atual',
+    entryOrder: opener ? [opener.member.uuid] : [],
+    roles: opener ? {[opener.member.uuid]: `Abre a batalha contra ${nameOf(opener.opponentSpeciesId)}`} : {},
+    basis: opener ? 'confronto' : 'party atual',
     basisReason,
   });
+}
+
+const UNBOUNDED = 1e9;
+const finiteTurns = (turns) => (Number.isFinite(turns) ? turns : UNBOUNDED);
+
+/**
+ * Quem abre quando a simulação não roda: pelo confronto com o primeiro adversário. Entre os que o derrubam antes, o que
+ * precisa de menos turnos (empate: o que aguenta mais turnos, depois a ordem do guia); se ninguém derruba, o de maior
+ * diferença entre os turnos do adversário e os seus.
+ */
+function openerByMatchup(result) {
+  const first = result.opponents[0];
+  if (!first) return null;
+  const rows = result.team.map((member, order) => {
+    const matchup = member.matchups.find((candidate) => candidate.opponentId === first.id);
+    return {
+      member,
+      order,
+      wins: matchup?.outcome === 'vence',
+      ourTurns: finiteTurns(matchup?.ourTurns),
+      theirTurns: finiteTurns(matchup?.theirTurns),
+    };
+  });
+  const winners = rows.filter((row) => row.wins);
+  const pool = winners.length > 0 ? winners : rows;
+  pool.sort((a, b) =>
+    winners.length > 0
+      ? a.ourTurns - b.ourTurns || b.theirTurns - a.theirTurns || a.order - b.order
+      : b.theirTurns - b.ourTurns - (a.theirTurns - a.ourTurns) || a.order - b.order,
+  );
+  return {member: pool[0].member, opponentSpeciesId: first.speciesId};
 }
 
 function rolesOf(steps, team) {
@@ -114,14 +147,12 @@ async function withPartyPlan({result, snapshot, data, levelCap, respectLevelCap,
     plan = await buildBattlePlan({snapshot, data, request, checkpoint});
   } catch (error) {
     if (error?.code === 'CANCELLED') throw error;
-    return finish(
-      fallbackPlan(result, snapshot, `O plano de batalha não pôde ser montado (${error?.message ?? error}); a ordem mantém a sua party.`),
-    );
+    return finish(fallbackPlan(result, snapshot, `O plano de batalha não pôde ser montado (${error?.message ?? error}).`, true));
   }
   if (plan.status === 'fora-do-escopo') return finish(fallbackPlan(result, snapshot, 'Batalha em dupla: a ordem mantém a sua party.'));
   const steps = plan.simulation?.steps ?? [];
   if (steps.length === 0) {
-    return finish(fallbackPlan(result, snapshot, `Simulação interrompida (${plan.simulation?.stopReason}); a ordem mantém a sua party.`));
+    return finish(fallbackPlan(result, snapshot, `Simulação interrompida (${plan.simulation?.stopReason}).`, true));
   }
   return finish(
     planPartySlots({

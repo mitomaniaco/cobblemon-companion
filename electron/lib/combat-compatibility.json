@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "ruleset": {
-    "id": "cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v14",
+    "id": "cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v15",
     "cobblemonVersion": "1.7.3+1.21.1",
     "showdownVersion": "16",
     "calcVersion": "0.11.0",
@@ -9,7 +9,7 @@
       "cobblemonJar": "962d75df4fb649d94863a7a7d130d4d2b3de4da9b3cae4c44b1ce90f37ec0ed5",
       "showdownZip": "1c398031f28fefcb2ce6b44a5ca289061ed4c5d0dccefaae0f7c070b3f7e8d10",
       "speciesRecords": "0f2be0a3b4d78bb056d2eebe22280bbc3b200358534b8fe8acb5afc1849d9f18",
-      "moveRecords": "fdbfa0feba5a0badfa7c9e3e1d262483b7dae967cea68c5124055992fc71cf94",
+      "moveRecords": "b7d67ecb5950c46e93292672606a759877e13a66312df70b5e7c56b9ce7f38f4",
       "itemRecords": "0303aeb5c6564f416087c6295fc4dd9ec81210ee7f45a589638dabaa96accf19"
     }
   },
@@ -10869,6 +10869,14 @@
     "expandingforce": {
       "name": "Expanding Force"
     },
+    "cobblemon:explosion": {
+      "name": "Explosion",
+      "selfDestruct": true
+    },
+    "explosion": {
+      "name": "Explosion",
+      "selfDestruct": true
+    },
     "cobblemon:extrasensory": {
       "name": "Extrasensory"
     },
@@ -10936,6 +10944,14 @@
     },
     "fierywrath": {
       "name": "Fiery Wrath"
+    },
+    "cobblemon:finalgambit": {
+      "name": "Final Gambit",
+      "selfDestruct": true
+    },
+    "finalgambit": {
+      "name": "Final Gambit",
+      "selfDestruct": true
     },
     "cobblemon:fireblast": {
       "name": "Fire Blast"
@@ -11773,6 +11789,14 @@
     "mistball": {
       "name": "Mist Ball"
     },
+    "cobblemon:mistyexplosion": {
+      "name": "Misty Explosion",
+      "selfDestruct": true
+    },
+    "mistyexplosion": {
+      "name": "Misty Explosion",
+      "selfDestruct": true
+    },
     "cobblemon:moonblast": {
       "name": "Moonblast"
     },
@@ -12354,6 +12378,14 @@
     },
     "seismictoss": {
       "name": "Seismic Toss"
+    },
+    "cobblemon:selfdestruct": {
+      "name": "Self-Destruct",
+      "selfDestruct": true
+    },
+    "selfdestruct": {
+      "name": "Self-Destruct",
+      "selfDestruct": true
     },
     "cobblemon:shadowball": {
       "name": "Shadow Ball"

@@ -36106,8 +36106,7 @@
       "willCrit": false,
       "multiaccuracy": false,
       "callbacks": [],
-      "status": "excluded",
-      "reason": "mechanics"
+      "status": "derived"
     },
     "extrasensory": {
       "name": "Extrasensory",
@@ -36373,8 +36372,7 @@
       "callbacks": [
         "damageCallback"
       ],
-      "status": "excluded",
-      "reason": "mechanics"
+      "status": "derived"
     },
     "fireblast": {
       "name": "Fire Blast",
@@ -40676,8 +40674,7 @@
       "callbacks": [
         "onBasePower"
       ],
-      "status": "excluded",
-      "reason": "mechanics"
+      "status": "derived"
     },
     "moonblast": {
       "name": "Moonblast",
@@ -42989,8 +42986,7 @@
       "willCrit": false,
       "multiaccuracy": false,
       "callbacks": [],
-      "status": "excluded",
-      "reason": "mechanics"
+      "status": "derived"
     },
     "shadowball": {
       "name": "Shadow Ball",
@@ -48077,7 +48073,7 @@
         "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
         "file": "assets/mega_showdown/showdown/mods/moves.js",
         "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
-        "compared": 500,
+        "compared": 504,
         "identical": 0,
         "different": [],
         "missing": [
@@ -48216,6 +48212,7 @@
           "esperwing",
           "eternabeam",
           "expandingforce",
+          "explosion",
           "extrasensory",
           "extremespeed",
           "facade",
@@ -48227,6 +48224,7 @@
           "fellstinger",
           "fierydance",
           "fierywrath",
+          "finalgambit",
           "fireblast",
           "firefang",
           "firelash",
@@ -48366,6 +48364,7 @@
           "mindblown",
           "mirrorshot",
           "mistball",
+          "mistyexplosion",
           "moonblast",
           "moongeistbeam",
           "mortalspin",
@@ -48464,6 +48463,7 @@
           "seedbomb",
           "seedflare",
           "seismictoss",
+          "selfdestruct",
           "shadowball",
           "shadowbone",
           "shadowclaw",
@@ -48588,8 +48588,8 @@
         "provider": "mega_showdown-neoforge-1.9.3+1.7.3+1.21.1.jar",
         "file": "assets/mega_showdown/showdown/moves.js",
         "sha256": "25ca0afdac71220a34a8dc74cffb14e2eaffc292b0ecb81ebb8b465edf3d73cb",
-        "compared": 500,
-        "identical": 497,
+        "compared": 504,
+        "identical": 501,
         "different": [
           "relicsong",
           "terablast",

@@ -96,8 +96,8 @@ describe('versioned real damage adapter', () => {
       abilities: ['cobblemon:synchronize', 'cobblemon:telepathy'],
     });
     for (const result of results) {
-      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v14');
-      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v12');
+      expect(result.ruleset.id).toBe('cobblemon-1.7.3-showdown-16-smogon-calc-0.11.0-v15');
+      expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v13');
       expect(result.actor.speciesId).toBe('cobblemon:gardevoir');
       expect(result.current.rollCount).toBe(16);
       expect(result.candidate.rollCount).toBe(16);
@@ -799,7 +799,7 @@ describe('versioned real damage adapter', () => {
     expect(result.ruleset.cobblemonVersion).toBe(COMPATIBILITY.ruleset.cobblemonVersion);
     expect(result.ruleset.showdownVersion).toBe(COMPATIBILITY.ruleset.showdownVersion);
     expect(result.ruleset.calcVersion).toBe('0.11.0');
-    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v12');
+    expect(result.ruleset.adapterVersion).toBe('real-damage-adapter-v13');
   });
 
   it('accepts bare ability IDs without cobblemon: prefix', () => {
@@ -1185,7 +1185,7 @@ describe('motor de dano e saída', () => {
       cobblemonVersion: COMPATIBILITY.ruleset.cobblemonVersion,
       showdownVersion: COMPATIBILITY.ruleset.showdownVersion,
       calcVersion: '0.11.0',
-      adapterVersion: 'real-damage-adapter-v12',
+      adapterVersion: 'real-damage-adapter-v13',
       sourceSha256: COMPATIBILITY.ruleset.sourceSha256,
     });
     expect(result.ruleset.sourceSha256).not.toBe(COMPATIBILITY.ruleset.sourceSha256);
@@ -1265,6 +1265,6 @@ describe('guardas de carga do adaptador', () => {
   });
 
   it('carrega normalmente com os arquivos reais', () => {
-    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v12');
+    expect(loadWith(catalogPath, COMPATIBILITY).ADAPTER_VERSION).toBe('real-damage-adapter-v13');
   });
 });

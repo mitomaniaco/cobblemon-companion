@@ -338,6 +338,28 @@ describe('plano de batalha contra o líder', () => {
     });
   });
 
+  it('Self-Destruct/Explosion do adversário entram no plano; a simulação derruba os dois quando o golpe derruba o membro', async () => {
+    const weak = individual('pikachu', 5, ['thunderbolt']);
+    const result = await customPlan([opponent({level: 60, moves: ['cobblemon:explosion'], ability: 'sturdy'})], {
+      snapshot: {individuals: [weak]},
+      team: [{uuid: weak.uuid, moveIds: ['cobblemon:thunderbolt'], itemId: null}],
+    });
+    expect(result.entries[0].status).not.toBe('bloqueado');
+    expect(result.entries[0].risks.some((risk) => risk.text.includes('Explosion'))).toBe(true);
+    expect(result.simulation.steps[0].outcome).toBe('membro derrotado');
+    expect(result.simulation.steps[0].opponentHpAfter).toBe(0);
+    expect(result.simulation.opponentsDefeated).toBe(1);
+    expect(result.simulation.status).toBe('concluída');
+    expect(result.simulation.remaining).toEqual([]);
+  });
+
+  it('Self-Destruct não é usado quando o membro sobrevive a ele', async () => {
+    const result = await customPlan([opponent({level: 5, moves: ['cobblemon:explosion']})]);
+    expect(result.entries[0].status).not.toBe('bloqueado');
+    const [first] = result.simulation.steps;
+    expect(first.memberHpAfter).toBe(first.memberHpBefore);
+  });
+
   it('treinador em dupla é fora do escopo: mensagem, sem entradas e sem ninguém para abrir a batalha', async () => {
     const result = await plan('synthetic:duo');
     expect(result).toMatchObject({status: 'fora-do-escopo', scopeReason: 'batalha em dupla, fora do escopo', entries: [], lead: null});
