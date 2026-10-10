@@ -339,7 +339,7 @@ export function moveStatus(facts, {isBase, calcHasMove, packDiffers, calcNamesMo
   if (facts.category !== 'Physical' && facts.category !== 'Special') return exclude('not-damaging');
   if (facts.isZ || facts.isMax || EXCLUDED_NONSTANDARD.has(facts.isNonstandard)) return exclude('nonstandard');
   if (!DERIVABLE_TARGETS.has(facts.target)) return exclude('target');
-  if (facts.ohko || facts.selfdestruct || facts.multiaccuracy) return exclude('mechanics');
+  if (facts.ohko || facts.multiaccuracy) return exclude('mechanics');
   const id = String(facts.name ?? '')
     .toLowerCase()
     .replace(/[^a-z0-9]/g, '');
@@ -359,7 +359,9 @@ export function deriveMovesCatalog(manifestMoves) {
   for (const id of Object.keys(manifestMoves).sort()) {
     const entry = manifestMoves[id];
     if (entry.status !== 'base' && entry.status !== 'derived') continue;
-    const record = USAGE_ALLOWLIST[id] === 'firstTurnOnly' ? {name: entry.name, firstTurnOnly: true} : {name: entry.name};
+    const record = {name: entry.name};
+    if (USAGE_ALLOWLIST[id] === 'firstTurnOnly') record.firstTurnOnly = true;
+    if (entry.selfdestruct === true) record.selfDestruct = true;
     output[`cobblemon:${id}`] = record;
     output[id] = {...record};
   }

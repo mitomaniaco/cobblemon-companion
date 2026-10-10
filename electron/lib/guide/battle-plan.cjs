@@ -187,11 +187,13 @@ function buildOpponent(member, index, trainerId) {
 
   const moves = [];
   const firstTurnMoves = [];
+  const selfDestructMoves = [];
   const statusMoves = [];
   for (const moveId of member.moves ?? []) {
     const cataloged = lookup(COMPATIBILITY.moves, moveId);
     if (cataloged) {
-      (cataloged.firstTurnOnly ? firstTurnMoves : moves).push({id: moveId, name: cataloged.name});
+      const bucket = cataloged.selfDestruct ? selfDestructMoves : cataloged.firstTurnOnly ? firstTurnMoves : moves;
+      bucket.push({id: moveId, name: cataloged.name});
     } else if (calcMove(moveId)?.category === 'Status') {
       statusMoves.push({id: moveId, name: calcMove(moveId).name});
     } else {
@@ -209,6 +211,7 @@ function buildOpponent(member, index, trainerId) {
     alternatives,
     moves,
     firstTurnMoves,
+    selfDestructMoves,
     statusMoves,
     label,
     partial,
@@ -244,6 +247,9 @@ function opponentRisks(opponent, dealt, firstToAct) {
   }
   for (const move of opponent.firstTurnMoves) {
     risks.push({kind: 'golpe', text: `${label} pode usar ${move.name} só no primeiro turno.`});
+  }
+  for (const move of opponent.selfDestructMoves) {
+    risks.push({kind: 'golpe', text: `${label} pode usar ${move.name}: causa dano e o próprio ${label} cai.`});
   }
   if (opponent.statusMoves.length > 0) {
     const names = opponent.statusMoves.map((move) => move.name);
@@ -516,8 +522,14 @@ function pairContext(member, opponent) {
     const hit = average(defender, attacker, move);
     if (hit > 0 && (!firstTurn || hit > firstTurn.hit)) firstTurn = {hit, priority: priorityOf(move.id)};
   }
+  let selfDestruct = null;
+  for (const move of opponent.selfDestructMoves) {
+    const hit = average(defender, attacker, move);
+    if (hit > 0 && (!selfDestruct || hit > selfDestruct.hit)) selfDestruct = {hit};
+  }
   return {
     evaluation,
+    selfDestruct,
     ourHit: ours ? average(attacker, defender, ours) : 0,
     ourPriority: ours ? priorityOf(ours.id) : 0,
     theirHit: theirs ? average(defender, attacker, theirs) : 0,
@@ -538,13 +550,25 @@ function hitWithSturdy(hp, maxHp, hit, sturdy) {
 /**
  * Um trecho contínuo do confronto, alterando `state`. Por turno: prioridade do golpe, depois Speed efetiva; empate de Speed
  * favorece o adversário (pior caso). `freeHit`: o adversário acerta primeiro o membro que acabou de entrar.
- * Termina com `member` ou `opponent` (quem caiu), `stall` (ninguém causa dano) ou `limit` (100 turnos no adversário).
+ * Golpe de autodestruição: o adversário só o usa quando o golpe comum não derrubaria o membro e a autodestruição derruba;
+ * os dois caem (`both`).
+ * Termina com `member` ou `opponent` (quem caiu), `both`, `stall` (ninguém causa dano) ou `limit` (100 turnos no adversário).
  */
 function runFight(ctx, state, {freeHit}) {
   let turns = 0;
   const opponentActs = (move) => {
     state.oppActed = true;
-    state.memberHp = hitWithSturdy(state.memberHp, ctx.memberMaxHp, move.hit, ctx.memberSturdy);
+    const regular = hitWithSturdy(state.memberHp, ctx.memberMaxHp, move.hit, ctx.memberSturdy);
+    if (regular > 0 && ctx.selfDestruct) {
+      const boom = hitWithSturdy(state.memberHp, ctx.memberMaxHp, ctx.selfDestruct.hit, ctx.memberSturdy);
+      if (boom === 0) {
+        state.memberHp = 0;
+        state.oppHp = 0;
+        state.bothDown = true;
+        return;
+      }
+    }
+    state.memberHp = regular;
   };
   const theirMove = () => (!state.oppActed && ctx.firstTurn ? ctx.firstTurn : {hit: ctx.theirHit, priority: ctx.theirPriority});
   const ourHitLands = () => {
@@ -560,7 +584,8 @@ function runFight(ctx, state, {freeHit}) {
   while (state.memberHp > 0 && state.oppHp > 0) {
     if (state.oppTurns >= MAX_TURNS) return {ended: 'limit', turns};
     const their = theirMove();
-    if (ctx.ourHit === 0 && ctx.theirHit === 0 && (state.oppActed || !ctx.firstTurn)) return {ended: 'stall', turns};
+    const canSelfDestruct = ctx.selfDestruct !== null && ctx.selfDestruct.hit >= state.memberHp;
+    if (ctx.ourHit === 0 && ctx.theirHit === 0 && !canSelfDestruct && (state.oppActed || !ctx.firstTurn)) return {ended: 'stall', turns};
     turns += 1;
     state.oppTurns += 1;
     const ourFirst = ctx.ourPriority === their.priority ? ctx.ourSpeed > ctx.theirSpeed : ctx.ourPriority > their.priority;
@@ -570,6 +595,7 @@ function runFight(ctx, state, {freeHit}) {
       else opponentActs(their);
     }
   }
+  if (state.bothDown) return {ended: 'both', turns};
   return {ended: state.memberHp <= 0 ? 'member' : 'opponent', turns};
 }
 
@@ -631,6 +657,16 @@ async function simulateBattle(team, entries, lead, checkpoint) {
       active = lead ? team.find((member) => member.uuid === lead.uuid) : null;
       if (!active || !contextOf(active)) return finish('interrompida', 'ninguém pode abrir a batalha contra o primeiro adversário');
       entryKind = 'lead';
+    } else if (memberHp.get(active.uuid) <= 0) {
+      const next = ranked(alive());
+      if (next.length === 0) {
+        return finish(
+          alive().length === 0 ? 'time derrotado' : 'interrompida',
+          alive().length === 0 ? null : `nenhum membro vivo pode ser avaliado contra o adversário ${index + 1} (${name})`,
+        );
+      }
+      active = next.find((member) => beats(member, false)) ?? next[0];
+      entryKind = 'após KO';
     } else if (beats(active, false)) {
       entryKind = 'mantém';
     } else {
@@ -658,7 +694,8 @@ async function simulateBattle(team, entries, lead, checkpoint) {
       freeHit = false;
       Object.assign(fight, {oppHp: state.oppHp, sashAvailable: state.sashAvailable, oppActed: state.oppActed, oppTurns: state.oppTurns});
       memberHp.set(active.uuid, state.memberHp);
-      const outcome = {opponent: 'adversário derrotado', member: 'membro derrotado'}[result.ended] ?? 'interrompido';
+      const outcome =
+        {opponent: 'adversário derrotado', member: 'membro derrotado', both: 'membro derrotado'}[result.ended] ?? 'interrompido';
       steps.push({
         opponentIndex: index,
         opponentSpeciesId: entry.speciesId,
@@ -676,7 +713,7 @@ async function simulateBattle(team, entries, lead, checkpoint) {
       });
       if (result.ended === 'stall') return finish('interrompida', 'impasse: nenhum lado causa dano');
       if (result.ended === 'limit') return finish('interrompida', `limite de ${MAX_TURNS} turnos no adversário ${index + 1} (${name})`);
-      if (result.ended === 'opponent') {
+      if (result.ended === 'opponent' || result.ended === 'both') {
         defeated += 1;
         break;
       }

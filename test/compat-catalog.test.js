@@ -319,7 +319,6 @@ describe('fatos e regras dos golpes do Showdown', () => {
     ['nonstandard', {isNonstandard: 'Gigantamax'}, ok],
     ['target', {target: 'self'}, ok],
     ['mechanics', {ohko: true}, ok],
-    ['mechanics', {selfdestruct: true}, ok],
     ['mechanics', {multiaccuracy: true}, ok],
     ['usage', {callbacks: ['onTry']}, ok],
     ['usage', {name: 'Dream Eater', callbacks: ['onTryImmunity']}, ok],
@@ -331,8 +330,14 @@ describe('fatos e regras dos golpes do Showdown', () => {
     expect(moveStatus({...valid, ...overrides}, context)).toEqual({status: 'excluded', reason});
   });
 
-  it('multi-hit, dano fixo, acerto garantido de crítico e callbacks inofensivos não excluem', () => {
-    for (const overrides of [{multihit: true}, {damage: true}, {willCrit: true}, {callbacks: ['onHit', 'onAfterMove']}]) {
+  it('multi-hit, dano fixo, acerto garantido de crítico, autodestruição e callbacks inofensivos não excluem', () => {
+    for (const overrides of [
+      {multihit: true},
+      {damage: true},
+      {willCrit: true},
+      {selfdestruct: true},
+      {callbacks: ['onHit', 'onAfterMove']},
+    ]) {
       expect(moveStatus({...valid, ...overrides}, ok)).toEqual({status: 'derived'});
     }
   });
@@ -361,6 +366,15 @@ describe('fatos e regras dos golpes do Showdown', () => {
     });
     expect(Object.keys(derived)).toEqual(['cobblemon:alfa', 'alfa', 'cobblemon:zeta', 'zeta']);
     expect(derived.zeta).toEqual({name: 'Zeta'});
+  });
+
+  it('marca golpes de autodestruição no catálogo', () => {
+    const derived = deriveMovesCatalog({
+      explosion: {name: 'Explosion', status: 'derived', selfdestruct: true},
+      tackle: {name: 'Tackle', status: 'base'},
+    });
+    expect(derived['cobblemon:explosion']).toEqual({name: 'Explosion', selfDestruct: true});
+    expect(derived.tackle).toEqual({name: 'Tackle'});
   });
 
   it('marca como só do primeiro turno os golpes de Fake Out e First Impression', () => {

@@ -467,8 +467,13 @@ function GuideResultView({
                 )}
               </section>
 
-              {result.partyPlan.basis === 'party atual' && result.partyPlan.basisReason && (
-                <p className={styles.muted}>A ordem não veio da simulação: {result.partyPlan.basisReason}</p>
+              {result.partyPlan.basis !== 'simulação' && result.partyPlan.basisReason && (
+                <p className={styles.muted}>
+                  {result.partyPlan.basis === 'confronto'
+                    ? 'A ordem usa o confronto com o primeiro adversário: '
+                    : 'A ordem não veio da simulação: '}
+                  {result.partyPlan.basisReason}
+                </p>
               )}
 
               <section className={styles.acquire} aria-labelledby="guide-acquire-title">

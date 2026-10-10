@@ -160,7 +160,7 @@ export type GuidePartySlot = {
 };
 
 export type GuidePartyPlan = {
-  basis: 'simulação' | 'party atual';
+  basis: 'simulação' | 'confronto' | 'party atual';
   basisReason: string | null;
   slots: GuidePartySlot[];
   toPc: Array<{uuid: string; speciesId: string; fromSlot: number}>;
