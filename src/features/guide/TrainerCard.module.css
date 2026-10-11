@@ -38,7 +38,7 @@
 
 @container guia-workspace (min-width: 1100px) {
   .card {
-    --u: clamp(13px, min(2.3cqh, 1.24cqw), 19px);
+    --u: clamp(10px, min(1.8cqh, 1.05cqw), 18px);
   }
 }
 
@@ -582,8 +582,8 @@
 
 .mineArt {
   display: block;
-  height: min(88%, calc(5.4 * var(--u)));
-  max-height: calc(5.4 * var(--u));
+  height: min(88%, calc(4.6 * var(--u)));
+  max-height: calc(4.6 * var(--u));
   aspect-ratio: 1;
   flex: none;
   filter: drop-shadow(0 calc(0.3 * var(--u)) calc(0.3 * var(--u)) #0009);
@@ -666,8 +666,8 @@
 .swap,
 .moved {
   position: absolute;
-  top: 50%;
   right: calc(0.6 * var(--u));
+  bottom: calc(0.35 * var(--u));
   z-index: 1;
   max-width: calc(4.6 * var(--u));
   padding: calc(0.1 * var(--u)) calc(0.5 * var(--u));
@@ -678,7 +678,6 @@
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transform: translateY(-50%);
 }
 
 .swap {
@@ -954,8 +953,8 @@ button.answerRow:hover {
 
 .answerArt {
   display: block;
-  width: calc(3.6 * var(--u));
-  height: calc(3.6 * var(--u));
+  height: min(calc(3.6 * var(--u)), 92%);
+  aspect-ratio: 1;
   flex: none;
 }
 
@@ -1028,8 +1027,8 @@ button.answerRow:hover {
 .bubble {
   position: relative;
   display: block;
-  width: calc(2 * var(--u));
-  height: calc(2 * var(--u));
+  height: min(calc(2 * var(--u)), 80%);
+  aspect-ratio: 1;
   border-radius: 50%;
   background: var(--color-sunken);
   box-shadow: 0 0 0 1px #ffffff22;
@@ -1170,7 +1169,8 @@ button.answerRow:hover {
 
 .badgeRow {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, calc(3.2 * var(--u))));
+  justify-content: space-between;
   gap: calc(0.4 * var(--u));
 }
 
@@ -1237,7 +1237,7 @@ button.answerRow:hover {
 .starRow {
   display: grid;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 5 / 2;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: calc(0.4 * var(--u));
