@@ -61,7 +61,7 @@ export function ToolFrame({title, chips, onRecalculate, recalculating = false, n
               type="button"
               className={styles.iconButton}
               aria-label="Recalcular"
-              title="Recalcular"
+              data-tooltip="Recalcular"
               disabled={recalculating}
               onClick={onRecalculate}
             >

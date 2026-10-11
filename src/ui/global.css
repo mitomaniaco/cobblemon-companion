@@ -29,8 +29,6 @@ body,
 
 html {
   background: var(--color-canvas);
-  scrollbar-color: var(--color-border) transparent;
-  scrollbar-width: thin;
 }
 
 body {
@@ -69,25 +67,31 @@ textarea {
   background: color-mix(in oklab, var(--color-accent) 45%, transparent);
 }
 
+/* Scrollbar do app (estilo B): trilho escuro, polegar vermelho. Não definir `scrollbar-width`/`scrollbar-color` em nenhum lugar:
+   no Chromium eles desligam estas regras ::-webkit-scrollbar. */
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 *::-webkit-scrollbar-track {
-  background: transparent;
+  margin: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-sunken);
 }
 
 *::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 8px;
-  background: var(--color-border);
-  background-clip: padding-box;
+  border: 3px solid var(--color-sunken);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--color-control-border);
-  background-clip: padding-box;
+  background: var(--color-accent-bright);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 @media (forced-colors: active) {
@@ -100,8 +104,13 @@ textarea {
     background: Highlight;
   }
 
-  html {
-    scrollbar-color: auto;
+  *::-webkit-scrollbar-track {
+    background: Canvas;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-color: Canvas;
+    background: ButtonText;
   }
 }
 
@@ -135,8 +144,6 @@ textarea {
 
 [data-scroll-fade] {
   overflow-y: auto;
-  scrollbar-color: var(--color-muted) transparent;
-  scrollbar-width: thin;
   mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
   animation: scroll-fade linear both;
   animation-timeline: scroll(self block);

@@ -12,7 +12,7 @@ export interface TypeDotProps {
 export function TypeDot({type, size = 'md'}: TypeDotProps) {
   const style: CSSProperties = {background: typeColorVar(type), color: typeInkVar(type)};
   return (
-    <span className={`${styles.dot} ${styles[size]}`} style={style} role="img" aria-label={typeLabel(type)} title={typeLabel(type)}>
+    <span className={`${styles.dot} ${styles[size]}`} style={style} role="img" aria-label={typeLabel(type)} data-tooltip={typeLabel(type)}>
       <TypeIcon type={type} />
     </span>
   );

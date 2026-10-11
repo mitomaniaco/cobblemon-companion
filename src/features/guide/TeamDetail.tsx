@@ -134,7 +134,7 @@ function MoveCard({
                 key={entry.opponentId}
                 className={styles.damageCell}
                 data-best={entry.best || undefined}
-                title={entry.best ? `Melhor golpe contra ${name}` : name}
+                data-tooltip={entry.best ? `Melhor golpe contra ${name}` : name}
               >
                 {opponent && (
                   <span className={styles.damageArt}>
@@ -203,7 +203,7 @@ export function TeamDetail({member, slot, individual, result, onOpenCalculation}
             </>
           )}
           {baseStats && (
-            <div className={styles.stats} title="Atributos base da espécie">
+            <div className={styles.stats} data-tooltip="Atributos base da espécie">
               {STAT_ROWS.map((row) => (
                 <div key={row.stat} className={styles.stat} style={{'--bar': `var(${row.color})`} as CSSProperties}>
                   <span>{row.label}</span>

@@ -23,6 +23,7 @@ Regras que o dono do projeto repetiu durante o redesign do Trainer Card. Todo ag
 10. **Informação onde a decisão acontece.** O dado fica junto do que se decide (quem responde a cada adversário fica na coluna do adversário; "Vale adquirir" diz por qual golpe trocar). Não repita o mesmo dado em duas áreas.
 11. **Sem redundância óbvia.** Se o usuário já sabe (ex.: "guarde no PC" quando entra alguém), não escreva.
 12. **Variantes e controles secundários são discretos.** Pequenos, na linha, nunca do tamanho de um cartão.
+13. **Nada de componente nativo do Windows.** Dica ao passar o mouse é `data-tooltip` (e `data-tooltip-heading` para título), nunca o atributo `title`; o `TooltipLayer` (`src/ui/`) mostra o balão do app no hover e no foco do teclado. A barra de rolagem é a global de `global.css` (trilho escuro, polegar vermelho): não use `scrollbar-width` nem `scrollbar-color`, porque no Chromium eles desligam o estilo do app.
 
 ## 3. Linguagem
 

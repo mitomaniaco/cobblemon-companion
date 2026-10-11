@@ -41,7 +41,7 @@ function CandidateCard({candidate, index}: {candidate: CaptureCandidate; index: 
             <TypeBadge key={type} type={type} size="sm" />
           ))}
         </span>
-        <span className={styles.catchable} data-catchable={candidate.catchable} title={candidate.catchableReason}>
+        <span className={styles.catchable} data-catchable={candidate.catchable} data-tooltip={candidate.catchableReason}>
           {captureCatchableLabel(candidate.catchable)}
         </span>
       </header>
@@ -130,7 +130,7 @@ function OpponentSelector({gaps, selected, onSelect}: {gaps: CaptureGap[]; selec
             data-status={captureGapStatus(gap)}
             aria-pressed={index === selected}
             aria-label={`Contra ${name}, Nv. ${gap.level}`}
-            title={`${name} · Nv. ${gap.level}`}
+            data-tooltip={`${name} · Nv. ${gap.level}`}
             onClick={() => onSelect(index)}
           >
             <Art speciesId={gap.speciesId} className={styles.selectorArt} />
