@@ -1,5 +1,6 @@
 import {useId, useMemo, useState} from 'react';
 import type {CSSProperties, ReactNode} from 'react';
+import {ArrowFatLinesUp, Barbell, Sword, Target, UsersThree, type Icon} from '@phosphor-icons/react';
 import {ListBox, ListBoxItem, type Key, type Selection} from 'react-aria-components';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
@@ -23,6 +24,9 @@ import {
   Select,
   StatusMessage,
   Switch,
+  Tab,
+  TabList,
+  Tabs,
   TypeIcon,
   typeColorVar,
   typeInkVar,
@@ -49,6 +53,8 @@ import {
   guidePartySteps,
   guideTurnsShort,
   guideUnansweredOpponents,
+  type GuideTab,
+  type GuideToolStatus,
 } from './guide-model';
 import {TeamDetail} from './TeamDetail';
 import {LevelCapField} from './LevelCapField';
@@ -126,6 +132,12 @@ export interface TrainerCardProps {
   levelCap: number | null;
   progressLevelCap: number | null;
   onOpenCalculation(uuid: string, move: GuideTeamMember['moves'][number]): void;
+  /** Ferramenta ativa no dock: "team" mostra as três colunas; as demais mostram `toolBody` no lugar delas. */
+  tool: GuideTab;
+  onToolChange(tab: GuideTab): void;
+  /** Corpo já montado da ferramenta ativa (ignorado com `tool === 'team'`). */
+  toolBody: ReactNode;
+  toolStatus: Record<GuideTab, GuideToolStatus>;
 }
 
 function FindHow({detail}: {detail: DetailEntry | undefined}) {
@@ -574,6 +586,58 @@ function Trail({
   );
 }
 
+const DOCK_TABS: ReadonlyArray<{key: GuideTab; label: string; Icon: Icon}> = [
+  {key: 'team', label: 'Equipe', Icon: UsersThree},
+  {key: 'battle', label: 'Plano de batalha', Icon: Sword},
+  {key: 'evolutions', label: 'Evoluções', Icon: ArrowFatLinesUp},
+  {key: 'training', label: 'Treino até o cap', Icon: Barbell},
+  {key: 'captures', label: 'Capturas', Icon: Target},
+];
+
+function ToolDock({
+  tool,
+  onToolChange,
+  status,
+}: {
+  tool: GuideTab;
+  onToolChange(tab: GuideTab): void;
+  status: Record<GuideTab, GuideToolStatus>;
+}) {
+  const disabledKeys = DOCK_TABS.filter((entry) => status[entry.key].disabledReason !== undefined).map((entry) => entry.key);
+  return (
+    <Tabs
+      className={styles.dockRoot}
+      selectedKey={tool}
+      disabledKeys={disabledKeys}
+      onSelectionChange={(key) => onToolChange(key as GuideTab)}
+    >
+      <TabList className={styles.dock} aria-label="Ferramentas do guia">
+        {DOCK_TABS.map(({key, label, Icon: TabIcon}) => {
+          const entry = status[key];
+          return (
+            <Tab key={key} id={key} className={styles.dockTab} aria-label={label} data-tool={key}>
+              <span className={styles.dockIcon}>
+                <TabIcon aria-hidden="true" weight="bold" />
+              </span>
+              <span className={styles.dockText}>
+                <strong className={styles.dockTitle}>{label}</strong>
+                <span className={styles.dockSub} title={entry.disabledReason}>
+                  {entry.disabledReason ?? entry.subtitle}
+                </span>
+              </span>
+              {entry.badge && !entry.disabledReason && (
+                <span className={styles.dockBadge} data-tone={entry.badge.tone}>
+                  {entry.badge.text}
+                </span>
+              )}
+            </Tab>
+          );
+        })}
+      </TabList>
+    </Tabs>
+  );
+}
+
 export function TrainerCard({
   api,
   campaign,
@@ -590,6 +654,10 @@ export function TrainerCard({
   levelCap,
   progressLevelCap,
   onOpenCalculation,
+  tool,
+  onToolChange,
+  toolBody,
+  toolStatus,
 }: TrainerCardProps) {
   const [view, setView] = useState<CardView>('campaign');
   const [query, setQuery] = useState('');
@@ -1136,45 +1204,53 @@ export function TrainerCard({
         )}
       </div>
 
-      <section
-        className={styles.hero}
-        aria-label={pveMode ? 'Objetivo PvE' : heroLabel}
-        style={{'--hero': pveMode || freeTrainer ? typeColorVar('Normal') : palette?.color} as CSSProperties}
-      >
-        {pveMode ? (
-          <div className={styles.cols} data-mode="pve">
-            <div className={styles.col} data-col="player">
-              <PlayerPanel
-                progress={progress}
-                badgeEntries={badgeEntries}
-                totalVictories={totalVictories}
-                playerName={playerName}
-                playerAvatar={playerAvatar}
-                levelCap={levelCap}
-                capSource={capSource}
-                capOpen={capOpen}
-                capRegionId={capRegionId}
-                onToggleCap={() => setCapChoice(!capOpen)}
-                capRegion={capRegion}
-                pikaCount={pikaCount}
-                campaignDone={campaignDone}
-                campaignTotal={series.stages.length}
-              />
+      {tool !== 'team' ? (
+        <section className={styles.tool} aria-label="Ferramenta do guia">
+          {toolBody}
+        </section>
+      ) : (
+        <section
+          className={styles.hero}
+          aria-label={pveMode ? 'Objetivo PvE' : heroLabel}
+          style={{'--hero': pveMode || freeTrainer ? typeColorVar('Normal') : palette?.color} as CSSProperties}
+        >
+          {pveMode ? (
+            <div className={styles.cols} data-mode="pve">
+              <div className={styles.col} data-col="player">
+                <PlayerPanel
+                  progress={progress}
+                  badgeEntries={badgeEntries}
+                  totalVictories={totalVictories}
+                  playerName={playerName}
+                  playerAvatar={playerAvatar}
+                  levelCap={levelCap}
+                  capSource={capSource}
+                  capOpen={capOpen}
+                  capRegionId={capRegionId}
+                  onToggleCap={() => setCapChoice(!capOpen)}
+                  capRegion={capRegion}
+                  pikaCount={pikaCount}
+                  campaignDone={campaignDone}
+                  campaignTotal={series.stages.length}
+                />
+              </div>
+              {teamCol}
+              {detailCol}
             </div>
-            {teamCol}
-            {detailCol}
-          </div>
-        ) : oppCol ? (
-          <div className={styles.cols} data-mode="campaign">
-            {teamCol}
-            {detailCol}
-            {oppCol}
-          </div>
-        ) : (
-          <p className={styles.muted}>Nenhuma etapa disponível nesta série.</p>
-        )}
-        {(pveMode || oppCol) && footer}
-      </section>
+          ) : oppCol ? (
+            <div className={styles.cols} data-mode="campaign">
+              {teamCol}
+              {detailCol}
+              {oppCol}
+            </div>
+          ) : (
+            <p className={styles.muted}>Nenhuma etapa disponível nesta série.</p>
+          )}
+          {(pveMode || oppCol) && footer}
+        </section>
+      )}
+
+      <ToolDock tool={tool} onToolChange={onToolChange} status={toolStatus} />
     </section>
   );
 }

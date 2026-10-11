@@ -12,7 +12,7 @@
   height: 100%;
   min-width: 0;
   min-height: 0;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: calc(0.5 * var(--u));
   padding: calc(0.9 * var(--u));
   border-radius: calc(1.9 * var(--u));
@@ -1525,6 +1525,154 @@ button.answerRow:hover {
   }
 
   .bubble[data-best] {
+    outline: 2px solid Highlight;
+  }
+}
+
+/* ---------- ferramenta ativa ---------- */
+
+.tool {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  border-radius: calc(1.1 * var(--u));
+  background: var(--color-surface);
+  box-shadow:
+    0 0 0 1px #0008,
+    inset 0 1px 0 #ffffff12;
+}
+
+@container guia-workspace (min-width: 1100px) {
+  .tool {
+    overflow: hidden auto;
+  }
+}
+
+/* ---------- dock de ferramentas ---------- */
+
+.dockRoot {
+  position: relative;
+  z-index: 3;
+  min-width: 0;
+}
+
+.dockRoot .dock {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(calc(10 * var(--u)), 1fr));
+  gap: calc(0.5 * var(--u));
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.dockRoot .dockTab {
+  display: flex;
+  height: auto;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: calc(0.6 * var(--u));
+  padding: calc(0.45 * var(--u)) calc(0.7 * var(--u));
+  border-radius: calc(0.9 * var(--u));
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px #0008;
+  color: var(--color-text);
+  font-size: calc(0.85 * var(--u));
+  text-align: left;
+}
+
+.dockRoot .dockTab[data-selected] {
+  background: var(--color-raised);
+  box-shadow: 0 0 0 2px var(--color-highlight);
+}
+
+.dockRoot .dockTab[data-disabled] {
+  opacity: 0.55;
+}
+
+.dockRoot .dockTab[data-focus-visible] {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.dockIcon {
+  display: grid;
+  width: calc(2.1 * var(--u));
+  height: calc(2.1 * var(--u));
+  flex: none;
+  padding: 0;
+  place-items: center;
+  border-radius: calc(0.7 * var(--u));
+  background: color-mix(in srgb, var(--color-highlight) 24%, var(--color-surface));
+  color: var(--color-highlight);
+  font-size: calc(1.2 * var(--u));
+  line-height: 1;
+}
+
+.dockText {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 auto;
+  gap: calc(0.1 * var(--u));
+}
+
+.dockTitle,
+.dockSub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dockTitle {
+  font-size: calc(0.95 * var(--u));
+  line-height: 1.2;
+}
+
+.dockSub {
+  color: var(--color-muted);
+  font-size: calc(0.75 * var(--u));
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.dockBadge {
+  display: grid;
+  min-width: calc(1.5 * var(--u));
+  height: calc(1.5 * var(--u));
+  flex: none;
+  padding: 0 calc(0.3 * var(--u));
+  place-items: center;
+  border-radius: calc(0.75 * var(--u));
+  background: color-mix(in srgb, var(--badge, var(--color-muted)) 24%, var(--color-surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--badge, var(--color-muted)) 60%, transparent);
+  color: var(--badge, var(--color-muted));
+  font-size: calc(0.8 * var(--u));
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dockBadge[data-tone="ok"] {
+  --badge: var(--color-success);
+}
+
+.dockBadge[data-tone="warn"] {
+  --badge: var(--color-warning);
+}
+
+.dockBadge[data-tone="alert"] {
+  --badge: var(--color-error);
+}
+
+@media (forced-colors: active) {
+  .dockRoot .dockTab {
+    border: 1px solid ButtonText;
+  }
+
+  .dockRoot .dockTab[data-selected] {
     outline: 2px solid Highlight;
   }
 }

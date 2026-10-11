@@ -111,7 +111,7 @@ async function selectGuideTab(contents, label) {
     contents,
     `(() => {
     const tab = [...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')]
-      .find(item => item.textContent.trim() === ${JSON.stringify(label)});
+      .find(item => item.getAttribute('aria-label') === ${JSON.stringify(label)});
     if (!tab) return false;
     tab.click();
     return true;
@@ -120,7 +120,7 @@ async function selectGuideTab(contents, label) {
   check(found, `A aba "${label}" não existe em "Ferramentas do guia".`);
   await waitFor(
     contents,
-    `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].some(item => item.textContent.trim() === ${JSON.stringify(label)} && item.getAttribute('aria-selected') === 'true')`,
+    `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].some(item => item.getAttribute('aria-label') === ${JSON.stringify(label)} && item.getAttribute('aria-selected') === 'true')`,
     `aba do guia "${label}" selecionada`,
   );
 }
@@ -2061,6 +2061,7 @@ async function exerciseGuideWorkspace(window) {
   await setLevelCapField(contents, 30);
   // Confirme o resultado atualizado com o cap efetivo 30, não só o valor recém-digitado.
   // O time vive no Trainer Card; as exclusões e hipóteses ficam logo abaixo dele.
+  await selectGuideTab(contents, 'Equipe');
   await clickButton(contents, 'Exclusões, hipóteses e limites');
   await waitFor(
     contents,
@@ -2106,7 +2107,7 @@ async function exerciseGuideWorkspace(window) {
   );
   await capture(window, screenshotPaths.training, 'ol[aria-label="Treino por membro"]');
 
-  await selectGuideTab(contents, 'Plano de batalha');
+  await selectGuideTab(contents, 'Equipe');
   await clickButton(contents, 'Ver detalhes');
   await waitFor(contents, "document.body.innerText.includes('Ver cálculo')", 'detalhes do card do guia');
   await evaluate(
@@ -2140,7 +2141,7 @@ async function exerciseGuideWorkspace(window) {
   check(
     await evaluate(
       contents,
-      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.textContent.trim() === 'Plano de batalha'`,
+      `[...document.querySelectorAll('[aria-label="Ferramentas do guia"] [role="tab"]')].find(item => item.getAttribute('aria-selected') === 'true')?.getAttribute('aria-label') === 'Equipe'`,
     ),
     'A aba ativa do guia não sobreviveu à ida ao Dano e à volta.',
   );

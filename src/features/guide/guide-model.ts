@@ -12,8 +12,15 @@ import type {
 
 export type GuideMode = 'pve' | 'trainer';
 
-/** Ferramentas do guia, cada uma em sua aba; a aba ativa fica no app para sobreviver à ida ao Dano e à volta. */
-export type GuideTab = 'battle' | 'evolutions' | 'training' | 'captures';
+/** Ferramentas do guia no dock do Trainer Card ("team" é o corpo do cartão); a ativa fica no app para sobreviver à ida ao Dano e à volta. */
+export type GuideTab = 'team' | 'battle' | 'evolutions' | 'training' | 'captures';
+
+/** Cor = significado: ok (pronto), warn (pendente), alert (alerta real), neutral. */
+export type ToolTone = 'ok' | 'warn' | 'alert' | 'neutral';
+
+/** Resumo de uma ferramenta no dock: subtítulo de uma linha, selo opcional e motivo quando desabilitada. */
+export type GuideToolStatus = {subtitle: string; badge?: {text: string; tone: ToolTone}; disabledReason?: string};
+
 type GuideBuildCause = 'initial' | 'goal' | 'snapshot' | 'manual';
 
 export const GUIDE_SNAPSHOT_NOTICE = 'Save mudou · time recalculado';

@@ -1,0 +1,172 @@
+.frame {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  color: var(--color-text);
+}
+
+.head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(0.4 * var(--u)) calc(1 * var(--u));
+  padding: calc(0.6 * var(--u)) calc(0.9 * var(--u));
+  border-bottom: 1px solid #ffffff10;
+}
+
+.title {
+  margin: 0;
+  font-size: calc(1.15 * var(--u));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chips {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: calc(0.3 * var(--u)) calc(0.9 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.4 * var(--u));
+  color: var(--color-muted);
+  font-size: calc(0.85 * var(--u));
+  line-height: 1.2;
+}
+
+.chip::before {
+  width: calc(0.6 * var(--u));
+  height: calc(0.6 * var(--u));
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-muted);
+  content: "";
+}
+
+.chip[data-tone="ok"]::before {
+  background: var(--color-success);
+}
+
+.chip[data-tone="warn"]::before {
+  background: var(--color-warning);
+}
+
+.chip[data-tone="alert"]::before {
+  background: var(--color-error);
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: calc(0.5 * var(--u));
+}
+
+.iconButton {
+  display: grid;
+  width: calc(1.9 * var(--u));
+  height: calc(1.9 * var(--u));
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-raised);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: calc(1 * var(--u));
+  line-height: 1;
+}
+
+.iconButton:disabled {
+  cursor: progress;
+  opacity: 0.5;
+}
+
+.notesButton {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.4 * var(--u));
+  padding: calc(0.3 * var(--u)) calc(0.8 * var(--u));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: calc(0.8 * var(--u));
+  line-height: 1.2;
+}
+
+.iconButton:focus-visible,
+.notesButton:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.notes {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + calc(0.4 * var(--u)));
+  right: 0;
+  width: min(calc(30 * var(--u)), 80vw);
+  max-height: calc(24 * var(--u));
+  padding: calc(0.9 * var(--u));
+  overflow: hidden auto;
+  border-radius: calc(0.9 * var(--u));
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px #000a;
+  font-size: calc(0.85 * var(--u));
+  line-height: 1.35;
+}
+
+.notes[hidden] {
+  display: none;
+}
+
+.body {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: calc(0.6 * var(--u));
+  padding: calc(0.9 * var(--u));
+}
+
+@container guia-workspace (min-width: 1100px) {
+  .body {
+    overflow: hidden auto;
+  }
+}
+
+@container guia-workspace (max-width: 1099px) {
+  .frame {
+    height: auto;
+  }
+}
+
+@media (forced-colors: active) {
+  .iconButton,
+  .notesButton,
+  .notes {
+    border: 1px solid CanvasText;
+  }
+
+  .chip::before {
+    background: CanvasText;
+  }
+}
