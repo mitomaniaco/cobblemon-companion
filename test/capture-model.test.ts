@@ -18,9 +18,9 @@ const snapshot = {
 } as unknown as PlayerSnapshot;
 
 const opponents: GuideResult['opponents'] = [
-  {id: 'o0', speciesId: 'cobblemon:lanturn', level: 20, trainerId: 'misty'},
-  {id: 'o1', speciesId: 'cobblemon:starmie', level: 22, trainerId: 'misty'},
-  {id: 'o2', speciesId: 'cobblemon:golduck', level: 21, trainerId: 'misty'},
+  {id: 'o0', speciesId: 'cobblemon:lanturn', level: 20, trainerId: 'misty', dangerous: false},
+  {id: 'o1', speciesId: 'cobblemon:starmie', level: 22, trainerId: 'misty', dangerous: false},
+  {id: 'o2', speciesId: 'cobblemon:golduck', level: 21, trainerId: 'misty', dangerous: false},
 ];
 
 const member = (uuid: string, matchups: GuideResult['team'][number]['matchups']): GuideResult['team'][number] => ({
@@ -32,30 +32,44 @@ const member = (uuid: string, matchups: GuideResult['team'][number]['matchups'])
   item: {id: null, status: 'nenhum', reason: 'y'},
   matchups,
   acquire: [],
+  tips: [],
 });
 
 describe('lacunas do time', () => {
   it('são os adversários que nenhum membro vence, na ordem do guia', () => {
     const team = [
       member('u1', [
-        {opponentId: 'o0', outcome: 'perde', ourTurns: 3, theirTurns: 1, moveId: null, damage: []},
-        {opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3, moveId: null, damage: []},
+        {opponentId: 'o0', outcome: 'perde', ourTurns: 3, theirTurns: 1, moveId: null, holds: false, faster: false, damage: []},
+        {opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3, moveId: null, holds: false, faster: false, damage: []},
       ]),
-      member('u2', [{opponentId: 'o2', outcome: 'perde', ourTurns: 3, theirTurns: 2, moveId: null, damage: []}]),
+      member('u2', [
+        {opponentId: 'o2', outcome: 'perde', ourTurns: 3, theirTurns: 2, moveId: null, holds: false, faster: false, damage: []},
+      ]),
     ];
     expect(guideGapOpponentIds({opponents, team})).toEqual(['o0', 'o2']);
   });
 
   it('adversário sem nenhum confronto calculado também é lacuna, e vencer por qualquer membro fecha a lacuna', () => {
     expect(guideGapOpponentIds({opponents, team: [member('u1', [])]})).toEqual(['o0', 'o1', 'o2']);
-    const beaten = (opponentId: string) => ({opponentId, outcome: 'vence' as const, ourTurns: 1, theirTurns: 2, moveId: null, damage: []});
+    const beaten = (opponentId: string) => ({
+      opponentId,
+      outcome: 'vence' as const,
+      ourTurns: 1,
+      theirTurns: 2,
+      moveId: null,
+      holds: false,
+      faster: false,
+      damage: [],
+    });
     expect(guideGapOpponentIds({opponents, team: [member('u1', [beaten('o0')]), member('u2', [beaten('o1'), beaten('o2')])]})).toEqual([]);
   });
 });
 
 describe('pedido de capturas', () => {
-  const goal = {kind: 'trainer', trainerId: 'misty'} as const;
-  const team = [member('u1', [{opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3, moveId: null, damage: []}])];
+  const goal = {kind: 'trainer', trainerId: 'misty', dangerous: false} as const;
+  const team = [
+    member('u1', [{opponentId: 'o1', outcome: 'vence', ourTurns: 1, theirTurns: 3, moveId: null, holds: false, faster: false, damage: []}]),
+  ];
 
   it('leva o objetivo, o time, Pika Star e só as lacunas, com os hashes das fontes', () => {
     const pikaStar = Object.fromEntries(
@@ -86,6 +100,8 @@ describe('pedido de capturas', () => {
           opponentId: opponent.id,
           outcome: 'vence' as const,
           ourTurns: 1,
+          holds: false,
+          faster: false,
           theirTurns: 2,
           moveId: null,
           damage: [],

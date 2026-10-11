@@ -35,6 +35,7 @@ const team: GuideResult['team'] = [
     item: {id: 'cobblemon:choice_specs', status: 'obter', reason: 'y'},
     matchups: [],
     acquire: [],
+    tips: [],
   },
   {
     uuid: 'u2',
@@ -45,6 +46,7 @@ const team: GuideResult['team'] = [
     item: {id: null, status: 'nenhum', reason: 'z'},
     matchups: [],
     acquire: [],
+    tips: [],
   },
 ];
 
