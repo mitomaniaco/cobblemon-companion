@@ -277,6 +277,7 @@
         "options": [
           {
             "toSpeciesId": "cobblemon:graveler",
+            "toFormId": "normal",
             "method": "level_up",
             "requirements": [
               {

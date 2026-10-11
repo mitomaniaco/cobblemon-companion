@@ -3,6 +3,7 @@
   "abra": [
     {
       "to": "cobblemon:kadabra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -15,6 +16,7 @@
   "aipom": [
     {
       "to": "cobblemon:ambipom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=doublehit)"
     }
@@ -26,6 +28,7 @@
   "amaura": [
     {
       "to": "cobblemon:aurorus",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=39); time_range(range=night)"
     }
@@ -37,6 +40,7 @@
   "anorith": [
     {
       "to": "cobblemon:armaldo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -45,16 +49,19 @@
   "applin": [
     {
       "to": "cobblemon:flapple",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:tart_apple"
     },
     {
       "to": "cobblemon:appletun",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sweet_apple"
     },
     {
       "to": "cobblemon:dipplin",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:syrupy_apple"
     }
@@ -68,6 +75,7 @@
   "archen": [
     {
       "to": "cobblemon:archeops",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -76,6 +84,7 @@
   "arctibax": [
     {
       "to": "cobblemon:baxcalibur",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=54)"
     }
@@ -89,6 +98,7 @@
   "aron": [
     {
       "to": "cobblemon:lairon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -96,6 +106,7 @@
   "arrokuda": [
     {
       "to": "cobblemon:barraskewda",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -107,6 +118,7 @@
   "axew": [
     {
       "to": "cobblemon:fraxure",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -116,6 +128,7 @@
   "azurill": [
     {
       "to": "cobblemon:marill",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -123,6 +136,7 @@
   "bagon": [
     {
       "to": "cobblemon:shelgon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -130,6 +144,7 @@
   "baltoy": [
     {
       "to": "cobblemon:claydol",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -139,6 +154,7 @@
   "barboach": [
     {
       "to": "cobblemon:whiscash",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -151,6 +167,7 @@
   "bayleef": [
     {
       "to": "cobblemon:meganium",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -162,6 +179,7 @@
   "beldum": [
     {
       "to": "cobblemon:metang",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -171,6 +189,7 @@
   "bellsprout": [
     {
       "to": "cobblemon:weepinbell",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=21)"
     }
@@ -178,11 +197,13 @@
   "bergmite": [
     {
       "to": "cobblemon:avalugg",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     },
     {
       "to": "cobblemon:avalugg",
+      "toFormId": "hisui",
       "method": "level_up",
       "requirement": "level(minLevel=37); biome(biomeCondition=#cobblemon:is_mountain)"
     }
@@ -192,6 +213,7 @@
   "bidoof": [
     {
       "to": "cobblemon:bibarel",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=15)"
     }
@@ -199,6 +221,7 @@
   "binacle": [
     {
       "to": "cobblemon:barbaracle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=39)"
     }
@@ -206,6 +229,7 @@
   "bisharp": [
     {
       "to": "cobblemon:kingambit",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "defeat(target=bisharp held_item=cobblemon:kings_rock,amount=3)"
     }
@@ -216,6 +240,7 @@
   "blipbug": [
     {
       "to": "cobblemon:dottler",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=10)"
     }
@@ -224,6 +249,7 @@
   "blitzle": [
     {
       "to": "cobblemon:zebstrika",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=27)"
     }
@@ -231,6 +257,7 @@
   "boldore": [
     {
       "to": "cobblemon:gigalith",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -240,6 +267,7 @@
   "bonsly": [
     {
       "to": "cobblemon:sudowoodo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=mimic)"
     }
@@ -248,6 +276,7 @@
   "bounsweet": [
     {
       "to": "cobblemon:steenee",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -255,6 +284,7 @@
   "braixen": [
     {
       "to": "cobblemon:delphox",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -263,6 +293,7 @@
   "bramblin": [
     {
       "to": "cobblemon:brambleghast",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "blocks_traveled(amount=1000)"
     }
@@ -272,6 +303,7 @@
   "brionne": [
     {
       "to": "cobblemon:primarina",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -280,6 +312,7 @@
   "bronzor": [
     {
       "to": "cobblemon:bronzong",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=33)"
     }
@@ -289,6 +322,7 @@
   "budew": [
     {
       "to": "cobblemon:roselia",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); time_range(range=day)"
     }
@@ -296,6 +330,7 @@
   "buizel": [
     {
       "to": "cobblemon:floatzel",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -303,6 +338,7 @@
   "bulbasaur": [
     {
       "to": "cobblemon:ivysaur",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -310,6 +346,7 @@
   "buneary": [
     {
       "to": "cobblemon:lopunny",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -317,6 +354,7 @@
   "bunnelby": [
     {
       "to": "cobblemon:diggersby",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -324,11 +362,13 @@
   "burmy": [
     {
       "to": "cobblemon:wormadam",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20); properties(target=gender=female)"
     },
     {
       "to": "cobblemon:mothim",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20); properties(target=gender=male)"
     }
@@ -338,6 +378,7 @@
   "cacnea": [
     {
       "to": "cobblemon:cacturne",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -348,6 +389,7 @@
   "capsakid": [
     {
       "to": "cobblemon:scovillain",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:fire_stone"
     }
@@ -356,6 +398,7 @@
   "carkol": [
     {
       "to": "cobblemon:coalossal",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -365,6 +408,7 @@
   "carvanha": [
     {
       "to": "cobblemon:sharpedo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -372,6 +416,7 @@
   "cascoon": [
     {
       "to": "cobblemon:dustox",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=10)"
     }
@@ -380,6 +425,7 @@
   "caterpie": [
     {
       "to": "cobblemon:metapod",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=7)"
     }
@@ -392,6 +438,7 @@
   "cetoddle": [
     {
       "to": "cobblemon:cetitan",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:ice_stone"
     }
@@ -400,6 +447,7 @@
   "chansey": [
     {
       "to": "cobblemon:blissey",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -407,11 +455,13 @@
   "charcadet": [
     {
       "to": "cobblemon:armarouge",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:auspicious_armor"
     },
     {
       "to": "cobblemon:ceruledge",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:malicious_armor"
     }
@@ -420,6 +470,7 @@
   "charjabug": [
     {
       "to": "cobblemon:vikavolt",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone"
     }
@@ -427,6 +478,7 @@
   "charmander": [
     {
       "to": "cobblemon:charmeleon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -434,6 +486,7 @@
   "charmeleon": [
     {
       "to": "cobblemon:charizard",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -443,6 +496,7 @@
   "cherubi": [
     {
       "to": "cobblemon:cherrim",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -451,6 +505,7 @@
   "chespin": [
     {
       "to": "cobblemon:quilladin",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -458,6 +513,7 @@
   "chewtle": [
     {
       "to": "cobblemon:drednaw",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -466,6 +522,7 @@
   "chikorita": [
     {
       "to": "cobblemon:bayleef",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -473,6 +530,7 @@
   "chimchar": [
     {
       "to": "cobblemon:monferno",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=14)"
     }
@@ -481,6 +539,7 @@
   "chinchou": [
     {
       "to": "cobblemon:lanturn",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=27)"
     }
@@ -488,6 +547,7 @@
   "chingling": [
     {
       "to": "cobblemon:chimecho",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); time_range(range=night)"
     }
@@ -498,11 +558,13 @@
   "clamperl": [
     {
       "to": "cobblemon:huntail",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:deep_sea_tooth)"
     },
     {
       "to": "cobblemon:gorebyss",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:deep_sea_scale)"
     }
@@ -510,6 +572,7 @@
   "clauncher": [
     {
       "to": "cobblemon:clawitzer",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -520,6 +583,7 @@
   "clefairy": [
     {
       "to": "cobblemon:clefable",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:moon_stone"
     }
@@ -527,6 +591,7 @@
   "cleffa": [
     {
       "to": "cobblemon:clefairy",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -534,6 +599,7 @@
   "clobbopus": [
     {
       "to": "cobblemon:grapploct",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=taunt)"
     }
@@ -546,6 +612,7 @@
   "combee": [
     {
       "to": "cobblemon:vespiquen",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=21); properties(target=gender=female)"
     }
@@ -553,6 +620,7 @@
   "combusken": [
     {
       "to": "cobblemon:blaziken",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -563,6 +631,7 @@
   "corphish": [
     {
       "to": "cobblemon:crawdaunt",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -572,6 +641,7 @@
   "corvisquire": [
     {
       "to": "cobblemon:corviknight",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -579,11 +649,13 @@
   "cosmoem": [
     {
       "to": "cobblemon:solgaleo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=53); time_range(range=day)"
     },
     {
       "to": "cobblemon:lunala",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=53); time_range(range=night)"
     }
@@ -591,6 +663,7 @@
   "cosmog": [
     {
       "to": "cobblemon:cosmoem",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=43)"
     }
@@ -598,6 +671,7 @@
   "cottonee": [
     {
       "to": "cobblemon:whimsicott",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sun_stone"
     }
@@ -606,6 +680,7 @@
   "crabrawler": [
     {
       "to": "cobblemon:crabominable",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:ice_stone"
     }
@@ -615,6 +690,7 @@
   "cranidos": [
     {
       "to": "cobblemon:rampardos",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -624,6 +700,7 @@
   "croagunk": [
     {
       "to": "cobblemon:toxicroak",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -632,6 +709,7 @@
   "crocalor": [
     {
       "to": "cobblemon:skeledirge",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -639,6 +717,7 @@
   "croconaw": [
     {
       "to": "cobblemon:feraligatr",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -648,6 +727,7 @@
   "cubchoo": [
     {
       "to": "cobblemon:beartic",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -655,16 +735,19 @@
   "cubone": [
     {
       "to": "cobblemon:marowak",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28); biome(biomeAnticondition=#cobblemon:evolution/regional/cubone_alolabiome); biome(biomeAnticondition=#minecraft:is_nether)"
     },
     {
       "to": "cobblemon:marowak",
+      "toFormId": "alola",
       "method": "level_up",
       "requirement": "level(minLevel=28); time_range(range=night); biome(biomeCondition=#cobblemon:evolution/regional/cubone_alolabiome); biome(biomeAnticondition=#cobblemon:evolution/regional/cubone_kantobiome); biome(biomeAnticondition=#minecraft:is_nether)"
     },
     {
       "to": "cobblemon:marowak",
+      "toFormId": "alola",
       "method": "level_up",
       "requirement": "level(minLevel=28); biome(biomeAnticondition=#cobblemon:is_overworld); biome(biomeCondition=#minecraft:is_nether)"
     }
@@ -672,6 +755,7 @@
   "cufant": [
     {
       "to": "cobblemon:copperajah",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -680,6 +764,7 @@
   "cutiefly": [
     {
       "to": "cobblemon:ribombee",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -688,6 +773,7 @@
   "cyndaquil": [
     {
       "to": "cobblemon:quilava",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=14)"
     }
@@ -698,11 +784,13 @@
   "dartrix": [
     {
       "to": "cobblemon:decidueye",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     },
     {
       "to": "cobblemon:decidueye",
+      "toFormId": "hisui",
       "method": "level_up",
       "requirement": "level(minLevel=36); biome(biomeCondition=#cobblemon:evolution/regional/dartrix_hisuibiome)"
     }
@@ -710,6 +798,7 @@
   "darumaka": [
     {
       "to": "cobblemon:darmanitan",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -719,6 +808,7 @@
   "deerling": [
     {
       "to": "cobblemon:sawsbuck",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -726,6 +816,7 @@
   "deino": [
     {
       "to": "cobblemon:zweilous",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=50)"
     }
@@ -738,11 +829,13 @@
   "dewott": [
     {
       "to": "cobblemon:samurott",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     },
     {
       "to": "cobblemon:samurott",
+      "toFormId": "hisui",
       "method": "level_up",
       "requirement": "level(minLevel=36); biome(biomeCondition=#cobblemon:evolution/regional/dewott_hisuibiome)"
     }
@@ -750,6 +843,7 @@
   "dewpider": [
     {
       "to": "cobblemon:araquanid",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -761,6 +855,7 @@
   "diglett": [
     {
       "to": "cobblemon:dugtrio",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -768,6 +863,7 @@
   "dipplin": [
     {
       "to": "cobblemon:hydrapple",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=dragoncheer)"
     }
@@ -777,6 +873,7 @@
   "doduo": [
     {
       "to": "cobblemon:dodrio",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=31)"
     }
@@ -784,6 +881,7 @@
   "dolliv": [
     {
       "to": "cobblemon:arboliva",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -793,6 +891,7 @@
   "dottler": [
     {
       "to": "cobblemon:orbeetle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -800,6 +899,7 @@
   "doublade": [
     {
       "to": "cobblemon:aegislash",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:dusk_stone"
     }
@@ -811,6 +911,7 @@
   "dragonair": [
     {
       "to": "cobblemon:dragonite",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=55)"
     }
@@ -819,6 +920,7 @@
   "drakloak": [
     {
       "to": "cobblemon:dragapult",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=60)"
     }
@@ -828,6 +930,7 @@
   "dratini": [
     {
       "to": "cobblemon:dragonair",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -836,6 +939,7 @@
   "dreepy": [
     {
       "to": "cobblemon:drakloak",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=50)"
     }
@@ -844,6 +948,7 @@
   "drifloon": [
     {
       "to": "cobblemon:drifblim",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -851,6 +956,7 @@
   "drilbur": [
     {
       "to": "cobblemon:excadrill",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=31)"
     }
@@ -858,6 +964,7 @@
   "drizzile": [
     {
       "to": "cobblemon:inteleon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -865,6 +972,7 @@
   "drowzee": [
     {
       "to": "cobblemon:hypno",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -874,6 +982,7 @@
   "ducklett": [
     {
       "to": "cobblemon:swanna",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -883,6 +992,7 @@
   "dunsparce": [
     {
       "to": "cobblemon:dudunsparce",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=hyperdrill)"
     }
@@ -890,6 +1000,7 @@
   "duosion": [
     {
       "to": "cobblemon:reuniclus",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=41)"
     }
@@ -897,6 +1008,7 @@
   "duraludon": [
     {
       "to": "cobblemon:archaludon",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:metal_alloy"
     }
@@ -905,6 +1017,7 @@
   "dusclops": [
     {
       "to": "cobblemon:dusknoir",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:reaper_cloth)"
     }
@@ -913,6 +1026,7 @@
   "duskull": [
     {
       "to": "cobblemon:dusclops",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -921,6 +1035,7 @@
   "dwebble": [
     {
       "to": "cobblemon:crustle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -928,6 +1043,7 @@
   "eelektrik": [
     {
       "to": "cobblemon:eelektross",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone"
     }
@@ -936,41 +1052,49 @@
   "eevee": [
     {
       "to": "cobblemon:jolteon",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone"
     },
     {
       "to": "cobblemon:vaporeon",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:water_stone"
     },
     {
       "to": "cobblemon:flareon",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:fire_stone"
     },
     {
       "to": "cobblemon:espeon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); time_range(range=day)"
     },
     {
       "to": "cobblemon:umbreon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); time_range(range=night)"
     },
     {
       "to": "cobblemon:sylveon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); has_move_type(type=fairy)"
     },
     {
       "to": "cobblemon:leafeon",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone"
     },
     {
       "to": "cobblemon:glaceon",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:ice_stone"
     }
@@ -979,6 +1103,7 @@
   "ekans": [
     {
       "to": "cobblemon:arbok",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -987,6 +1112,7 @@
   "electabuzz": [
     {
       "to": "cobblemon:electivire",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:electirizer)"
     }
@@ -995,6 +1121,7 @@
   "electrike": [
     {
       "to": "cobblemon:manectric",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -1003,6 +1130,7 @@
   "elekid": [
     {
       "to": "cobblemon:electabuzz",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -1010,6 +1138,7 @@
   "elgyem": [
     {
       "to": "cobblemon:beheeyem",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     }
@@ -1025,11 +1154,13 @@
   "espurr": [
     {
       "to": "cobblemon:meowstic",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25); properties(target=gender=male)"
     },
     {
       "to": "cobblemon:meowstic",
+      "toFormId": "f",
       "method": "level_up",
       "requirement": "level(minLevel=25); properties(target=gender=female)"
     }
@@ -1039,11 +1170,13 @@
   "exeggcute": [
     {
       "to": "cobblemon:exeggutor",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone"
     },
     {
       "to": "cobblemon:exeggutor",
+      "toFormId": "alola",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone; biome(biomeCondition=#cobblemon:evolution/regional/exeggcute_alolabiome)"
     }
@@ -1057,6 +1190,7 @@
   "feebas": [
     {
       "to": "cobblemon:milotic",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:prism_scale)"
     }
@@ -1064,6 +1198,7 @@
   "fennekin": [
     {
       "to": "cobblemon:braixen",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -1072,6 +1207,7 @@
   "ferroseed": [
     {
       "to": "cobblemon:ferrothorn",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -1081,6 +1217,7 @@
   "fidough": [
     {
       "to": "cobblemon:dachsbun",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -1088,6 +1225,7 @@
   "finizen": [
     {
       "to": "cobblemon:palafin",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -1095,6 +1233,7 @@
   "finneon": [
     {
       "to": "cobblemon:lumineon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=31)"
     }
@@ -1102,6 +1241,7 @@
   "flaaffy": [
     {
       "to": "cobblemon:ampharos",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -1109,6 +1249,7 @@
   "flabebe": [
     {
       "to": "cobblemon:floette",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=19)"
     }
@@ -1119,6 +1260,7 @@
   "fletchinder": [
     {
       "to": "cobblemon:talonflame",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1126,6 +1268,7 @@
   "fletchling": [
     {
       "to": "cobblemon:fletchinder",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -1133,6 +1276,7 @@
   "flittle": [
     {
       "to": "cobblemon:espathra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1141,6 +1285,7 @@
   "floette": [
     {
       "to": "cobblemon:florges",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:shiny_stone"
     }
@@ -1148,6 +1293,7 @@
   "floragato": [
     {
       "to": "cobblemon:meowscarada",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -1158,6 +1304,7 @@
   "fomantis": [
     {
       "to": "cobblemon:lurantis",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34); time_range(range=day)"
     }
@@ -1165,6 +1312,7 @@
   "foongus": [
     {
       "to": "cobblemon:amoonguss",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=39)"
     }
@@ -1173,6 +1321,7 @@
   "fraxure": [
     {
       "to": "cobblemon:haxorus",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=48)"
     }
@@ -1180,6 +1329,7 @@
   "frigibax": [
     {
       "to": "cobblemon:arctibax",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1187,6 +1337,7 @@
   "frillish": [
     {
       "to": "cobblemon:jellicent",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -1194,6 +1345,7 @@
   "froakie": [
     {
       "to": "cobblemon:frogadier",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -1201,6 +1353,7 @@
   "frogadier": [
     {
       "to": "cobblemon:greninja",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -1210,6 +1363,7 @@
   "fuecoco": [
     {
       "to": "cobblemon:crocalor",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -1219,6 +1373,7 @@
   "gabite": [
     {
       "to": "cobblemon:garchomp",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=48)"
     }
@@ -1232,6 +1387,7 @@
   "gastly": [
     {
       "to": "cobblemon:haunter",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -1242,6 +1398,7 @@
   "geodude": [
     {
       "to": "cobblemon:graveler",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -1250,6 +1407,7 @@
   "gible": [
     {
       "to": "cobblemon:gabite",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -1258,46 +1416,55 @@
   "gimmighoul": [
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=32-63,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=64-95,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=96-127,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=128-159,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=160-191,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=192-223,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); property_range(range=224-255,feature=gimmighoul_netherite)"
     },
     {
       "to": "cobblemon:gholdengo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=gimmighoul gimmighoul_coins=999); properties(target=gimmighoul gimmighoul_netherite=256)"
     }
@@ -1305,6 +1472,7 @@
   "girafarig": [
     {
       "to": "cobblemon:farigiraf",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=twinbeam)"
     }
@@ -1315,6 +1483,7 @@
   "glameow": [
     {
       "to": "cobblemon:purugly",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -1323,6 +1492,7 @@
   "gligar": [
     {
       "to": "cobblemon:gliscor",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:razor_fang); time_range(range=night)"
     }
@@ -1330,6 +1500,7 @@
   "glimmet": [
     {
       "to": "cobblemon:glimmora",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1339,11 +1510,13 @@
   "gloom": [
     {
       "to": "cobblemon:vileplume",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone"
     },
     {
       "to": "cobblemon:bellossom",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sun_stone"
     }
@@ -1352,6 +1525,7 @@
   "golbat": [
     {
       "to": "cobblemon:crobat",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -1359,6 +1533,7 @@
   "goldeen": [
     {
       "to": "cobblemon:seaking",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=33)"
     }
@@ -1368,6 +1543,7 @@
   "golett": [
     {
       "to": "cobblemon:golurk",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=43)"
     }
@@ -1378,11 +1554,13 @@
   "goomy": [
     {
       "to": "cobblemon:sliggoo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     },
     {
       "to": "cobblemon:sliggoo",
+      "toFormId": "hisui",
       "method": "level_up",
       "requirement": "level(minLevel=40); biome(biomeCondition=#cobblemon:evolution/regional/goomy_hisuibiome)"
     }
@@ -1391,6 +1569,7 @@
   "gossifleur": [
     {
       "to": "cobblemon:eldegoss",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -1398,6 +1577,7 @@
   "gothita": [
     {
       "to": "cobblemon:gothorita",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -1406,6 +1586,7 @@
   "gothorita": [
     {
       "to": "cobblemon:gothitelle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=41)"
     }
@@ -1418,6 +1599,7 @@
   "graveler": [
     {
       "to": "cobblemon:golem",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -1426,6 +1608,7 @@
   "greavard": [
     {
       "to": "cobblemon:houndstone",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); time_range(range=night)"
     }
@@ -1435,6 +1618,7 @@
   "grimer": [
     {
       "to": "cobblemon:muk",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -1443,6 +1627,7 @@
   "grookey": [
     {
       "to": "cobblemon:thwackey",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -1450,56 +1635,67 @@
   "grotle": [
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:oak_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); biome(biomeConditions=#cobblemon:is_swamp); held_item(itemCondition=minecraft:oak_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:birch_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:dark_oak_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:acacia_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=#cobblemon:azalea_tree)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:jungle_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:spruce_sapling)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:mangrove_propagule)"
     },
     {
       "to": "cobblemon:torterra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); held_item(itemCondition=minecraft:cherry_sapling)"
     }
@@ -1508,6 +1704,7 @@
   "grovyle": [
     {
       "to": "cobblemon:sceptile",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -1515,6 +1712,7 @@
   "growlithe": [
     {
       "to": "cobblemon:arcanine",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:fire_stone"
     }
@@ -1522,6 +1720,7 @@
   "grubbin": [
     {
       "to": "cobblemon:charjabug",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -1530,6 +1729,7 @@
   "gulpin": [
     {
       "to": "cobblemon:swalot",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -1538,6 +1738,7 @@
   "gurdurr": [
     {
       "to": "cobblemon:conkeldurr",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -1547,6 +1748,7 @@
   "hakamoo": [
     {
       "to": "cobblemon:kommoo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=45)"
     }
@@ -1554,6 +1756,7 @@
   "happiny": [
     {
       "to": "cobblemon:chansey",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:oval_stone); time_range(range=day)"
     }
@@ -1562,6 +1765,7 @@
   "hatenna": [
     {
       "to": "cobblemon:hattrem",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -1570,6 +1774,7 @@
   "hattrem": [
     {
       "to": "cobblemon:hatterene",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     }
@@ -1577,6 +1782,7 @@
   "haunter": [
     {
       "to": "cobblemon:gengar",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -1589,6 +1795,7 @@
   "helioptile": [
     {
       "to": "cobblemon:heliolisk",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sun_stone"
     }
@@ -1597,6 +1804,7 @@
   "herdier": [
     {
       "to": "cobblemon:stoutland",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -1604,6 +1812,7 @@
   "hippopotas": [
     {
       "to": "cobblemon:hippowdon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -1616,6 +1825,7 @@
   "honedge": [
     {
       "to": "cobblemon:doublade",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1625,6 +1835,7 @@
   "hoothoot": [
     {
       "to": "cobblemon:noctowl",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -1632,6 +1843,7 @@
   "hoppip": [
     {
       "to": "cobblemon:skiploom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -1639,6 +1851,7 @@
   "horsea": [
     {
       "to": "cobblemon:seadra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -1647,6 +1860,7 @@
   "houndour": [
     {
       "to": "cobblemon:houndoom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -1659,6 +1873,7 @@
   "igglybuff": [
     {
       "to": "cobblemon:jigglypuff",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -1667,6 +1882,7 @@
   "impidimp": [
     {
       "to": "cobblemon:morgrem",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -1677,16 +1893,19 @@
   "inkay": [
     {
       "to": "cobblemon:malamar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); has_move(move=topsyturvy)"
     },
     {
       "to": "cobblemon:malamar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=nickname=Dinnerbone)"
     },
     {
       "to": "cobblemon:malamar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=nickname=Grumm)"
     }
@@ -1705,6 +1924,7 @@
   "ivysaur": [
     {
       "to": "cobblemon:venusaur",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -1712,6 +1932,7 @@
   "jangmoo": [
     {
       "to": "cobblemon:hakamoo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1720,6 +1941,7 @@
   "jigglypuff": [
     {
       "to": "cobblemon:wigglytuff",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:moon_stone"
     }
@@ -1729,6 +1951,7 @@
   "joltik": [
     {
       "to": "cobblemon:galvantula",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -1738,6 +1961,7 @@
   "kabuto": [
     {
       "to": "cobblemon:kabutops",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -1746,6 +1970,7 @@
   "kadabra": [
     {
       "to": "cobblemon:alakazam",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -1753,6 +1978,7 @@
   "kakuna": [
     {
       "to": "cobblemon:beedrill",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=10)"
     }
@@ -1761,11 +1987,13 @@
   "karrablast": [
     {
       "to": "cobblemon:escavalier",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "requiredContext=shelmet"
     },
     {
       "to": "cobblemon:escavalier",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:shell_helmet"
     }
@@ -1780,11 +2008,13 @@
   "kirlia": [
     {
       "to": "cobblemon:gardevoir",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     },
     {
       "to": "cobblemon:gallade",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:dawn_stone; properties(target=gender=male)"
     }
@@ -1792,6 +2022,7 @@
   "klang": [
     {
       "to": "cobblemon:klinklang",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=49)"
     }
@@ -1802,6 +2033,7 @@
   "klink": [
     {
       "to": "cobblemon:klang",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -1810,11 +2042,13 @@
   "koffing": [
     {
       "to": "cobblemon:weezing",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     },
     {
       "to": "cobblemon:weezing",
+      "toFormId": "galar",
       "method": "level_up",
       "requirement": "level(minLevel=35); biome(biomeCondition=#cobblemon:evolution/regional/koffing_galarbiome)"
     }
@@ -1825,6 +2059,7 @@
   "krabby": [
     {
       "to": "cobblemon:kingler",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -1832,6 +2067,7 @@
   "kricketot": [
     {
       "to": "cobblemon:kricketune",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=10)"
     }
@@ -1840,6 +2076,7 @@
   "krokorok": [
     {
       "to": "cobblemon:krookodile",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -1848,11 +2085,13 @@
   "kubfu": [
     {
       "to": "cobblemon:urshifu",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:scroll_of_darkness"
     },
     {
       "to": "cobblemon:urshifu",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:scroll_of_waters"
     }
@@ -1862,6 +2101,7 @@
   "lairon": [
     {
       "to": "cobblemon:aggron",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     }
@@ -1869,6 +2109,7 @@
   "lampent": [
     {
       "to": "cobblemon:chandelure",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:dusk_stone"
     }
@@ -1879,6 +2120,7 @@
   "larvesta": [
     {
       "to": "cobblemon:volcarona",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=59)"
     }
@@ -1886,6 +2128,7 @@
   "larvitar": [
     {
       "to": "cobblemon:pupitar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -1897,11 +2140,13 @@
   "lechonk": [
     {
       "to": "cobblemon:oinkologne",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18); properties(target=gender=male)"
     },
     {
       "to": "cobblemon:oinkologne",
+      "toFormId": "f",
       "method": "level_up",
       "requirement": "level(minLevel=18); properties(target=gender=female)"
     }
@@ -1910,6 +2155,7 @@
   "ledyba": [
     {
       "to": "cobblemon:ledian",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -1918,6 +2164,7 @@
   "lickitung": [
     {
       "to": "cobblemon:lickilicky",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=rollout)"
     }
@@ -1926,6 +2173,7 @@
   "lileep": [
     {
       "to": "cobblemon:cradily",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -1934,6 +2182,7 @@
   "lillipup": [
     {
       "to": "cobblemon:herdier",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -1942,6 +2191,7 @@
   "litleo": [
     {
       "to": "cobblemon:pyroar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -1949,6 +2199,7 @@
   "litten": [
     {
       "to": "cobblemon:torracat",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -1956,6 +2207,7 @@
   "litwick": [
     {
       "to": "cobblemon:lampent",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=41)"
     }
@@ -1964,6 +2216,7 @@
   "lombre": [
     {
       "to": "cobblemon:ludicolo",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:water_stone"
     }
@@ -1972,6 +2225,7 @@
   "lotad": [
     {
       "to": "cobblemon:lombre",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=14)"
     }
@@ -1979,6 +2233,7 @@
   "loudred": [
     {
       "to": "cobblemon:exploud",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -1994,6 +2249,7 @@
   "luxio": [
     {
       "to": "cobblemon:luxray",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -2005,6 +2261,7 @@
   "machoke": [
     {
       "to": "cobblemon:machamp",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -2012,6 +2269,7 @@
   "machop": [
     {
       "to": "cobblemon:machoke",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -2019,6 +2277,7 @@
   "magby": [
     {
       "to": "cobblemon:magmar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -2028,6 +2287,7 @@
   "magikarp": [
     {
       "to": "cobblemon:gyarados",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -2035,6 +2295,7 @@
   "magmar": [
     {
       "to": "cobblemon:magmortar",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:magmarizer)"
     }
@@ -2043,6 +2304,7 @@
   "magnemite": [
     {
       "to": "cobblemon:magneton",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -2050,6 +2312,7 @@
   "magneton": [
     {
       "to": "cobblemon:magnezone",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone"
     }
@@ -2058,6 +2321,7 @@
   "makuhita": [
     {
       "to": "cobblemon:hariyama",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -2070,6 +2334,7 @@
   "mankey": [
     {
       "to": "cobblemon:primeape",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -2078,6 +2343,7 @@
   "mantyke": [
     {
       "to": "cobblemon:mantine",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "party_member(target=remoraid,contains=true)"
     }
@@ -2086,6 +2352,7 @@
   "mareanie": [
     {
       "to": "cobblemon:toxapex",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -2093,6 +2360,7 @@
   "mareep": [
     {
       "to": "cobblemon:flaaffy",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=15)"
     }
@@ -2100,6 +2368,7 @@
   "marill": [
     {
       "to": "cobblemon:azumarill",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -2109,6 +2378,7 @@
   "marshtomp": [
     {
       "to": "cobblemon:swampert",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -2116,6 +2386,7 @@
   "maschiff": [
     {
       "to": "cobblemon:mabosstiff",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -2127,6 +2398,7 @@
   "meditite": [
     {
       "to": "cobblemon:medicham",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -2137,6 +2409,7 @@
   "meltan": [
     {
       "to": "cobblemon:melmetal",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "properties(target=meltan meltan_iron_charge=999)"
     }
@@ -2146,6 +2419,7 @@
   "meowth": [
     {
       "to": "cobblemon:persian",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -2155,6 +2429,7 @@
   "metang": [
     {
       "to": "cobblemon:metagross",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=45)"
     }
@@ -2162,6 +2437,7 @@
   "metapod": [
     {
       "to": "cobblemon:butterfree",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=10)"
     }
@@ -2171,6 +2447,7 @@
   "mienfoo": [
     {
       "to": "cobblemon:mienshao",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=50)"
     }
@@ -2180,316 +2457,379 @@
   "milcery": [
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=night)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=day)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:strawberry_sweet); time_range(range=dusk)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:love_sweet); time_range(range=dusk)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:berry_sweet); time_range(range=dusk)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:clover_sweet); time_range(range=dusk)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flower_sweet); time_range(range=dusk)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:star_sweet); time_range(range=dusk)"
     },
     {
       "to": "cobblemon:alcremie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ribbon_sweet); time_range(range=dusk)"
     }
@@ -2499,11 +2839,13 @@
   "mimejr": [
     {
       "to": "cobblemon:mrmime",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=mimic)"
     },
     {
       "to": "cobblemon:mrmime",
+      "toFormId": "galar",
       "method": "level_up",
       "requirement": "has_move(move=mimic); biome(biomeCondition=#cobblemon:evolution/regional/mimejr_galarbiome)"
     }
@@ -2512,6 +2854,7 @@
   "minccino": [
     {
       "to": "cobblemon:cinccino",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:shiny_stone"
     }
@@ -2522,6 +2865,7 @@
   "misdreavus": [
     {
       "to": "cobblemon:mismagius",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:dusk_stone"
     }
@@ -2531,6 +2875,7 @@
   "monferno": [
     {
       "to": "cobblemon:infernape",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -2538,6 +2883,7 @@
   "morelull": [
     {
       "to": "cobblemon:shiinotic",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -2545,6 +2891,7 @@
   "morgrem": [
     {
       "to": "cobblemon:grimmsnarl",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     }
@@ -2556,6 +2903,7 @@
   "mudbray": [
     {
       "to": "cobblemon:mudsdale",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -2563,6 +2911,7 @@
   "mudkip": [
     {
       "to": "cobblemon:marshtomp",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -2572,6 +2921,7 @@
   "munchlax": [
     {
       "to": "cobblemon:snorlax",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -2580,6 +2930,7 @@
   "munna": [
     {
       "to": "cobblemon:musharna",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:moon_stone"
     }
@@ -2587,6 +2938,7 @@
   "murkrow": [
     {
       "to": "cobblemon:honchkrow",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:dusk_stone"
     }
@@ -2595,6 +2947,7 @@
   "nacli": [
     {
       "to": "cobblemon:naclstack",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -2602,6 +2955,7 @@
   "naclstack": [
     {
       "to": "cobblemon:garganacl",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -2610,6 +2964,7 @@
   "natu": [
     {
       "to": "cobblemon:xatu",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -2618,6 +2973,7 @@
   "nickit": [
     {
       "to": "cobblemon:thievul",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -2627,6 +2983,7 @@
   "nidoranf": [
     {
       "to": "cobblemon:nidorina",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -2634,6 +2991,7 @@
   "nidoranm": [
     {
       "to": "cobblemon:nidorino",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -2641,6 +2999,7 @@
   "nidorina": [
     {
       "to": "cobblemon:nidoqueen",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:moon_stone"
     }
@@ -2648,6 +3007,7 @@
   "nidorino": [
     {
       "to": "cobblemon:nidoking",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:moon_stone"
     }
@@ -2656,6 +3016,7 @@
   "nincada": [
     {
       "to": "cobblemon:ninjask",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -2666,6 +3027,7 @@
   "noibat": [
     {
       "to": "cobblemon:noivern",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=48)"
     }
@@ -2674,6 +3036,7 @@
   "nosepass": [
     {
       "to": "cobblemon:probopass",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone"
     }
@@ -2681,6 +3044,7 @@
   "numel": [
     {
       "to": "cobblemon:camerupt",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=33)"
     }
@@ -2688,6 +3052,7 @@
   "nuzleaf": [
     {
       "to": "cobblemon:shiftry",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone"
     }
@@ -2695,6 +3060,7 @@
   "nymble": [
     {
       "to": "cobblemon:lokix",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -2704,6 +3070,7 @@
   "oddish": [
     {
       "to": "cobblemon:gloom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=21)"
     }
@@ -2714,6 +3081,7 @@
   "omanyte": [
     {
       "to": "cobblemon:omastar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -2722,6 +3090,7 @@
   "onix": [
     {
       "to": "cobblemon:steelix",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:metal_coat)"
     }
@@ -2733,6 +3102,7 @@
   "oshawott": [
     {
       "to": "cobblemon:dewott",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -2745,6 +3115,7 @@
   "palpitoad": [
     {
       "to": "cobblemon:seismitoad",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -2752,6 +3123,7 @@
   "pancham": [
     {
       "to": "cobblemon:pangoro",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32); party_member(target=type=dark,contains=true)"
     }
@@ -2760,6 +3132,7 @@
   "panpour": [
     {
       "to": "cobblemon:simipour",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:water_stone"
     }
@@ -2767,6 +3140,7 @@
   "pansage": [
     {
       "to": "cobblemon:simisage",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone"
     }
@@ -2774,6 +3148,7 @@
   "pansear": [
     {
       "to": "cobblemon:simisear",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:fire_stone"
     }
@@ -2781,6 +3156,7 @@
   "paras": [
     {
       "to": "cobblemon:parasect",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -2790,6 +3166,7 @@
   "patrat": [
     {
       "to": "cobblemon:watchog",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -2797,6 +3174,7 @@
   "pawmi": [
     {
       "to": "cobblemon:pawmo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -2804,6 +3182,7 @@
   "pawmo": [
     {
       "to": "cobblemon:pawmot",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "blocks_traveled(amount=1000)"
     }
@@ -2812,6 +3191,7 @@
   "pawniard": [
     {
       "to": "cobblemon:bisharp",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=52)"
     }
@@ -2823,11 +3203,13 @@
   "petilil": [
     {
       "to": "cobblemon:lilligant",
+      "toFormId": "hisui",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sun_stone; biome(biomeCondition=#cobblemon:evolution/regional/petilil_hisuibiome)"
     },
     {
       "to": "cobblemon:lilligant",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sun_stone"
     }
@@ -2835,6 +3217,7 @@
   "phanpy": [
     {
       "to": "cobblemon:donphan",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -2842,6 +3225,7 @@
   "phantump": [
     {
       "to": "cobblemon:trevenant",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -2851,6 +3235,7 @@
   "pichu": [
     {
       "to": "cobblemon:pikachu",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -2859,6 +3244,7 @@
   "pidgeotto": [
     {
       "to": "cobblemon:pidgeot",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -2866,6 +3252,7 @@
   "pidgey": [
     {
       "to": "cobblemon:pidgeotto",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -2873,6 +3260,7 @@
   "pidove": [
     {
       "to": "cobblemon:tranquill",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=21)"
     }
@@ -2880,6 +3268,7 @@
   "pignite": [
     {
       "to": "cobblemon:emboar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -2887,11 +3276,13 @@
   "pikachu": [
     {
       "to": "cobblemon:raichu",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone; biome(biomeAnticondition=#cobblemon:evolution/regional/pikachu_alolabiome)"
     },
     {
       "to": "cobblemon:raichu",
+      "toFormId": "alola",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone; biome(biomeCondition=#cobblemon:evolution/regional/pikachu_alolabiome); biome(biomeAnticondition=#cobblemon:evolution/regional/pikachu_kantobiome)"
     }
@@ -2899,6 +3290,7 @@
   "pikipek": [
     {
       "to": "cobblemon:trumbeak",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=14)"
     }
@@ -2906,6 +3298,7 @@
   "piloswine": [
     {
       "to": "cobblemon:mamoswine",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=ancientpower)"
     }
@@ -2914,6 +3307,7 @@
   "pineco": [
     {
       "to": "cobblemon:forretress",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=31)"
     }
@@ -2922,6 +3316,7 @@
   "piplup": [
     {
       "to": "cobblemon:prinplup",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -2930,6 +3325,7 @@
   "poipole": [
     {
       "to": "cobblemon:naganadel",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=dragonpulse)"
     }
@@ -2938,6 +3334,7 @@
   "poliwag": [
     {
       "to": "cobblemon:poliwhirl",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -2945,11 +3342,13 @@
   "poliwhirl": [
     {
       "to": "cobblemon:poliwrath",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:water_stone"
     },
     {
       "to": "cobblemon:politoed",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:kings_rock)"
     }
@@ -2958,6 +3357,7 @@
   "poltchageist": [
     {
       "to": "cobblemon:sinistcha",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:unremarkable_teacup"
     }
@@ -2966,6 +3366,7 @@
   "ponyta": [
     {
       "to": "cobblemon:rapidash",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -2973,6 +3374,7 @@
   "poochyena": [
     {
       "to": "cobblemon:mightyena",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -2980,6 +3382,7 @@
   "popplio": [
     {
       "to": "cobblemon:brionne",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -2987,6 +3390,7 @@
   "porygon": [
     {
       "to": "cobblemon:porygon2",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:upgrade)"
     }
@@ -2994,6 +3398,7 @@
   "porygon2": [
     {
       "to": "cobblemon:porygonz",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:dubious_disc)"
     }
@@ -3003,6 +3408,7 @@
   "primeape": [
     {
       "to": "cobblemon:annihilape",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "use_move(move=ragefist,amount=20)"
     }
@@ -3010,6 +3416,7 @@
   "prinplup": [
     {
       "to": "cobblemon:empoleon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -3018,6 +3425,7 @@
   "psyduck": [
     {
       "to": "cobblemon:golduck",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=33)"
     }
@@ -3025,6 +3433,7 @@
   "pumpkaboo": [
     {
       "to": "cobblemon:gourgeist",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": ""
     }
@@ -3032,6 +3441,7 @@
   "pupitar": [
     {
       "to": "cobblemon:tyranitar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=55)"
     }
@@ -3039,6 +3449,7 @@
   "purrloin": [
     {
       "to": "cobblemon:liepard",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -3051,6 +3462,7 @@
   "quaxly": [
     {
       "to": "cobblemon:quaxwell",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -3058,6 +3470,7 @@
   "quaxwell": [
     {
       "to": "cobblemon:quaquaval",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -3065,11 +3478,13 @@
   "quilava": [
     {
       "to": "cobblemon:typhlosion",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     },
     {
       "to": "cobblemon:typhlosion",
+      "toFormId": "hisui",
       "method": "level_up",
       "requirement": "level(minLevel=36); biome(biomeCondition=#cobblemon:evolution/regional/quilava_hisuibiome)"
     }
@@ -3077,6 +3492,7 @@
   "quilladin": [
     {
       "to": "cobblemon:chesnaught",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -3085,6 +3501,7 @@
   "raboot": [
     {
       "to": "cobblemon:cinderace",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -3096,6 +3513,7 @@
   "ralts": [
     {
       "to": "cobblemon:kirlia",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -3106,6 +3524,7 @@
   "rattata": [
     {
       "to": "cobblemon:raticate",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -3121,6 +3540,7 @@
   "rellor": [
     {
       "to": "cobblemon:rabsca",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "blocks_traveled(amount=1000)"
     }
@@ -3128,6 +3548,7 @@
   "remoraid": [
     {
       "to": "cobblemon:octillery",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -3138,6 +3559,7 @@
   "rhydon": [
     {
       "to": "cobblemon:rhyperior",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:protector)"
     }
@@ -3145,6 +3567,7 @@
   "rhyhorn": [
     {
       "to": "cobblemon:rhydon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     }
@@ -3155,6 +3578,7 @@
   "riolu": [
     {
       "to": "cobblemon:lucario",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); time_range(range=day)"
     }
@@ -3163,11 +3587,13 @@
   "rockruff": [
     {
       "to": "cobblemon:lycanroc",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25); time_range(range=day)"
     },
     {
       "to": "cobblemon:lycanroc",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25); time_range(range=night)"
     }
@@ -3175,6 +3601,7 @@
   "roggenrola": [
     {
       "to": "cobblemon:boldore",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -3182,6 +3609,7 @@
   "rolycoly": [
     {
       "to": "cobblemon:carkol",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -3189,6 +3617,7 @@
   "rookidee": [
     {
       "to": "cobblemon:corvisquire",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -3196,6 +3625,7 @@
   "roselia": [
     {
       "to": "cobblemon:roserade",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:shiny_stone"
     }
@@ -3205,6 +3635,7 @@
   "rowlet": [
     {
       "to": "cobblemon:dartrix",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -3212,11 +3643,13 @@
   "rufflet": [
     {
       "to": "cobblemon:braviary",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=54)"
     },
     {
       "to": "cobblemon:braviary",
+      "toFormId": "hisui",
       "method": "level_up",
       "requirement": "level(minLevel=54); biome(biomeCondition=#cobblemon:evolution/regional/rufflet_hisuibiome)"
     }
@@ -3227,6 +3660,7 @@
   "salandit": [
     {
       "to": "cobblemon:salazzle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=33); properties(target=gender=female)"
     }
@@ -3237,6 +3671,7 @@
   "sandile": [
     {
       "to": "cobblemon:krokorok",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=29)"
     }
@@ -3244,6 +3679,7 @@
   "sandshrew": [
     {
       "to": "cobblemon:sandslash",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -3252,6 +3688,7 @@
   "sandygast": [
     {
       "to": "cobblemon:palossand",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     }
@@ -3262,6 +3699,7 @@
   "scatterbug": [
     {
       "to": "cobblemon:spewpa",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=9)"
     }
@@ -3272,6 +3710,7 @@
   "scorbunny": [
     {
       "to": "cobblemon:raboot",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -3281,6 +3720,7 @@
   "scraggy": [
     {
       "to": "cobblemon:scrafty",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=39)"
     }
@@ -3289,11 +3729,13 @@
   "scyther": [
     {
       "to": "cobblemon:scizor",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:metal_coat)"
     },
     {
       "to": "cobblemon:kleavor",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:black_augurite"
     }
@@ -3301,6 +3743,7 @@
   "seadra": [
     {
       "to": "cobblemon:kingdra",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:dragon_scale)"
     }
@@ -3309,6 +3752,7 @@
   "sealeo": [
     {
       "to": "cobblemon:walrein",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=44)"
     }
@@ -3316,6 +3760,7 @@
   "seedot": [
     {
       "to": "cobblemon:nuzleaf",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=14)"
     }
@@ -3323,6 +3768,7 @@
   "seel": [
     {
       "to": "cobblemon:dewgong",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -3331,6 +3777,7 @@
   "sentret": [
     {
       "to": "cobblemon:furret",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=15)"
     }
@@ -3339,6 +3786,7 @@
   "servine": [
     {
       "to": "cobblemon:serperior",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -3347,6 +3795,7 @@
   "sewaddle": [
     {
       "to": "cobblemon:swadloon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -3357,6 +3806,7 @@
   "shelgon": [
     {
       "to": "cobblemon:salamence",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=50)"
     }
@@ -3364,6 +3814,7 @@
   "shellder": [
     {
       "to": "cobblemon:cloyster",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:water_stone"
     }
@@ -3371,6 +3822,7 @@
   "shellos": [
     {
       "to": "cobblemon:gastrodon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -3378,11 +3830,13 @@
   "shelmet": [
     {
       "to": "cobblemon:accelgor",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "requiredContext=karrablast"
     },
     {
       "to": "cobblemon:accelgor",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:link_cable; party_member(target=karrablast,contains=true)"
     }
@@ -3390,6 +3844,7 @@
   "shieldon": [
     {
       "to": "cobblemon:bastiodon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -3399,6 +3854,7 @@
   "shinx": [
     {
       "to": "cobblemon:luxio",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=15)"
     }
@@ -3406,6 +3862,7 @@
   "shroodle": [
     {
       "to": "cobblemon:grafaiai",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -3413,6 +3870,7 @@
   "shroomish": [
     {
       "to": "cobblemon:breloom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=23)"
     }
@@ -3421,6 +3879,7 @@
   "shuppet": [
     {
       "to": "cobblemon:banette",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -3429,6 +3888,7 @@
   "silcoon": [
     {
       "to": "cobblemon:beautifly",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=10)"
     }
@@ -3436,6 +3896,7 @@
   "silicobra": [
     {
       "to": "cobblemon:sandaconda",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -3443,86 +3904,103 @@
   "silvally": [
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:fighting_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:flying_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:poison_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ground_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:rock_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:bug_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ghost_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:steel_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:fire_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:water_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:grass_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:electric_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:psychic_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:ice_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:dragon_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:dark_gem)"
     },
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:fairy_gem)"
     }
@@ -3534,6 +4012,7 @@
   "sinistea": [
     {
       "to": "cobblemon:polteageist",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:cracked_pot"
     }
@@ -3542,6 +4021,7 @@
   "sizzlipede": [
     {
       "to": "cobblemon:centiskorch",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -3551,6 +4031,7 @@
   "skiddo": [
     {
       "to": "cobblemon:gogoat",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -3558,6 +4039,7 @@
   "skiploom": [
     {
       "to": "cobblemon:jumpluff",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=27)"
     }
@@ -3565,6 +4047,7 @@
   "skitty": [
     {
       "to": "cobblemon:delcatty",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:moon_stone"
     }
@@ -3572,6 +4055,7 @@
   "skorupi": [
     {
       "to": "cobblemon:drapion",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -3579,6 +4063,7 @@
   "skrelp": [
     {
       "to": "cobblemon:dragalge",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=48)"
     }
@@ -3587,6 +4072,7 @@
   "skwovet": [
     {
       "to": "cobblemon:greedent",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -3595,6 +4081,7 @@
   "slakoth": [
     {
       "to": "cobblemon:vigoroth",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -3602,6 +4089,7 @@
   "sliggoo": [
     {
       "to": "cobblemon:goodra",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=50); weather(isRaining=true)"
     }
@@ -3612,11 +4100,13 @@
   "slowpoke": [
     {
       "to": "cobblemon:slowbro",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     },
     {
       "to": "cobblemon:slowking",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:kings_rock)"
     }
@@ -3624,6 +4114,7 @@
   "slugma": [
     {
       "to": "cobblemon:magcargo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -3633,6 +4124,7 @@
   "smoliv": [
     {
       "to": "cobblemon:dolliv",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -3640,6 +4132,7 @@
   "smoochum": [
     {
       "to": "cobblemon:jynx",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -3647,6 +4140,7 @@
   "sneasel": [
     {
       "to": "cobblemon:weavile",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "held_item(itemCondition=cobblemon:razor_claw); time_range(range=night)"
     }
@@ -3655,6 +4149,7 @@
   "snivy": [
     {
       "to": "cobblemon:servine",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -3662,6 +4157,7 @@
   "snom": [
     {
       "to": "cobblemon:frosmoth",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160); time_range(range=night)"
     }
@@ -3670,11 +4166,13 @@
   "snorunt": [
     {
       "to": "cobblemon:glalie",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=42)"
     },
     {
       "to": "cobblemon:froslass",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:dawn_stone; properties(target=gender=female)"
     }
@@ -3682,6 +4180,7 @@
   "snover": [
     {
       "to": "cobblemon:abomasnow",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -3689,6 +4188,7 @@
   "snubbull": [
     {
       "to": "cobblemon:granbull",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=23)"
     }
@@ -3696,6 +4196,7 @@
   "sobble": [
     {
       "to": "cobblemon:drizzile",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -3704,6 +4205,7 @@
   "solosis": [
     {
       "to": "cobblemon:duosion",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -3712,6 +4214,7 @@
   "spearow": [
     {
       "to": "cobblemon:fearow",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -3720,116 +4223,139 @@
   "spewpa": [
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/archipelago); biome(biomeAnticondition=#cobblemon:evolution/vivillon/archipelago_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/continental); biome(biomeAnticondition=#cobblemon:evolution/vivillon/continental_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/elegant); biome(biomeAnticondition=#cobblemon:evolution/vivillon/elegant_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/fancy); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/garden); biome(biomeAnticondition=#cobblemon:evolution/vivillon/garden_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/high_plains); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/icy_snow); biome(biomeAnticondition=#cobblemon:evolution/vivillon/icy_snow_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/jungle); biome(biomeAnticondition=#cobblemon:evolution/vivillon/jungle_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/marine); biome(biomeAnticondition=#cobblemon:evolution/vivillon/marine_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/meadow); biome(biomeAnticondition=#cobblemon:evolution/vivillon/meadow_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); structure(structureCondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/monsoon); biome(biomeAnticondition=#cobblemon:evolution/vivillon/monsoon_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/ocean); biome(biomeAnticondition=#cobblemon:evolution/vivillon/ocean_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/polar); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/river); biome(biomeAnticondition=#cobblemon:evolution/vivillon/river_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/sandstorm); biome(biomeAnticondition=#cobblemon:evolution/vivillon/sandstorm_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/savanna); biome(biomeAnticondition=#cobblemon:evolution/vivillon/savanna_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/sun); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/tundra); biome(biomeAnticondition=#cobblemon:evolution/vivillon/tundra_anti); structure(structureAnticondition=#minecraft:village)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/inferno)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/void)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); biome(biomeCondition=#cobblemon:evolution/vivillon/forsaken)"
     },
     {
       "to": "cobblemon:vivillon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=12); advancement(requiredAdvancement=cobblemon:catch_all_vivillon)"
     }
@@ -3837,6 +4363,7 @@
   "spheal": [
     {
       "to": "cobblemon:sealeo",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -3845,6 +4372,7 @@
   "spinarak": [
     {
       "to": "cobblemon:ariados",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -3854,6 +4382,7 @@
   "spoink": [
     {
       "to": "cobblemon:grumpig",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -3861,6 +4390,7 @@
   "sprigatito": [
     {
       "to": "cobblemon:floragato",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -3868,6 +4398,7 @@
   "spritzee": [
     {
       "to": "cobblemon:aromatisse",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:sachet)"
     }
@@ -3876,6 +4407,7 @@
   "squirtle": [
     {
       "to": "cobblemon:wartortle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -3884,6 +4416,7 @@
   "stantler": [
     {
       "to": "cobblemon:wyrdeer",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=psyshieldbash)"
     }
@@ -3892,6 +4425,7 @@
   "staravia": [
     {
       "to": "cobblemon:staraptor",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -3899,6 +4433,7 @@
   "starly": [
     {
       "to": "cobblemon:staravia",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=14)"
     }
@@ -3907,6 +4442,7 @@
   "staryu": [
     {
       "to": "cobblemon:starmie",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:water_stone"
     }
@@ -3915,6 +4451,7 @@
   "steenee": [
     {
       "to": "cobblemon:tsareena",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=stomp)"
     }
@@ -3924,6 +4461,7 @@
   "stufful": [
     {
       "to": "cobblemon:bewear",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=27)"
     }
@@ -3932,6 +4470,7 @@
   "stunky": [
     {
       "to": "cobblemon:skuntank",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -3942,6 +4481,7 @@
   "sunkern": [
     {
       "to": "cobblemon:sunflora",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:sun_stone"
     }
@@ -3949,6 +4489,7 @@
   "surskit": [
     {
       "to": "cobblemon:masquerain",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -3956,6 +4497,7 @@
   "swablu": [
     {
       "to": "cobblemon:altaria",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -3963,6 +4505,7 @@
   "swadloon": [
     {
       "to": "cobblemon:leavanny",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -3974,6 +4517,7 @@
   "swinub": [
     {
       "to": "cobblemon:piloswine",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=33)"
     }
@@ -3981,6 +4525,7 @@
   "swirlix": [
     {
       "to": "cobblemon:slurpuff",
+      "toFormId": "normal",
       "method": "trade",
       "requirement": "held_item(itemCondition=cobblemon:whipped_dream)"
     }
@@ -3990,6 +4535,7 @@
   "tadbulb": [
     {
       "to": "cobblemon:bellibolt",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:thunder_stone"
     }
@@ -3997,6 +4543,7 @@
   "taillow": [
     {
       "to": "cobblemon:swellow",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -4005,6 +4552,7 @@
   "tandemaus": [
     {
       "to": "cobblemon:maushold",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -4012,6 +4560,7 @@
   "tangela": [
     {
       "to": "cobblemon:tangrowth",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=ancientpower)"
     }
@@ -4024,6 +4573,7 @@
   "tarountula": [
     {
       "to": "cobblemon:spidops",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=15)"
     }
@@ -4033,6 +4583,7 @@
   "teddiursa": [
     {
       "to": "cobblemon:ursaring",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4040,6 +4591,7 @@
   "tentacool": [
     {
       "to": "cobblemon:tentacruel",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4048,6 +4600,7 @@
   "tepig": [
     {
       "to": "cobblemon:pignite",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=17)"
     }
@@ -4060,6 +4613,7 @@
   "thwackey": [
     {
       "to": "cobblemon:rillaboom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -4067,6 +4621,7 @@
   "timburr": [
     {
       "to": "cobblemon:gurdurr",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -4075,6 +4630,7 @@
   "tinkatink": [
     {
       "to": "cobblemon:tinkatuff",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -4083,6 +4639,7 @@
   "tinkatuff": [
     {
       "to": "cobblemon:tinkaton",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=38)"
     }
@@ -4090,6 +4647,7 @@
   "tirtouga": [
     {
       "to": "cobblemon:carracosta",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=37)"
     }
@@ -4097,6 +4655,7 @@
   "toedscool": [
     {
       "to": "cobblemon:toedscruel",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4107,6 +4666,7 @@
   "togepi": [
     {
       "to": "cobblemon:togetic",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -4114,6 +4674,7 @@
   "togetic": [
     {
       "to": "cobblemon:togekiss",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:shiny_stone"
     }
@@ -4121,6 +4682,7 @@
   "torchic": [
     {
       "to": "cobblemon:combusken",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -4130,6 +4692,7 @@
   "torracat": [
     {
       "to": "cobblemon:incineroar",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -4138,6 +4701,7 @@
   "totodile": [
     {
       "to": "cobblemon:croconaw",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -4147,126 +4711,151 @@
   "toxel": [
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=hardy)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=brave)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=adamant)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=naughty)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=docile)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=impish)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=lax)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=hasty)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=jolly)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=naive)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=rash)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=sassy)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=quirky)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=lonely)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=bold)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=relaxed)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=timid)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=serious)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=modest)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=mild)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=quiet)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=bashful)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=calm)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=gentle)"
     },
     {
       "to": "cobblemon:toxtricity",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30); properties(target=toxel nature=careful)"
     }
@@ -4276,6 +4865,7 @@
   "tranquill": [
     {
       "to": "cobblemon:unfezant",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=32)"
     }
@@ -4283,6 +4873,7 @@
   "trapinch": [
     {
       "to": "cobblemon:vibrava",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -4290,6 +4881,7 @@
   "treecko": [
     {
       "to": "cobblemon:grovyle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=16)"
     }
@@ -4299,6 +4891,7 @@
   "trubbish": [
     {
       "to": "cobblemon:garbodor",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -4306,6 +4899,7 @@
   "trumbeak": [
     {
       "to": "cobblemon:toucannon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=28)"
     }
@@ -4315,6 +4909,7 @@
   "turtwig": [
     {
       "to": "cobblemon:grotle",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=18)"
     }
@@ -4322,6 +4917,7 @@
   "tympole": [
     {
       "to": "cobblemon:palpitoad",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -4329,6 +4925,7 @@
   "tynamo": [
     {
       "to": "cobblemon:eelektrik",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=39)"
     }
@@ -4336,6 +4933,7 @@
   "typenull": [
     {
       "to": "cobblemon:silvally",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -4346,16 +4944,19 @@
   "tyrogue": [
     {
       "to": "cobblemon:hitmonchan",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20); stat_compare(highStat=defence,lowStat=attack)"
     },
     {
       "to": "cobblemon:hitmonlee",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20); stat_compare(highStat=attack,lowStat=defence)"
     },
     {
       "to": "cobblemon:hitmontop",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20); stat_equal(statOne=attack,statTwo=defence)"
     }
@@ -4363,6 +4964,7 @@
   "tyrunt": [
     {
       "to": "cobblemon:tyrantrum",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=39); time_range(range=day)"
     }
@@ -4374,6 +4976,7 @@
   "ursaring": [
     {
       "to": "cobblemon:ursaluna",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:peat_block; moon_phase(moonPhase=FULL_MOON); time_range(range=night)"
     }
@@ -4383,6 +4986,7 @@
   "vanillish": [
     {
       "to": "cobblemon:vanilluxe",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=47)"
     }
@@ -4390,6 +4994,7 @@
   "vanillite": [
     {
       "to": "cobblemon:vanillish",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=35)"
     }
@@ -4399,6 +5004,7 @@
   "varoom": [
     {
       "to": "cobblemon:revavroom",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -4407,6 +5013,7 @@
   "venipede": [
     {
       "to": "cobblemon:whirlipede",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -4415,6 +5022,7 @@
   "venonat": [
     {
       "to": "cobblemon:venomoth",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=31)"
     }
@@ -4424,6 +5032,7 @@
   "vibrava": [
     {
       "to": "cobblemon:flygon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=45)"
     }
@@ -4433,6 +5042,7 @@
   "vigoroth": [
     {
       "to": "cobblemon:slaking",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -4447,6 +5057,7 @@
   "voltorb": [
     {
       "to": "cobblemon:electrode",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4454,6 +5065,7 @@
   "vullaby": [
     {
       "to": "cobblemon:mandibuzz",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=54)"
     }
@@ -4461,6 +5073,7 @@
   "vulpix": [
     {
       "to": "cobblemon:ninetales",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:fire_stone"
     }
@@ -4468,6 +5081,7 @@
   "wailmer": [
     {
       "to": "cobblemon:wailord",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=40)"
     }
@@ -4478,6 +5092,7 @@
   "wartortle": [
     {
       "to": "cobblemon:blastoise",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=36)"
     }
@@ -4486,6 +5101,7 @@
   "wattrel": [
     {
       "to": "cobblemon:kilowattrel",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -4494,6 +5110,7 @@
   "weedle": [
     {
       "to": "cobblemon:kakuna",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=7)"
     }
@@ -4501,6 +5118,7 @@
   "weepinbell": [
     {
       "to": "cobblemon:victreebel",
+      "toFormId": "normal",
       "method": "item_interact",
       "requirement": "requiredContext=cobblemon:leaf_stone"
     }
@@ -4510,6 +5128,7 @@
   "whirlipede": [
     {
       "to": "cobblemon:scolipede",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4518,6 +5137,7 @@
   "whismur": [
     {
       "to": "cobblemon:loudred",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -4526,6 +5146,7 @@
   "wiglett": [
     {
       "to": "cobblemon:wugtrio",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=26)"
     }
@@ -4533,6 +5154,7 @@
   "wimpod": [
     {
       "to": "cobblemon:golisopod",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4540,6 +5162,7 @@
   "wingull": [
     {
       "to": "cobblemon:pelipper",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -4550,6 +5173,7 @@
   "woobat": [
     {
       "to": "cobblemon:swoobat",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "friendship(amount=160)"
     }
@@ -4557,6 +5181,7 @@
   "wooloo": [
     {
       "to": "cobblemon:dubwool",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=24)"
     }
@@ -4564,6 +5189,7 @@
   "wooper": [
     {
       "to": "cobblemon:quagsire",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -4573,11 +5199,13 @@
   "wurmple": [
     {
       "to": "cobblemon:silcoon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=7); properties(target=wurmple cocoon_species=silcoon)"
     },
     {
       "to": "cobblemon:cascoon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=7); properties(target=wurmple cocoon_species=cascoon)"
     }
@@ -4585,6 +5213,7 @@
   "wynaut": [
     {
       "to": "cobblemon:wobbuffet",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=15)"
     }
@@ -4596,6 +5225,7 @@
   "yamask": [
     {
       "to": "cobblemon:cofagrigus",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=34)"
     }
@@ -4603,6 +5233,7 @@
   "yamper": [
     {
       "to": "cobblemon:boltund",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=25)"
     }
@@ -4610,6 +5241,7 @@
   "yanma": [
     {
       "to": "cobblemon:yanmega",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "has_move(move=ancientpower)"
     }
@@ -4618,6 +5250,7 @@
   "yungoos": [
     {
       "to": "cobblemon:gumshoos",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20); time_range(range=day)"
     }
@@ -4634,6 +5267,7 @@
   "zigzagoon": [
     {
       "to": "cobblemon:linoone",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=20)"
     }
@@ -4642,6 +5276,7 @@
   "zorua": [
     {
       "to": "cobblemon:zoroark",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=30)"
     }
@@ -4649,6 +5284,7 @@
   "zubat": [
     {
       "to": "cobblemon:golbat",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=22)"
     }
@@ -4656,6 +5292,7 @@
   "zweilous": [
     {
       "to": "cobblemon:hydreigon",
+      "toFormId": "normal",
       "method": "level_up",
       "requirement": "level(minLevel=64)"
     }

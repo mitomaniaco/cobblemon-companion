@@ -7,7 +7,8 @@ const manifestSlugs = Object.keys(JSON.parse(fs.readFileSync(path.resolve(__dirn
 
 const learnsets: Record<string, {levelUp: {level: number; moveId: string}[]; tm: string[]; tutor: string[]; egg: string[]}> =
   read('learnsets.json');
-const evolutions: Record<string, {to: string; method: string; requirement: string}[]> = read('evolutions.json');
+const evolutions: Record<string, {to: string; toFormId: string; method: string; requirement: string}[]> = read('evolutions.json');
+const forms: Record<string, Record<string, {evolutions: {to: string; toFormId: string}[]; learnset: unknown}>> = read('forms.json');
 const trainers: {
   id: string;
   name: string;
@@ -69,6 +70,15 @@ describe('dados do guia', () => {
       }
     }
     expect(evolutions.abra.map((evolution) => evolution.to)).toEqual(['cobblemon:kadabra']);
+  });
+
+  it('formas declaram evoluções próprias e toda evolução tem a forma de destino', () => {
+    expect(Object.keys(forms).every((slug) => manifestSlugs.includes(slug))).toBe(true);
+    expect(forms.goodra?.hisui?.evolutions).toEqual([]);
+    expect(forms.sliggoo?.hisui?.evolutions[0]).toMatchObject({to: 'cobblemon:goodra', toFormId: 'hisui'});
+    for (const [slug, list] of Object.entries(evolutions)) {
+      for (const evolution of list) expect(typeof evolution.toFormId, slug).toBe('string');
+    }
   });
 
   it('treinadores têm time, níveis 1–100, ids com namespace e origem rastreável', () => {

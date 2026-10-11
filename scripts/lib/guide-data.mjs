@@ -50,13 +50,51 @@ const describe = (object) =>
     .map(([key, value]) => `${key}=${typeof value === 'object' ? JSON.stringify(value) : value}`)
     .join(',');
 
-export function deriveEvolutions(evolutions) {
+/** FormId do save: nome da forma em minúsculas sem pontuação (`Hisui` → `hisui`, `Pa'u` → `pau`). */
+export function formIdOf(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+/** Forma do alvo cuja lista de aspects está contida nos da evolução (a mais específica vence); sem aspects ou sem forma, `normal`. */
+function resultFormId(aspects, targetSpecies) {
+  if (aspects.length === 0) return 'normal';
+  let best = null;
+  for (const form of targetSpecies?.forms ?? []) {
+    const own = form.aspects ?? [];
+    if (own.length === 0 || !own.every((aspect) => aspects.includes(aspect))) continue;
+    if (!best || own.length > best.aspects.length) best = form;
+  }
+  return best ? formIdOf(best.name) : 'normal';
+}
+
+export function deriveEvolutions(evolutions, species) {
   return (evolutions ?? []).map((evolution) => {
     const parts = [];
     if (evolution.requiredContext) parts.push(`requiredContext=${evolution.requiredContext}`);
     for (const requirement of evolution.requirements ?? []) parts.push(`${requirement.variant}(${describe(requirement)})`);
-    return {to: withNamespace(evolution.result.split(' ')[0]), method: evolution.variant, requirement: parts.join('; ')};
+    const [target, ...aspects] = evolution.result.split(' ');
+    const targetSlug = target.replace(/^[^:]+:/, '');
+    return {
+      to: withNamespace(target),
+      toFormId: resultFormId(aspects, species?.[targetSlug]),
+      method: evolution.variant,
+      requirement: parts.join('; '),
+    };
   });
+}
+
+/** Evoluções e golpes próprios de cada forma declarada; `learnset: null` = a forma herda os golpes da espécie. */
+export function deriveForms(speciesJson, species) {
+  const forms = {};
+  for (const form of speciesJson.forms ?? []) {
+    const id = formIdOf(form.name);
+    if (id === 'normal' || Object.hasOwn(forms, id)) continue;
+    forms[id] = {
+      evolutions: deriveEvolutions(form.evolutions ?? speciesJson.evolutions, species),
+      learnset: Array.isArray(form.moves) ? deriveLearnset(form.moves) : null,
+    };
+  }
+  return forms;
 }
 
 const FORMATS = {GEN_9_SINGLES: 'singles', GEN_9_DOUBLES: 'doubles'};

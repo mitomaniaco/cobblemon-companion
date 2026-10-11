@@ -19,6 +19,7 @@ function loadGuideData(directory = DATA_DIR) {
     campaign: read('campaign'),
     learnsets: read('learnsets'),
     evolutions: read('evolutions'),
+    forms: read('forms'),
   };
   if (directory === DATA_DIR) cached = data;
   return data;

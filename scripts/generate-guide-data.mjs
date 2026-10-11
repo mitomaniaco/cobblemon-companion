@@ -1,4 +1,4 @@
-// Gera data/guide/{learnsets,evolutions,trainers,series,campaign,advancements,artwork-sources,texts}.json a partir dos arquivos instalados (somente leitura).
+// Gera data/guide/{learnsets,evolutions,forms,trainers,series,campaign,advancements,artwork-sources,texts}.json a partir dos arquivos instalados (somente leitura).
 //
 //   node scripts/generate-guide-data.mjs --instance <pasta com mods/> [--write]
 //
@@ -13,6 +13,7 @@ import {
   deriveArtworkSources,
   deriveAdvancements,
   deriveCampaign,
+  deriveForms,
   deriveEvolutions,
   deriveLearnset,
   deriveSeries,
@@ -78,10 +79,13 @@ function main() {
 
   const learnsets = {};
   const evolutions = {};
+  const forms = {};
   for (const slug of slugs) {
     if (!Object.hasOwn(species, slug)) fail(`espécie do manifesto ausente nos dados do jogo: ${slug}`);
     learnsets[slug] = deriveLearnset(species[slug].moves);
-    evolutions[slug] = deriveEvolutions(species[slug].evolutions);
+    evolutions[slug] = deriveEvolutions(species[slug].evolutions, species);
+    const derived = deriveForms(species[slug], species);
+    if (Object.keys(derived).length > 0) forms[slug] = derived;
   }
 
   // Arquivos do RCT: JARs com "rct" no nome; depois kubejs/data/ sobrepõe o mesmo caminho (pacote de dados do KubeJS vem por último).
@@ -158,6 +162,7 @@ function main() {
   const outputs = [
     ['learnsets.json', jsonText(learnsets)],
     ['evolutions.json', jsonText(evolutions)],
+    ['forms.json', jsonText(forms)],
     ['trainers.json', jsonText(trainers)],
     ['series.json', jsonText(series)],
     ['campaign.json', jsonText(deriveCampaign({series, trainers, levelCapConfig: readLevelCapConfig(instance)}))],

@@ -4,6 +4,7 @@ const calc = require('@smogon/calc');
 const {COMPATIBILITY} = require('../real-damage.cjs');
 const {knownMoves} = require('./eligibility.cjs');
 const {lookup} = require('./opponents.cjs');
+const {learnsetOf} = require('./forms.cjs');
 
 const generation = calc.Generations.get(9);
 const STATS = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
@@ -16,8 +17,6 @@ const LIMITS = Object.freeze([
   'Os golpes consideram só o aprendizado por nível da espécie atual, sem evolução.',
 ]);
 const NO_YIELD_REASON = 'o rendimento de EV por espécie (evYield) ainda não está nos dados do jogo, então não há espécies para treinar EVs';
-
-const slugOf = (speciesId) => speciesId.replace(/^[^:]+:/, '');
 
 /** Papel do membro: ataque pelo lado em que seus golpes e atributos mais pesam, velocidade ou resistência. */
 function roleOf(individual, known) {
@@ -107,10 +106,10 @@ function evPlanOf(individual, known) {
   };
 }
 
-function movesOnTheWay(learnsets, individual, target, useful) {
+function movesOnTheWay(data, individual, target, useful) {
   const output = [];
   const seen = new Set();
-  for (const move of lookup(learnsets, slugOf(individual.speciesId))?.levelUp ?? []) {
+  for (const move of learnsetOf(data, individual.speciesId, individual.formId)?.levelUp ?? []) {
     if (move.level <= individual.level || move.level > target || seen.has(move.moveId)) continue;
     const isUseful = useful.has(move.moveId);
     if (!isUseful && !Object.hasOwn(COMPATIBILITY.moves, move.moveId)) continue;
@@ -135,7 +134,7 @@ function memberPlan(individual, useful, levelCap, capOrigin, data) {
     ...base,
     targetLevel: levelCap,
     targetNote: `subir do nível ${individual.level} até o cap ${levelCap} (informado)`,
-    moves: movesOnTheWay(data.learnsets, individual, levelCap, useful),
+    moves: movesOnTheWay(data, individual, levelCap, useful),
     evs,
   };
 }
