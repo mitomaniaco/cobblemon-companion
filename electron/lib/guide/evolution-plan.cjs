@@ -4,12 +4,13 @@ const calc = require('@smogon/calc');
 const {COMPATIBILITY} = require('../real-damage.cjs');
 const {knownMoves} = require('./eligibility.cjs');
 const {lookup} = require('./opponents.cjs');
+const {evolutionsOf, learnsetOf} = require('./forms.cjs');
 
 const generation = calc.Generations.get(9);
 const MAX_TEAM = 6;
 const LIMITS = Object.freeze([
   'Mega e outras formas de batalha não são evolução e ficam de fora.',
-  'Só a forma normal tem dados de evolução e de golpes; forma regional fica bloqueada até haver dados por forma.',
+  'Formas regionais usam as evoluções e os golpes da própria forma; forma sem dados no jogo fica bloqueada.',
   'Amizade, item de evolução, horário, bioma e troca não vêm do save: aparecem como não verificados.',
 ]);
 
@@ -142,9 +143,10 @@ function levelMap(learnset, aboveLevel) {
 }
 
 /** Golpes que a forma atual aprende adiante por nível e que mudam, somem ou chegam antes se evoluir. */
-function moveChangesOf(learnsets, speciesId, toSpeciesId, level, useful) {
-  const current = levelMap(lookup(learnsets, slugOf(speciesId)), level);
-  const evolved = levelMap(lookup(learnsets, slugOf(toSpeciesId)), level);
+function moveChangesOf(data, individual, evolution, useful) {
+  const {level} = individual;
+  const current = levelMap(learnsetOf(data, individual.speciesId, individual.formId), level);
+  const evolved = levelMap(learnsetOf(data, evolution.to, evolution.toFormId), level);
   const changes = [];
   for (const [moveId, before] of current) {
     const isUseful = useful.has(moveId);
@@ -177,10 +179,10 @@ function memberPlan(individual, useful, levelCap, data) {
   const base = {uuid: individual.uuid, speciesId: individual.speciesId, formId: individual.formId, level: individual.level};
   const blocked = (reason) => ({...base, status: 'bloqueado', blockedReason: reason, options: []});
   if (individual.formId === 'unknown') return blocked('forma desconhecida: não dá para saber quais evoluções valem');
-  if (individual.formId !== 'normal') return blocked(`evoluções da forma ${individual.formId} não estão nos dados (só a forma normal)`);
   if (!Number.isSafeInteger(individual.level)) return blocked('nível não capturado');
-  const evolutions = lookup(data.evolutions, slugOf(individual.speciesId));
-  if (!evolutions) return blocked('espécie sem dados de evolução');
+  const evolutions = evolutionsOf(data, individual.speciesId, individual.formId);
+  if (!evolutions)
+    return blocked(individual.formId === 'normal' ? 'espécie sem dados de evolução' : `forma ${individual.formId} sem dados de evolução`);
   const known = knownMoves(individual);
   const ctx = {
     level: individual.level,
@@ -198,10 +200,11 @@ function memberPlan(individual, useful, levelCap, data) {
     seen.add(key);
     options.push({
       toSpeciesId: evolution.to,
+      toFormId: evolution.toFormId,
       method: evolution.method,
       requirements: variant.requirements,
       ...reachOf(variant.minLevel, levelCap, individual.level),
-      moveChanges: moveChangesOf(data.learnsets, individual.speciesId, evolution.to, individual.level, useful),
+      moveChanges: moveChangesOf(data, individual, evolution, useful),
     });
   }
   return {...base, status: options.length > 0 ? 'evolui' : 'sem-evolução', blockedReason: null, options};

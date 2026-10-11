@@ -13,7 +13,7 @@ const level = (text: string, status: EvolutionRequirement['status']): EvolutionR
 const unverified = (kind: EvolutionRequirement['kind'], text: string): EvolutionRequirement => ({kind, text, status: 'não verificado'});
 
 function option(requirements: EvolutionRequirement[], withinCap: boolean | null = null, toSpeciesId = 'cobblemon:raichu'): EvolutionOption {
-  return {toSpeciesId, method: 'level_up', requirements, withinCap, reachText: '', moveChanges: []};
+  return {toSpeciesId, toFormId: 'normal', method: 'level_up', requirements, withinCap, reachText: '', moveChanges: []};
 }
 
 function member(uuid: string, status: EvolutionPlanMemberResult['status'], options: EvolutionOption[] = []): EvolutionPlanMemberResult {

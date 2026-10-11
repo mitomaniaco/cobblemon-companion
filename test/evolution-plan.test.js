@@ -177,20 +177,23 @@ describe('plano de evoluções do time', () => {
     ]);
   });
 
-  it('forma desconhecida ou regional bloqueia a sugestão com o motivo; espécie sem evolução é sem-evolução', async () => {
+  it('forma desconhecida bloqueia; forma regional usa os próprios dados; forma sem dados bloqueia; espécie sem evolução é sem-evolução', async () => {
     const result = await run([
       individual('geodude', 20, {formId: 'unknown'}),
       individual('geodude', 20, {formId: 'alola'}),
+      individual('geodude', 20, {formId: 'xyz'}),
       individual('golem', 60),
       individual('nao_existe', 20),
     ]);
     expect(result.members.map((member) => [member.status, member.blockedReason])).toEqual([
       ['bloqueado', 'forma desconhecida: não dá para saber quais evoluções valem'],
-      ['bloqueado', 'evoluções da forma alola não estão nos dados (só a forma normal)'],
+      ['evolui', null],
+      ['bloqueado', 'forma xyz sem dados de evolução'],
       ['sem-evolução', null],
       ['bloqueado', 'espécie sem dados de evolução'],
     ]);
-    expect(result.members.every((member) => member.status === 'sem-evolução' || member.options.length === 0)).toBe(true);
+    expect(result.members[1].options[0]).toMatchObject({toSpeciesId: 'cobblemon:graveler', toFormId: 'alola'});
+    expect(result.members.filter((member) => member.status !== 'evolui').every((member) => member.options.length === 0)).toBe(true);
   });
 
   it('recusa pedido inválido e declara hipóteses e limites', async () => {

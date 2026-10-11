@@ -132,7 +132,7 @@ function EvolutionCardView({card, index}: {card: EvolutionCard; index: number}) 
   const {member, option, alternatives, status} = card;
   const species = speciesDisplay(member.speciesId, member.formId);
   const style = {'--t': typeColorVar(species.types[0] ?? null), '--entry-index': index} as CSSProperties;
-  const target = speciesDisplay(option.toSpeciesId, 'normal');
+  const target = speciesDisplay(option.toSpeciesId, option.toFormId);
   return (
     <li className={styles.card} data-status={status} style={style}>
       <header className={styles.head}>
@@ -150,14 +150,15 @@ function EvolutionCardView({card, index}: {card: EvolutionCard; index: number}) 
         <span className={styles.arrow}>
           <CaretRight aria-hidden="true" weight="bold" />
         </span>
-        <Mon speciesId={option.toSpeciesId} formId="normal" caption="Evolução" />
+        <Mon speciesId={option.toSpeciesId} formId={option.toFormId} caption="Evolução" />
       </div>
 
       <div className={styles.info}>
         <Requirements option={option} level={member.level} />
         {alternatives.length > 0 && (
           <p className={styles.alternatives}>
-            Ou evolui para {alternatives.map((alternative) => speciesDisplay(alternative.toSpeciesId, 'normal').name).join(', ')}
+            Ou evolui para{' '}
+            {alternatives.map((alternative) => speciesDisplay(alternative.toSpeciesId, alternative.toFormId).name).join(', ')}
           </p>
         )}
         <MoveImpact option={option} targetName={target.name} />

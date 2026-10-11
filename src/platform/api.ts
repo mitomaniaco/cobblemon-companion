@@ -337,6 +337,8 @@ export type EvolutionMoveChange = {
 
 export type EvolutionOption = {
   toSpeciesId: string;
+  /** Forma da evolução no padrão do save (`normal`, `hisui`). */
+  toFormId: string;
   method: 'level_up' | 'item_interact' | 'trade';
   requirements: EvolutionRequirement[];
   /** `true`: o nível exigido cabe no cap; `false`: passa do cap; `null`: sem exigência de nível ou cap desconhecido. */

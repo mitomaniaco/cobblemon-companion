@@ -5,6 +5,7 @@ const {damageRange, pokemonFromSpec} = require('../calc-profile.cjs');
 const {COMPATIBILITY} = require('../real-damage.cjs');
 const {assessEligibility} = require('./eligibility.cjs');
 const {lookup, pveOpponents, trainerOpponents} = require('./opponents.cjs');
+const {learnsetOf} = require('./forms.cjs');
 
 const generation = calc.Generations.get(9);
 const MAX_MOVES = 4;
@@ -238,12 +239,11 @@ function learnsetRoutes(learnset, level) {
 function roundOne(value) {
   return Math.round(value * 10) / 10;
 }
-function acquireSuggestions(result, opponents, learnsets) {
+function acquireSuggestions(result, opponents, data) {
   const {entry, chosen, pokemon, theirs, table} = result;
-  // Os learnsets versionados são da forma normal: forma alternativa não recebe sugestão de golpe (fail-closed).
-  if (entry.individual.formId !== 'normal') return [];
-  const slug = entry.individual.speciesId.replace(/^[^:]+:/, '');
-  const routes = learnsetRoutes(lookup(learnsets, slug), entry.individual.level);
+  const learnset = learnsetOf(data, entry.individual.speciesId, entry.individual.formId);
+  if (!learnset) return [];
+  const routes = learnsetRoutes(learnset, entry.individual.level);
   const knownIds = new Set([...result.known.equipped, ...result.known.learned]);
   const candidates = [...routes.keys()].filter((id) => Object.hasOwn(COMPATIBILITY.moves, id) && !knownIds.has(id));
   if (candidates.length === 0) return [];
@@ -498,7 +498,7 @@ async function buildGuide({
         moveId: outcome.moveId,
         damage: damagePercents(result.pokemon, opponents[index].pokemon, result.chosen),
       })),
-      acquire: acquireSuggestions(result, opponents, data.learnsets),
+      acquire: acquireSuggestions(result, opponents, data),
     });
   }
 
