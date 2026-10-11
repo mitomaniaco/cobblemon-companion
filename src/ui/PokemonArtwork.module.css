@@ -75,6 +75,30 @@
   line-height: var(--line-body);
 }
 
+.fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  margin: 0;
+}
+
+.fill .frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.fill .image {
+  position: absolute;
+  inset: 0;
+}
+
+.fill .unavailable {
+  position: absolute;
+  inset: 0;
+  grid-template-rows: minmax(0, 1fr);
+}
+
 .missingMark {
   position: absolute;
   top: 2px;

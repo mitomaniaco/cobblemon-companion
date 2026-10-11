@@ -5,7 +5,7 @@ import {useArtwork} from './artwork-store';
 import styles from './PokemonArtwork.module.css';
 import {PokeBallMark} from './PokeBallMark';
 
-export type PokemonArtworkVariant = 'collection' | 'slot' | 'detail';
+export type PokemonArtworkVariant = 'collection' | 'slot' | 'detail' | 'fill';
 
 export interface PokemonArtworkProps {
   speciesId: string;
@@ -57,9 +57,11 @@ export function PokemonArtwork({speciesId, formId, shiny, variant, loading, clas
         {unavailable ? (
           <span className={styles.unavailable} role="img" aria-label={unavailableLabel} title={name}>
             <PokeBallMark className={styles.unavailableMark} />
-            <span className={styles.unavailableName} aria-hidden="true">
-              {variant === 'slot' ? name.slice(0, SLOT_INITIALS) : name}
-            </span>
+            {variant !== 'fill' && (
+              <span className={styles.unavailableName} aria-hidden="true">
+                {variant === 'slot' ? name.slice(0, SLOT_INITIALS) : name}
+              </span>
+            )}
           </span>
         ) : (
           <img

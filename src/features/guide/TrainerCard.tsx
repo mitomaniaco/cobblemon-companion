@@ -28,10 +28,10 @@ import {
   Tab,
   TabList,
   Tabs,
+  TypeDot,
   TypeIcon,
   typeColorVar,
   typeInkVar,
-  typeLabel,
 } from '../../ui';
 import {
   buildCampaignView,
@@ -378,16 +378,14 @@ function YourTeam({
           >
             <button type="button" className={styles.mineCard} aria-pressed={slot.uuid === selectedUuid} onClick={() => onSelect(slot.uuid)}>
               <span className={styles.mineArt}>
-                <PokemonArtwork speciesId={slot.speciesId} formId={formId} shiny={individual?.shiny === true} variant="collection" />
+                <PokemonArtwork speciesId={slot.speciesId} formId={formId} shiny={individual?.shiny === true} variant="fill" />
               </span>
               <span className={styles.mineText}>
                 <strong className={styles.mineName}>{display.name}</strong>
                 <small className={styles.mineLevel}>Nv. {levelOf.get(slot.uuid) ?? individual?.level ?? '—'}</small>
                 <span className={styles.mineTypes}>
                   {display.types.map((type) => (
-                    <i key={type} style={{'--c': typeColorVar(type), color: typeInkVar(type)} as CSSProperties} title={typeLabel(type)}>
-                      <TypeIcon type={type} />
-                    </i>
+                    <TypeDot key={type} type={type} size="sm" />
                   ))}
                 </span>
               </span>
@@ -476,7 +474,7 @@ function Answers({
                     : `${name}, nível ${entry.level}`}
                 </span>
                 <span className={styles.answerArt}>
-                  <PokemonArtwork speciesId={entry.speciesId} formId={entry.formId} variant="slot" />
+                  <PokemonArtwork speciesId={entry.speciesId} formId={entry.formId} variant="fill" />
                 </span>
                 <span className={styles.answerName}>
                   <span className={styles.answerTitle}>
@@ -507,11 +505,13 @@ function Answers({
                         aria-label={`Slot ${slotNo}: ${answererName}`}
                         data-best={rankIndex === 0 && rank.outcome === 'vence' ? 'true' : undefined}
                       >
-                        <PokemonArtwork
-                          speciesId={answerer.speciesId}
-                          formId={individuals.get(answerer.uuid)?.formId ?? 'normal'}
-                          variant="slot"
-                        />
+                        <span className={styles.bubbleArt}>
+                          <PokemonArtwork
+                            speciesId={answerer.speciesId}
+                            formId={individuals.get(answerer.uuid)?.formId ?? 'normal'}
+                            variant="fill"
+                          />
+                        </span>
                         {slotNo > 0 && <span className={styles.bubbleNo}>{slotNo}</span>}
                       </span>
                     );

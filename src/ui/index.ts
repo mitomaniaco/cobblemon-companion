@@ -34,5 +34,6 @@ export {Tab, TabList, TabPanel, TabPanels, Tabs} from './Tabs';
 export type {TabListProps, TabPanelProps, TabPanelsProps, TabsProps, TabProps} from './Tabs';
 export {TypeBadge} from './TypeBadge';
 export {TypeIcon} from './TypeIcon';
+export {TypeDot} from './TypeDot';
 export type {TypeBadgeProps} from './TypeBadge';
 export {typeColorVar, typeInkVar, typeLabel} from './types';

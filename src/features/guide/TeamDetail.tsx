@@ -138,7 +138,7 @@ function MoveCard({
               >
                 {opponent && (
                   <span className={styles.damageArt}>
-                    <PokemonArtwork speciesId={opponent.speciesId} formId="normal" variant="slot" className={styles.fill} />
+                    <PokemonArtwork speciesId={opponent.speciesId} formId="normal" variant="fill" />
                   </span>
                 )}
                 <span className={styles.srOnly}>{name}: </span>
