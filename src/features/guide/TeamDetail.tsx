@@ -121,7 +121,9 @@ function MoveCard({
       {text.description !== null && <p className={styles.moveDescription}>{text.description}</p>}
       <div className={styles.damageRow}>
         {damage.length === 0 ? (
-          <span className={styles.damageEmpty}>Não causa dano aos adversários</span>
+          <span className={styles.damageEmpty}>
+            {move.evaluated ? 'Não causa dano aos adversários' : 'Golpe de status: fora do cálculo de dano'}
+          </span>
         ) : (
           damage.map((entry) => {
             const opponent = opponentById.get(entry.opponentId);
@@ -154,7 +156,7 @@ function MoveCard({
 export function TeamDetail({member, slot, individual, result, onOpenCalculation}: TeamDetailProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const species = speciesDisplay(member.speciesId, individual?.formId ?? 'normal');
-  const evaluated = member.moves.filter((move) => move.evaluated).slice(0, 4);
+  const shownMoves = member.moves.slice(0, 4);
   const abilityId = individual?.observed.ability ?? null;
   const abilityText = abilityId === null ? null : abilityDescription(abilityId);
   const baseStats = speciesBaseStats(member.speciesId, individual?.formId ?? 'normal');
@@ -219,7 +221,7 @@ export function TeamDetail({member, slot, individual, result, onOpenCalculation}
       </Dialog>
 
       <ul className={styles.moves} aria-label="Golpes">
-        {evaluated.map((move) => (
+        {shownMoves.map((move) => (
           <MoveCard key={`${move.source}-${move.id}`} member={member} move={move} individual={individual} opponents={result.opponents} />
         ))}
       </ul>
