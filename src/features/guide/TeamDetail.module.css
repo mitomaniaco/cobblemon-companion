@@ -300,8 +300,12 @@
   gap: calc(0.6 * var(--u, 14px));
 }
 
-.bottom[data-solo] {
+.bottom[data-cards="1"] {
   grid-template-columns: 1fr;
+}
+
+.bottom[data-cards="3"] {
+  grid-template-columns: 1fr 1.2fr 1.2fr;
 }
 
 .card {
@@ -348,7 +352,13 @@
   background: #3fd47a14;
 }
 
-.acquire ul {
+.tips {
+  border-color: var(--color-control-border);
+  background: var(--color-raised);
+}
+
+.acquire ul,
+.tips ul {
   display: grid;
   gap: calc(0.2 * var(--u, 14px));
   margin: 0;
@@ -357,6 +367,10 @@
   font-size: calc(0.8 * var(--u, 14px));
   list-style: none;
   overflow-wrap: anywhere;
+}
+
+.tips ul {
+  color: var(--color-text);
 }
 
 .gain {
@@ -389,7 +403,8 @@
   line-height: var(--line-caption);
 }
 
-.matchups li[data-outcome="vence"] {
+.matchups li[data-outcome="vence"],
+.matchups li[data-outcome="segura"] {
   color: var(--color-success);
 }
 

@@ -1153,6 +1153,18 @@ button.answerRow:hover {
   white-space: nowrap;
 }
 
+.threat {
+  flex: none;
+  padding: calc(0.1 * var(--u)) calc(0.5 * var(--u));
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-error) 30%, transparent);
+  color: var(--color-error);
+  font-size: calc(0.65 * var(--u));
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .bubbles {
   display: flex;
   flex: none;
@@ -1218,6 +1230,11 @@ button.answerRow:hover {
 .answerRow[data-outcome="perde"] .verdict {
   background: color-mix(in srgb, var(--color-error) 30%, transparent);
   color: var(--color-error);
+}
+
+.answerRow[data-holds] .verdict {
+  background: var(--color-success);
+  color: #11141c;
 }
 
 /* ---------- painel do jogador (PvE) ---------- */
@@ -1641,6 +1658,10 @@ button.answerRow:hover {
 
   .bubble[data-best] {
     outline: 2px solid Highlight;
+  }
+
+  .threat {
+    border: 1px solid CanvasText;
   }
 }
 

@@ -334,11 +334,14 @@ describe('textos do resultado', () => {
   });
 
   it('descreve o confronto com singular e plural de turnos', () => {
-    expect(guideOpponentTurnsLabel({outcome: 'vence', ourTurns: 1, theirTurns: 3})).toBe(
+    expect(guideOpponentTurnsLabel({outcome: 'vence', holds: false, ourTurns: 1, theirTurns: 3})).toBe(
       'vence em 1 turno (o adversário precisaria de 3 turnos)',
     );
-    expect(guideOpponentTurnsLabel({outcome: 'perde', ourTurns: 2, theirTurns: 1})).toBe(
+    expect(guideOpponentTurnsLabel({outcome: 'perde', holds: false, ourTurns: 2, theirTurns: 1})).toBe(
       'perde: o adversário vence em 1 turno (você precisaria de 2 turnos)',
+    );
+    expect(guideOpponentTurnsLabel({outcome: 'vence', holds: true, ourTurns: 2, theirTurns: 3})).toBe(
+      'segura: entra na troca e ainda vence em 2 turnos no pior caso',
     );
   });
 });
@@ -369,6 +372,19 @@ describe('respostas do time aos adversários', () => {
       {uuid: 'b', outcome: 'vence'},
       {uuid: 'a', outcome: 'vence'},
       {uuid: 'c', outcome: 'perde'},
+    ]);
+  });
+
+  it('guideAnswerRanking põe quem segura a troca antes de quem só vence, mesmo com mais turnos', () => {
+    const team = [
+      teamMember('a', [m('o#0', 'vence', 1, 3)]),
+      teamMember('b', [{...m('o#0', 'vence', 2, 3), holds: true}]),
+      teamMember('c', [{...m('o#0', 'vence', 1, 4), holds: true}]),
+    ];
+    expect(guideAnswerRanking(team, 'o#0')).toEqual([
+      {uuid: 'c', outcome: 'segura'},
+      {uuid: 'b', outcome: 'segura'},
+      {uuid: 'a', outcome: 'vence'},
     ]);
   });
 
