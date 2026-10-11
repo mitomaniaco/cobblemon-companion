@@ -46,7 +46,7 @@ function MemberDetails({
               const opponent = opponentById.get(matchup.opponentId);
               const label = opponent ? `${speciesDisplay(opponent.speciesId, 'normal').name} Nv. ${opponent.level}` : matchup.opponentId;
               return (
-                <li key={matchup.opponentId} data-outcome={matchup.outcome}>
+                <li key={matchup.opponentId} data-outcome={matchup.holds ? 'segura' : matchup.outcome}>
                   <strong>{label}</strong> {guideOpponentTurnsLabel(matchup)}
                 </li>
               );
@@ -228,7 +228,7 @@ export function TeamDetail({member, slot, individual, result, onOpenCalculation}
         ))}
       </ul>
 
-      <div className={styles.bottom} data-solo={hasAcquire ? undefined : true}>
+      <div className={styles.bottom} data-cards={1 + Number(hasAcquire) + Number(member.tips.length > 0)}>
         <section aria-label="Item" className={styles.card}>
           <h5 className={styles.title}>Item</h5>
           <div className={styles.itemLine}>
@@ -250,6 +250,16 @@ export function TeamDetail({member, slot, individual, result, onOpenCalculation}
                   {entry.replacesMoveId === null ? 'ocupa um golpe livre' : `no lugar de ${moveDisplay(entry.replacesMoveId).name}`} ·{' '}
                   <span className={styles.gain}>+{entry.gainPercent}%</span>
                 </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {member.tips.length > 0 && (
+          <section aria-label="Táticas" className={`${styles.card} ${styles.tips}`}>
+            <h5 className={styles.title}>Táticas</h5>
+            <ul>
+              {member.tips.map((tip) => (
+                <li key={`${tip.opponentId}-${tip.moveId}`}>{tip.text}</li>
               ))}
             </ul>
           </section>

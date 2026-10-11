@@ -220,20 +220,21 @@ export function guidePartySteps(plan: GuidePartyPlan, nameOf: (uuid: string, spe
 }
 
 /**
- * Membros do time que têm confronto com o adversário, do melhor para o pior: vitórias primeiro (menos turnos),
- * depois derrotas pela maior folga `theirTurns - ourTurns`. Empates ficam na ordem do time.
+ * Membros do time que têm confronto com o adversário, do melhor para o pior: quem segura a troca primeiro, depois quem vence
+ * (em ambos, menos turnos), depois derrotas pela maior folga `theirTurns - ourTurns`. Empates ficam na ordem do time.
  */
 export function guideAnswerRanking(
   team: readonly GuideTeamMember[],
   opponentId: string,
-): Array<{uuid: string; outcome: 'vence' | 'perde'}> {
+): Array<{uuid: string; outcome: 'segura' | 'vence' | 'perde'}> {
+  const tier = {segura: 0, vence: 1, perde: 2} as const;
   const rows = team.flatMap((member, order) => {
     const matchup = member.matchups.find((entry) => entry.opponentId === opponentId);
     return matchup
       ? [
           {
             uuid: member.uuid,
-            outcome: matchup.outcome,
+            outcome: matchup.holds ? ('segura' as const) : matchup.outcome,
             ourTurns: finiteTurns(matchup.ourTurns),
             margin: finiteTurns(matchup.theirTurns) - finiteTurns(matchup.ourTurns),
             order,
@@ -242,8 +243,8 @@ export function guideAnswerRanking(
       : [];
   });
   rows.sort((left, right) => {
-    if (left.outcome !== right.outcome) return left.outcome === 'vence' ? -1 : 1;
-    const byRank = left.outcome === 'vence' ? left.ourTurns - right.ourTurns : right.margin - left.margin;
+    if (left.outcome !== right.outcome) return tier[left.outcome] - tier[right.outcome];
+    const byRank = left.outcome === 'perde' ? right.margin - left.margin : left.ourTurns - right.ourTurns;
     return byRank || left.order - right.order;
   });
   return rows.map(({uuid, outcome}) => ({uuid, outcome}));
@@ -286,8 +287,9 @@ export function guideMoveDamage(
   return entries.map(({order: _order, ...entry}) => entry);
 }
 
-export function guideOpponentTurnsLabel(matchup: {outcome: 'vence' | 'perde'; ourTurns: number; theirTurns: number}): string {
+export function guideOpponentTurnsLabel(matchup: Pick<GuideMatchup, 'outcome' | 'holds' | 'ourTurns' | 'theirTurns'>): string {
   const plural = (count: number) => `${count} ${count === 1 ? 'turno' : 'turnos'}`;
+  if (matchup.holds) return `segura: entra na troca e ainda vence em ${plural(matchup.ourTurns)} no pior caso`;
   return matchup.outcome === 'vence'
     ? `vence em ${plural(matchup.ourTurns)} (o adversário precisaria de ${plural(matchup.theirTurns)})`
     : `perde: o adversário vence em ${plural(matchup.theirTurns)} (você precisaria de ${plural(matchup.ourTurns)})`;

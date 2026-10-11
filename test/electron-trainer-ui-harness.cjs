@@ -1895,6 +1895,10 @@ async function exerciseGuideWorkspace(window) {
     check(detailText.includes(expected), `O painel de detalhes do Gardevoir não mostrou "${expected}".`);
   }
   check(/\d+–\d+%/.test(detailText), 'O painel de detalhes do Gardevoir não mostrou a faixa de dano dos golpes.');
+  check(
+    detailText.includes('Táticas') && detailText.includes('Thunder Wave em Floatzel'),
+    'O detalhe do Gardevoir não mostrou as táticas.',
+  );
   const answers = await evaluate(
     contents,
     `(() => {
@@ -1905,6 +1909,8 @@ async function exerciseGuideWorkspace(window) {
           text: item.textContent,
           lost: Boolean(item.querySelector('[data-outcome="perde"][data-unanswered]')),
           won: Boolean(item.querySelector('[data-outcome="vence"]')),
+          verdict: item.querySelector('[class*="verdict"]')?.textContent,
+          threat: item.textContent.includes('ameaça'),
         })),
       };
     })()`,
@@ -1915,10 +1921,13 @@ async function exerciseGuideWorkspace(window) {
       answers.rows[0].text.includes('Floatzel') &&
       answers.rows[0].lost &&
       answers.rows[0].text.includes('sem resposta boa') &&
+      !answers.rows[0].threat &&
       answers.rows[1].text.includes('Bulbasaur') &&
       answers.rows[1].won &&
+      answers.rows[1].verdict === 'segura' &&
+      answers.rows[1].threat &&
       answers.rows[1].text.includes('Psychic'),
-    'A coluna "Quem responde a cada um" não mostrou Floatzel sem resposta e Bulbasaur vencido com o golpe a usar.',
+    'A coluna "Quem responde a cada um" não mostrou Floatzel sem resposta, nem Bulbasaur como ameaça que o membro segura com o golpe a usar.',
   );
   const slotButtons = await evaluate(
     contents,

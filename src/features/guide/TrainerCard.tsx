@@ -464,13 +464,15 @@ function Answers({
             const rowProps = {
               className: styles.answerRow,
               'data-outcome': matchup?.outcome,
+              'data-holds': matchup?.holds ? 'true' : undefined,
               'data-unanswered': opponent && unanswered.has(opponent.id) ? 'true' : undefined,
             };
+            const dangerous = opponent?.dangerous === true && !rowProps['data-unanswered'];
             const content = (
               <>
                 <span id={`${answersId}-${index}`} className={styles.visuallyHidden}>
                   {matchup
-                    ? `${name}, nível ${entry.level}: ${guideOpponentTurnsLabel(matchup)}${rowProps['data-unanswered'] ? '; sem resposta boa' : ''}`
+                    ? `${name}, nível ${entry.level}: ${guideOpponentTurnsLabel(matchup)}${rowProps['data-unanswered'] ? '; sem resposta boa' : ''}${dangerous ? '; ameaça' : ''}`
                     : `${name}, nível ${entry.level}`}
                 </span>
                 <span className={styles.answerArt}>
@@ -490,6 +492,11 @@ function Answers({
                   )}
                 </span>
                 {rowProps['data-unanswered'] && <span className={styles.noAnswer}>sem resposta boa</span>}
+                {dangerous && (
+                  <span className={styles.threat} title="Metade ou mais dos seus Pokémon perde para ele: o time busca duas respostas.">
+                    ameaça
+                  </span>
+                )}
                 <span className={styles.bubbles}>
                   {ranking.map((rank, rankIndex) => {
                     const answerer = result?.team.find((candidate) => candidate.uuid === rank.uuid);
@@ -503,7 +510,7 @@ function Answers({
                         role="img"
                         title={answererName}
                         aria-label={`Slot ${slotNo}: ${answererName}`}
-                        data-best={rankIndex === 0 && rank.outcome === 'vence' ? 'true' : undefined}
+                        data-best={rankIndex === 0 && rank.outcome !== 'perde' ? 'true' : undefined}
                       >
                         <span className={styles.bubbleArt}>
                           <PokemonArtwork
@@ -517,7 +524,7 @@ function Answers({
                     );
                   })}
                 </span>
-                {matchup && <span className={styles.verdict}>{matchup.outcome}</span>}
+                {matchup && <span className={styles.verdict}>{matchup.holds ? 'segura' : matchup.outcome}</span>}
               </>
             );
             return (
@@ -541,7 +548,10 @@ function Answers({
           })}
         </ul>
       )}
-      <p className={styles.muted}>Estimativa 1 contra 1, HP cheio, sem status nem crítico: a IA do RCT pode trocar em outra ordem.</p>
+      <p className={styles.muted}>
+        Estimativa 1 contra 1, HP cheio, sem status nem crítico: a IA do RCT pode trocar em outra ordem. Segura = entra na troca e ainda
+        vence no pior caso.
+      </p>
     </section>
   );
 }
