@@ -1,6 +1,6 @@
-import {useId, useMemo, useState} from 'react';
+import {useEffect, useId, useMemo, useRef, useState} from 'react';
 import type {CSSProperties, ReactNode} from 'react';
-import {ArrowFatLinesUp, Barbell, Sword, Target, UsersThree, type Icon} from '@phosphor-icons/react';
+import {ArrowFatLinesUp, Barbell, CaretDown, Sword, Target, UsersThree, type Icon} from '@phosphor-icons/react';
 import {ListBox, ListBoxItem, type Key, type Selection} from 'react-aria-components';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
@@ -682,6 +682,27 @@ export function TrainerCard({
   const [capChoice, setCapChoice] = useState<boolean | null>(null);
   const stepsId = useId();
   const capRegionId = useId();
+  const trailPanelId = useId();
+  const stripRef = useRef<HTMLDivElement>(null);
+
+  // Lista completa de etapas: painel sob a faixa; fecha com Esc, clique fora ou ao escolher uma etapa.
+  useEffect(() => {
+    if (!showAll) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setShowAll(false);
+      stripRef.current?.querySelector<HTMLElement>('[aria-controls]')?.focus();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.target instanceof Node && !stripRef.current?.contains(event.target)) setShowAll(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [showAll]);
 
   const progressValue = progress.status === 'ready' ? progress.value : null;
   const defeated = progressValue?.defeated ?? null;
@@ -843,6 +864,7 @@ export function TrainerCard({
     const entry = entryById.get(String(key as Key));
     if (!entry) return;
     setExpandedStageId(entry.stage.stageId);
+    setShowAll(false);
     const owner = [...views.values()].find((entryView) => entryView.entries.includes(entry));
     if (owner) setSeriesChoice(owner.seriesId);
     const id = goalTrainerId(entry, null);
@@ -1176,7 +1198,7 @@ export function TrainerCard({
         />
       </div>
 
-      <div className={styles.strip} data-expanded={showTrail && showAll ? 'true' : undefined}>
+      <div ref={stripRef} className={styles.strip} data-expanded={showTrail && showAll ? 'true' : undefined}>
         {pveMode ? (
           <p className={styles.muted}>
             PvE geral: o time é montado contra os treinadores da sua faixa de nível
@@ -1184,11 +1206,19 @@ export function TrainerCard({
           </p>
         ) : showTrail ? (
           <>
-            <div className={styles.trailWrap}>
+            <div id={trailPanelId} className={styles.trailWrap}>
               <Trail entries={trailVisible} selectedKey={selectedKey} onSelection={handleSelection} />
             </div>
-            <Button variant="quiet" onPress={() => setShowAll((value) => !value)}>
+            {showAll && <span className={styles.trailHint}>Todas as etapas da série: escolha uma para ver o desafio</span>}
+            <Button
+              variant="quiet"
+              className={styles.trailToggle}
+              aria-expanded={showAll}
+              aria-controls={trailPanelId}
+              onPress={() => setShowAll((value) => !value)}
+            >
               {showAll ? 'Mostrar menos' : `Mostrar todas as etapas (${series.stages.length})`}
+              <CaretDown className={styles.trailChevron} aria-hidden="true" />
             </Button>
           </>
         ) : (

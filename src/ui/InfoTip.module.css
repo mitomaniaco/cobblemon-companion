@@ -1,0 +1,94 @@
+/* O balão vive fora do cartão (portal), então usa tokens em px e não --u. O botão herda o tamanho do texto ao redor. */
+.trigger {
+  display: inline-grid;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  flex: none;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-sunken);
+  color: var(--color-muted);
+  font-size: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.trigger svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.trigger[data-hovered],
+.trigger[data-pressed] {
+  color: var(--color-text);
+  background: var(--color-raised);
+}
+
+.trigger[data-focus-visible] {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.popover {
+  z-index: 1200;
+  width: min(360px, 90vw);
+  max-height: min(320px, 60vh);
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  color: var(--color-text);
+  background: var(--color-raised);
+  box-shadow: var(--shadow-pop);
+}
+
+.popover[data-entering] {
+  animation: info-in var(--duration-overlay-enter) var(--ease-out);
+}
+
+.popover[data-exiting] {
+  animation: info-out var(--duration-overlay-exit) linear;
+}
+
+.dialog {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  font-size: var(--text-label);
+  line-height: var(--line-label);
+  outline: none;
+}
+
+.dialog p {
+  margin: 0;
+}
+
+@keyframes info-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes info-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popover[data-entering],
+  .popover[data-exiting] {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .trigger,
+  .popover {
+    border-color: CanvasText;
+    color: CanvasText;
+    background: Canvas;
+  }
+}

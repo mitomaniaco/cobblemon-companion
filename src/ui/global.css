@@ -119,3 +119,47 @@ textarea {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Região que rola dentro de si: barra fina visível e esmaecimento só nas bordas onde ainda há conteúdo (sem rolagem, sem esmaecer). */
+@property --fade-top {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-bottom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+[data-scroll-fade] {
+  overflow-y: auto;
+  scrollbar-color: var(--color-muted) transparent;
+  scrollbar-width: thin;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+  animation: scroll-fade linear both;
+  animation-timeline: scroll(self block);
+}
+
+@keyframes scroll-fade {
+  0% {
+    --fade-top: 0px;
+    --fade-bottom: calc(1.4 * var(--u, 14px));
+  }
+
+  4% {
+    --fade-top: calc(1.4 * var(--u, 14px));
+    --fade-bottom: calc(1.4 * var(--u, 14px));
+  }
+
+  96% {
+    --fade-top: calc(1.4 * var(--u, 14px));
+    --fade-bottom: calc(1.4 * var(--u, 14px));
+  }
+
+  100% {
+    --fade-top: calc(1.4 * var(--u, 14px));
+    --fade-bottom: 0px;
+  }
+}

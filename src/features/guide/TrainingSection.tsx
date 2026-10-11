@@ -1,7 +1,18 @@
 import {useId, type CSSProperties} from 'react';
 import {moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {TrainingPlanMemberResult, TrainingPlanResult} from '../../platform/api';
-import {Button, MoveChip, MovePpMeta, PokemonArtwork, StatusMessage, TypeIcon, typeColorVar, typeInkVar, typeLabel} from '../../ui';
+import {
+  Button,
+  InfoTip,
+  MoveChip,
+  MovePpMeta,
+  PokemonArtwork,
+  StatusMessage,
+  TypeIcon,
+  typeColorVar,
+  typeInkVar,
+  typeLabel,
+} from '../../ui';
 import {
   TRAINING_CAP_ORIGIN_LABEL,
   TRAINING_EV_TOTAL_LIMIT,
@@ -109,31 +120,40 @@ function EvPanel({member, name}: {member: TrainingPlanMemberResult; name: string
           ))}
         </ul>
       ) : (
-        <p className={styles.undetermined}>
-          <strong>Distribuição não determinada.</strong> {evs.reason}
-        </p>
+        <div className={styles.evFoot}>
+          <p className={styles.undetermined}>
+            <strong>Distribuição não determinada.</strong>
+          </p>
+          <InfoTip label={`Por que não há distribuição: ${name}`}>
+            <p>{evs.reason}</p>
+          </InfoTip>
+        </div>
       )}
       {determined && (
-        <p className={totals.withinLimits ? styles.evCaption : styles.invalid} title={evs.reason}>
-          {totals.withinLimits
-            ? `Soma sugerida ${totals.total}/${TRAINING_EV_TOTAL_LIMIT} (máximo de 252 por atributo). `
-            : 'Atenção: a distribuição recebida passa de 252 por atributo ou de 510 no total. '}
-          <span className={styles.reason}>{evs.reason}</span>
-        </p>
-      )}
-      {evs.sources.length > 0 && (
-        <p className={styles.evCaption}>
-          Rendem esses EVs:{' '}
-          {evs.sources
-            .map(
-              (source) =>
-                `${speciesDisplay(source.speciesId, 'normal').name} (+${source.amount} ${TRAINING_STAT_SHORT_LABEL[source.stat]}${source.spawns.length === 0 ? ', sem spawn natural conhecido' : ''})`,
-            )
-            .join(' · ')}
-        </p>
-      )}
-      {determined && evs.sources.length === 0 && (
-        <p className={styles.evCaption}>Nenhuma espécie com rendimento e spawn natural conhecidos.</p>
+        <div className={styles.evFoot}>
+          <p className={totals.withinLimits ? styles.evCaption : styles.invalid}>
+            {totals.withinLimits
+              ? `Soma sugerida ${totals.total}/${TRAINING_EV_TOTAL_LIMIT}`
+              : 'Atenção: passa de 252 por atributo ou de 510 no total'}
+          </p>
+          <InfoTip label={`Por que esta distribuição: ${name}`}>
+            <p>{evs.reason}</p>
+            <p>Máximo de 252 por atributo e {TRAINING_EV_TOTAL_LIMIT} no total.</p>
+            {evs.sources.length > 0 ? (
+              <p>
+                Rendem esses EVs:{' '}
+                {evs.sources
+                  .map(
+                    (source) =>
+                      `${speciesDisplay(source.speciesId, 'normal').name} (+${source.amount} ${TRAINING_STAT_SHORT_LABEL[source.stat]}${source.spawns.length === 0 ? ', sem spawn natural conhecido' : ''})`,
+                  )
+                  .join(' · ')}
+              </p>
+            ) : (
+              <p>Nenhuma espécie com rendimento e spawn natural conhecidos.</p>
+            )}
+          </InfoTip>
+        </div>
       )}
     </section>
   );
@@ -147,7 +167,12 @@ function MemberRow({member, index}: {member: TrainingPlanMemberResult; index: nu
     '--tone': typeColorVar(species.types[0] ?? null),
   } as CSSProperties;
   return (
-    <li className={styles.member} data-blocked={blocked ? 'true' : undefined} style={style}>
+    <li
+      className={styles.member}
+      data-blocked={blocked ? 'true' : undefined}
+      data-compact={blocked || member.targetLevel === member.level ? 'true' : undefined}
+      style={style}
+    >
       <div className={styles.identity}>
         <PokemonArtwork speciesId={member.speciesId} formId="normal" variant="slot" className={styles.art} />
         <div className={styles.idText}>
@@ -252,7 +277,7 @@ export function TrainingSection({training, hasTeam}: {training: TrainingPlanCont
         </div>
       )}
       {result && (
-        <ol className={styles.members} aria-label="Treino por membro">
+        <ol className={styles.members} aria-label="Treino por membro" data-scroll-fade>
           {result.members.map((member, index) => (
             <MemberRow key={member.uuid} member={member} index={index} />
           ))}

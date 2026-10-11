@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Correções visuais do Guia no save real (Issue #234): Treino sem texto cortado (EVs com a soma em uma linha e o motivo num balão "i" acessível por teclado, linhas já no alvo compactas e lista que rola por dentro com barra fina e esmaecimento nas bordas); Plano de batalha com linhas de altura fixa que nunca se sobrepõem e colunas que rolam por dentro sem aumentar o cartão; Evoluções sem ninguém evoluindo em cartões grandes com arte contida, tipos e "Forma final", e arte que não vaza mais; trilha de etapas com o botão sempre no mesmo lugar e a lista completa num painel sob a faixa, dentro do cartão, fechado por Esc, clique fora ou escolha de etapa. Novo componente `InfoTip` em `src/ui`.
+
 - Guia em página única (Issue #232): em janela larga a tela é só o Trainer Card, sem rolagem; resumo, exclusões pelo level cap, mudanças no time, hipóteses e limites, falhas e o convite “Atualizar do save” foram para o diálogo “Avisos do guia”, aberto pelo botão “Avisos” da barra do cartão (ponto âmbar ou vermelho conforme a gravidade); a montagem do time vira uma barra fina na borda do cartão.
 
 - Ferramentas do Guia dentro do Trainer Card (Issues #226 e #228): dock com Equipe, Plano de batalha, Evoluções, Treino até o cap e Capturas; cada ferramenta preenche o card no padrão de `docs/PADRAO-UI.md` (simulação passo a passo com `HpBar`, cartões de evolução com arte, trilha de nível e EVs em barras, capturas por adversário sem resposta), com cabeçalho comum e "Como calculamos" recolhido.
