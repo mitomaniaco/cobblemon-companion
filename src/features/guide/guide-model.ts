@@ -344,15 +344,18 @@ export function guidePreviousTeamUuids(previous: Pick<GuideResult, 'goal' | 'tea
 
 const REPLACED_REASON = 'outra escolha cobre mais adversários ou com mais margem neste cálculo';
 
+/** O que mudou no time entre duas montagens do mesmo objetivo. */
+export interface GuideTeamChanges {
+  left: Array<{uuid: string; reason: string}>;
+  entered: string[];
+}
+
 /**
  * O que mudou no time entre duas montagens do mesmo objetivo. Quem saiu traz o motivo: a exclusão registrada pelo motor
  * (por exemplo, "acima do level cap (N)") ou a explicação genérica de que outra escolha cobre mais. `null` sem montagem anterior
  * ou com objetivo diferente.
  */
-export function guideTeamChanges(
-  previous: GuideResult | null,
-  next: GuideResult,
-): {left: Array<{uuid: string; reason: string}>; entered: string[]} | null {
+export function guideTeamChanges(previous: GuideResult | null, next: GuideResult): GuideTeamChanges | null {
   if (!previous || !sameGoal(previous.goal, next.goal)) return null;
   const nextUuids = new Set(next.team.map((member) => member.uuid));
   const previousUuids = new Set(previous.team.map((member) => member.uuid));

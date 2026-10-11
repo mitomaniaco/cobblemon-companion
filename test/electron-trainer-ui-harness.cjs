@@ -27,6 +27,7 @@ const screenshotPaths = Object.freeze({
   guideCapIgnored: path.join(runDirectory, 'guide-cap-ignored.png'),
   guide1200: path.join(runDirectory, 'guide-1200.png'),
   guide800: path.join(runDirectory, 'guide-800.png'),
+  guideNotices: path.join(runDirectory, 'guide-notices.png'),
   trainerCard: path.join(runDirectory, 'guide-trainer-card.png'),
   trainerCard1200: path.join(runDirectory, 'guide-trainer-card-1200.png'),
   trainerCard800: path.join(runDirectory, 'guide-trainer-card-800.png'),
@@ -104,6 +105,52 @@ async function clickButton(contents, label) {
     button.click();
   })()`,
   );
+}
+
+/** Em janela larga a página do Guia é só o Trainer Card: nada de rolagem vertical. */
+async function assertGuideNoScroll(contents, where) {
+  const metrics = await evaluate(
+    contents,
+    `(() => {const node = document.querySelector('[aria-label="Guia"]'); return {scrollHeight: node.scrollHeight, clientHeight: node.clientHeight, width: window.innerWidth};})()`,
+  );
+  check(metrics.width >= 1100, 'A checagem de rolagem do Guia exige a janela larga.');
+  check(
+    metrics.scrollHeight <= metrics.clientHeight + 1,
+    `O Guia ${where} tem rolagem vertical (${metrics.scrollHeight} > ${metrics.clientHeight}).`,
+  );
+}
+
+/** Os avisos do guia vivem num diálogo aberto pelo botão "Avisos" do Trainer Card. */
+async function openGuideNotices(contents) {
+  const dialogOpen = `Boolean([...document.querySelectorAll('[role="dialog"]')].some(node => node.innerText.includes('Avisos do guia')))`;
+  if (await evaluate(contents, dialogOpen)) return;
+  const found = await evaluate(
+    contents,
+    `(() => {
+    const button = document.querySelector('[aria-label="Trainer Card"] button[aria-label^="Avisos"]');
+    if (!button) return false;
+    button.click();
+    return true;
+  })()`,
+  );
+  check(found, 'O botão "Avisos" não existe na barra do Trainer Card.');
+  await waitFor(contents, dialogOpen, 'diálogo "Avisos do guia" aberto');
+}
+
+async function closeGuideNotices(contents) {
+  const dialogOpen = `Boolean([...document.querySelectorAll('[role="dialog"]')].some(node => node.innerText.includes('Avisos do guia')))`;
+  if (!(await evaluate(contents, dialogOpen))) return;
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('[role="dialog"]')].find(node => node.innerText.includes('Avisos do guia'))?.querySelector('button[aria-label="Fechar"]')?.click()`,
+  );
+  await waitFor(contents, `!(${dialogOpen})`, 'diálogo "Avisos do guia" fechado');
+}
+
+async function waitForGuideNotices(contents, expression, description) {
+  await openGuideNotices(contents);
+  await waitFor(contents, expression, description);
+  await closeGuideNotices(contents);
 }
 
 async function selectGuideTab(contents, label) {
@@ -404,7 +451,7 @@ async function exerciseCollectionAndDamage(window, snapshot) {
 
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="refresh-snapshot"]\'))', 'ação de atualização');
   // Leitura inicial automática (#137): o snapshot aparece sem clicar em "Atualizar do save"; o convite nunca chega a ser necessário.
-  await waitFor(
+  await waitForGuideNotices(
     contents,
     `(() => {
     const active = [...document.querySelectorAll('nav[aria-label="Vistas"] button')].find(button => button.getAttribute('aria-current') === 'page');
@@ -1508,13 +1555,17 @@ async function exerciseGuideWorkspace(window) {
     })()`,
   );
   check(defaultCap.placeholder === '21' && !defaultCap.required, 'O cap do progresso não foi aplicado como padrão editável.');
-  await waitFor(
+  await waitForGuideNotices(
     contents,
     `document.body.innerText.includes('Time de 0 contra') && document.querySelector('[aria-label="Excluídos pelo level cap"]')?.innerText.includes('acima do level cap (21)')`,
     'o cap padrão do progresso exclui o Gardevoir acima do limite',
   );
   await setLevelCapField(contents, 30);
-  await waitFor(contents, `document.body.innerText.includes('Time de 1 contra')`, 'time do guia montado com o override manual do cap');
+  await waitForGuideNotices(
+    contents,
+    `document.body.innerText.includes('Time de 1 contra')`,
+    'time do guia montado com o override manual do cap',
+  );
   const text = await evaluate(
     contents,
     "document.querySelector('[aria-labelledby]')?.closest('main')?.innerText || document.body.innerText",
@@ -1855,6 +1906,7 @@ async function exerciseGuideWorkspace(window) {
 
   // Cap abaixo do nível do membro (Gardevoir Nv. 30): ele sai do time e aparece como excluído pelo level cap.
   await setLevelCapField(contents, 20);
+  await openGuideNotices(contents);
   await waitFor(
     contents,
     `document.body.innerText.includes('Fora do time pelo level cap') && document.body.innerText.includes('Time de 0 contra')`,
@@ -1871,6 +1923,7 @@ async function exerciseGuideWorkspace(window) {
     respectedWarning.includes('impede a luta contra o treinador') && respectedWarning.includes('guarde no PC'),
     'Com o cap respeitado, o membro da party fora do time deve avisar que bloqueia a luta e precisa ir para o PC.',
   );
+  await closeGuideNotices(contents);
   // Toggle desligado: ninguém é excluído e o aviso pede baixar o nível ou guardar no PC.
   await evaluate(
     contents,
@@ -1880,6 +1933,7 @@ async function exerciseGuideWorkspace(window) {
     toggle.click();
   })()`,
   );
+  await openGuideNotices(contents);
   await waitFor(
     contents,
     `document.body.innerText.includes('Time de 1 contra') && !document.body.innerText.includes('Fora do time pelo level cap')`,
@@ -1891,13 +1945,14 @@ async function exerciseGuideWorkspace(window) {
     'Com o toggle desligado, o membro acima do cap deve avisar para baixar o nível ou guardar no PC.',
   );
   await capture(window, screenshotPaths.guideCapIgnored, 'section[aria-label="Acima do level cap"]');
+  await closeGuideNotices(contents);
   await evaluate(
     contents,
     `[...document.querySelectorAll('input[role="switch"]')].find(node => node.closest('label')?.innerText.includes('Respeitar level cap'))?.click()`,
   );
-  await waitFor(contents, `document.body.innerText.includes('Fora do time pelo level cap')`, 'toggle religado volta a excluir');
+  await waitForGuideNotices(contents, `document.body.innerText.includes('Fora do time pelo level cap')`, 'toggle religado volta a excluir');
   await setLevelCapField(contents, '');
-  await waitFor(
+  await waitForGuideNotices(
     contents,
     `document.body.innerText.includes('Time de 0 contra') && document.body.innerText.includes('acima do level cap (21)')`,
     'limpar o cap manual restaura o cap padrão do progresso',
@@ -1912,6 +1967,10 @@ async function exerciseGuideWorkspace(window) {
     'time mantido com cap do progresso e respeito desligado',
   );
   await capture(window, screenshotPaths.guide1440, '[aria-label="Trainer Card"]');
+  await assertGuideNoScroll(contents, 'na vista Equipe');
+  await openGuideNotices(contents);
+  await capture(window, screenshotPaths.guideNotices, '[role="dialog"]');
+  await closeGuideNotices(contents);
   const guideArtwork = await evaluate(
     contents,
     `[...document.querySelectorAll('ol[aria-label="Equipe recomendada"] figure[data-artwork]')].map(node => node.dataset.artwork)`,
@@ -1927,6 +1986,7 @@ async function exerciseGuideWorkspace(window) {
     `Boolean(document.querySelector('ol[aria-label="Confronto por adversário"] > li'))`,
     'plano de batalha do motor sintético',
   );
+  await assertGuideNoScroll(contents, 'com uma ferramenta aberta');
   const planText = await evaluate(
     contents,
     `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Plano de batalha"]')?.innerText || ''`,
@@ -2051,6 +2111,7 @@ async function exerciseGuideWorkspace(window) {
   // Confirme o resultado atualizado com o cap efetivo 30, não só o valor recém-digitado.
   // O time vive no Trainer Card; as exclusões e hipóteses ficam logo abaixo dele.
   await selectGuideTab(contents, 'Equipe');
+  await openGuideNotices(contents);
   await clickButton(contents, 'Exclusões, hipóteses e limites');
   await waitFor(
     contents,
@@ -2069,6 +2130,7 @@ async function exerciseGuideWorkspace(window) {
     })()`,
     'time do guia recalculado com o level cap efetivo 30',
   );
+  await closeGuideNotices(contents);
   await selectGuideTab(contents, 'Evoluções');
   await waitFor(contents, `document.body.innerText.includes('Level cap usado: 30.')`, 'evoluções recalculadas com o level cap informado');
 
