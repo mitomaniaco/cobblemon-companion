@@ -1,0 +1,26 @@
+.dot {
+  display: inline-grid;
+  width: var(--dot);
+  height: var(--dot);
+  flex: none;
+  padding: 0;
+  place-items: center;
+  border-radius: 50%;
+  line-height: 1;
+}
+
+.sm {
+  --dot: calc(1.1 * var(--u, 14px));
+  font-size: calc(0.7 * var(--u, 14px));
+}
+
+.md {
+  --dot: calc(1.7 * var(--u, 14px));
+  font-size: calc(1 * var(--u, 14px));
+}
+
+@media (forced-colors: active) {
+  .dot {
+    border: 1px solid CanvasText;
+  }
+}

@@ -40,17 +40,21 @@ describe('situação de cada evolução', () => {
 });
 
 describe('cartões por membro', () => {
-  it('ordena prontos, pendentes, não verificados e bloqueados, e manda quem não evolui para a lista', () => {
-    const {cards, none} = splitEvolutionMembers([
-      member('bloqueado', 'bloqueado'),
+  it('ordena prontos, pendentes e não verificados em cartões grandes; o resto vira compacto (bloqueado, sem previsão, forma final)', () => {
+    const {cards, compact} = splitEvolutionMembers([
       member('nada', 'sem-evolução'),
+      member('vazio', 'evolui', []),
+      member('bloqueado', 'bloqueado'),
       member('nao-verificado', 'evolui', [option([unverified('troca', 'troca')])]),
       member('pendente', 'evolui', [option([level('nível 30', 'pendente')])]),
       member('pronto', 'evolui', [option([level('nível 10', 'cumprido')])]),
     ]);
-    expect(cards.map((card) => card.member.uuid)).toEqual(['pronto', 'pendente', 'nao-verificado', 'bloqueado']);
-    expect(none.map((entry) => entry.uuid)).toEqual(['nada']);
-    expect(cards[3]?.option).toBeNull();
+    expect(cards.map((card) => card.member.uuid)).toEqual(['pronto', 'pendente', 'nao-verificado']);
+    expect(compact.map((entry) => [entry.member.uuid, entry.kind])).toEqual([
+      ['bloqueado', 'bloqueado'],
+      ['vazio', 'sem-previsao'],
+      ['nada', 'forma-final'],
+    ]);
   });
 
   it('com várias alternativas, exibe a mais próxima e lista as outras', () => {

@@ -112,38 +112,50 @@ function primaryEvolutionOption(options: readonly EvolutionOption[]): EvolutionO
 
 export interface EvolutionCard {
   member: EvolutionPlanMemberResult;
-  /** Alternativa exibida; nula quando o membro está bloqueado. */
-  option: EvolutionOption | null;
+  /** Alternativa exibida. */
+  option: EvolutionOption;
   /** Outras alternativas ("ou") do mesmo membro. */
   alternatives: EvolutionOption[];
-  status: EvolutionCardStatus;
+  status: Exclude<EvolutionCardStatus, 'bloqueado'>;
 }
 
-/** Separa quem tem cartão de evolução (prontos primeiro, bloqueados por último) de quem não evolui. */
+export type EvolutionCompactKind = 'bloqueado' | 'sem-previsao' | 'forma-final';
+
+export interface EvolutionCompact {
+  member: EvolutionPlanMemberResult;
+  kind: EvolutionCompactKind;
+}
+
+const COMPACT_RANK: Record<EvolutionCompactKind, number> = {bloqueado: 0, 'sem-previsao': 1, 'forma-final': 2};
+
+/** Separa quem tem cartão grande de evolução (prontos primeiro) de quem vira cartão compacto (bloqueados, sem previsão, forma final). */
 export function splitEvolutionMembers(members: readonly EvolutionPlanMemberResult[]): {
   cards: EvolutionCard[];
-  none: EvolutionPlanMemberResult[];
+  compact: EvolutionCompact[];
 } {
   const cards: EvolutionCard[] = [];
-  const none: EvolutionPlanMemberResult[] = [];
+  const compact: EvolutionCompact[] = [];
   for (const member of members) {
     if (member.status === 'sem-evolução') {
-      none.push(member);
+      compact.push({member, kind: 'forma-final'});
       continue;
     }
     const option = member.status === 'evolui' ? primaryEvolutionOption(member.options) : null;
-    if (member.status === 'evolui' && option === null) {
-      none.push(member);
+    if (option === null) {
+      compact.push({member, kind: member.status === 'evolui' ? 'sem-previsao' : 'bloqueado'});
       continue;
     }
     cards.push({
       member,
       option,
       alternatives: member.options.filter((candidate) => candidate !== option),
-      status: option === null ? 'bloqueado' : evolutionOptionStatus(option),
+      status: evolutionOptionStatus(option),
     });
   }
-  return {cards: cards.sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status]), none};
+  return {
+    cards: cards.sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status]),
+    compact: compact.sort((a, b) => COMPACT_RANK[a.kind] - COMPACT_RANK[b.kind]),
+  };
 }
 
 /** Nível exigido (o maior) e o atual do membro; nulo quando a evolução não exige nível. */

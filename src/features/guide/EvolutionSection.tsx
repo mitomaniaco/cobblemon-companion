@@ -1,8 +1,8 @@
 import type {CSSProperties} from 'react';
 import {ArrowUp, ArrowsLeftRight, CaretRight, Check, Package, Question, WarningCircle} from '@phosphor-icons/react';
 import {moveDisplay, speciesDisplay} from '../../domain/dex';
-import type {EvolutionOption, EvolutionPlanMemberResult, EvolutionPlanResult, EvolutionRequirement} from '../../platform/api';
-import {Button, MoveChip, MovePpMeta, PokemonArtwork, StatusMessage, TypeIcon, typeColorVar, typeInkVar, typeLabel} from '../../ui';
+import type {EvolutionOption, EvolutionPlanResult, EvolutionRequirement} from '../../platform/api';
+import {Button, MoveChip, MovePpMeta, PokemonArtwork, StatusMessage, TypeDot, typeColorVar} from '../../ui';
 import {
   evolutionLevelCapLabel,
   evolutionLevelProgress,
@@ -15,14 +15,13 @@ import {
   orderedMoveChanges,
   splitEvolutionMembers,
   type EvolutionCard,
+  type EvolutionCompact,
 } from './evolution-model';
 import type {EvolutionPlanController} from './useEvolutionPlan';
 import styles from './EvolutionSection.module.css';
 import {moveText} from './texts';
 
 const MAX_MOVE_TILES = 2;
-const MAX_CARD_COLUMNS = 4;
-const NONE_GRID_COLUMNS = 3;
 
 function entryStyle(index: number): CSSProperties {
   return {'--entry-index': index} as CSSProperties;
@@ -45,21 +44,13 @@ function Mon({speciesId, formId, caption}: {speciesId: string; formId: string; c
   return (
     <div className={styles.mon}>
       <div className={styles.art}>
-        <PokemonArtwork speciesId={speciesId} formId={formId} variant="detail" className={styles.fill} />
+        <PokemonArtwork speciesId={speciesId} formId={formId} variant="fill" />
       </div>
       <strong className={styles.monName}>{species.name}</strong>
       <span className={styles.monCaption}>{caption}</span>
       <span className={styles.types}>
         {species.types.map((type) => (
-          <span
-            key={type}
-            className={styles.typeChip}
-            style={{background: typeColorVar(type), color: typeInkVar(type)}}
-            role="img"
-            aria-label={typeLabel(type)}
-          >
-            <TypeIcon type={type} className={styles.typeIcon} />
-          </span>
+          <TypeDot key={type} type={type} size="md" />
         ))}
       </span>
     </div>
@@ -141,14 +132,14 @@ function EvolutionCardView({card, index}: {card: EvolutionCard; index: number}) 
   const {member, option, alternatives, status} = card;
   const species = speciesDisplay(member.speciesId, member.formId);
   const style = {'--t': typeColorVar(species.types[0] ?? null), '--entry-index': index} as CSSProperties;
-  const target = option === null ? null : speciesDisplay(option.toSpeciesId, 'normal');
+  const target = speciesDisplay(option.toSpeciesId, 'normal');
   return (
     <li className={styles.card} data-status={status} style={style}>
       <header className={styles.head}>
         <span className={styles.method}>
-          <MethodIcon method={option?.method ?? null} />
+          <MethodIcon method={option.method} />
         </span>
-        <span className={styles.methodLabel}>{option === null ? 'Sem previsão' : evolutionMethodLabel(option.method)}</span>
+        <span className={styles.methodLabel}>{evolutionMethodLabel(option.method)}</span>
         <span className={styles.pill} data-status={status}>
           {evolutionStatusLabel(status)}
         </span>
@@ -156,133 +147,102 @@ function EvolutionCardView({card, index}: {card: EvolutionCard; index: number}) 
 
       <div className={styles.pair}>
         <Mon speciesId={member.speciesId} formId={member.formId} caption={`Nv. ${member.level}`} />
-        {option !== null && (
-          <>
-            <span className={styles.arrow}>
-              <CaretRight aria-hidden="true" weight="bold" />
-            </span>
-            <Mon speciesId={option.toSpeciesId} formId="normal" caption="Evolução" />
-          </>
-        )}
+        <span className={styles.arrow}>
+          <CaretRight aria-hidden="true" weight="bold" />
+        </span>
+        <Mon speciesId={option.toSpeciesId} formId="normal" caption="Evolução" />
       </div>
 
-      {option === null ? (
-        <div className={styles.requirements}>
-          <ul aria-label="Motivo do bloqueio">
-            <li data-status="não verificado">
-              <span className={styles.round}>
-                <Question aria-hidden="true" weight="bold" />
-              </span>
-              <span>{member.blockedReason ?? 'Sem dados de evolução para esta forma.'}</span>
-            </li>
-          </ul>
-        </div>
-      ) : (
+      <div className={styles.info}>
+        <Requirements option={option} level={member.level} />
+        {alternatives.length > 0 && (
+          <p className={styles.alternatives}>
+            Ou evolui para {alternatives.map((alternative) => speciesDisplay(alternative.toSpeciesId, 'normal').name).join(', ')}
+          </p>
+        )}
+        <MoveImpact option={option} targetName={target.name} />
+      </div>
+    </li>
+  );
+}
+
+function CompactCard({entry, index}: {entry: EvolutionCompact; index: number}) {
+  const {member, kind} = entry;
+  const species = speciesDisplay(member.speciesId, member.formId);
+  const style = {'--t': typeColorVar(species.types[0] ?? null), '--entry-index': index} as CSSProperties;
+  const reason = member.blockedReason ?? 'Sem dados de evolução para esta forma.';
+  return (
+    <li className={styles.compact} data-kind={kind} style={style}>
+      <div className={styles.compactArt}>
+        <PokemonArtwork speciesId={member.speciesId} formId={member.formId} variant="fill" />
+      </div>
+      <strong className={styles.monName}>{species.name}</strong>
+      <span className={styles.monCaption}>Nv. {member.level}</span>
+      <span className={styles.types}>
+        {species.types.map((type) => (
+          <TypeDot key={type} type={type} size="md" />
+        ))}
+      </span>
+      {kind === 'forma-final' && <span className={styles.compactStatus}>Forma final</span>}
+      {kind === 'sem-previsao' && <span className={styles.compactStatus}>Sem evolução prevista</span>}
+      {kind === 'bloqueado' && (
         <>
-          <Requirements option={option} level={member.level} />
-          {alternatives.length > 0 && (
-            <p className={styles.alternatives}>
-              Ou evolui para {alternatives.map((alternative) => speciesDisplay(alternative.toSpeciesId, 'normal').name).join(', ')}
-            </p>
-          )}
-          <MoveImpact option={option} targetName={target?.name ?? ''} />
+          <span className={styles.pill} data-status="bloqueado">
+            {evolutionStatusLabel('bloqueado')}
+          </span>
+          <p className={styles.compactReason} title={reason}>
+            {reason}
+          </p>
         </>
       )}
     </li>
   );
 }
 
-function NoneMember({member}: {member: EvolutionPlanMemberResult}) {
-  const species = speciesDisplay(member.speciesId, member.formId);
-  const style = {'--t': typeColorVar(species.types[0] ?? null)} as CSSProperties;
+function Summary({cards, compact}: {cards: EvolutionCard[]; compact: EvolutionCompact[]}) {
+  const finals = compact.filter((entry) => entry.kind === 'forma-final').length;
+  const unknown = compact.length - finals;
+  const headline =
+    cards.length === 0 ? 'Ninguém evolui agora' : cards.length === 1 ? '1 Pokémon pode evoluir' : `${cards.length} Pokémon podem evoluir`;
   return (
-    <li className={styles.noneItem} style={style}>
-      <div className={styles.noneArt}>
-        <PokemonArtwork speciesId={member.speciesId} formId={member.formId} variant="detail" className={styles.fill} />
-      </div>
-      <span className={styles.noneText}>
-        <strong>{species.name}</strong>
-        <span>Nv. {member.level}</span>
-      </span>
-      <span className={styles.types}>
-        {species.types.map((type) => (
-          <span
-            key={type}
-            className={styles.typeChip}
-            style={{background: typeColorVar(type), color: typeInkVar(type)}}
-            role="img"
-            aria-label={typeLabel(type)}
-          >
-            <TypeIcon type={type} className={styles.typeIcon} />
-          </span>
-        ))}
-      </span>
-      <span className={styles.noneStatus}>{member.status === 'sem-evolução' ? 'Forma final' : 'Sem evolução prevista'}</span>
-    </li>
-  );
-}
-
-/** Ao lado de quem evolui: um cartão só com a lista de quem não evolui. */
-function NoEvolutionCard({members, index}: {members: EvolutionPlanMemberResult[]; index: number}) {
-  return (
-    <li className={styles.noneCard} style={entryStyle(index)}>
-      <header className={styles.head}>
-        <span className={styles.methodLabel}>Sem evolução</span>
-        <span className={styles.count}>{members.length}</span>
-      </header>
-      <ul className={styles.noneList} aria-label="Pokémon sem evolução" data-scroll-fade>
-        {members.map((member) => (
-          <NoneMember key={member.uuid} member={member} />
-        ))}
-      </ul>
-    </li>
-  );
-}
-
-/** Ninguém evolui: cartões grandes de todo o time, com o resumo no topo. */
-function NobodyEvolves({members}: {members: EvolutionPlanMemberResult[]}) {
-  const finals = members.filter((member) => member.status === 'sem-evolução').length;
-  return (
-    <>
-      <p className={styles.summary}>
-        <strong>Ninguém evolui agora</strong>
-        {finals > 0 && <span>{finals === 1 ? '1 Pokémon já está na forma final' : `${finals} Pokémon já estão na forma final`}</span>}
-      </p>
-      <ol
-        className={styles.noneGrid}
-        aria-label="Pokémon sem evolução"
-        style={{'--columns': Math.min(members.length, NONE_GRID_COLUMNS)} as CSSProperties}
-        data-scroll-fade
-      >
-        {members.map((member) => (
-          <NoneMember key={member.uuid} member={member} />
-        ))}
-      </ol>
-    </>
+    <p className={styles.summary}>
+      <strong>{headline}</strong>
+      {finals > 0 && <span>{`${finals} sem evolução (forma final)`}</span>}
+      {unknown > 0 && <span>{`${unknown} sem previsão`}</span>}
+    </p>
   );
 }
 
 function Body({result}: {result: EvolutionPlanResult}) {
-  const {cards, none} = splitEvolutionMembers(result.members);
-  const columns = cards.length > MAX_CARD_COLUMNS ? Math.ceil(cards.length / 2) : cards.length;
-  const gridStyle = {'--columns': columns, '--rows': cards.length > MAX_CARD_COLUMNS ? 2 : 1} as CSSProperties;
+  const {cards, compact} = splitEvolutionMembers(result.members);
+  const compactColumns = Math.max(2, Math.min(compact.length, cards.length > 0 ? 6 : 3));
   return (
     <div className={styles.result}>
       <p className={styles.srOnly}>{evolutionLevelCapLabel(result.levelCap)}</p>
-      {cards.length === 0 && none.length > 0 ? (
-        <NobodyEvolves members={none} />
-      ) : (
+      <Summary cards={cards} compact={compact} />
+      {cards.length > 0 && (
         <ol
           className={styles.grid}
           aria-label="Evoluções por membro"
-          style={gridStyle}
-          data-has-cards={cards.length > 0}
-          data-has-none={none.length > 0}
+          style={{'--columns': Math.min(cards.length, 3)} as CSSProperties}
+          data-has-compact={compact.length > 0 || undefined}
+          data-scroll-fade
         >
           {cards.map((card, index) => (
             <EvolutionCardView key={card.member.uuid} card={card} index={index} />
           ))}
-          {none.length > 0 && <NoEvolutionCard members={none} index={cards.length} />}
+        </ol>
+      )}
+      {compact.length > 0 && (
+        <ol
+          className={styles.compactGrid}
+          aria-label="Pokémon sem evolução"
+          style={{'--columns': compactColumns} as CSSProperties}
+          data-scroll-fade
+        >
+          {compact.map((entry, index) => (
+            <CompactCard key={entry.member.uuid} entry={entry} index={cards.length + index} />
+          ))}
         </ol>
       )}
     </div>

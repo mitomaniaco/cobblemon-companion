@@ -161,24 +161,10 @@
   outline-offset: 2px;
 }
 
-/* A arte do app tem tamanho fixo por variante; aqui a caixa manda. */
+/* A arte (variante fill) preenche a caixa; ela precisa de tamanho próprio. */
 .art {
-  display: grid;
+  position: relative;
   flex: none;
-  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
-  place-items: center;
-}
-
-.art[class] figure,
-.art[class] figure > div[class] {
-  width: 100%;
-  max-width: none;
-  height: 100%;
-  aspect-ratio: auto;
-}
-
-.art[class] figure {
-  grid-template-rows: minmax(0, 1fr);
 }
 
 .selectorArt {

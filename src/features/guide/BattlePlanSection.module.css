@@ -188,15 +188,11 @@
 }
 
 .art {
+  position: relative;
   display: block;
   width: calc(3.4 * var(--u));
   height: calc(3.4 * var(--u));
   flex: none;
-}
-
-.fill {
-  width: 100%;
-  height: 100%;
 }
 
 .opponentText,
@@ -218,11 +214,6 @@
 .types {
   display: flex;
   gap: calc(0.25 * var(--u));
-}
-
-.typeIcon {
-  width: calc(1.1 * var(--u));
-  height: calc(1.1 * var(--u));
 }
 
 .ring {
@@ -523,11 +514,6 @@
 
 .member[data-state="caiu"] .art {
   opacity: 0.5;
-}
-
-.detail .typeIcon {
-  width: 16px;
-  height: 16px;
 }
 
 .itemIcon {

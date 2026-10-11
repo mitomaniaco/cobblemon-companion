@@ -4,7 +4,7 @@ import {Brain, Check, CloudSun, Handbag, Minus, Package, Question, Star, Sword, 
 import {itemLabel} from '../../domain/catalog-labels';
 import {abilityName, dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {BattlePlanEntry, BattlePlanResult, BattlePlanRisk, BattleSimulationStep} from '../../platform/api';
-import {Button, Dialog, HpBar, ItemIcon, PokemonArtwork, StatusMessage, TypeIcon, typeColorVar} from '../../ui';
+import {Button, Dialog, HpBar, ItemIcon, PokemonArtwork, StatusMessage, TypeDot, typeColorVar} from '../../ui';
 import {
   BATTLE_PLAN_DOUBLES_TEXT,
   battleOpponentProgress,
@@ -68,7 +68,7 @@ function stateLabel(state: OpponentState): string {
 function Art({speciesId}: {speciesId: string}) {
   return (
     <span className={styles.art}>
-      <PokemonArtwork speciesId={speciesId} formId="normal" variant="slot" className={styles.fill} />
+      <PokemonArtwork speciesId={speciesId} formId="normal" variant="fill" />
     </span>
   );
 }
@@ -182,7 +182,7 @@ function MoveLine({moveId}: {moveId: string}) {
   const move = moveDisplay(moveId);
   return (
     <span className={styles.moveLine}>
-      {move.type && <TypeIcon type={move.type} className={styles.typeIcon} />}
+      {move.type && <TypeDot type={move.type} size="sm" />}
       {move.name}
     </span>
   );
@@ -331,7 +331,7 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
                     <span className={styles.muted}>{opponentCaption(state, entries)}</span>
                     <span className={styles.types}>
                       {types.map((type) => (
-                        <TypeIcon key={type} type={type} className={styles.typeIcon} />
+                        <TypeDot key={type} type={type} size="sm" />
                       ))}
                     </span>
                   </span>

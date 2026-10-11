@@ -270,6 +270,7 @@
 }
 
 .damageArt {
+  position: relative;
   display: block;
   width: calc(1.1 * var(--u, 14px));
   height: calc(1.1 * var(--u, 14px));

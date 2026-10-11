@@ -24,7 +24,7 @@ const REQUIREMENT_ICON = {ok: Check, warn: Warning, muted: Question} as const;
 function Art({speciesId, className}: {speciesId: string; className: string}) {
   return (
     <div className={`${styles.art} ${className}`}>
-      <PokemonArtwork speciesId={speciesId} formId="normal" variant="slot" />
+      <PokemonArtwork speciesId={speciesId} formId="normal" variant="fill" />
     </div>
   );
 }

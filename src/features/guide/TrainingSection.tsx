@@ -1,18 +1,7 @@
 import {useId, type CSSProperties} from 'react';
 import {moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {TrainingPlanMemberResult, TrainingPlanResult} from '../../platform/api';
-import {
-  Button,
-  InfoTip,
-  MoveChip,
-  MovePpMeta,
-  PokemonArtwork,
-  StatusMessage,
-  TypeIcon,
-  typeColorVar,
-  typeInkVar,
-  typeLabel,
-} from '../../ui';
+import {Button, InfoTip, MoveChip, MovePpMeta, PokemonArtwork, StatusMessage, TypeDot, TypeIcon, typeColorVar, typeInkVar} from '../../ui';
 import {
   TRAINING_CAP_ORIGIN_LABEL,
   TRAINING_EV_TOTAL_LIMIT,
@@ -174,21 +163,15 @@ function MemberRow({member, index}: {member: TrainingPlanMemberResult; index: nu
       style={style}
     >
       <div className={styles.identity}>
-        <PokemonArtwork speciesId={member.speciesId} formId="normal" variant="slot" className={styles.art} />
+        <span className={styles.art}>
+          <PokemonArtwork speciesId={member.speciesId} formId="normal" variant="fill" />
+        </span>
         <div className={styles.idText}>
           <h4 className={styles.name}>{species.name}</h4>
           <span className={styles.role}>{TRAINING_ROLE_LABEL[member.evs.role]}</span>
           <span className={styles.types}>
             {species.types.map((type) => (
-              <span
-                key={type}
-                className={styles.typeChip}
-                style={{background: typeColorVar(type), color: typeInkVar(type)}}
-                role="img"
-                aria-label={typeLabel(type)}
-              >
-                <TypeIcon type={type} className={styles.typeIcon} />
-              </span>
+              <TypeDot key={type} type={type} size="md" />
             ))}
           </span>
         </div>

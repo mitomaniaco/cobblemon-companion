@@ -108,19 +108,11 @@
   gap: calc(0.4 * var(--u));
 }
 
-/* A arte do app tem tamanho fixo por variante; aqui a caixa manda. */
 .identity .art {
+  position: relative;
   width: 100%;
   min-height: 0;
   flex: 1 1 0;
-  grid-template-rows: minmax(0, 1fr);
-}
-
-.identity .art > div {
-  width: auto;
-  max-width: 100%;
-  height: 100%;
-  aspect-ratio: 1;
 }
 
 .idText {
@@ -150,20 +142,6 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: calc(0.3 * var(--u));
-}
-
-.typeChip {
-  display: grid;
-  width: calc(1.7 * var(--u));
-  height: calc(1.7 * var(--u));
-  padding: 0;
-  place-items: center;
-  border-radius: 50%;
-  line-height: 1;
-}
-
-.typeIcon {
-  font-size: calc(1 * var(--u));
 }
 
 .path {

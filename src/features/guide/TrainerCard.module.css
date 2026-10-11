@@ -733,22 +733,13 @@
 }
 
 .mineArt {
+  position: relative;
   display: block;
   height: min(88%, calc(4.6 * var(--u)));
   max-height: calc(4.6 * var(--u));
   aspect-ratio: 1;
   flex: none;
   filter: drop-shadow(0 calc(0.3 * var(--u)) calc(0.3 * var(--u)) #0009);
-}
-
-.mineArt figure {
-  width: 100%;
-  height: 100%;
-}
-
-.mineArt figure > div {
-  width: 100%;
-  height: 100%;
 }
 
 .mineText {
@@ -774,18 +765,6 @@
 .mineTypes {
   display: flex;
   gap: calc(0.25 * var(--u));
-}
-
-.mineTypes i {
-  display: grid;
-  width: calc(1.1 * var(--u));
-  height: calc(1.1 * var(--u));
-  padding: 0;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--c);
-  font-size: calc(0.7 * var(--u));
-  line-height: 1;
 }
 
 .slotNo {
@@ -1121,24 +1100,11 @@ button.answerRow:hover {
 }
 
 .answerArt {
+  position: relative;
   display: block;
   height: min(calc(3.6 * var(--u)), 92%);
   aspect-ratio: 1;
   flex: none;
-}
-
-.answerArt figure,
-.bubble figure {
-  width: 100%;
-  height: 100%;
-}
-
-.answerArt figure > div,
-.bubble figure > div {
-  width: 100%;
-  max-width: none;
-  height: 100%;
-  aspect-ratio: auto;
 }
 
 .answerName {
@@ -1204,7 +1170,9 @@ button.answerRow:hover {
   box-shadow: 0 0 0 1px #ffffff22;
 }
 
-.bubble figure {
+.bubbleArt {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   border-radius: 50%;
 }
