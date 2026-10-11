@@ -36,6 +36,7 @@ const team: GuideResult['team'] = [
       {moveId: 'cobblemon:bulldoze', requirement: 'nível 24', gainPercent: 5, replacesMoveId: null, reason: 'z'},
       {moveId: 'cobblemon:earthquake', requirement: 'TM', gainPercent: 9, replacesMoveId: null, reason: 'w'},
     ],
+    tips: [],
   },
 ];
 

@@ -349,6 +349,8 @@ describe('respostas do time aos adversários', () => {
     opponentId,
     outcome,
     ourTurns,
+    holds: false,
+    faster: false,
     theirTurns,
     moveId: outcome === 'vence' ? 'cobblemon:surf' : null,
     damage: [],

@@ -34,13 +34,15 @@
         "id": "synthetic:trainer#0",
         "speciesId": "cobblemon:floatzel",
         "level": 30,
-        "trainerId": "synthetic:trainer"
+        "trainerId": "synthetic:trainer",
+        "dangerous": false
       },
       {
         "id": "synthetic:trainer#1",
         "speciesId": "cobblemon:bulbasaur",
         "level": 28,
-        "trainerId": "synthetic:trainer"
+        "trainerId": "synthetic:trainer",
+        "dangerous": true
       }
     ],
     "team": [
@@ -72,6 +74,8 @@
             "outcome": "perde",
             "ourTurns": 3,
             "theirTurns": 2,
+            "holds": false,
+            "faster": false,
             "moveId": "cobblemon:psychic",
             "damage": [
               {"moveId": "cobblemon:psychic", "minPercent": 30.2, "maxPercent": 36.4},
@@ -83,6 +87,8 @@
             "outcome": "vence",
             "ourTurns": 1,
             "theirTurns": 4,
+            "holds": true,
+            "faster": true,
             "moveId": "cobblemon:psychic",
             "damage": [
               {"moveId": "cobblemon:psychic", "minPercent": 104.5, "maxPercent": 123.1},
@@ -97,6 +103,13 @@
             "replacesMoveId": "cobblemon:confusion",
             "gainPercent": 12.5,
             "reason": "Moonblast (nível 35) no lugar de Confusion melhora o time em 12.5%."
+          }
+        ],
+        "tips": [
+          {
+            "opponentId": "synthetic:trainer#0",
+            "moveId": "cobblemon:thunderwave",
+            "text": "Thunder Wave em Floatzel: paralisado, ele fica mais lento que você."
           }
         ]
       }

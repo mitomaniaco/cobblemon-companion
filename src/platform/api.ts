@@ -138,12 +138,18 @@ export type GuideMatchup = {
   opponentId: string;
   outcome: 'vence' | 'perde';
   ourTurns: number;
+  /** Segura: entra na troca levando o maior acerto do adversário e ainda vence no pior caso (menor dano nosso, maior dele; empate de Speed perde). Só com outcome 'vence'. */
+  holds: boolean;
+  /** Age primeiro: Speed efetiva maior que a do adversário. */
+  faster: boolean;
   theirTurns: number;
   /** Melhor golpe do membro contra o adversário; null quando nenhum causa dano. */
   moveId: string | null;
   /** Faixa de dano de cada golpe avaliado do membro contra este adversário, em % do HP (HP cheio, sem crítico). */
   damage: Array<{moveId: string; minPercent: number; maxPercent: number}>;
 };
+
+type GuideTip = {opponentId: string; moveId: string; text: string};
 
 export type GuideAcquireEntry = {
   moveId: string;
@@ -165,6 +171,8 @@ export type GuideTeamMember = {
   item: {id: string | null; status: 'tem' | 'obter' | 'nenhum'; reason: string};
   matchups: GuideMatchup[];
   acquire: GuideAcquireEntry[];
+  /** Golpes de utilidade que o membro conhece e que resolvem um adversário (no máximo 2). */
+  tips: GuideTip[];
 };
 
 export type GuidePartySlot = {
@@ -197,7 +205,14 @@ export type OverCapMember = {uuid: string; speciesId: string; level: number; lev
 export type GuideResult = {
   goal: GuideGoal;
   referenceLevel: number;
-  opponents: Array<{id: string; speciesId: string; level: number; trainerId: string | null}>;
+  opponents: Array<{
+    id: string;
+    speciesId: string;
+    level: number;
+    trainerId: string | null;
+    /** Ameaça: metade ou mais dos candidatos elegíveis perde para ele; o time busca duas respostas. */
+    dangerous: boolean;
+  }>;
   /** Na ordem de `partyPlan.slots`. */
   team: GuideTeamMember[];
   partyPlan: GuidePartyPlan;
