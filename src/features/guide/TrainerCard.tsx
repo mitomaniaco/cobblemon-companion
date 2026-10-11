@@ -16,6 +16,7 @@ import type {
 } from '../../platform/api';
 import {
   Button,
+  Dialog,
   ItemIcon,
   PokemonArtwork,
   PokeBallMark,
@@ -138,6 +139,16 @@ export interface TrainerCardProps {
   /** Corpo já montado da ferramenta ativa (ignorado com `tool === 'team'`). */
   toolBody: ReactNode;
   toolStatus: Record<GuideTab, GuideToolStatus>;
+  /** Tudo que antes ficava abaixo do card, num diálogo aberto pelo botão "Avisos" da barra. */
+  notices: CardNotices;
+}
+
+export interface CardNotices {
+  count: number;
+  tone: 'neutral' | 'warn' | 'alert';
+  body: ReactNode;
+  /** Guia sendo montado: barra indeterminada na borda do card. */
+  building: boolean;
 }
 
 function FindHow({detail}: {detail: DetailEntry | undefined}) {
@@ -658,7 +669,9 @@ export function TrainerCard({
   onToolChange,
   toolBody,
   toolStatus,
+  notices,
 }: TrainerCardProps) {
+  const [noticesOpen, setNoticesOpen] = useState(false);
   const [view, setView] = useState<CardView>('campaign');
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -1079,6 +1092,11 @@ export function TrainerCard({
 
   return (
     <section className={styles.card} aria-label="Trainer Card">
+      {notices.building && (
+        <div className={styles.buildBar}>
+          <div className={styles.buildBarFill} role="progressbar" aria-label="Montando o time" />
+        </div>
+      )}
       <div className={styles.bar}>
         <PokeBallMark className={styles.barMark} variant="filled" />
         <div className={styles.barTitle}>
@@ -1138,6 +1156,17 @@ export function TrainerCard({
               {capRegion}
             </section>
           ))}
+        <button
+          type="button"
+          className={styles.noticesButton}
+          data-tone={notices.tone}
+          aria-label={notices.count > 0 ? `Avisos, ${notices.count}` : 'Avisos'}
+          onClick={() => setNoticesOpen(true)}
+        >
+          <span className={styles.noticesDot} aria-hidden="true" />
+          Avisos
+          {notices.count > 0 && <span className={styles.noticesCount}>{notices.count}</span>}
+        </button>
         <SegmentedControl
           className={styles.modes}
           label="Objetivo do guia"
@@ -1251,6 +1280,9 @@ export function TrainerCard({
       )}
 
       <ToolDock tool={tool} onToolChange={onToolChange} status={toolStatus} />
+      <Dialog isOpen={noticesOpen} onOpenChange={setNoticesOpen} title="Avisos do guia">
+        {notices.body}
+      </Dialog>
     </section>
   );
 }

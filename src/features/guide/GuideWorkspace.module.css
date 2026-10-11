@@ -11,8 +11,6 @@
   overflow-x: clip;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-bottom: var(--space-6);
-  scrollbar-gutter: stable;
   color: var(--color-text);
 }
 
@@ -26,6 +24,12 @@
     container-type: size;
     height: 100%;
     min-height: 34rem;
+  }
+}
+
+@container guia-workspace (max-width: 1099px) {
+  .stage {
+    margin-bottom: var(--space-6);
   }
 }
 
@@ -53,22 +57,10 @@
   color: var(--color-muted);
 }
 
-.progress {
-  position: relative;
-  height: 4px;
-  overflow: hidden;
-  border-radius: var(--radius-pill);
-  background: var(--color-sunken);
-}
-
-.progress::after {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 35%;
-  border-radius: inherit;
-  background: var(--color-accent);
-  content: "";
-  animation: progress-slide 1.2s var(--ease-out) infinite;
+.notices {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
 }
 
 .result {
@@ -112,21 +104,6 @@
   font-weight: 600;
 }
 
-.skeleton {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-  gap: var(--space-3);
-}
-
-.skeletonCard {
-  height: 220px;
-  border-radius: var(--radius-card);
-  background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-raised) 50%, var(--color-surface) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s linear infinite;
-  animation-delay: calc(var(--card-index, 0) * 60ms);
-}
-
 .toast {
   position: absolute;
   z-index: 3;
@@ -156,36 +133,11 @@
     transform: translateY(-8px);
   }
 }
-
-@keyframes progress-slide {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(300%);
-  }
-}
-
-@keyframes shimmer {
-  from {
-    background-position: 200% 0;
-  }
-
-  to {
-    background-position: -200% 0;
-  }
-}
-
 @media (forced-colors: active) {
   .toast {
     border: 1px solid CanvasText;
     background: Canvas;
     box-shadow: none;
-  }
-
-  .progress::after {
-    background: Highlight;
   }
 }
 

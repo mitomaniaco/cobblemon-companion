@@ -1,10 +1,18 @@
 import {useEffect, useMemo, useState} from 'react';
-import type {CSSProperties, ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import {speciesDisplay} from '../../domain/dex';
 import type {CompanionApi, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
 import {Button, Disclosure, PokeBallMark, StatusMessage} from '../../ui';
 import type {GuideProgressState} from './useGuideProgress';
-import {guideCapExcluded, guideCapWarnings, guideTeamChanges, type GuideTab, type GuideToolStatus} from './guide-model';
+import {
+  guideCapExcluded,
+  guideCapWarnings,
+  guideTeamChanges,
+  type GuideCapWarning,
+  type GuideTab,
+  type GuideTeamChanges,
+  type GuideToolStatus,
+} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
@@ -18,14 +26,13 @@ import type {TrainingPlanController} from './useTrainingPlan';
 import rawCampaign from '../../../data/guide/campaign.json';
 import {guideToolStatuses} from './tool-status';
 import {ToolFrame} from './ToolFrame';
-import {TrainerCard} from './TrainerCard';
+import {TrainerCard, type CardNotices} from './TrainerCard';
 import type {Campaign} from './campaign-model';
 import styles from './GuideWorkspace.module.css';
 
 const CAMPAIGN = rawCampaign as unknown as Campaign;
 
 const NOTICE_DURATION_MS = 4000;
-const TEAM_SIZE = 6;
 
 export interface GuideWorkspaceProps {
   snapshot: PlayerSnapshot | null;
@@ -79,73 +86,32 @@ function Toast({id, text, onDismiss}: {id: number; text: string; onDismiss(id: n
   );
 }
 
-function TeamSkeleton() {
-  return (
-    <section className={styles.skeleton} aria-busy="true" aria-label="Montando o time">
-      {Array.from({length: TEAM_SIZE}, (_, index) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: seis placeholders fixos e sem identidade
-        <div key={index} className={styles.skeletonCard} style={{'--card-index': index} as CSSProperties} />
-      ))}
-    </section>
-  );
-}
-
-function GuideResultView({
+function GuideNotices({
   result,
-  previousResult,
   snapshot,
   lookup,
   stale,
   levelCap,
-  guideTab,
-  battlePlan,
-  evolutions,
-  training,
-  captures,
+  capExcluded,
+  capWarnings,
+  teamChanges,
 }: {
   result: GuideResult;
-  previousResult: GuideResult | null;
   snapshot: PlayerSnapshot;
   lookup: Lookup;
   stale: boolean;
   levelCap: number | null;
-  guideTab: GuideTab;
-  battlePlan: BattlePlanController;
-  evolutions: EvolutionPlanController;
-  training: TrainingPlanController;
-  captures: CapturePlanController;
+  capExcluded: GuideResult['excluded'];
+  capWarnings: GuideCapWarning[];
+  teamChanges: GuideTeamChanges | null;
 }) {
   const [infoExpanded, setInfoExpanded] = useState(false);
-  const capExcluded = guideCapExcluded(result.excluded);
-  const capWarnings = guideCapWarnings({goal: result.goal, team: result.team, individuals: snapshot.individuals, levelCap});
-  const teamChanges = guideTeamChanges(previousResult, result);
-  const hasTeam = result.team.length > 0;
-  const gapCount = guideGapOpponentIds(result).length;
-
-  // Cada ferramenta calcula ao abrir a aba, uma vez por resultado do guia (o controlador volta a `idle` quando o guia muda).
-  const controller =
-    guideTab === 'battle'
-      ? battlePlan
-      : guideTab === 'evolutions'
-        ? evolutions
-        : guideTab === 'training'
-          ? training
-          : guideTab === 'captures'
-            ? captures
-            : null;
-  const hasInput = guideTab === 'battle' ? result.goal.kind === 'trainer' : guideTab === 'captures' ? gapCount > 0 : true;
-  const shouldRequest = controller !== null && !stale && hasTeam && hasInput && controller.phase === 'idle';
-  const request = controller?.request;
-  useEffect(() => {
-    if (shouldRequest && request) request();
-  }, [shouldRequest, request]);
 
   return (
     <div className={styles.result} data-stale={stale ? 'true' : undefined} aria-busy={stale}>
       <p className={styles.resultSummary}>
         Time de {result.team.length} contra {result.opponents.length} adversários de referência (nível {result.referenceLevel}).
       </p>
-
       {capExcluded.length > 0 && (
         <section className={styles.capExcluded} aria-label="Excluídos pelo level cap">
           <h3 className={styles.sectionTitle}>Fora do time pelo level cap</h3>
@@ -365,6 +331,85 @@ export function GuideWorkspace({
       })
     : null;
 
+  // Cada ferramenta calcula ao abrir a aba, uma vez por resultado do guia (o controlador volta a `idle` quando o guia muda).
+  const controller =
+    activeTool === 'battle'
+      ? battlePlan
+      : activeTool === 'evolutions'
+        ? evolutions
+        : activeTool === 'training'
+          ? training
+          : activeTool === 'captures'
+            ? captures
+            : null;
+  const hasInput = activeTool === 'battle' ? result?.goal.kind === 'trainer' : activeTool === 'captures' ? gapCount > 0 : true;
+  const shouldRequest = snapshot !== null && controller !== null && !building && hasTeam && hasInput && controller.phase === 'idle';
+  const request = controller?.request;
+  useEffect(() => {
+    if (shouldRequest && request) request();
+  }, [shouldRequest, request]);
+
+  const capExcluded = result ? guideCapExcluded(result.excluded) : [];
+  const capWarnings =
+    result && snapshot ? guideCapWarnings({goal: result.goal, team: result.team, individuals: snapshot.individuals, levelCap}) : [];
+  const teamChanges = result ? guideTeamChanges(guide.previousResult, result) : null;
+  const teamChanged = teamChanges !== null && (teamChanges.left.length > 0 || teamChanges.entered.length > 0);
+  const trainersFailed = snapshot !== null && guide.mode === 'trainer' && guide.trainers.status === 'failed';
+  const guideFailed = snapshot !== null && guide.phase === 'error';
+  const warnCount = capExcluded.length + capWarnings.length + (teamChanged ? 1 : 0) + (trainersFailed ? 1 : 0);
+  const infoCount =
+    snapshot === null
+      ? 0
+      : (guide.nextGoal?.status === 'failed' ? 1 : 0) + (guide.goal === null ? 1 : 0) + (guide.phase === 'canceled' ? 1 : 0);
+  const alertCount = (snapshot === null ? 1 : 0) + (guideFailed ? 1 : 0);
+  const noticeTone: CardNotices['tone'] = alertCount > 0 ? 'alert' : warnCount > 0 ? 'warn' : 'neutral';
+
+  const noticesBody = (
+    <div className={styles.notices}>
+      {!snapshot ? (
+        <div className={styles.empty}>
+          <PokeBallMark className={styles.emptyMark} />
+          <p>Atualize do save para montar o time.</p>
+          <Button variant="primary" isDisabled={loading} onPress={onRefresh}>
+            {loading ? 'Atualizando…' : 'Atualizar do save'}
+          </Button>
+        </div>
+      ) : (
+        <>
+          {guide.mode === 'trainer' && guide.trainers.status === 'failed' && (
+            <StatusMessage tone="warning" title="Lista de treinadores indisponível">
+              {guide.trainers.error}
+            </StatusMessage>
+          )}
+          {guide.nextGoal?.status === 'failed' && <p className={styles.muted}>Sem sugestão de objetivo: {guide.nextGoal.error}</p>}
+
+          {guide.goal === null && <StatusMessage tone="info">Escolha um líder ou treinador para montar o time.</StatusMessage>}
+          {guide.phase === 'error' && (
+            <StatusMessage tone="error" title="O guia não foi montado">
+              {guide.error}
+            </StatusMessage>
+          )}
+          {guide.phase === 'canceled' && (
+            <StatusMessage tone="info">Montagem cancelada. Use “Montar de novo” para tentar outra vez.</StatusMessage>
+          )}
+
+          {result && (
+            <GuideNotices
+              result={result}
+              snapshot={snapshot}
+              lookup={lookup}
+              stale={building}
+              levelCap={levelCap}
+              capExcluded={capExcluded}
+              capWarnings={capWarnings}
+              teamChanges={teamChanges}
+            />
+          )}
+        </>
+      )}
+    </div>
+  );
+
   return (
     <section className={styles.workspace} aria-label="Guia">
       {notice && <Toast key={notice.id} id={notice.id} text={notice.text} onDismiss={dismissNotice} />}
@@ -389,58 +434,14 @@ export function GuideWorkspace({
           onToolChange={onGuideTabChange}
           toolBody={toolBody}
           toolStatus={toolStatus}
+          notices={{
+            count: warnCount + infoCount + alertCount,
+            tone: noticeTone,
+            body: noticesBody,
+            building: building && snapshot !== null,
+          }}
         />
       </div>
-
-      {!snapshot && loading ? (
-        <TeamSkeleton />
-      ) : !snapshot ? (
-        <div className={styles.empty}>
-          <PokeBallMark className={styles.emptyMark} />
-          <p>Atualize do save para montar o time.</p>
-          <Button variant="primary" isDisabled={loading} onPress={onRefresh}>
-            {loading ? 'Atualizando…' : 'Atualizar do save'}
-          </Button>
-        </div>
-      ) : (
-        <>
-          {guide.mode === 'trainer' && guide.trainers.status === 'failed' && (
-            <StatusMessage tone="warning" title="Lista de treinadores indisponível">
-              {guide.trainers.error}
-            </StatusMessage>
-          )}
-          {guide.nextGoal?.status === 'failed' && <p className={styles.muted}>Sem sugestão de objetivo: {guide.nextGoal.error}</p>}
-          {building && <div className={styles.progress} role="progressbar" aria-label="Montando o time" />}
-
-          {guide.goal === null && <StatusMessage tone="info">Escolha um líder ou treinador para montar o time.</StatusMessage>}
-          {guide.phase === 'error' && (
-            <StatusMessage tone="error" title="O guia não foi montado">
-              {guide.error}
-            </StatusMessage>
-          )}
-          {guide.phase === 'canceled' && (
-            <StatusMessage tone="info">Montagem cancelada. Use “Montar de novo” para tentar outra vez.</StatusMessage>
-          )}
-
-          {guide.result ? (
-            <GuideResultView
-              result={guide.result}
-              previousResult={guide.previousResult}
-              snapshot={snapshot}
-              lookup={lookup}
-              stale={building}
-              levelCap={levelCap}
-              guideTab={activeTool}
-              battlePlan={battlePlan}
-              evolutions={evolutions}
-              training={training}
-              captures={captures}
-            />
-          ) : (
-            building && <TeamSkeleton />
-          )}
-        </>
-      )}
     </section>
   );
 }

@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Guia em página única (Issue #232): em janela larga a tela é só o Trainer Card, sem rolagem; resumo, exclusões pelo level cap, mudanças no time, hipóteses e limites, falhas e o convite “Atualizar do save” foram para o diálogo “Avisos do guia”, aberto pelo botão “Avisos” da barra do cartão (ponto âmbar ou vermelho conforme a gravidade); a montagem do time vira uma barra fina na borda do cartão.
+
 - Ferramentas do Guia dentro do Trainer Card (Issues #226 e #228): dock com Equipe, Plano de batalha, Evoluções, Treino até o cap e Capturas; cada ferramenta preenche o card no padrão de `docs/PADRAO-UI.md` (simulação passo a passo com `HpBar`, cartões de evolução com arte, trilha de nível e EVs em barras, capturas por adversário sem resposta), com cabeçalho comum e "Como calculamos" recolhido.
 
 - Ferramentas do Guia dentro do Trainer Card (Issue #226): dock no rodapé do cartão com Equipe, Plano de batalha, Evoluções, Treino até o cap e Capturas (subtítulo e selo por ferramenta), novo `ToolFrame` com cabeçalho, Recalcular e “Como calculamos”; a aba padrão passa a ser Equipe.
