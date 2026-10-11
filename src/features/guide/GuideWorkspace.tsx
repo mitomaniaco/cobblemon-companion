@@ -1,10 +1,10 @@
 import {useEffect, useMemo, useState} from 'react';
-import type {CSSProperties} from 'react';
+import type {CSSProperties, ReactNode} from 'react';
 import {speciesDisplay} from '../../domain/dex';
 import type {CompanionApi, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
-import {Button, Disclosure, PokeBallMark, StatusMessage, Tab, TabList, TabPanel, TabPanels, Tabs} from '../../ui';
+import {Button, Disclosure, PokeBallMark, StatusMessage} from '../../ui';
 import type {GuideProgressState} from './useGuideProgress';
-import {guideCapExcluded, guideCapWarnings, guideTeamChanges, type GuideTab} from './guide-model';
+import {guideCapExcluded, guideCapWarnings, guideTeamChanges, type GuideTab, type GuideToolStatus} from './guide-model';
 import type {GuideController} from './useGuide';
 import type {BattlePlanController} from './useBattlePlan';
 import {BattlePlanSection} from './BattlePlanSection';
@@ -16,6 +16,8 @@ import type {CapturePlanController} from './useCapturePlan';
 import {TrainingSection} from './TrainingSection';
 import type {TrainingPlanController} from './useTrainingPlan';
 import rawCampaign from '../../../data/guide/campaign.json';
+import {guideToolStatuses} from './tool-status';
+import {ToolFrame} from './ToolFrame';
 import {TrainerCard} from './TrainerCard';
 import type {Campaign} from './campaign-model';
 import styles from './GuideWorkspace.module.css';
@@ -24,13 +26,6 @@ const CAMPAIGN = rawCampaign as unknown as Campaign;
 
 const NOTICE_DURATION_MS = 4000;
 const TEAM_SIZE = 6;
-
-const GUIDE_TABS: ReadonlyArray<{key: GuideTab; label: string}> = [
-  {key: 'battle', label: 'Plano de batalha'},
-  {key: 'evolutions', label: 'Evoluções'},
-  {key: 'training', label: 'Treino até o cap'},
-  {key: 'captures', label: 'Capturas'},
-];
 
 export interface GuideWorkspaceProps {
   snapshot: PlayerSnapshot | null;
@@ -103,8 +98,6 @@ function GuideResultView({
   stale,
   levelCap,
   guideTab,
-  onGuideTabChange,
-  planIndividualName,
   battlePlan,
   evolutions,
   training,
@@ -117,8 +110,6 @@ function GuideResultView({
   stale: boolean;
   levelCap: number | null;
   guideTab: GuideTab;
-  onGuideTabChange(tab: GuideTab): void;
-  planIndividualName(uuid: string, fallbackSpeciesId: string): string;
   battlePlan: BattlePlanController;
   evolutions: EvolutionPlanController;
   training: TrainingPlanController;
@@ -232,47 +223,87 @@ function GuideResultView({
           <p className={styles.muted}>Captura de {snapshot.worldName}.</p>
         </div>
       </Disclosure>
-
-      <Tabs selectedKey={guideTab} onSelectionChange={(key) => onGuideTabChange(key as GuideTab)}>
-        <TabList aria-label="Ferramentas do guia">
-          {GUIDE_TABS.map((tab) => (
-            <Tab key={tab.key} id={tab.key}>
-              {tab.label}
-            </Tab>
-          ))}
-        </TabList>
-        <TabPanels>
-          <TabPanel id="battle">
-            <div className={styles.tabSection}>
-              {result.goal.kind === 'trainer' ? (
-                <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={hasTeam} />
-              ) : (
-                <StatusMessage tone="info">O plano de batalha é calculado contra um líder ou treinador.</StatusMessage>
-              )}
-            </div>
-          </TabPanel>
-
-          <TabPanel id="evolutions">
-            <div className={styles.tabSection}>
-              <EvolutionSection evolutions={evolutions} hasTeam={hasTeam} />
-            </div>
-          </TabPanel>
-
-          <TabPanel id="training">
-            <div className={styles.tabSection}>
-              <TrainingSection training={training} hasTeam={hasTeam} />
-            </div>
-          </TabPanel>
-
-          <TabPanel id="captures">
-            <div className={styles.tabSection}>
-              <CaptureSection captures={captures} gapCount={gapCount} />
-            </div>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
     </div>
   );
+}
+
+function Notes({assumptions, limits}: {assumptions: string[]; limits: string[]}) {
+  return (
+    <div className={styles.infoBody}>
+      <section aria-label="Hipóteses do cálculo">
+        <h4 className={styles.detailsTitle}>Hipóteses</h4>
+        <ul>
+          {assumptions.map((text) => (
+            <li key={text}>{text}</li>
+          ))}
+        </ul>
+      </section>
+      <section aria-label="Limites do cálculo">
+        <h4 className={styles.detailsTitle}>Limites</h4>
+        <ul>
+          {limits.map((text) => (
+            <li key={text}>{text}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+/** Corpo da ferramenta ativa dentro do Trainer Card: a seção do cálculo na moldura comum. */
+function buildToolBody({
+  tool,
+  status,
+  planIndividualName,
+  hasTeam,
+  gapCount,
+  battlePlan,
+  evolutions,
+  training,
+  captures,
+}: {
+  tool: GuideTab;
+  status: GuideToolStatus;
+  planIndividualName(uuid: string, fallbackSpeciesId: string): string;
+  hasTeam: boolean;
+  gapCount: number;
+  battlePlan: BattlePlanController;
+  evolutions: EvolutionPlanController;
+  training: TrainingPlanController;
+  captures: CapturePlanController;
+}): ReactNode {
+  const chips = status.badge ? [{tone: status.badge.tone, text: status.subtitle}] : [];
+  const frame = (
+    title: string,
+    controller: {phase: string; request(): void; result: {assumptions: string[]; limits: string[]} | null},
+    section: ReactNode,
+  ) => (
+    <ToolFrame
+      title={title}
+      chips={chips}
+      onRecalculate={controller.request}
+      recalculating={controller.phase === 'building'}
+      notes={controller.result ? <Notes assumptions={controller.result.assumptions} limits={controller.result.limits} /> : undefined}
+    >
+      {section}
+    </ToolFrame>
+  );
+  switch (tool) {
+    case 'battle':
+      return frame(
+        'Plano de batalha',
+        battlePlan,
+        <BattlePlanSection plan={battlePlan} individualName={planIndividualName} hasTeam={hasTeam} />,
+      );
+    case 'evolutions':
+      return frame('Evoluções', evolutions, <EvolutionSection evolutions={evolutions} hasTeam={hasTeam} />);
+    case 'training':
+      return frame('Treino até o cap', training, <TrainingSection training={training} hasTeam={hasTeam} />);
+    case 'captures':
+      return frame('Capturas', captures, <CaptureSection captures={captures} gapCount={gapCount} />);
+    case 'team':
+      return null;
+  }
 }
 
 export function GuideWorkspace({
@@ -314,6 +345,26 @@ export function GuideWorkspace({
 
   const building = guide.phase === 'building';
 
+  const result = guide.result;
+  const hasTeam = (result?.team.length ?? 0) > 0;
+  const gapCount = result ? guideGapOpponentIds(result).length : 0;
+  const toolStatus = guideToolStatuses({result, evolutions: evolutions.result, training: training.result, levelCap});
+  // Sem resultado, ou com a ferramenta bloqueada (ex.: plano de batalha no PvE), o cartão volta para a equipe.
+  const activeTool: GuideTab = result === null || toolStatus[guideTab].disabledReason !== undefined ? 'team' : guideTab;
+  const toolBody = result
+    ? buildToolBody({
+        tool: activeTool,
+        status: toolStatus[activeTool],
+        planIndividualName,
+        hasTeam,
+        gapCount,
+        battlePlan,
+        evolutions,
+        training,
+        captures,
+      })
+    : null;
+
   return (
     <section className={styles.workspace} aria-label="Guia">
       {notice && <Toast key={notice.id} id={notice.id} text={notice.text} onDismiss={dismissNotice} />}
@@ -334,6 +385,10 @@ export function GuideWorkspace({
           onRespectLevelCapChange={onRespectLevelCapChange}
           levelCap={levelCap}
           progressLevelCap={progressLevelCap}
+          tool={activeTool}
+          onToolChange={onGuideTabChange}
+          toolBody={toolBody}
+          toolStatus={toolStatus}
         />
       </div>
 
@@ -375,9 +430,7 @@ export function GuideWorkspace({
               lookup={lookup}
               stale={building}
               levelCap={levelCap}
-              guideTab={guideTab}
-              onGuideTabChange={onGuideTabChange}
-              planIndividualName={planIndividualName}
+              guideTab={activeTool}
               battlePlan={battlePlan}
               evolutions={evolutions}
               training={training}

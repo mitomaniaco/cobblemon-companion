@@ -95,12 +95,6 @@
   line-height: var(--line-body);
 }
 
-.tabSection {
-  display: grid;
-  gap: var(--space-4);
-  min-width: 0;
-}
-
 .infoBody ul {
   margin: 0;
   padding: 0;
