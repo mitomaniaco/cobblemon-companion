@@ -1664,9 +1664,63 @@ async function exerciseGuideWorkspace(window) {
       })()`,
     );
 
-  // Trilha: mostrar todas as etapas e voltar ao recorte.
+  // Trilha: a lista completa é um painel sob a faixa; o botão fica no mesmo lugar e só troca rótulo e chevron.
+  const trailToggle = () =>
+    evaluate(
+      contents,
+      `(() => {
+        const button = [...document.querySelectorAll('[aria-label="Trainer Card"] button[aria-controls]')].find(node => /^Mostrar/.test(node.textContent.trim()));
+        const box = button.getBoundingClientRect();
+        const panel = document.getElementById(button.getAttribute('aria-controls')).getBoundingClientRect();
+        const strip = button.parentElement.getBoundingClientRect();
+        const card = document.querySelector('[aria-label="Trainer Card"]').getBoundingClientRect();
+        return {x: box.x, y: box.y, w: box.width, h: box.height, expanded: button.getAttribute('aria-expanded'), text: button.textContent.trim(),
+          panel: {left: panel.left, right: panel.right, top: panel.top, bottom: panel.bottom}, strip: {left: strip.left, right: strip.right, bottom: strip.bottom},
+          card: {left: card.left, right: card.right, bottom: card.bottom}};
+      })()`,
+    );
+  const closedToggle = await trailToggle();
+  check(
+    closedToggle.expanded === 'false' && closedToggle.text.startsWith('Mostrar todas as etapas'),
+    'O botão da trilha fechada está com o estado errado.',
+  );
   await clickCardButton('Mostrar todas as etapas');
   await waitFor(contents, `${optionCount} === ${campaignData.radicalred.stages.length}`, 'todas as etapas da série na trilha');
+  const openToggle = await trailToggle();
+  const near = (a, b) => Math.abs(a - b) <= 0.5;
+  check(
+    openToggle.expanded === 'true' &&
+      openToggle.text.startsWith('Mostrar menos') &&
+      near(openToggle.x, closedToggle.x) &&
+      near(openToggle.y, closedToggle.y) &&
+      near(openToggle.w, closedToggle.w) &&
+      near(openToggle.h, closedToggle.h),
+    'O botão da trilha mudou de lugar ou de tamanho ao expandir.',
+  );
+  check(
+    near(openToggle.panel.left, openToggle.strip.left) &&
+      near(openToggle.panel.right, openToggle.strip.right) &&
+      openToggle.panel.top >= openToggle.strip.bottom &&
+      openToggle.panel.bottom <= openToggle.card.bottom &&
+      openToggle.panel.left >= openToggle.card.left &&
+      openToggle.panel.right <= openToggle.card.right,
+    'A lista completa de etapas não ficou dentro do cartão, sob a faixa e com a largura dela.',
+  );
+  await evaluate(contents, `document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}))`);
+  await waitFor(contents, `${optionCount} === ${stagesCount}`, 'Esc fecha a lista completa de etapas');
+  await clickCardButton('Mostrar todas as etapas');
+  await waitFor(contents, `${optionCount} === ${campaignData.radicalred.stages.length}`, 'lista completa reaberta após Esc');
+  await evaluate(
+    contents,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Treinador"]').dispatchEvent(new PointerEvent('pointerdown', {bubbles: true}))`,
+  );
+  await waitFor(contents, `${optionCount} === ${stagesCount}`, 'clique fora fecha a lista completa de etapas');
+  await clickCardButton('Mostrar todas as etapas');
+  await waitFor(
+    contents,
+    `${optionCount} === ${campaignData.radicalred.stages.length}`,
+    'lista completa reaberta para escolher Leader Brock',
+  );
   // Leader Brock (vencido na leitura sintética) só aparece com todas as etapas; o desafio mostra os dados reais do RCT.
   await evaluate(
     contents,
@@ -1724,6 +1778,8 @@ async function exerciseGuideWorkspace(window) {
     'passos de arrumação da party no rodapé do Trainer Card',
   );
   // Etapa com várias equipes possíveis: linha compacta "RCT sorteia a equipe" com pílulas A, B, C.
+  await clickCardButton('Mostrar todas as etapas');
+  await waitFor(contents, `${optionCount} === ${campaignData.radicalred.stages.length}`, 'lista completa reaberta para a etapa ambígua');
   const ambiguousStage = Object.values(campaignData.radicalred.stages).find(
     (stage) => stage.ambiguous && stage.variants.filter((variant) => variant.format === 'singles').length > 1,
   );
@@ -1744,7 +1800,7 @@ async function exerciseGuideWorkspace(window) {
     })()`,
     'seletor compacto de equipe da etapa ambígua',
   );
-  await clickCardButton('Mostrar menos');
+  // Escolher a etapa fecha a lista completa: o botão volta ao rótulo curto e a trilha ao recorte.
   await waitFor(contents, `${optionCount} === ${stagesCount}`, 'trilha recolhida de volta');
 
   // Seleção de etapa e detalhe do desafio.
@@ -2148,10 +2204,28 @@ async function exerciseGuideWorkspace(window) {
     'útil para o objetivo',
     'Atacante especial',
     'Soma sugerida 510/510',
-    'não há espécies para treinar EVs',
   ]) {
     check(informedTraining.toLowerCase().includes(expected.toLowerCase()), `O treino com cap informado não mostrou "${expected}".`);
   }
+  // A explicação longa dos EVs vive no balão "i": alcançável pelo botão e sem cortar o texto das linhas.
+  await evaluate(
+    contents,
+    `document.querySelector('ol[aria-label="Treino por membro"] button[aria-label^="Por que esta distribuição"]').click()`,
+  );
+  await waitFor(
+    contents,
+    `(document.querySelector('[role="dialog"][aria-label^="Por que esta distribuição"]')?.innerText || '').includes('não há espécies para treinar EVs')`,
+    'balão com a explicação dos EVs do treino',
+  );
+  await evaluate(
+    contents,
+    `document.querySelector('[role="dialog"][aria-label^="Por que esta distribuição"]').dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}))`,
+  );
+  await waitFor(
+    contents,
+    `!document.querySelector('[role="dialog"][aria-label^="Por que esta distribuição"]')`,
+    'balão dos EVs fechado com Esc',
+  );
   check(
     informedTraining.indexOf('Psychic') < informedTraining.indexOf('Moonblast') && !/nível-alvo não determinado/.test(informedTraining),
     'O treino com cap informado deve listar os golpes por nível e ter nível-alvo.',

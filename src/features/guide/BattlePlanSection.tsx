@@ -306,7 +306,7 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
     <div className={styles.plan}>
       <section className={styles.team} aria-label="Time do treinador">
         <h4 className={styles.heading}>Time de {result.trainer.name}</h4>
-        <ol className={styles.opponents} aria-label="Confronto por adversário">
+        <ol className={styles.opponents} aria-label="Confronto por adversário" data-scroll-fade>
           {entries.map((entry, index) => {
             const types = speciesDisplay(entry.speciesId, 'normal').types;
             const state = progress[index];
@@ -348,7 +348,7 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
       <section className={styles.simulation} aria-label="Simulação da batalha">
         <h4 className={styles.heading}>Simulação da batalha · quem entra, em quantos turnos e com quanta vida</h4>
         {simulation && <p className={styles.summary}>{battleSimulationSummary(simulation)}</p>}
-        <ol className={styles.steps} aria-label="Sequência simulada">
+        <ol className={styles.steps} aria-label="Sequência simulada" data-scroll-fade>
           {rows.map((row, index) => {
             const style = {'--entry-index': index} as CSSProperties;
             return row.step ? (
@@ -369,7 +369,7 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
         </ol>
       </section>
 
-      <aside className={styles.side2}>
+      <aside className={styles.side2} data-scroll-fade>
         {party.length > 0 && (
           <section className={styles.party} aria-label="Vida da equipe ao final">
             <h4 className={styles.heading}>Vida da equipe ao final</h4>

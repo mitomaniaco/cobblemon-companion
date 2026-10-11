@@ -627,19 +627,42 @@
 @container guia-workspace (min-width: 1100px) {
   .plan {
     grid-template-columns: calc(18 * var(--u)) minmax(0, 1fr) calc(18.5 * var(--u));
+    grid-template-rows: minmax(0, 1fr);
     overflow: hidden;
   }
 
+  /* Cada coluna rola dentro de si; as linhas nunca ficam menores que o conteúdo, então nada se sobrepõe e o cartão não cresce. */
   .opponents,
   .steps,
   .partyList {
-    grid-auto-rows: minmax(0, 1fr);
-    overflow: hidden;
+    grid-auto-rows: minmax(min-content, 1fr);
   }
 
-  .step {
-    grid-template-columns: auto minmax(0, 1.1fr) auto minmax(0, 1.1fr) minmax(0, 0.9fr) minmax(0, 1.4fr);
-    grid-template-areas: "n me vs op turns bars";
+  .opponents,
+  .steps {
+    padding-right: calc(0.3 * var(--u));
+  }
+
+  .side2 {
+    padding-right: calc(0.3 * var(--u));
+  }
+
+  .party,
+  .partyList {
+    flex: 1 0 auto;
+  }
+
+  .opponent {
+    min-height: calc(4.6 * var(--u));
+  }
+
+  .step,
+  .pending {
+    min-height: calc(6 * var(--u));
+  }
+
+  .member {
+    min-height: calc(3.9 * var(--u));
   }
 
   .stepSlot > * {

@@ -22,6 +22,7 @@ import {moveText} from './texts';
 
 const MAX_MOVE_TILES = 2;
 const MAX_CARD_COLUMNS = 4;
+const NONE_GRID_COLUMNS = 3;
 
 function entryStyle(index: number): CSSProperties {
   return {'--entry-index': index} as CSSProperties;
@@ -191,6 +192,37 @@ function EvolutionCardView({card, index}: {card: EvolutionCard; index: number}) 
   );
 }
 
+function NoneMember({member}: {member: EvolutionPlanMemberResult}) {
+  const species = speciesDisplay(member.speciesId, member.formId);
+  const style = {'--t': typeColorVar(species.types[0] ?? null)} as CSSProperties;
+  return (
+    <li className={styles.noneItem} style={style}>
+      <div className={styles.noneArt}>
+        <PokemonArtwork speciesId={member.speciesId} formId={member.formId} variant="detail" className={styles.fill} />
+      </div>
+      <span className={styles.noneText}>
+        <strong>{species.name}</strong>
+        <span>Nv. {member.level}</span>
+      </span>
+      <span className={styles.types}>
+        {species.types.map((type) => (
+          <span
+            key={type}
+            className={styles.typeChip}
+            style={{background: typeColorVar(type), color: typeInkVar(type)}}
+            role="img"
+            aria-label={typeLabel(type)}
+          >
+            <TypeIcon type={type} className={styles.typeIcon} />
+          </span>
+        ))}
+      </span>
+      <span className={styles.noneStatus}>{member.status === 'sem-evolução' ? 'Forma final' : 'Sem evolução prevista'}</span>
+    </li>
+  );
+}
+
+/** Ao lado de quem evolui: um cartão só com a lista de quem não evolui. */
 function NoEvolutionCard({members, index}: {members: EvolutionPlanMemberResult[]; index: number}) {
   return (
     <li className={styles.noneCard} style={entryStyle(index)}>
@@ -198,20 +230,35 @@ function NoEvolutionCard({members, index}: {members: EvolutionPlanMemberResult[]
         <span className={styles.methodLabel}>Sem evolução</span>
         <span className={styles.count}>{members.length}</span>
       </header>
-      <ul className={styles.noneList} aria-label="Pokémon sem evolução">
+      <ul className={styles.noneList} aria-label="Pokémon sem evolução" data-scroll-fade>
         {members.map((member) => (
-          <li key={member.uuid} className={styles.noneItem}>
-            <div className={styles.noneArt}>
-              <PokemonArtwork speciesId={member.speciesId} formId={member.formId} variant="detail" className={styles.fill} />
-            </div>
-            <span className={styles.noneText}>
-              <strong>{speciesDisplay(member.speciesId, member.formId).name}</strong>
-              <span>Nv. {member.level} · sem evolução prevista</span>
-            </span>
-          </li>
+          <NoneMember key={member.uuid} member={member} />
         ))}
       </ul>
     </li>
+  );
+}
+
+/** Ninguém evolui: cartões grandes de todo o time, com o resumo no topo. */
+function NobodyEvolves({members}: {members: EvolutionPlanMemberResult[]}) {
+  const finals = members.filter((member) => member.status === 'sem-evolução').length;
+  return (
+    <>
+      <p className={styles.summary}>
+        <strong>Ninguém evolui agora</strong>
+        {finals > 0 && <span>{finals === 1 ? '1 Pokémon já está na forma final' : `${finals} Pokémon já estão na forma final`}</span>}
+      </p>
+      <ol
+        className={styles.noneGrid}
+        aria-label="Pokémon sem evolução"
+        style={{'--columns': Math.min(members.length, NONE_GRID_COLUMNS)} as CSSProperties}
+        data-scroll-fade
+      >
+        {members.map((member) => (
+          <NoneMember key={member.uuid} member={member} />
+        ))}
+      </ol>
+    </>
   );
 }
 
@@ -222,18 +269,22 @@ function Body({result}: {result: EvolutionPlanResult}) {
   return (
     <div className={styles.result}>
       <p className={styles.srOnly}>{evolutionLevelCapLabel(result.levelCap)}</p>
-      <ol
-        className={styles.grid}
-        aria-label="Evoluções por membro"
-        style={gridStyle}
-        data-has-cards={cards.length > 0}
-        data-has-none={none.length > 0}
-      >
-        {cards.map((card, index) => (
-          <EvolutionCardView key={card.member.uuid} card={card} index={index} />
-        ))}
-        {none.length > 0 && <NoEvolutionCard members={none} index={cards.length} />}
-      </ol>
+      {cards.length === 0 && none.length > 0 ? (
+        <NobodyEvolves members={none} />
+      ) : (
+        <ol
+          className={styles.grid}
+          aria-label="Evoluções por membro"
+          style={gridStyle}
+          data-has-cards={cards.length > 0}
+          data-has-none={none.length > 0}
+        >
+          {cards.map((card, index) => (
+            <EvolutionCardView key={card.member.uuid} card={card} index={index} />
+          ))}
+          {none.length > 0 && <NoEvolutionCard members={none} index={cards.length} />}
+        </ol>
+      )}
     </div>
   );
 }
