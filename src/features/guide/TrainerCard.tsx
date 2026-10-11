@@ -376,8 +376,13 @@ function YourTeam({
               </span>
             )}
             {moved && (
-              <span className={styles.moved}>
-                slot {(slot.fromSlot ?? 0) + 1}→{index + 1}
+              <span
+                className={styles.moved}
+                role="img"
+                title={`muda do slot ${(slot.fromSlot ?? 0) + 1} para o ${index + 1}`}
+                aria-label={`muda do slot ${(slot.fromSlot ?? 0) + 1} para o ${index + 1}`}
+              >
+                ⇄
               </span>
             )}
           </li>
@@ -797,6 +802,11 @@ export function TrainerCard({
           {entering > 0 && (
             <span>
               <i className={styles.keySwap}>⇄</i> no lugar de quem sai
+            </span>
+          )}
+          {plan?.slots.some((slot) => slot.change === 'muda de slot') && (
+            <span>
+              <i className={styles.keyMoved}>⇄</i> só muda de posição
             </span>
           )}
         </div>
