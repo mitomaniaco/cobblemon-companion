@@ -1927,34 +1927,26 @@ async function exerciseGuideWorkspace(window) {
     `Boolean(document.querySelector('ol[aria-label="Confronto por adversário"] > li'))`,
     'plano de batalha do motor sintético',
   );
-  const planText = await evaluate(contents, `document.querySelector('[aria-label="Plano de batalha"]')?.innerText || ''`);
-  for (const expected of [
-    'Plano de batalha contra',
-    'Quem abre a batalha',
-    'Simulação da batalha',
-    'Adversários derrotados: 1 de 2',
-    'Riscos do treinador',
-    'Hipóteses',
-    'Limites',
-  ]) {
-    check(planText.includes(expected), `O plano de batalha não mostrou "${expected}".`);
+  const planText = await evaluate(
+    contents,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Plano de batalha"]')?.innerText || ''`,
+  );
+  for (const expected of ['Plano de batalha', 'Simulação da batalha', 'Adversários derrotados: 1 de 2', 'Riscos da batalha']) {
+    check(planText.toLowerCase().includes(expected.toLowerCase()), `O plano de batalha não mostrou "${expected}".`);
   }
   check(!/vit[óo]ria garantida|vai vencer|voc[êe] vence|garant/i.test(planText), 'O plano de batalha contém texto que promete vitória.');
-  await capture(window, screenshotPaths.battlePlan, '[aria-label="Plano de batalha"]');
-  const entries = await evaluate(
-    contents,
-    `[...document.querySelectorAll('ol[aria-label="Confronto por adversário"] > li')].map(item => {
-    const facts = Object.fromEntries([...item.querySelectorAll('dl > div')].map(row => [row.querySelector('dt').textContent.trim(), row.querySelector('dd').textContent.trim()]));
-    return {status: item.dataset.status, blocked: item.textContent.includes('Confronto bloqueado'), facts};
-  })`,
+  await clickButton(contents, 'Como calculamos');
+  check(
+    await evaluate(
+      contents,
+      `Boolean(document.querySelector('section[aria-label="Hipóteses do cálculo"]') && document.querySelector('section[aria-label="Limites do cálculo"]'))`,
+    ),
+    'O "Como calculamos" do plano de batalha não mostrou hipóteses e limites.',
   );
-  check(entries.length >= 1, 'O plano de batalha não listou adversários.');
-  for (const entry of entries) {
-    check(
-      entry.blocked || (entry.facts['Quem enfrenta']?.includes(' com ') && entry.facts['Ordem de ação']),
-      'Um adversário do plano não mostrou o respondedor com o golpe sugerido e a ordem de ação.',
-    );
-  }
+  await clickButton(contents, 'Como calculamos');
+  await capture(window, screenshotPaths.battlePlan, '[aria-label="Trainer Card"] section[aria-label="Plano de batalha"]');
+  const entryCount = await evaluate(contents, `document.querySelectorAll('ol[aria-label="Confronto por adversário"] > li').length`);
+  check(entryCount >= 1, 'O plano de batalha não listou adversários.');
   for (const layout of [
     {width: 1200, shot: 'battlePlan1200'},
     {width: 800, shot: 'battlePlan800'},
@@ -1963,7 +1955,7 @@ async function exerciseGuideWorkspace(window) {
     await waitFor(contents, `window.innerWidth === ${layout.width}`, `viewport do plano de batalha em ${layout.width}px`);
     const overflow = await evaluate(contents, '(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)()');
     check(!overflow, `O plano de batalha em ${layout.width}px gerou rolagem horizontal.`);
-    await capture(window, screenshotPaths[layout.shot], '[aria-label="Plano de batalha"]');
+    await capture(window, screenshotPaths[layout.shot], '[aria-label="Trainer Card"] section[aria-label="Plano de batalha"]');
   }
   window.setContentSize(1440, 1000);
   await waitFor(contents, 'window.innerWidth === 1440', 'retorno ao viewport padrão após o plano de batalha');
@@ -1972,10 +1964,10 @@ async function exerciseGuideWorkspace(window) {
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Evoluções por membro"] > li'))`, 'evoluções do motor sintético');
   const evolutionText = await evaluate(
     contents,
-    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Evoluções do time')?.closest('section')?.innerText) || ''`,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Evoluções"]')?.innerText || ''`,
   );
-  for (const expected of ['Evoluções do time', 'Level cap usado: 21.', 'não verificado', 'Hipóteses', 'Limites']) {
-    check(evolutionText.includes(expected), `A seção de evoluções não mostrou "${expected}".`);
+  for (const expected of ['Level cap usado: 21.', 'Pendente', 'Rock Slide', 'Bloqueado', 'sem evolução']) {
+    check(evolutionText.toLowerCase().includes(expected.toLowerCase()), `A seção de evoluções não mostrou "${expected}".`);
   }
   await capture(window, screenshotPaths.evolutions, 'ol[aria-label="Evoluções por membro"]');
 
@@ -1999,23 +1991,22 @@ async function exerciseGuideWorkspace(window) {
   await waitFor(contents, `document.body.innerText.includes('cap conhecido')`, 'treino usando o cap conhecido do progresso');
   const progressTraining = await evaluate(
     contents,
-    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Treino até o cap"]')?.innerText || ''`,
   );
   for (const expected of ['Gardevoir', 'cap conhecido', 'já no cap 21; não suba mais']) {
-    check(progressTraining.includes(expected), `O treino não usou o cap padrão do progresso "${expected}".`);
+    check(progressTraining.toLowerCase().includes(expected.toLowerCase()), `O treino não usou o cap padrão do progresso "${expected}".`);
   }
 
   await selectGuideTab(contents, 'Capturas');
   await waitFor(contents, `Boolean(document.querySelector('ol[aria-label="Lacunas do time"] > li'))`, 'capturas do motor sintético');
   const captureText = await evaluate(
     contents,
-    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Capturas recomendadas')?.closest('section')?.innerText) || ''`,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Capturas"]')?.innerText || ''`,
   );
   for (const expected of [
-    'Lacuna contra Floatzel',
+    'Contra Floatzel',
     'Você já tem',
     'Blastoise',
-    'Candidatos de captura',
     'Swampert',
     'River',
     'com chuva',
@@ -2023,22 +2014,20 @@ async function exerciseGuideWorkspace(window) {
     'incomum',
     'Captura liberada',
     'pendente',
-    'Hipóteses',
-    'Limites',
   ]) {
-    check(captureText.includes(expected), `A seção de capturas não mostrou "${expected}".`);
+    check(captureText.toLowerCase().includes(expected.toLowerCase()), `A seção de capturas não mostrou "${expected}".`);
   }
   const pikaStatus = await evaluate(
     contents,
     `(() => {
       const requirements = [...document.querySelectorAll('ul[aria-label="Requisitos para capturar Swampert"] li')];
-      const pika = requirements.find((item) => item.textContent.includes('advancement Pika Star de paldea'));
+      const pika = requirements.find((item) => item.textContent.includes('Pika Star de Paldea'));
       return pika?.querySelector('[data-status]')?.textContent.trim() || null;
     })()`,
   );
   check(pikaStatus === 'pendente', 'A UI não mostrou o status Pika Star de Paldea devolvido pelo plano sintético.');
   check(
-    captureText.indexOf('Você já tem') < captureText.indexOf('Candidatos de captura'),
+    captureText.indexOf('Você já tem') < captureText.indexOf('Swampert'),
     'O que o jogador já tem deve aparecer antes dos candidatos de captura.',
   );
   await capture(window, screenshotPaths.captures, 'ol[aria-label="Lacunas do time"]');
@@ -2088,7 +2077,7 @@ async function exerciseGuideWorkspace(window) {
   await waitFor(contents, `document.body.innerText.includes('cap conhecido')`, 'treino recalculado com o level cap manual');
   const informedTraining = await evaluate(
     contents,
-    `([...document.querySelectorAll('h3')].find(node => node.textContent.trim() === 'Treino até o level cap')?.closest('section')?.innerText) || ''`,
+    `document.querySelector('[aria-label="Trainer Card"] section[aria-label="Treino até o cap"]')?.innerText || ''`,
   );
   for (const expected of [
     'Nv. 24 → 30 (cap 30)',
@@ -2099,7 +2088,7 @@ async function exerciseGuideWorkspace(window) {
     'Soma sugerida 510/510',
     'não há espécies para treinar EVs',
   ]) {
-    check(informedTraining.includes(expected), `O treino com cap informado não mostrou "${expected}".`);
+    check(informedTraining.toLowerCase().includes(expected.toLowerCase()), `O treino com cap informado não mostrou "${expected}".`);
   }
   check(
     informedTraining.indexOf('Psychic') < informedTraining.indexOf('Moonblast') && !/nível-alvo não determinado/.test(informedTraining),
