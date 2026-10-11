@@ -104,8 +104,9 @@ function MoveCard({
 }) {
   const display = moveDisplay(move.id);
   const text = moveText(move.id);
-  const equipped = individual?.equippedMoves.find((entry) => entry.id === move.id);
-  const learned = equipped ? undefined : individual?.learnedMoves.find((entry) => entry.id === move.id);
+  const sameMove = (entry: {id: string}) => dexId(entry.id) === dexId(move.id);
+  const equipped = individual?.equippedMoves.find(sameMove);
+  const learned = equipped ? undefined : individual?.learnedMoves.find(sameMove);
   const pp = equipped ? equipped.pp : text.pp;
   const ppUps = equipped ? equipped.ppUps : (learned?.ppUps ?? null);
   const damage = guideMoveDamage(member, move.id).slice(0, 3);
@@ -116,7 +117,7 @@ function MoveCard({
         <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
           <MovePpMeta pp={pp} ppUps={ppUps} />
         </MoveChip>
-        <span className={styles.moveTag}>{equipped ? 'equipado' : 'aprendido'}</span>
+        <span className={styles.moveTag}>{move.source}</span>
       </div>
       {text.description !== null && <p className={styles.moveDescription}>{text.description}</p>}
       <div className={styles.damageRow}>
@@ -133,13 +134,14 @@ function MoveCard({
                 key={entry.opponentId}
                 className={styles.damageCell}
                 data-best={entry.best || undefined}
-                title={entry.best ? `Melhor golpe contra ${name}` : undefined}
+                title={entry.best ? `Melhor golpe contra ${name}` : name}
               >
                 {opponent && (
                   <span className={styles.damageArt}>
                     <PokemonArtwork speciesId={opponent.speciesId} formId="normal" variant="slot" className={styles.fill} />
                   </span>
                 )}
+                <span className={styles.srOnly}>{name}: </span>
                 <span className={styles.damageValue}>
                   {Math.round(entry.minPercent)}–{Math.round(entry.maxPercent)}%
                 </span>

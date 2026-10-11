@@ -412,6 +412,7 @@ function Answers({
   individuals: ReadonlyMap<string, PlayerIndividual>;
   onPick(index: number): void;
 }) {
+  const answersId = useId();
   const team = detail === undefined || detail === 'loading' || detail === 'error' ? null : detail.team;
   const nameOf = (uuid: string, speciesId: string) => speciesDisplay(speciesId, individuals.get(uuid)?.formId ?? 'normal').name;
   const selectedName = member ? nameOf(member.uuid, member.speciesId) : null;
@@ -446,6 +447,11 @@ function Answers({
             };
             const content = (
               <>
+                <span id={`${answersId}-${index}`} className={styles.visuallyHidden}>
+                  {matchup
+                    ? `${name}, nível ${entry.level}: ${guideOpponentTurnsLabel(matchup)}${rowProps['data-unanswered'] ? '; sem resposta boa' : ''}`
+                    : `${name}, nível ${entry.level}`}
+                </span>
                 <span className={styles.answerArt}>
                   <PokemonArtwork speciesId={entry.speciesId} formId={entry.formId} variant="slot" />
                 </span>
@@ -495,7 +501,13 @@ function Answers({
               // biome-ignore lint/suspicious/noArrayIndexKey: o time do treinador pode repetir espécie; a posição identifica o adversário
               <li key={`${entry.speciesId}-${index}`} className={styles.answerItem}>
                 {result ? (
-                  <button type="button" {...rowProps} aria-label={`Ver quem responde a ${name}`} onClick={() => onPick(index)}>
+                  <button
+                    type="button"
+                    {...rowProps}
+                    aria-label={`Ver quem responde a ${name}`}
+                    aria-describedby={`${answersId}-${index}`}
+                    onClick={() => onPick(index)}
+                  >
                     {content}
                   </button>
                 ) : (
@@ -1045,8 +1057,12 @@ export function TrainerCard({
                 <BadgeDiscs entries={badgeEntries} />
               </div>
               {/* biome-ignore lint/a11y/useSemanticElements: grupo só de leitura com rótulo, sem controles */}
-              <div className={styles.pillPika} role="group" aria-label={`Pika Star: ${pikaCount} de 10 regiões`}>
-                <span aria-hidden="true">★ {pikaCount}/10</span>
+              <div
+                className={styles.pillPika}
+                role="group"
+                aria-label={progress.status === 'ready' ? `Pika Star: ${pikaCount} de 10 regiões` : 'Pika Star: desconhecido'}
+              >
+                <span aria-hidden="true">★ {progress.status === 'ready' ? pikaCount : '—'}/10</span>
                 <span className={styles.visuallyHidden}>
                   <PikaStars progress={progress} />
                 </span>
