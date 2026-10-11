@@ -26,6 +26,7 @@ Leia também `CLAUDE.md` (regras de privacidade, escopo e estado do projeto) e `
 - Testes: unitários e de integração (Vitest), end-to-end pelo harness Electron sintético (`test/electron-trainer-ui-harness.cjs`), cobertura enviada ao Codecov.
 - Observabilidade: local-first (tela de erro diagnóstica sanitizada), sem Sentry/OpenTelemetry.
 - UI: toda interface tem skeleton, lazy loading e animações de entrada, saída, carregamento e progresso, respeitando `prefers-reduced-motion`.
+- UI: antes de criar ou alterar tela, componente ou CSS, leia `docs/PADRAO-UI.md` (sem espaço vazio, sem brilho, cabe na primeira dobra, reutilizar `src/ui/`, linguagem do jogador) e aprove um protótipo com o dono antes de implementar.
 
 ### Exceções deliberadas ao padrão (decididas em 03/10/2026)
 
