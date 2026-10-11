@@ -119,7 +119,7 @@ function rolesOf(steps, team) {
     const build = template[step.entry];
     if (build) roles[step.memberUuid] = build(nameOf(step.opponentSpeciesId));
   }
-  for (const member of team) roles[member.uuid] ??= 'Reserva: não entra na batalha simulada';
+  for (const member of team) roles[member.uuid] ??= 'Reserva: a simulação venceu sem precisar dele';
   return roles;
 }
 
