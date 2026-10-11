@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Ferramentas do Guia dentro do Trainer Card (Issues #226 e #228): dock com Equipe, Plano de batalha, Evoluções, Treino até o cap e Capturas; cada ferramenta preenche o card no padrão de `docs/PADRAO-UI.md` (simulação passo a passo com `HpBar`, cartões de evolução com arte, trilha de nível e EVs em barras, capturas por adversário sem resposta), com cabeçalho comum e "Como calculamos" recolhido.
+
 - Ferramentas do Guia dentro do Trainer Card (Issue #226): dock no rodapé do cartão com Equipe, Plano de batalha, Evoluções, Treino até o cap e Capturas (subtítulo e selo por ferramenta), novo `ToolFrame` com cabeçalho, Recalcular e “Como calculamos”; a aba padrão passa a ser Equipe.
 
 - Trainer Card do Guia em três colunas que ocupam a altura visível (Issues #210 e #212): equipe, Pokémon selecionado com habilidade, atributos base, descrição e faixa de dano por golpe, e o adversário com quem responde a cada Pokémon dele. Cada confronto do guia traz `damage` por golpe; novo `data/guide/texts.json` (PP e descrições em português); insígnias achatadas com `TypeIcon`, sem brilhos coloridos.

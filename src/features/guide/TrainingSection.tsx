@@ -1,96 +1,139 @@
 import {useId, type CSSProperties} from 'react';
 import {moveDisplay, speciesDisplay} from '../../domain/dex';
-import type {TrainingEvSource, TrainingPlanMemberResult, TrainingPlanResult} from '../../platform/api';
-import {Button, StatusMessage} from '../../ui';
+import type {TrainingPlanMemberResult, TrainingPlanResult} from '../../platform/api';
+import {Button, MoveChip, MovePpMeta, PokemonArtwork, StatusMessage, TypeIcon, typeColorVar, typeInkVar, typeLabel} from '../../ui';
 import {
   TRAINING_CAP_ORIGIN_LABEL,
   TRAINING_EV_TOTAL_LIMIT,
   TRAINING_ROLE_LABEL,
   TRAINING_STAT_LABEL,
-  trainingEvRows,
+  TRAINING_STAT_SHORT_LABEL,
+  trainingEvBars,
   trainingEvTotals,
   trainingLevelLabel,
+  trainingMovesByLevel,
+  trainingTrack,
 } from './training-model';
+import {moveText} from './texts';
 import type {TrainingPlanController} from './useTrainingPlan';
 import styles from './TrainingSection.module.css';
 
-function SourceRow({source}: {source: TrainingEvSource}) {
-  const species = speciesDisplay(source.speciesId, 'normal');
+function Track({member}: {member: TrainingPlanMemberResult}) {
+  const nodes = trainingTrack(member);
+  if (nodes === null) return null;
   return (
-    <li>
-      <strong>{species.name}</strong> rende +{source.amount} {TRAINING_STAT_LABEL[source.stat]}
-      {source.spawns.length === 0 ? (
-        <span className={styles.muted}> · sem spawn natural conhecido</span>
-      ) : (
-        <ul className={styles.spawns}>
-          {source.spawns.map((spawn) => (
-            <li key={`${spawn.biomes.join('|')}-${spawn.levelMin}-${spawn.levelMax}-${spawn.position}`}>
-              {spawn.biomes.join(', ')} · Nv. {spawn.levelMin}–{spawn.levelMax}
-              {spawn.conditions.length > 0 && <span className={styles.muted}> · {spawn.conditions.join(' · ')}</span>}
-            </li>
-          ))}
-        </ul>
-      )}
-    </li>
+    <ol className={styles.track} aria-label="Caminho de níveis">
+      <li className={styles.line} aria-hidden="true" />
+      {nodes.map((node) => {
+        const first = node.moves[0];
+        const display = first ? moveDisplay(first.moveId) : null;
+        const names = node.moves.map((move) => moveDisplay(move.moveId).name);
+        const label = `Nv. ${node.level}${names.length > 0 ? `: aprende ${names.join(', ')}` : node.isEnd ? ' (alvo)' : node.isStart ? ' (atual)' : ''}`;
+        const style = {
+          left: `${node.position * 100}%`,
+          ...(display ? {'--node': typeColorVar(display.type), '--node-ink': typeInkVar(display.type)} : {}),
+        } as CSSProperties;
+        return (
+          <li
+            key={node.level}
+            className={styles.node}
+            style={style}
+            data-kind={display ? 'move' : node.isStart ? 'start' : node.isEnd ? 'end' : 'plain'}
+            data-end={node.isEnd ? 'true' : undefined}
+            title={label}
+            aria-label={label}
+          >
+            {display?.type ? <TypeIcon type={display.type} className={styles.nodeIcon} /> : node.level}
+          </li>
+        );
+      })}
+    </ol>
   );
 }
 
-function EvBlock({member}: {member: TrainingPlanMemberResult}) {
+function Moves({member, name}: {member: TrainingPlanMemberResult; name: string}) {
+  if (member.moves.length === 0) {
+    return <p className={styles.note}>Nenhum golpe novo por nível até o alvo.</p>;
+  }
+  return (
+    <ul className={styles.moves} aria-label={`Golpes no caminho: ${name}`}>
+      {trainingMovesByLevel(member.moves).map((move) => {
+        const display = moveDisplay(move.moveId);
+        return (
+          <li key={`${move.moveId}-${move.level}`} className={styles.move}>
+            <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
+              <MovePpMeta pp={moveText(move.moveId).pp} ppUps={null} />
+            </MoveChip>
+            <span className={styles.moveSide}>
+              <strong>Nv. {move.level}</strong>
+              {move.useful && <span className={styles.useful}>útil para o objetivo</span>}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function EvPanel({member, name}: {member: TrainingPlanMemberResult; name: string}) {
   const {evs} = member;
-  const rows = trainingEvRows(evs);
+  const determined = evs.status === 'sugerido';
   const totals = trainingEvTotals(evs.suggestedEvs);
   return (
-    <section className={styles.evs} aria-label={`EVs de ${speciesDisplay(member.speciesId, 'normal').name}`}>
-      <h5 className={styles.subtitle}>EVs · papel: {TRAINING_ROLE_LABEL[evs.role]}</h5>
-      {evs.status === 'não-determinado' ? (
+    <section className={styles.evs} aria-label={`EVs de ${name}`}>
+      <div className={styles.evHead}>
+        <h5 className={styles.evTitle}>Pontos de esforço (EV)</h5>
+        <span className={styles.key}>
+          <span data-kind="current">Atual</span>
+          {determined && <span data-kind="suggested">Sugerido</span>}
+        </span>
+      </div>
+      {determined ? (
+        <ul className={styles.evGrid}>
+          {trainingEvBars(evs).map((bar) => (
+            <li key={bar.stat} className={styles.ev} data-state={bar.state}>
+              <span className={styles.evLabel}>
+                {TRAINING_STAT_SHORT_LABEL[bar.stat]}
+                <strong title={TRAINING_STAT_LABEL[bar.stat]}>
+                  {bar.current === null ? 'não capturado' : bar.current}
+                  {bar.suggested !== null && <small> / {bar.suggested}</small>}
+                </strong>
+              </span>
+              <span
+                className={styles.evBar}
+                role="img"
+                aria-label={`${TRAINING_STAT_LABEL[bar.stat]}: atual ${bar.current ?? 'não capturado'}${bar.suggested === null ? '' : `, sugerido ${bar.suggested}`}`}
+                style={{'--suggested': bar.suggestedRatio, '--current': bar.currentRatio} as CSSProperties}
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
         <p className={styles.undetermined}>
           <strong>Distribuição não determinada.</strong> {evs.reason}
         </p>
-      ) : (
-        <p className={styles.text}>{evs.reason}</p>
       )}
-
-      {rows.length > 0 && (
-        <table className={styles.evTable}>
-          <caption className={styles.visuallyHidden}>EVs atuais e sugeridos</caption>
-          <thead>
-            <tr>
-              <th scope="col">Atributo</th>
-              <th scope="col">Atual</th>
-              <th scope="col">Sugerido</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.stat}>
-                <th scope="row">{TRAINING_STAT_LABEL[row.stat]}</th>
-                <td>{row.current === null ? 'não capturado' : row.current}</td>
-                <td>{row.suggested === null ? '—' : row.suggested}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {evs.status === 'sugerido' && (
-        <p className={totals.withinLimits ? styles.muted : styles.invalid}>
+      {determined && (
+        <p className={totals.withinLimits ? styles.evCaption : styles.invalid} title={evs.reason}>
           {totals.withinLimits
-            ? `Soma sugerida ${totals.total}/${TRAINING_EV_TOTAL_LIMIT} (máximo de 252 por atributo).`
-            : 'Atenção: a distribuição recebida passa de 252 por atributo ou de 510 no total.'}
+            ? `Soma sugerida ${totals.total}/${TRAINING_EV_TOTAL_LIMIT} (máximo de 252 por atributo). `
+            : 'Atenção: a distribuição recebida passa de 252 por atributo ou de 510 no total. '}
+          <span className={styles.reason}>{evs.reason}</span>
         </p>
       )}
-
       {evs.sources.length > 0 && (
-        <div>
-          <h5 className={styles.subtitle}>Espécies que rendem esses EVs</h5>
-          <ul className={styles.sources}>
-            {evs.sources.map((source) => (
-              <SourceRow key={`${source.speciesId}-${source.stat}`} source={source} />
-            ))}
-          </ul>
-        </div>
+        <p className={styles.evCaption}>
+          Rendem esses EVs:{' '}
+          {evs.sources
+            .map(
+              (source) =>
+                `${speciesDisplay(source.speciesId, 'normal').name} (+${source.amount} ${TRAINING_STAT_SHORT_LABEL[source.stat]}${source.spawns.length === 0 ? ', sem spawn natural conhecido' : ''})`,
+            )
+            .join(' · ')}
+        </p>
       )}
-      {evs.status === 'sugerido' && evs.sources.length === 0 && (
-        <p className={styles.muted}>Nenhuma espécie com rendimento e spawn natural conhecidos.</p>
+      {determined && evs.sources.length === 0 && (
+        <p className={styles.evCaption}>Nenhuma espécie com rendimento e spawn natural conhecidos.</p>
       )}
     </section>
   );
@@ -98,112 +141,123 @@ function EvBlock({member}: {member: TrainingPlanMemberResult}) {
 
 function MemberRow({member, index}: {member: TrainingPlanMemberResult; index: number}) {
   const species = speciesDisplay(member.speciesId, 'normal');
+  const blocked = member.targetLevel === null;
+  const style = {
+    '--entry-index': index,
+    '--tone': typeColorVar(species.types[0] ?? null),
+  } as CSSProperties;
   return (
-    <li
-      className={styles.member}
-      data-undetermined={member.targetLevel === null ? 'true' : undefined}
-      style={{'--entry-index': index} as CSSProperties}
-    >
-      <div className={styles.memberHeader}>
-        <h4 className={styles.memberName}>{species.name}</h4>
-        <span className={styles.chip}>{trainingLevelLabel(member)}</span>
-        <span className={styles.chip} data-origin={member.capOrigin}>
-          {TRAINING_CAP_ORIGIN_LABEL[member.capOrigin]}
-        </span>
+    <li className={styles.member} data-blocked={blocked ? 'true' : undefined} style={style}>
+      <div className={styles.identity}>
+        <PokemonArtwork speciesId={member.speciesId} formId="normal" variant="slot" className={styles.art} />
+        <div className={styles.idText}>
+          <h4 className={styles.name}>{species.name}</h4>
+          <span className={styles.role}>{TRAINING_ROLE_LABEL[member.evs.role]}</span>
+          <span className={styles.types}>
+            {species.types.map((type) => (
+              <span
+                key={type}
+                className={styles.typeChip}
+                style={{background: typeColorVar(type), color: typeInkVar(type)}}
+                role="img"
+                aria-label={typeLabel(type)}
+              >
+                <TypeIcon type={type} className={styles.typeIcon} />
+              </span>
+            ))}
+          </span>
+        </div>
       </div>
-      <p className={styles.text}>{member.targetNote}</p>
 
-      {member.moves.length > 0 && (
-        <ul className={styles.moves} aria-label={`Golpes no caminho: ${species.name}`}>
-          {member.moves.map((move) => (
-            <li key={`${move.moveId}-${move.level}`} data-useful={move.useful ? 'true' : undefined}>
-              <span className={styles.moveLevel}>Nv. {move.level}</span>
-              <span>{moveDisplay(move.moveId).name}</span>
-              {move.useful && <span className={styles.useful}>útil para o objetivo</span>}
-            </li>
-          ))}
-        </ul>
-      )}
-      {member.targetLevel !== null && member.moves.length === 0 && <p className={styles.muted}>Nenhum golpe novo por nível até o alvo.</p>}
+      <div className={styles.path}>
+        <p className={styles.levelLine}>
+          <strong>{trainingLevelLabel(member)}</strong>
+          {member.capOrigin === 'informado' && <span className={styles.origin}>{TRAINING_CAP_ORIGIN_LABEL.informado}</span>}
+        </p>
+        {blocked || member.targetLevel === member.level ? (
+          <p className={styles.note} data-blocked={blocked ? 'true' : undefined}>
+            {member.targetNote}
+          </p>
+        ) : (
+          <>
+            <Track member={member} />
+            <Moves member={member} name={species.name} />
+          </>
+        )}
+      </div>
 
-      <EvBlock member={member} />
+      <EvPanel member={member} name={species.name} />
     </li>
   );
 }
 
-function Body({result}: {result: TrainingPlanResult}) {
+function Skeleton() {
   return (
-    <div className={styles.result}>
-      <ol className={styles.members} aria-label="Treino por membro">
-        {result.members.map((member, index) => (
-          <MemberRow key={member.uuid} member={member} index={index} />
-        ))}
-      </ol>
-      <section className={styles.notes} aria-label="Hipóteses e limites do treino">
-        <div>
-          <h4 className={styles.subtitle}>Hipóteses</h4>
-          <ul>
-            {result.assumptions.map((text) => (
-              <li key={text}>{text}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4 className={styles.subtitle}>Limites</h4>
-          <ul>
-            {result.limits.map((text) => (
-              <li key={text}>{text}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+    <div className={styles.members} aria-busy="true">
+      {[0, 1, 2].map((index) => (
+        <div key={index} className={styles.skeletonRow} style={{'--entry-index': index} as CSSProperties} />
+      ))}
     </div>
   );
 }
 
 export function TrainingSection({training, hasTeam}: {training: TrainingPlanController; hasTeam: boolean}) {
   const titleId = useId();
-  const building = training.phase === 'building';
+  const result: TrainingPlanResult | null = training.phase === 'ready' ? training.result : null;
   return (
     <section className={styles.section} aria-labelledby={titleId}>
-      <h3 id={titleId} className={styles.title}>
+      <h3 id={titleId} className={styles.visuallyHidden}>
         Treino até o level cap
       </h3>
 
-      <div className={styles.controls}>
-        {building ? (
-          <Button variant="secondary" onPress={training.cancel}>
-            Cancelar
-          </Button>
-        ) : (
-          <Button variant="secondary" isDisabled={!hasTeam} onPress={training.request}>
-            {training.phase === 'ready' ? 'Calcular de novo' : 'Ver treino do time'}
-          </Button>
-        )}
-        <p className={styles.muted}>
-          {hasTeam
-            ? 'Usa o cap efetivo acima, digitado ou lido do progresso. Não sugere passar do cap.'
-            : 'O guia não montou nenhum membro: não há o que treinar.'}
-        </p>
-      </div>
-
-      {building && (
-        <div className={styles.building}>
+      {training.phase === 'building' && (
+        <>
           <div className={styles.progress} role="progressbar" aria-label="Montando o treino" />
-          <div className={styles.skeleton} aria-busy="true">
-            {[0, 1, 2].map((index) => (
-              <div key={index} className={styles.skeletonRow} style={{'--entry-index': index} as CSSProperties} />
-            ))}
+          <Skeleton />
+          <div className={styles.actions}>
+            <Button variant="secondary" onPress={training.cancel}>
+              Cancelar
+            </Button>
           </div>
-        </div>
+        </>
       )}
       {training.phase === 'error' && (
-        <StatusMessage tone="error" title="O treino não foi montado">
-          {training.error}
-        </StatusMessage>
+        <div className={styles.message}>
+          <StatusMessage tone="error" title="O treino não foi montado">
+            {training.error}
+          </StatusMessage>
+          <Button variant="secondary" isDisabled={!hasTeam} onPress={training.request}>
+            Tentar de novo
+          </Button>
+        </div>
       )}
-      {training.phase === 'canceled' && <StatusMessage tone="info">Montagem do treino cancelada.</StatusMessage>}
-      {training.phase === 'ready' && training.result && <Body result={training.result} />}
+      {training.phase === 'canceled' && (
+        <div className={styles.message}>
+          <StatusMessage tone="info">Montagem do treino cancelada.</StatusMessage>
+          <Button variant="secondary" isDisabled={!hasTeam} onPress={training.request}>
+            Ver treino do time
+          </Button>
+        </div>
+      )}
+      {training.phase === 'idle' && (
+        <div className={styles.message}>
+          <p className={styles.note}>
+            {hasTeam
+              ? 'Mostra o caminho de cada Pokémon até o cap e os EVs sugeridos.'
+              : 'O guia não montou nenhum membro: não há o que treinar.'}
+          </p>
+          <Button variant="secondary" isDisabled={!hasTeam} onPress={training.request}>
+            Ver treino do time
+          </Button>
+        </div>
+      )}
+      {result && (
+        <ol className={styles.members} aria-label="Treino por membro">
+          {result.members.map((member, index) => (
+            <MemberRow key={member.uuid} member={member} index={index} />
+          ))}
+        </ol>
+      )}
     </section>
   );
 }

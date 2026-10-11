@@ -6,6 +6,7 @@ import type {
   TrainingPlanMemberResult,
   TrainingPlanRequest,
   TrainingStatKey,
+  TrainingMove,
 } from '../../platform/api';
 
 const EV_PER_STAT_LIMIT = 252;
@@ -82,4 +83,82 @@ export function trainingEvTotals(suggestedEvs: TrainingEvPlan['suggestedEvs']): 
   const values = TRAINING_STAT_ORDER.map((stat) => suggestedEvs[stat] ?? 0);
   const total = values.reduce((sum, value) => sum + value, 0);
   return {total, withinLimits: total <= TRAINING_EV_TOTAL_LIMIT && values.every((value) => value <= EV_PER_STAT_LIMIT)};
+}
+
+export const TRAINING_STAT_SHORT_LABEL: Record<TrainingStatKey, string> = {
+  hp: 'HP',
+  atk: 'Ataque',
+  def: 'Defesa',
+  spa: 'Atq. Esp.',
+  spd: 'Def. Esp.',
+  spe: 'Veloc.',
+};
+
+export type TrainingEvBar = {
+  stat: TrainingStatKey;
+  /** `null` = EV atual não capturado (nunca vira zero). */
+  current: number | null;
+  suggested: number | null;
+  /** 0 a 1 sobre o limite de 252 por atributo. */
+  currentRatio: number;
+  suggestedRatio: number;
+  /** `focus`: recebe EV sugerido; `idle`: não faz parte da distribuição. */
+  state: 'focus' | 'idle';
+};
+
+/** Os seis atributos sempre, na ordem do jogo; os que não recebem EV sugerido ficam como `idle`. */
+export function trainingEvBars(evs: Pick<TrainingEvPlan, 'currentEvs' | 'suggestedEvs'>): TrainingEvBar[] {
+  const ratio = (value: number | null) => (value === null ? 0 : Math.min(1, Math.max(0, value / EV_PER_STAT_LIMIT)));
+  return TRAINING_STAT_ORDER.map((stat) => {
+    const suggested = evs.suggestedEvs[stat] ?? null;
+    const current = evs.currentEvs[stat];
+    return {
+      stat,
+      current,
+      suggested,
+      currentRatio: ratio(current),
+      suggestedRatio: ratio(suggested),
+      state: suggested !== null && suggested > 0 ? 'focus' : 'idle',
+    };
+  });
+}
+
+export type TrainingTrackNode = {
+  level: number;
+  /** 0 (nível atual) a 1 (alvo). */
+  position: number;
+  isStart: boolean;
+  isEnd: boolean;
+  /** Golpes aprendidos exatamente neste nível, na ordem recebida. */
+  moves: TrainingMove[];
+};
+
+const TRAINING_TRACK_ALL_LEVELS_SPAN = 10;
+
+/**
+ * Marcadores do caminho do nível atual até o alvo: início, alvo e cada nível com golpe novo; com até 10 níveis de
+ * distância mostra também os intermediários. Golpes fora do intervalo ficam presos às pontas. `null` sem nível-alvo.
+ */
+export function trainingTrack(member: Pick<TrainingPlanMemberResult, 'level' | 'targetLevel' | 'moves'>): TrainingTrackNode[] | null {
+  const {level: start, targetLevel: end} = member;
+  if (end === null || end < start) return null;
+  const clamp = (level: number) => Math.min(end, Math.max(start, level));
+  const levels = new Set<number>([start, end]);
+  if (end - start <= TRAINING_TRACK_ALL_LEVELS_SPAN) for (let level = start; level <= end; level += 1) levels.add(level);
+  for (const move of member.moves) levels.add(clamp(move.level));
+  const span = end - start;
+  return [...levels]
+    .sort((a, b) => a - b)
+    .map((level) => ({
+      level,
+      position: span === 0 ? 0 : (level - start) / span,
+      isStart: level === start,
+      isEnd: level === end,
+      moves: member.moves.filter((move) => clamp(move.level) === level),
+    }));
+}
+
+/** Golpes do caminho do mais cedo para o mais tarde (estável entre golpes do mesmo nível). */
+export function trainingMovesByLevel(moves: readonly TrainingMove[]): TrainingMove[] {
+  return [...moves].sort((a, b) => a.level - b.level);
 }
