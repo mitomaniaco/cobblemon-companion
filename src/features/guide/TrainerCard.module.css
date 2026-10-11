@@ -37,6 +37,10 @@
 }
 
 @container guia-workspace (min-width: 1100px) {
+  .mine[data-selected="true"]::after {
+    display: block;
+  }
+
   .card {
     --u: clamp(10px, min(1.8cqh, 1.05cqw), 18px);
   }
@@ -561,6 +565,7 @@
 }
 
 .mine[data-selected="true"]::after {
+  display: none;
   content: "";
   position: absolute;
   top: 50%;
@@ -1044,8 +1049,9 @@ button.answerRow:hover {
 .bubble {
   position: relative;
   display: block;
-  height: min(calc(2 * var(--u)), 80%);
-  aspect-ratio: 1;
+  width: calc(2 * var(--u));
+  height: calc(2 * var(--u));
+  flex: none;
   border-radius: 50%;
   background: var(--color-sunken);
   box-shadow: 0 0 0 1px #ffffff22;
@@ -1512,5 +1518,13 @@ button.answerRow:hover {
 
   .disc {
     border: 1px solid CanvasText;
+  }
+
+  .barFill {
+    background: Highlight;
+  }
+
+  .bubble[data-best] {
+    outline: 2px solid Highlight;
   }
 }
