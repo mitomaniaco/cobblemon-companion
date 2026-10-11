@@ -59,6 +59,8 @@ function opponentFromMember(member, id, trainerId) {
       level: member.level,
       spec: {species, level: member.level, nature, ability, ivs, evs, item: heldItemName(member.heldItem)},
       moves,
+      // Ids do time sem filtrar pelo catálogo: `moves` descarta o que o catálogo não tem (Fake Out, por exemplo).
+      rawMoveIds: member.moves ?? [],
     },
     ignoredMoves,
   };
