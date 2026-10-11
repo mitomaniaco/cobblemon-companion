@@ -191,7 +191,7 @@ function CompactCard({entry, index}: {entry: EvolutionCompact; index: number}) {
           <span className={styles.pill} data-status="bloqueado">
             {evolutionStatusLabel('bloqueado')}
           </span>
-          <p className={styles.compactReason} title={reason}>
+          <p className={styles.compactReason} data-tooltip={reason}>
             {reason}
           </p>
         </>

@@ -1,0 +1,87 @@
+/* Vive no body (portal), fora do --u dos cartões: tokens em px. */
+.tooltip {
+  position: fixed;
+  z-index: 2000;
+  display: grid;
+  max-width: min(320px, calc(100vw - 16px));
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-raised);
+  box-shadow: var(--shadow-pop);
+  color: var(--color-text);
+  font-size: var(--text-label);
+  line-height: var(--line-label);
+  pointer-events: none;
+  /* só aparece depois de medido e posicionado */
+  opacity: 0;
+  overflow-wrap: anywhere;
+}
+
+.tooltip[data-ready] {
+  opacity: 1;
+  animation: tooltip-in var(--duration-overlay-enter) var(--ease-out);
+}
+
+.tooltip[data-side="below"][data-ready] {
+  animation-name: tooltip-in-below;
+}
+
+.tooltip::after {
+  position: absolute;
+  left: calc(var(--arrow) - 5px);
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--color-control-border);
+  background: var(--color-raised);
+  content: "";
+}
+
+.tooltip[data-side="above"]::after {
+  bottom: -6px;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+
+.tooltip[data-side="below"]::after {
+  top: -6px;
+  border-right: 0;
+  border-bottom: 0;
+  transform: rotate(45deg);
+}
+
+.heading {
+  color: var(--color-warning);
+  font-size: calc(var(--text-label) * 0.85);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.text {
+  white-space: pre-line;
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes tooltip-in-below {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (forced-colors: active) {
+  .tooltip,
+  .tooltip::after {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+}

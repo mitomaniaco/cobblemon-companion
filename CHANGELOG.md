@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Barra de rolagem e tooltip próprios do app (Issue #246): `TooltipLayer` substitui o balão nativo do Windows (`title`) por um cartão com seta, título opcional, abertura por hover e foco, `prefers-reduced-motion` e `forced-colors`; a barra de rolagem global passa a ter trilho escuro e polegar vermelho em todo o app (as regras `scrollbar-width`/`scrollbar-color` foram removidas porque desligavam esse estilo).
+
 - Formas regionais e time por ameaças no Guia (Issues #238, #240, #242 e #244): Evoluções e golpes de formas alternativas (por exemplo Goodra de Hisui, "Forma final") usam os dados da própria forma (`forms.json`, `toFormId` em cada evolução); o motor marca cada confronto como "segura" (entra na troca e ainda vence no pior caso) e se o membro age primeiro, marca adversários "ameaça", escolhe o time por valor (peso das ameaças, segunda resposta, pivô e Speed) e dá "Táticas" (Will-O-Wisp, Thunder Wave, Protect/Detect); o Trainer Card mostra o veredito "segura", o chip "ameaça" e o cartão "Táticas" no detalhe do membro.
 
 - Correções visuais do Guia no save real (Issue #234): Treino sem texto cortado (EVs com a soma em uma linha e o motivo num balão "i" acessível por teclado, linhas já no alvo compactas e lista que rola por dentro com barra fina e esmaecimento nas bordas); Plano de batalha com linhas de altura fixa que nunca se sobrepõem e colunas que rolam por dentro sem aumentar o cartão; Evoluções sem ninguém evoluindo em cartões grandes com arte contida, tipos e "Forma final", e arte que não vaza mais; trilha de etapas com o botão sempre no mesmo lugar e a lista completa num painel sob a faixa, dentro do cartão, fechado por Esc, clique fora ou escolha de etapa. Novo componente `InfoTip` em `src/ui`.

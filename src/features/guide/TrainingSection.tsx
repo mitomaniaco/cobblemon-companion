@@ -40,7 +40,7 @@ function Track({member}: {member: TrainingPlanMemberResult}) {
             style={style}
             data-kind={display ? 'move' : node.isStart ? 'start' : node.isEnd ? 'end' : 'plain'}
             data-end={node.isEnd ? 'true' : undefined}
-            title={label}
+            data-tooltip={label}
             aria-label={label}
           >
             {display?.type ? <TypeIcon type={display.type} className={styles.nodeIcon} /> : node.level}
@@ -94,7 +94,7 @@ function EvPanel({member, name}: {member: TrainingPlanMemberResult; name: string
             <li key={bar.stat} className={styles.ev} data-state={bar.state}>
               <span className={styles.evLabel}>
                 {TRAINING_STAT_SHORT_LABEL[bar.stat]}
-                <strong title={TRAINING_STAT_LABEL[bar.stat]}>
+                <strong data-tooltip={TRAINING_STAT_LABEL[bar.stat]}>
                   {bar.current === null ? 'não capturado' : bar.current}
                   {bar.suggested !== null && <small> / {bar.suggested}</small>}
                 </strong>

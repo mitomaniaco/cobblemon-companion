@@ -55,7 +55,7 @@ export function PokemonArtwork({speciesId, formId, shiny, variant, loading, clas
     >
       <div className={styles.frame}>
         {unavailable ? (
-          <span className={styles.unavailable} role="img" aria-label={unavailableLabel} title={name}>
+          <span className={styles.unavailable} role="img" aria-label={unavailableLabel} data-tooltip={name}>
             <PokeBallMark className={styles.unavailableMark} />
             {variant !== 'fill' && (
               <span className={styles.unavailableName} aria-hidden="true">
@@ -82,13 +82,13 @@ export function PokemonArtwork({speciesId, formId, shiny, variant, loading, clas
             data-art={shinyMissing ? 'missing' : 'ok'}
             role="img"
             aria-label={shinyLabel}
-            title={shinyLabel}
+            data-tooltip={shinyLabel}
           >
             <Sparkle weight="fill" aria-hidden="true" />
           </span>
         )}
         {missing.length > 0 && (
-          <span className={styles.missingMark} role="img" aria-label={missingLabel} title={missingLabel}>
+          <span className={styles.missingMark} role="img" aria-label={missingLabel} data-tooltip={missingLabel}>
             !
           </span>
         )}

@@ -29,6 +29,7 @@ const screenshotPaths = Object.freeze({
   guide800: path.join(runDirectory, 'guide-800.png'),
   guideNotices: path.join(runDirectory, 'guide-notices.png'),
   trainerCard: path.join(runDirectory, 'guide-trainer-card.png'),
+  tooltip: path.join(runDirectory, 'guide-tooltip.png'),
   trainerCard1200: path.join(runDirectory, 'guide-trainer-card-1200.png'),
   trainerCard800: path.join(runDirectory, 'guide-trainer-card-800.png'),
   battlePlan: path.join(runDirectory, 'battle-plan.png'),
@@ -823,11 +824,11 @@ async function exerciseRealDamage(contents) {
   const abraArtwork = await evaluate(
     contents,
     `(() => {
-    const figure = [...document.querySelectorAll('.real-damage-planner figure[data-artwork]')].find(node => node.querySelector('[title="Abra"]'));
+    const figure = [...document.querySelectorAll('.real-damage-planner figure[data-artwork]')].find(node => node.querySelector('[data-tooltip="Abra"]'));
     return {
       source: figure?.dataset.artwork || null,
       label: figure?.querySelector('[role="img"]')?.getAttribute('aria-label') || null,
-      name: figure?.querySelector('[title="Abra"]')?.innerText.trim() || null,
+      name: figure?.querySelector('[data-tooltip="Abra"]')?.innerText.trim() || null,
     };
   })()`,
   );
@@ -1899,6 +1900,24 @@ async function exerciseGuideWorkspace(window) {
     detailText.includes('Táticas') && detailText.includes('Thunder Wave em Floatzel'),
     'O detalhe do Gardevoir não mostrou as táticas.',
   );
+  const threatPoint = await evaluate(
+    contents,
+    `(() => {
+      const chip = document.querySelector('[data-tooltip^="Metade ou mais"]');
+      if (!chip) throw new Error('A marca de ameaça com tooltip não foi encontrada.');
+      const rect = chip.getBoundingClientRect();
+      return { x: Math.round(rect.left + rect.width / 2), y: Math.round(rect.top + rect.height / 2) };
+    })()`,
+  );
+  contents.sendInputEvent({type: 'mouseMove', x: threatPoint.x, y: threatPoint.y});
+  await waitFor(
+    contents,
+    `(document.querySelector('[role="tooltip"]')?.textContent || '').includes('Metade ou mais dos seus Pokémon')`,
+    'tooltip próprio da marca de ameaça',
+  );
+  await capture(window, screenshotPaths.tooltip, '[aria-label="Trainer Card"]');
+  contents.sendInputEvent({type: 'mouseMove', x: 2, y: 2});
+  await waitFor(contents, `!document.querySelector('[role="tooltip"]')`, 'tooltip some ao tirar o mouse');
   const answers = await evaluate(
     contents,
     `(() => {

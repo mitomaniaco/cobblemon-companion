@@ -12,7 +12,6 @@
   padding: var(--space-1);
   background: var(--color-sunken);
   border-radius: var(--radius-pill);
-  scrollbar-width: thin;
 }
 
 .tab {

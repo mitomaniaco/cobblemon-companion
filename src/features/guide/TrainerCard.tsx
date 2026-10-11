@@ -171,7 +171,7 @@ function FindHow({detail}: {detail: DetailEntry | undefined}) {
           : '';
   const title = lines !== null && lines.excluded !== '' ? `${text} · Não aparece em: ${lines.excluded}` : text;
   return (
-    <section className={styles.findHow} aria-label="Como encontrar" title={title}>
+    <section className={styles.findHow} aria-label="Como encontrar" data-tooltip={title}>
       {lines?.item != null && <ItemIcon itemDexId={dexId(lines.item)} className={styles.findIcon} />}
       <p className={styles.findText}>{text}</p>
     </section>
@@ -196,7 +196,7 @@ function BadgeDiscs({entries}: {entries: StageEntry[]}) {
                 '--disc-ink': type ? typeInkVar(type) : CHAMP_INK,
               } as CSSProperties
             }
-            title={entry.stage.name}
+            data-tooltip={entry.stage.name}
             aria-label={`${entry.stage.name}: ${defeated ? 'vencido' : 'não vencido'}`}
           >
             {type ? <TypeIcon type={type} /> : <PokeBallMark className={styles.discMark} />}
@@ -219,7 +219,7 @@ function PikaStars({progress}: {progress: GuideProgressState}) {
             className={styles.star}
             role="img"
             data-status={pikaStatusKey(value)}
-            title={label}
+            data-tooltip={label}
             aria-label={`${label}: ${pikaStarDisplayStatus(value)}`}
           />
         );
@@ -374,7 +374,7 @@ function YourTeam({
             data-first={index === 0 ? 'true' : undefined}
             data-selected={slot.uuid === selectedUuid ? 'true' : undefined}
             data-chip={replaced !== null || moved ? 'true' : undefined}
-            title={index === 0 ? 'Abre a batalha' : undefined}
+            data-tooltip={index === 0 ? 'Abre a batalha' : undefined}
           >
             <button type="button" className={styles.mineCard} aria-pressed={slot.uuid === selectedUuid} onClick={() => onSelect(slot.uuid)}>
               <span className={styles.mineArt}>
@@ -392,7 +392,7 @@ function YourTeam({
             </button>
             <span className={styles.slotNo}>{index + 1}</span>
             {replaced !== null && (
-              <span className={styles.swap} role="img" title={`no lugar de ${replaced}`} aria-label={`no lugar de ${replaced}`}>
+              <span className={styles.swap} role="img" data-tooltip={`no lugar de ${replaced}`} aria-label={`no lugar de ${replaced}`}>
                 ⇄ {replaced}
               </span>
             )}
@@ -400,7 +400,7 @@ function YourTeam({
               <span
                 className={styles.moved}
                 role="img"
-                title={`muda do slot ${(slot.fromSlot ?? 0) + 1} para o ${index + 1}`}
+                data-tooltip={`muda do slot ${(slot.fromSlot ?? 0) + 1} para o ${index + 1}`}
                 aria-label={`muda do slot ${(slot.fromSlot ?? 0) + 1} para o ${index + 1}`}
               >
                 ⇄
@@ -484,7 +484,7 @@ function Answers({
                     <small>Nv. {entry.level}</small>
                   </span>
                   {matchup && (
-                    <span className={styles.answerCaption} title={guideOpponentTurnsLabel(matchup)}>
+                    <span className={styles.answerCaption} data-tooltip={guideOpponentTurnsLabel(matchup)}>
                       {matchup.outcome === 'vence' && matchup.moveId !== null
                         ? `${moveDisplay(matchup.moveId).name} · ${guideTurnsShort(matchup)}`
                         : guideTurnsShort(matchup)}
@@ -493,7 +493,10 @@ function Answers({
                 </span>
                 {rowProps['data-unanswered'] && <span className={styles.noAnswer}>sem resposta boa</span>}
                 {dangerous && (
-                  <span className={styles.threat} title="Metade ou mais dos seus Pokémon perde para ele: o time busca duas respostas.">
+                  <span
+                    className={styles.threat}
+                    data-tooltip="Metade ou mais dos seus Pokémon perde para ele: o time busca duas respostas."
+                  >
                     ameaça
                   </span>
                 )}
@@ -508,7 +511,7 @@ function Answers({
                         key={rank.uuid}
                         className={styles.bubble}
                         role="img"
-                        title={answererName}
+                        data-tooltip={answererName}
                         aria-label={`Slot ${slotNo}: ${answererName}`}
                         data-best={rankIndex === 0 && rank.outcome !== 'perde' ? 'true' : undefined}
                       >
@@ -642,7 +645,7 @@ function ToolDock({
               </span>
               <span className={styles.dockText}>
                 <strong className={styles.dockTitle}>{label}</strong>
-                <span className={styles.dockSub} title={entry.disabledReason}>
+                <span className={styles.dockSub} data-tooltip={entry.disabledReason}>
                   {entry.disabledReason ?? entry.subtitle}
                 </span>
               </span>
@@ -1021,7 +1024,7 @@ export function TrainerCard({
       </div>
       <dl className={styles.facts}>
         {trainerHead.facts.map(([term, value]) => (
-          <div key={term} title={value}>
+          <div key={term} data-tooltip={value}>
             <dt>{term}</dt>
             <dd>{value}</dd>
           </div>
@@ -1029,7 +1032,7 @@ export function TrainerCard({
       </dl>
       <FindHow detail={heroDetail} />
       {!freeTrainer && heroStage && choosingVariant && (
-        <div className={styles.variants} title={heroStage.ambiguousReason ?? undefined}>
+        <div className={styles.variants} data-tooltip={heroStage.ambiguousReason ?? undefined}>
           <span>RCT sorteia a equipe:</span>
           <div role="radiogroup" aria-label={`Equipe de ${heroStage.name}`} className={styles.pills}>
             {singles.map((variant, index) => (
@@ -1153,13 +1156,17 @@ export function TrainerCard({
           (progress.status === 'loading' ? (
             <span className={`${styles.pillSkeleton} ${styles.skeletonLine}`} aria-busy="true" />
           ) : (
-            <section className={styles.pillBox} aria-label="Treinador" title={progress.status === 'error' ? progress.error : undefined}>
+            <section
+              className={styles.pillBox}
+              aria-label="Treinador"
+              data-tooltip={progress.status === 'error' ? progress.error : undefined}
+            >
               <span className={styles.capCaption}>CAP</span>
               <button
                 type="button"
                 className={styles.capButton}
                 aria-label={`Level cap ${levelCap ?? 'desconhecido'}, ${capSource} · editar`}
-                title={`Level cap ${levelCap ?? 'desconhecido'}, ${capSource} · editar`}
+                data-tooltip={`Level cap ${levelCap ?? 'desconhecido'}, ${capSource} · editar`}
                 aria-expanded={capOpen}
                 aria-controls={capRegionId}
                 onClick={() => setCapChoice(!capOpen)}

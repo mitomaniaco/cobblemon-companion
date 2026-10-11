@@ -130,7 +130,7 @@ function StepRow({
           <span
             className={styles.kind}
             data-kind={row.memberKind}
-            title={row.memberKind === 'abre' ? (leadReason ?? undefined) : undefined}
+            data-tooltip={row.memberKind === 'abre' ? (leadReason ?? undefined) : undefined}
           >
             {row.memberKind}
           </span>
@@ -407,7 +407,13 @@ function PlanBody({result, individualName}: {result: BattlePlanResult; individua
             <h4 className={styles.heading}>Riscos da batalha</h4>
             <ul className={styles.riskList}>
               {risks.map((group) => (
-                <li key={group.kind} className={styles.risk} data-kind={group.kind} title={group.texts.join('\n')}>
+                <li
+                  key={group.kind}
+                  className={styles.risk}
+                  data-kind={group.kind}
+                  data-tooltip={group.texts.join('\n')}
+                  data-tooltip-heading={battlePlanRiskKindLabel(group.kind)}
+                >
                   <span className={styles.riskIcon}>{RISK_ICON[group.kind]}</span>
                   <span className={styles.riskText}>
                     <strong>{battlePlanRiskKindLabel(group.kind)}</strong>
