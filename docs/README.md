@@ -25,6 +25,7 @@ A raiz do app é a pasta acima de `docs/`. `src/main.tsx` e `src/App.tsx` carreg
 
 ## Mapa de leitura
 - [Guia técnico consolidado para agentes](GUIA-TECNICO.md)
+- [Padrão de interface (regras de UI que todo agente segue)](PADRAO-UI.md)
 - [Instruções de contexto para Claude](../CLAUDE.md)
 - [Visão do produto e roadmap v1/v2/v3](VISAO.md)
 - [Plano, escopo e arquitetura](PLANO.md)
