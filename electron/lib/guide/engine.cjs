@@ -13,7 +13,26 @@ const CANDIDATE_POOL = 8;
 const MAX_TEAM = 6;
 const MAX_ACQUIRE = 3;
 const MIN_ACQUIRE_GAIN = 5;
-const LIMITS = Object.freeze(['Singles; sem trocas, IA ou golpes de status; HP cheio; campo neutro; sem críticos ou precisão.']);
+const LIMITS = Object.freeze([
+  'Singles; "vence" = 1 contra 1 com HP cheio e dano médio; "segura" = entra na troca, leva o maior acerto do adversário e ainda vence no pior caso (menor dano nosso, maior dele; empate de Speed perde); sem IA do RCT, críticos ou precisão; golpes de status só viram dica; campo neutro.',
+]);
+const DANGER_SHARE = 0.5;
+const REDUNDANCY_BONUS = 0.5;
+const FAST_BONUS = 0.1;
+const PIVOT_BONUS = 0.5;
+const PIVOT_HOLDS = 2;
+const TIP_LIMIT = 2;
+const BURN_IMMUNE = new Set([
+  'guts',
+  'flareboost',
+  'waterveil',
+  'waterbubble',
+  'thermalexchange',
+  'comatose',
+  'purifyingsalt',
+  'magicbounce',
+]);
+const PARALYSIS_IMMUNE = new Set(['limber', 'comatose', 'purifyingsalt', 'voltabsorb', 'lightningrod', 'motordrive', 'magicbounce']);
 const FIXED_ITEMS = Object.freeze(['choiceband', 'choicespecs', 'choicescarf', 'lifeorb', 'expertbelt', 'assaultvest', 'focussash']);
 const TYPE_ITEMS = Object.freeze({
   Normal: 'silkscarf',
@@ -81,9 +100,27 @@ function matchupOutcome(ourPercent, theirPercent, ourSpeed, theirSpeed) {
   return {wins, ourTurns, theirTurns, score};
 }
 
-function averagePercent(attacker, defender, moveName, field) {
+/**
+ * "Segura": o membro entra na troca levando o maior acerto do adversário (`theirMaxPercent`) e ainda vence usando o menor
+ * dano dele (`ourMinPercent`). Empate de turnos vai para quem tem maior Speed; empate de Speed perde.
+ */
+function holdsOutcome(ourMinPercent, theirMaxPercent, ourSpeed, theirSpeed) {
+  if (ourMinPercent <= 0) return false;
+  const hpAfterSwitch = 100 - theirMaxPercent;
+  if (hpAfterSwitch <= 0) return false;
+  const ourTurns = turnsToKnockOut(ourMinPercent);
+  const theirTurns = theirMaxPercent > 0 ? Math.max(1, Math.ceil(hpAfterSwitch / theirMaxPercent - 1e-9)) : Number.POSITIVE_INFINITY;
+  return ourTurns < theirTurns || (ourTurns === theirTurns && ourSpeed > theirSpeed);
+}
+
+/** Faixa de dano de um golpe em % do HP do alvo (HP cheio, sem crítico). */
+function percentRange(attacker, defender, moveName, field) {
   const {min, max, targetHP} = damageRange(attacker, defender, moveName, field);
-  return ((min + max) / 2 / targetHP) * 100;
+  return {min: (min / targetHP) * 100, max: (max / targetHP) * 100, avg: ((min + max) / 2 / targetHP) * 100};
+}
+
+function averagePercent(attacker, defender, moveName, field) {
+  return percentRange(attacker, defender, moveName, field).avg;
 }
 
 /** Faixa de dano (% do HP do alvo, HP cheio, sem crítico) de cada golpe contra um adversário. */
@@ -280,36 +317,138 @@ function acquireSuggestions(result, opponents, data) {
   });
 }
 
+/**
+ * Pior caso de cada confronto: nosso menor dano contra o maior dano do adversário (o melhor golpe dele). "Segura" = entra na troca,
+ * leva esse acerto e ainda vence; "age primeiro" = Speed efetiva maior.
+ */
+function worstCase(result, opponents) {
+  const ourSpeed = effectiveSpeed(result.pokemon);
+  return opponents.map((opponent, index) => {
+    let ourMin = 0;
+    for (const moveId of result.chosen) {
+      ourMin = Math.max(ourMin, percentRange(result.pokemon, opponent.pokemon, COMPATIBILITY.moves[moveId].name).min);
+    }
+    let theirMax = 0;
+    let theirMove = null;
+    for (const move of opponent.moves) {
+      const {max} = percentRange(opponent.pokemon, result.pokemon, move.name);
+      if (theirMove === null || max > theirMax) {
+        theirMax = max;
+        theirMove = move;
+      }
+    }
+    const theirSpeed = effectiveSpeed(opponent.pokemon);
+    return {
+      holds: result.evaluated.outcomes[index].wins && holdsOutcome(ourMin, theirMax, ourSpeed, theirSpeed),
+      faster: ourSpeed > theirSpeed,
+      theirMove,
+    };
+  });
+}
+
+/** Para cada adversário, quanto do pool elegível perde para ele: o peso do adversário e se é ameaça. */
+function threatsOf(results, opponentCount) {
+  return Array.from({length: opponentCount}, (_, index) => {
+    const lossShare = results.length === 0 ? 0 : results.filter((r) => !r.evaluated.outcomes[index].wins).length / results.length;
+    return {weight: 1 + lossShare, dangerous: lossShare >= DANGER_SHARE};
+  });
+}
+
+const stripNamespace = (id) => id.replace(/^[^:]+:/, '');
+
+/** Dicas de golpes de status que o membro já conhece, para adversários que ele não segura (no máximo `TIP_LIMIT`). */
+function tacticTips(result, opponents) {
+  const known = new Set([...result.known.equipped, ...result.known.learned].map(stripNamespace));
+  const tips = [];
+  for (let index = 0; index < opponents.length && tips.length < TIP_LIMIT; index += 1) {
+    if (result.worst[index].holds) continue;
+    const opponent = opponents[index];
+    const name = speciesName(opponent.speciesId);
+    const {types} = opponent.pokemon;
+    const ability = toId(opponent.pokemon.ability ?? '');
+    const {theirMove, faster} = result.worst[index];
+    let tip = null;
+    if (
+      known.has('willowisp') &&
+      theirMove &&
+      generation.moves.get(toId(theirMove.name))?.category === 'Physical' &&
+      !types.includes('Fire') &&
+      !BURN_IMMUNE.has(ability)
+    ) {
+      tip = {moveId: 'cobblemon:willowisp', text: `Will-O-Wisp em ${name}: a queimadura corta pela metade o dano físico dele.`};
+    } else if (
+      known.has('thunderwave') &&
+      !faster &&
+      !types.includes('Electric') &&
+      !types.includes('Ground') &&
+      !PARALYSIS_IMMUNE.has(ability)
+    ) {
+      tip = {moveId: 'cobblemon:thunderwave', text: `Thunder Wave em ${name}: paralisado, ele fica mais lento que você.`};
+    } else {
+      const protect = ['protect', 'detect'].find((id) => known.has(id));
+      if (protect) {
+        const label = protect === 'protect' ? 'Protect' : 'Detect';
+        if ((opponent.rawMoveIds ?? []).includes('cobblemon:fakeout')) {
+          tip = {moveId: `cobblemon:${protect}`, text: `${label} contra ${name}: bloqueia o Fake Out do primeiro turno.`};
+        } else if (ability === 'truant') {
+          tip = {
+            moveId: `cobblemon:${protect}`,
+            text: `${label} contra ${name}: com Truant ele só age a cada dois turnos; proteja-se no turno em que ele ataca.`,
+          };
+        }
+      }
+    }
+    if (tip) tips.push({opponentId: opponent.id, ...tip});
+  }
+  return tips;
+}
+
 // --- Time ------------------------------------------------------------------------------------------------------
 
 function winSet(result) {
   return new Set(result.evaluated.outcomes.flatMap((outcome, index) => (outcome.wins ? [index] : [])));
 }
 
+/** Valor do time: cada adversário coberto vale seu peso; ameaça com segunda resposta, rapidez e um pivô somam bônus. */
+function teamValue(members, threats) {
+  let value = 0;
+  threats.forEach((threat, index) => {
+    const checks = members.filter((member) => member.evaluated.outcomes[index].wins).length;
+    if (checks === 0) return;
+    const holds = members.filter((member) => member.worst[index].holds).length;
+    const fast = members.some((member) => member.evaluated.outcomes[index].wins && member.worst[index].faster);
+    const redundant = threat.dangerous && (holds >= 1 || checks >= 2);
+    value += threat.weight * (1 + (redundant ? REDUNDANCY_BONUS : 0) + (fast ? FAST_BONUS : 0));
+  });
+  if (members.some((member) => member.worst.filter((w) => w.holds).length >= PIVOT_HOLDS)) value += PIVOT_BONUS;
+  return value;
+}
+
 /**
- * Guloso por cobertura de adversários. Empate de cobertura: quem já estava na recomendação anterior do mesmo objetivo
- * (`previousTeamUuids`) fica, para o time não trocar de membros sem ganho; depois a pontuação.
+ * Guloso por cobertura de adversários. Empate de cobertura: valor do time (peso das ameaças, redundância nas ameaças,
+ * pivô e Speed); depois quem já estava na recomendação anterior do mesmo objetivo (`previousTeamUuids`), para o time
+ * não trocar de membros sem ganho; depois a pontuação.
  */
-function pickTeam(results, opponentCount, previousTeamUuids = []) {
+function pickTeam(results, threats, previousTeamUuids = []) {
   let remaining = results.map((result) => ({result, wins: winSet(result)}));
   const covered = new Set();
   const team = [];
+  const EPSILON = 1e-9;
   while (team.length < MAX_TEAM && remaining.length > 0) {
     let bestIndex = 0;
     let bestKey = null;
     remaining.forEach((candidate, index) => {
       const union = new Set([...covered, ...candidate.wins]).size;
       const inPrevious = previousTeamUuids.includes(candidate.result.entry.individual.uuid);
-      const key = [union, inPrevious ? 1 : 0, candidate.result.evaluated.score];
-      const better =
-        bestKey === null ||
-        key[0] > bestKey[0] ||
-        (key[0] === bestKey[0] && key[1] > bestKey[1]) ||
-        (key[0] === bestKey[0] && key[1] === bestKey[1] && key[2] > bestKey[2] + 1e-9) ||
-        (key[0] === bestKey[0] &&
-          key[1] === bestKey[1] &&
-          Math.abs(key[2] - bestKey[2]) <= 1e-9 &&
-          candidate.result.entry.individual.uuid < remaining[bestIndex].result.entry.individual.uuid);
+      const key = [union, teamValue([...team, candidate.result], threats), inPrevious ? 1 : 0, candidate.result.evaluated.score];
+      let better = bestKey === null;
+      if (!better) {
+        if (key[0] !== bestKey[0]) better = key[0] > bestKey[0];
+        else if (Math.abs(key[1] - bestKey[1]) > EPSILON) better = key[1] > bestKey[1];
+        else if (key[2] !== bestKey[2]) better = key[2] > bestKey[2];
+        else if (Math.abs(key[3] - bestKey[3]) > EPSILON) better = key[3] > bestKey[3];
+        else better = candidate.result.entry.individual.uuid < remaining[bestIndex].result.entry.individual.uuid;
+      }
       if (better) {
         bestIndex = index;
         bestKey = key;
@@ -322,7 +461,7 @@ function pickTeam(results, opponentCount, previousTeamUuids = []) {
     const pickedSpeciesId = picked.result.entry.individual.speciesId;
     remaining = remaining.filter((c) => c.result.entry.individual.speciesId !== pickedSpeciesId);
   }
-  return {team, coveredCount: Math.min(covered.size, opponentCount)};
+  return {team, coveredCount: Math.min(covered.size, threats.length)};
 }
 
 // --- Saída -----------------------------------------------------------------------------------------------------
@@ -340,7 +479,11 @@ function memberReason(result, opponents) {
     .map(({index}) => speciesName(opponents[index].speciesId));
   const names = [...new Set(best)].slice(0, 2);
   const detail = names.length > 0 ? ` (melhor contra ${names.join(', ')})` : '';
-  return `${speciesName(result.entry.individual.speciesId)} entra porque vence ${result.evaluated.wins} de ${opponents.length} adversários${detail}.`;
+  const holds = result.worst.filter((w) => w.holds).length;
+  const fasterWins = result.worst.filter((w, index) => w.faster && outcomes[index].wins).length;
+  const holdsText = holds > 0 ? ` e segura ${holds} na troca` : '';
+  const fasterText = fasterWins > 0 ? ` Age primeiro em ${fasterWins} desses confrontos.` : '';
+  return `${speciesName(result.entry.individual.speciesId)} entra porque vence ${result.evaluated.wins} de ${opponents.length} adversários${holdsText}${detail}.${fasterText}`;
 }
 
 function itemSummary(result) {
@@ -471,9 +614,12 @@ async function buildGuide({
   const results = [];
   for (const entry of eligible) {
     await checkpoint();
-    results.push(optimizeMember(entry, opponents));
+    const optimized = optimizeMember(entry, opponents);
+    optimized.worst = worstCase(optimized, opponents);
+    results.push(optimized);
   }
-  const {team} = pickTeam(results, opponents.length, previousTeamUuids);
+  const threats = threatsOf(results, opponents.length);
+  const {team} = pickTeam(results, threats, previousTeamUuids);
   if (team.length < MAX_TEAM) {
     assumptions.push(`Só ${eligible.length} indivíduo(s) elegível(is) entre party e PC; o time tem ${team.length} membro(s).`);
   }
@@ -493,19 +639,28 @@ async function buildGuide({
       matchups: result.evaluated.outcomes.map((outcome, index) => ({
         opponentId: opponents[index].id,
         outcome: outcome.wins ? 'vence' : 'perde',
+        holds: result.worst[index].holds,
+        faster: result.worst[index].faster,
         ourTurns: outcome.ourTurns,
         theirTurns: outcome.theirTurns,
         moveId: outcome.moveId,
         damage: damagePercents(result.pokemon, opponents[index].pokemon, result.chosen),
       })),
       acquire: acquireSuggestions(result, opponents, data),
+      tips: tacticTips(result, opponents),
     });
   }
 
   return {
     goal,
     referenceLevel,
-    opponents: opponents.map(({id, speciesId, level, trainerId}) => ({id, speciesId, level, trainerId})),
+    opponents: opponents.map(({id, speciesId, level, trainerId}, index) => ({
+      id,
+      speciesId,
+      level,
+      trainerId,
+      dangerous: threats[index].dangerous,
+    })),
     team: members,
     excluded,
     overCap: overCapOf(members, overCapEntries, levelCap),
@@ -514,4 +669,14 @@ async function buildGuide({
   };
 }
 
-module.exports = {buildGuide, LIMITS, averagePercent, effectiveSpeed, matchupOutcome, prepareOpponents, referenceLevelOf};
+module.exports = {
+  buildGuide,
+  LIMITS,
+  averagePercent,
+  effectiveSpeed,
+  holdsOutcome,
+  matchupOutcome,
+  pickTeam,
+  prepareOpponents,
+  referenceLevelOf,
+};

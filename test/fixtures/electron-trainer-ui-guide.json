@@ -140,7 +140,7 @@
       "Resultado sintético determinístico do modo de teste da UI."
     ],
     "limits": [
-      "Singles; sem trocas, IA ou golpes de status; HP cheio; campo neutro; sem críticos ou precisão."
+      "Singles; \"vence\" = 1 contra 1 com HP cheio e dano médio; \"segura\" = entra na troca, leva o maior acerto do adversário e ainda vence no pior caso (menor dano nosso, maior dele; empate de Speed perde); sem IA do RCT, críticos ou precisão; golpes de status só viram dica; campo neutro."
     ]
   },
   "battlePlan": {

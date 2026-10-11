@@ -2,7 +2,7 @@ import {createRequire} from 'node:module';
 import {describe, expect, it} from 'vitest';
 
 const require = createRequire(import.meta.url);
-const {buildGuide, LIMITS} = require('../electron/lib/guide/engine.cjs');
+const {buildGuide, holdsOutcome, LIMITS, pickTeam} = require('../electron/lib/guide/engine.cjs');
 const {assessEligibility} = require('../electron/lib/guide/eligibility.cjs');
 const {COMPATIBILITY} = require('../electron/lib/real-damage.cjs');
 const data = require('./fixtures/guide-data.json');
@@ -45,7 +45,11 @@ describe('motor do guia', () => {
     expect(member).toBeDefined();
     expect(member.matchups).toEqual([expect.objectContaining({opponentId: 'synthetic:fire#0', outcome: 'vence'})]);
     const wins = member.matchups.filter((matchup) => matchup.outcome === 'vence').length;
-    expect(member.reason).toBe(`Blastoise entra porque vence ${wins} de 1 adversários (melhor contra Charizard).`);
+    const holds = member.matchups.filter((matchup) => matchup.holds).length;
+    const holdsText = holds > 0 ? ` e segura ${holds} na troca` : '';
+    const fasterWins = member.matchups.filter((matchup) => matchup.faster && matchup.outcome === 'vence').length;
+    const fasterText = fasterWins > 0 ? ` Age primeiro em ${fasterWins} desses confrontos.` : '';
+    expect(member.reason).toBe(`Blastoise entra porque vence ${wins} de 1 adversários${holdsText} (melhor contra Charizard).${fasterText}`);
     expect(member.moves[0]).toEqual({id: 'cobblemon:surf', evaluated: true, source: 'equipado'});
   });
 
@@ -248,6 +252,72 @@ describe('motor do guia', () => {
       {id: 'cobblemon:swordsdance', evaluated: false, source: 'equipado'},
       {id: 'cobblemon:protect', evaluated: false, source: 'equipado'},
     ]);
+  });
+});
+
+describe('segura, ameaças e táticas', () => {
+  it('holdsOutcome: leva o maior acerto na entrada e ainda vence no pior caso; empate de Speed perde', () => {
+    expect(holdsOutcome(50, 40, 2, 1)).toBe(true);
+    expect(holdsOutcome(50, 40, 1, 2)).toBe(false);
+    expect(holdsOutcome(50, 100, 2, 1)).toBe(false);
+    expect(holdsOutcome(0, 10, 2, 1)).toBe(false);
+    expect(holdsOutcome(50, 40, 1, 1)).toBe(false);
+  });
+
+  describe('pickTeam', () => {
+    const fake = (uuid, species, wins, holds, faster, score) => ({
+      entry: {individual: {uuid, speciesId: `cobblemon:${species}`}},
+      evaluated: {outcomes: wins.map((w) => ({wins: w})), score},
+      worst: holds.map((h, i) => ({holds: h, faster: faster[i], theirMove: null})),
+    });
+    const none = [false, false];
+    const threats = [
+      {weight: 1.8, dangerous: true},
+      {weight: 1, dangerous: false},
+    ];
+    const order = (team) => team.map((member) => member.entry.individual.uuid);
+
+    it('cobertura vem antes da redundância: quem cobre um adversário novo entra antes de um segundo para a ameaça', () => {
+      const a = fake('a', 'a', [true, false], none, none, 2);
+      const b = fake('b', 'b', [true, false], none, none, 1.9);
+      const c = fake('c', 'c', [false, true], none, none, 1);
+      expect(order(pickTeam([a, b, c], threats).team)).toEqual(['a', 'c', 'b']);
+    });
+
+    it('com a cobertura empatada, uma segunda resposta à ameaça vale mais que a pontuação', () => {
+      const a = fake('a', 'a', [true, true], none, none, 3);
+      const b = fake('b', 'b', [true, false], none, none, 1);
+      const c = fake('c', 'c', [false, true], none, none, 1.5);
+      expect(order(pickTeam([a, b, c], threats).team)[1]).toBe('b');
+    });
+
+    it('uma "segura" já conta como redundância na ameaça; sem ganho de valor, decide a pontuação', () => {
+      const a = fake('a', 'a', [true, true], [true, false], none, 3);
+      const b = fake('b', 'b', [true, false], none, none, 1);
+      const c = fake('c', 'c', [false, true], none, none, 1.5);
+      expect(order(pickTeam([a, b, c], threats).team)[1]).toBe('c');
+    });
+  });
+
+  it('dica de Will-O-Wisp contra golpe físico e de Thunder Wave contra quem é mais rápido', async () => {
+    const venusaur = individual({species: 'venusaur', moves: ['tackle', 'willowisp']});
+    const burn = await run([venusaur], trainerGoal('synthetic:mixed'));
+    expect(burn.team[0].tips).toContainEqual({
+      opponentId: 'synthetic:mixed#1',
+      moveId: 'cobblemon:willowisp',
+      text: 'Will-O-Wisp em Golem: a queimadura corta pela metade o dano físico dele.',
+    });
+
+    const golem = individual({species: 'golem', moves: ['earthquake', 'thunderwave']});
+    const paralyze = await run([golem], trainerGoal('synthetic:fire'));
+    expect(paralyze.team[0].tips.map((tip) => tip.text)).toEqual(['Thunder Wave em Charizard: paralisado, ele fica mais lento que você.']);
+  });
+
+  it('adversários ganham a marca de ameaça quando metade ou mais do pool perde para eles', async () => {
+    const result = await run([individual({species: 'golem', moves: ['earthquake']})], trainerGoal('synthetic:flyer'));
+    expect(result.opponents.every((opponent) => typeof opponent.dangerous === 'boolean')).toBe(true);
+    expect(result.opponents[0].dangerous).toBe(true);
+    expect(result.team[0].matchups[0]).toMatchObject({outcome: 'perde', holds: false});
   });
 });
 
