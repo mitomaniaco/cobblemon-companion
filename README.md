@@ -1,10 +1,19 @@
 # Companion local de movesets Cobblemon
 
-Aplicativo desktop Electron/React que funciona como guia de progressão da parte Pokémon do modpack (campanha Radical Red via RCT): lê a party e o PC do jogador, sugere o próximo objetivo e monta o time de 6 (golpes já conhecidos, item sugerido e golpes a adquirir) para PvE geral ou para um líder, explicando cada escolha. Os planejadores de troca e de dano seguem como ferramentas de apoio. A visão e o roadmap estão em [docs/VISAO.md](./docs/VISAO.md). Este diretório é a raiz do app: a pasta que contém `package.json` é onde os comandos abaixo devem ser executados.
+Guia de progressão da parte Pokémon de um servidor Cobblemon (campanha Radical Red via RCT).
+Lê a party e o PC do save local, sugere o próximo objetivo e monta o time de 6 — golpes já
+conhecidos, item sugerido e golpes a adquirir — para PvE geral ou para um líder, explicando cada
+escolha. Roda offline em Electron, só lê o save, e nunca age por você.
 
-Documentação completa: [índice do projeto](./docs/README.md), [guia técnico para agentes](./docs/GUIA-TECNICO.md), [contexto automático do Claude](./CLAUDE.md), [plano](./docs/PLANO.md), [decisões](./docs/DECISOES.md), [validação](./docs/VALIDACAO.md), [changelog](./CHANGELOG.md), [contrato do cálculo real](./docs/preflight/IMPORTACAO-PARTY.md) e [handoff para outro agente](./HANDOFF.md).
+- **Equipe** — time de 6 para o objetivo escolhido, com o motivo de cada escolha.
+- **PC** — party e PC lidos do save por UUID, golpes equipados e aprendidos lado a lado.
+- **Dano** — dano mínimo–máximo de golpes compatíveis contra um perfil manual do alvo.
+- **Demonstração** — Pikachu/Floatzel fixos, sem save, para ver a interface funcionando.
 
-## Uso como pasta independente
+Este diretório é a raiz do app: a pasta que contém `package.json` é onde os comandos abaixo devem
+ser executados.
+
+## Como rodar
 
 O pacote pretendido contém somente este app, por exemplo em `D:\Dev\cobblemon-companion`. Copie os arquivos listados em [HANDOFF.md](./HANDOFF.md), abra um terminal nessa pasta e use Node.js 22 ou superior com npm:
 
@@ -25,7 +34,7 @@ Na prova standalone de 24/09/2026, o harness supervisionado Electron 44.4.3 conf
 
 A importação precisa apenas do caminho absoluto `serverRoot` do servidor e do `playerUuid` do jogador. Não precisa de trainer ID, treinador, cap ou configuração de tipos. O `serverRoot` aponta para o diretório que contém `server.properties`; o nome do mundo é lido desse arquivo. A pessoa inicia cada leitura no botão **Atualizar do save**.
 
-O importador lê `config.json` na raiz desta pasta e usa apenas `serverRoot` e `playerUuid`. O arquivo presente nesta cópia contém dados pessoais do servidor e jogador: trate-o como privado e não o inclua em distribuição pública. Para outra instalação, copie [`config.example.json`](./config.example.json) para `config.json` e substitua os dois valores. A configuração pessoal pode permanecer na instalação local de `D:\Dev` para uso imediato.
+O importador lê `config.json` na raiz desta pasta e usa apenas `serverRoot` e `playerUuid`. Esse arquivo fica fora do git (`config.json` está no `.gitignore`) porque aponta para o seu servidor e o seu jogador: para outra instalação, copie [`config.example.json`](./config.example.json) para `config.json` e substitua os dois valores.
 
 Essa configuração não escolhe treinador, cap ou tipos. O save continua sendo lido somente quando a pessoa aciona a atualização.
 
@@ -46,3 +55,7 @@ Worker, adaptador, parser NBT e catálogo versionado estão dentro das pastas do
 O cálculo real usa `@smogon/calc` 0.11.0 / Gen 9 e o subconjunto Cobblemon 1.7.3+1.21.1 identificado em [Importação party/PC](./docs/preflight/IMPORTACAO-PARTY.md). O app não detecta a versão do mundo ativo: exige perfil manual completo do alvo e confirmação explícita das condições sem defaults. Formas/aspectos alternativos, mecânicas com estado ausente, outras versões e simulação de batalha permanecem fora do escopo.
 
 Consulte [HANDOFF.md](./HANDOFF.md) para o inventário mínimo de cópia, riscos e estado estático desta entrega.
+
+## Documentação
+
+[Índice do projeto](./docs/README.md) · [visão e roadmap](./docs/VISAO.md) · [plano](./docs/PLANO.md) · [decisões](./docs/DECISOES.md) · [validação](./docs/VALIDACAO.md) · [changelog](./CHANGELOG.md) · [importação party/PC](./docs/preflight/IMPORTACAO-PARTY.md) · [guia técnico para agentes](./docs/GUIA-TECNICO.md) · [contexto automático do Claude](./CLAUDE.md)
