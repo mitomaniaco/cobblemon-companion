@@ -34,6 +34,7 @@ const bridge = {
     return () => ipcRenderer.removeListener('companion:snapshot-changed', listener);
   },
   setAutoRefresh: (enabled) => ipcRenderer.invoke('companion:auto-refresh', enabled),
+  setDataSource: (source) => ipcRenderer.invoke('companion:set-data-source', source),
   buildGuide: (request) => ipcRenderer.invoke('companion:guide-build', request),
   listGuideTrainers: () => ipcRenderer.invoke('companion:guide-trainers'),
   guideNextGoal: () => ipcRenderer.invoke('companion:guide-next-goal'),
