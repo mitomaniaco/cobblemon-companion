@@ -18,6 +18,21 @@ export function scrubDiagnosticText(text: string): string {
   return SCRUBBERS.reduce((current, [pattern, replacement]) => current.replace(pattern, replacement), text);
 }
 
+// Prefixo que o Electron acrescenta a erros lançados em handlers de ipcMain.handle.
+const IPC_PREFIX = /^\s*(?:Uncaught\s+)?Error invoking remote method '[^']*':\s*(?:[A-Za-z]*Error:\s*)?/;
+
+/** Remove o prefixo técnico do Electron, deixando só a mensagem original do erro. */
+export function stripIpcErrorPrefix(message: string): string {
+  const stripped = message.replace(IPC_PREFIX, '');
+  return stripped.length > 0 ? stripped : message;
+}
+
+/** Texto de erro para o usuário: sem prefixo de IPC e sem caminhos, UUIDs ou hashes. */
+export function describeError(error: unknown, fallback: string): string {
+  const raw = error instanceof Error ? error.message : typeof error === 'string' ? error : '';
+  return raw.length > 0 ? scrubDiagnosticText(stripIpcErrorPrefix(raw)) : fallback;
+}
+
 function boundedLines(text: string): string {
   const lines = text.split('\n').slice(0, MAX_LINES).join('\n');
   return lines.length > MAX_CHARACTERS ? `${lines.slice(0, MAX_CHARACTERS)}…` : lines;
@@ -31,7 +46,7 @@ export type DiagnosticInput = {
 /** Monta um relatório copiável e sanitizado a partir de uma exceção do renderer. */
 export function buildDiagnosticReport({error, componentStack}: DiagnosticInput): string {
   const name = error instanceof Error ? error.name : typeof error;
-  const message = error instanceof Error ? error.message : String(error);
+  const message = stripIpcErrorPrefix(error instanceof Error ? error.message : String(error));
   const stack = error instanceof Error && error.stack ? error.stack : '';
   const sections = [`${name}: ${message}`];
   if (stack) sections.push('Pilha:', boundedLines(stack));

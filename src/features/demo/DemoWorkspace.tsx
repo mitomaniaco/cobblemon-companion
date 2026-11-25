@@ -14,6 +14,7 @@ import {
 import {moveLabel} from '../../domain/catalog-labels';
 import {moveDisplay, speciesDisplay} from '../../domain/dex';
 import {getCompanionApi} from '../../platform/api';
+import {describeError} from '../../platform/diagnostics';
 import {Button, HpBar, PokeBallMark, Select, TypeBadge} from '../../ui';
 import type {SelectOption} from '../../ui';
 import styles from './DemoWorkspace.module.css';
@@ -262,7 +263,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
       const response: FlowResponse = {
         status: 'failed',
         jobId: started.request.jobId,
-        error: error instanceof Error ? error.message : 'Falha ao iniciar a comparação.',
+        error: describeError(error, 'Falha ao iniciar a comparação.'),
       };
       commit(applyResponse(flowRef.current, response));
     }
