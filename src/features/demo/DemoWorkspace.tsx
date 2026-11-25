@@ -282,7 +282,7 @@ export function DemoWorkspace({isActive}: DemoWorkspaceProps) {
     <section className={styles.workspace} aria-labelledby={headingId}>
       <header className={styles.heading}>
         <h2 id={headingId} ref={headingRef} tabIndex={-1}>
-          Demonstração offline
+          Comparação fixa
         </h2>
         <div className={styles.statusBlock}>
           <span className={styles.statusValue} data-phase={flow.phase}>

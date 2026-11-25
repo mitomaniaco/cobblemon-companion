@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import {ArrowsLeftRight, Flask} from '@phosphor-icons/react';
 import {Button} from '../ui';
 import styles from './HelpWorkspace.module.css';
 
@@ -23,9 +24,10 @@ const STEPS: Array<{title: string; body: ReactNode}> = [
   },
   {title: 'Escolha um Pokémon', body: 'Cada indivíduo é identificado pelo UUID, mesmo com espécies repetidas.'},
   {title: 'Planeje e calcule', body: 'Simule uma troca de golpe e veja o dano contra um alvo que você define.'},
+  {title: 'Sem save por perto?', body: 'Abra a demonstração para conhecer cada tela com dados de exemplo.'},
 ];
 
-export default function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
+export default function HelpWorkspace({onOpenDemo, onOpenFixed}: {onOpenDemo(): void; onOpenFixed(): void}) {
   return (
     <section className={styles.help} aria-labelledby="help-title">
       <h2 id="help-title" tabIndex={-1}>
@@ -44,15 +46,32 @@ export default function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
         ))}
       </ol>
 
-      <section className={styles.demo} aria-labelledby="demo-help-title">
-        <div>
-          <h3 id="demo-help-title">Demonstração offline</h3>
-          <p>Pikachu → Floatzel com dados fixos, sem save.</p>
-        </div>
-        <Button variant="primary" onPress={onOpenDemo}>
-          Abrir demonstração
-        </Button>
-      </section>
+      <div className={styles.demoCards}>
+        <section className={`${styles.demo} ${styles.demoMain}`} aria-labelledby="demo-help-title">
+          <div>
+            <h3 id="demo-help-title">
+              <Flask aria-hidden="true" weight="bold" />
+              Demonstração
+            </h3>
+            <p>O app inteiro com dados de exemplo: guia, equipe, PC e dano. Sem save e sem gravar nada.</p>
+          </div>
+          <Button variant="primary" onPress={onOpenDemo}>
+            Abrir demonstração
+          </Button>
+        </section>
+        <section className={styles.demo} aria-labelledby="fixed-help-title">
+          <div>
+            <h3 id="fixed-help-title">
+              <ArrowsLeftRight aria-hidden="true" weight="bold" />
+              Comparação fixa
+            </h3>
+            <p>Pikachu → Floatzel com dados fixos, para ver ganhos e perdas.</p>
+          </div>
+          <Button variant="secondary" onPress={onOpenFixed}>
+            Abrir comparação
+          </Button>
+        </section>
+      </div>
 
       <section className={styles.block} aria-labelledby="limits-title">
         <h3 id="limits-title">Limites</h3>
