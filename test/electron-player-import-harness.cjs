@@ -891,16 +891,18 @@ async function run() {
 }
 
 async function finish(error) {
-  if (finished) return;
-  finished = true;
   if (error) {
     const message = error instanceof HarnessAssertionError ? error.message : 'Falha inesperada durante o harness de importação.';
     console.error(`FAIL ${message}`);
-    process.exitCode = 1;
+    app.exit(1);
+    return;
   }
+  if (finished) return;
+  finished = true;
   const window = BrowserWindow.getAllWindows()[0];
   if (window && !window.isDestroyed()) window.close();
-  app.quit();
+  if (process.exitCode) app.exit(process.exitCode);
+  else app.quit();
 }
 
 const watchdog = setTimeout(() => {

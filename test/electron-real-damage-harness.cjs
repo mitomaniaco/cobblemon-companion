@@ -372,13 +372,15 @@ async function run() {
 }
 
 async function finish(error) {
-  if (finished) return;
-  finished = true;
   if (error) {
     console.error('Harness de cálculo real falhou.');
-    process.exitCode = 1;
+    app.exit(1);
+    return;
   }
-  app.quit();
+  if (finished) return;
+  finished = true;
+  if (process.exitCode) app.exit(process.exitCode);
+  else app.quit();
 }
 
 const watchdog = setTimeout(() => {
