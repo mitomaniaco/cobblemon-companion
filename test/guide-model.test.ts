@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {
+  acquireRouteLabel,
   createGuideState,
   currentGuideGoal,
   GUIDE_SNAPSHOT_NOTICE,
@@ -481,5 +482,13 @@ describe('estabilidade e mudança do time', () => {
     const state = built(built(createGuideState(), 1, first), 2, second);
     expect(state.result).toBe(second);
     expect(state.previousResult).toBe(first);
+  });
+});
+
+describe('rótulo da rota de aquisição', () => {
+  it('acquireRouteLabel: nível mostra o nível, e TM e tutor mantêm o texto de antes', () => {
+    expect(acquireRouteLabel({kind: 'nível', level: 48})).toBe('nível 48');
+    expect(acquireRouteLabel({kind: 'tm', level: null})).toBe('TM');
+    expect(acquireRouteLabel({kind: 'tutor', level: null})).toBe('tutor');
   });
 });

@@ -130,22 +130,27 @@ const TYPE_CHART_OVERRIDE_MOVES = new Set([
   'nightshade',
   'dragonrage',
   'sonicboom',
+  'finalgambit',
   'freezedry',
   'flyingpress',
+  'steelroller',
   'thousandarrows',
 ]);
+const ZERO_DAMAGE_NOT_IMMUNITY = new Set(['steelroller']);
 const EFFECTIVENESS_STEPS = new Set([0, 0.25, 0.5, 1, 2, 4]);
 
 /**
  * Eficácia do golpe contra o adversário (0, ¼, ½, 1, 2 ou 4), no mesmo passo e do mesmo cálculo do dano, para o rótulo
- * nunca contradizer o número. Dano máximo 0 num golpe de dano é ×0, seja por tipo ou por habilidade (Levitate, Wonder Guard…).
- * Com dano, vale a tabela de tipos do calc sobre o tipo final do golpe; null quando a tabela não explica o resultado
- * (golpe de dano fixo ou de tabela própria, ou tabela dizendo ×0 com dano — Scrappy contra Ghost).
+ * nunca contradizer o número. Dano máximo 0 num golpe de dano é ×0, seja por tipo ou por habilidade (Levitate, Wonder Guard…),
+ * salvo Steel Roller, que falha sem terreno e não tem imunidade. Com dano, vale a tabela de tipos do calc sobre o tipo final
+ * do golpe; null quando a tabela não explica o resultado (golpe de dano fixo ou de tabela própria, ou tabela dizendo ×0
+ * com dano — Scrappy contra Ghost).
  */
 function effectivenessOf(detail, moveId, defender) {
   if (detail.moveCategory === 'Status') return null;
-  if (detail.max === 0) return 0;
-  if (TYPE_CHART_OVERRIDE_MOVES.has(toId(COMPATIBILITY.moves[moveId].name))) return null;
+  const name = toId(COMPATIBILITY.moves[moveId].name);
+  if (detail.max === 0 && !ZERO_DAMAGE_NOT_IMMUNITY.has(name)) return 0;
+  if (TYPE_CHART_OVERRIDE_MOVES.has(name)) return null;
   const chart = generation.types.get(toId(detail.moveType));
   if (!chart) return null;
   let multiplier = 1;

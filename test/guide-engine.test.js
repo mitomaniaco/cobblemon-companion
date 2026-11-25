@@ -114,6 +114,48 @@ describe('motor do guia', () => {
     expect(toss.effectiveness).toBeNull();
   });
 
+  it('Final Gambit: dano é o HP de quem usa, igual contra qualquer tipo, então a eficácia é null e nunca ×0,5 ou ×2', async () => {
+    const pokemon = (speciesId, ability) => ({...data.trainers[0].team[0], speciesId, ability, moves: ['cobblemon:tackle']});
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:gambit',
+      team: [pokemon('cobblemon:venusaur', 'overgrow'), pokemon('cobblemon:chansey', 'naturalcure')],
+    };
+    const blastoise = individual({species: 'blastoise', level: 40, moves: ['finalgambit']});
+    const result = await run([blastoise], trainerGoal('synthetic:gambit'), {data: {...data, trainers: [...data.trainers, trainer]}});
+    const damageVs = (opponentId) => result.team[0].matchups.find((matchup) => matchup.opponentId === opponentId).damage[0];
+    // Grass/Poison (×0,5 pela tabela) e Normal (×1): o dano fixo não muda, então nenhum dos dois pode virar número.
+    expect(damageVs('synthetic:gambit#0')).toEqual(expect.objectContaining({moveId: 'cobblemon:finalgambit', effectiveness: null}));
+    expect(damageVs('synthetic:gambit#1')).toEqual(expect.objectContaining({moveId: 'cobblemon:finalgambit', effectiveness: null}));
+    expect(damageVs('synthetic:gambit#0').maxPercent).toBeGreaterThan(0);
+  });
+
+  it('Steel Roller sem Terreno Elétrico dá 0 de dano, mas não é imunidade: eficácia null contra Normal puro', async () => {
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:normal',
+      team: [{...data.trainers[0].team[0], speciesId: 'cobblemon:chansey', ability: 'naturalcure', moves: ['cobblemon:tackle']}],
+    };
+    const metagross = individual({species: 'metagross', level: 40, moves: ['steelroller']});
+    const result = await run([metagross], trainerGoal('synthetic:normal'), {data: {...data, trainers: [...data.trainers, trainer]}});
+    const [roller] = result.team[0].matchups[0].damage;
+    expect(roller).toEqual({moveId: 'cobblemon:steelroller', minPercent: 0, maxPercent: 0, effectiveness: null});
+  });
+
+  it('Scrappy: Lutador acerta Fantasma com dano > 0, então a eficácia é null (a tabela diz ×0 e o cálculo não)', async () => {
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:ghost',
+      team: [{...data.trainers[0].team[0], speciesId: 'cobblemon:gengar', ability: 'cursedbody', moves: ['cobblemon:shadowball']}],
+    };
+    const pancham = individual({species: 'pancham', level: 40, moves: ['closecombat']});
+    pancham.observed.ability = 'scrappy';
+    const result = await run([pancham], trainerGoal('synthetic:ghost'), {data: {...data, trainers: [...data.trainers, trainer]}});
+    const [close] = result.team[0].matchups[0].damage;
+    expect(close.maxPercent).toBeGreaterThan(0);
+    expect(close.effectiveness).toBeNull();
+  });
+
   it('golpe fora do catálogo não ganha número nem eficácia: fica em moves com evaluated false e fora de damage', async () => {
     const odd = individual({species: 'blastoise', level: 40, moves: ['surf', 'syntheticnotamove']});
     const result = await run([odd], trainerGoal('synthetic:fire'));
