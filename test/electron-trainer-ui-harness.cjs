@@ -1530,6 +1530,26 @@ async function setLevelCapField(contents, value) {
   );
 }
 
+/** Veredito e rota por ovo sem texto cortado (B1 e B2): nenhum valor nem o "no lugar de" some por overflow. */
+async function assertMatchupOverflow(contents, label) {
+  const result = await evaluate(
+    contents,
+    `(() => {
+      const verdict = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]');
+      const acquire = document.querySelector('[aria-label="Trainer Card"] section[aria-label="A adquirir"]');
+      const facts = [...(verdict?.querySelectorAll('dd') ?? [])].map(dd => ({text: dd.textContent, cut: dd.scrollWidth > dd.clientWidth + 1}));
+      const replaces = [...(acquire?.querySelectorAll('span') ?? [])]
+        .filter(span => span.textContent.startsWith('no lugar de'))
+        .map(span => ({text: span.textContent, cut: span.scrollWidth > span.clientWidth + 1}));
+      return {facts, replaces};
+    })()`,
+  );
+  check(result.facts.length > 0, `O veredito não tem valores para medir (${label}).`);
+  check(result.replaces.length > 0, `A rota por ovo não mostrou "no lugar de" para medir (${label}).`);
+  for (const fact of result.facts) check(!fact.cut, `"${fact.text}" corta texto no veredito (${label}).`);
+  for (const replace of result.replaces) check(!replace.cut, `"${replace.text}" corta texto na rota por ovo (${label}).`);
+}
+
 /** Tela "Golpes": cenário sintético com status, imunidade, golpe fora do catálogo, sem cálculo e rota por ovo. */
 async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   const contents = window.webContents;
@@ -1566,6 +1586,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   await setViewport(window, 1440, 800, 'viewport 1440×800 da tela de golpes');
   await delay(400);
   await assertGuideNoScroll(contents, 'na tela de golpes (1440×800)');
+  await assertMatchupOverflow(contents, '1440×800');
 
   // Gardevoir contra Gengar: super eficaz, imunidade, status e golpe fora do catálogo.
   const rows = await text('section[aria-label="Lista de golpes"]');
@@ -1623,6 +1644,17 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   await setViewport(window, 1568, 880, 'viewport 1568×880 da tela de golpes');
   await delay(400);
   await assertGuideNoScroll(contents, 'na tela de golpes (1568×880)');
+  await assertMatchupOverflow(contents, '1568×880');
+  for (const [width, height] of [
+    [1920, 1080],
+    [1280, 680],
+  ]) {
+    await setViewport(window, width, height, `viewport ${width}×${height} da tela de golpes`);
+    await delay(400);
+    await assertMatchupOverflow(contents, `${width}×${height}`);
+  }
+  await setViewport(window, 1568, 880, 'retorno ao viewport 1568×880 para a captura');
+  await delay(400);
   await capture(window, path.join(runDirectory, 'golpes-1568x880.png'), '[aria-label="Veredito"]');
   await setViewport(window, 1280, 800, 'viewport 1280×800 da tela de golpes');
   await delay(400);
@@ -1631,6 +1663,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
     stacked.scrollWidth <= stacked.width,
     `A tela de golpes tem rolagem horizontal em 1280px (${stacked.scrollWidth} > ${stacked.width}).`,
   );
+  await assertMatchupOverflow(contents, '1280×800');
   await capture(window, path.join(runDirectory, 'golpes-1280x800-empilhada.png'), '[aria-label="Veredito"]');
 
   // Janela estreita: empilha, sem rolagem horizontal.
@@ -1638,6 +1671,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   await delay(400);
   const narrow = await evaluate(contents, `({scrollWidth: document.documentElement.scrollWidth, width: window.innerWidth})`);
   check(narrow.scrollWidth <= narrow.width, `A tela de golpes tem rolagem horizontal em 800px (${narrow.scrollWidth} > ${narrow.width}).`);
+  await assertMatchupOverflow(contents, '800×900');
   await capture(window, path.join(runDirectory, 'golpes-800x900.png'), '[aria-label="Veredito"]');
 
   // Forced colors e movimento reduzido: o foco do golpe tem contorno do sistema e as animações param.
@@ -1663,6 +1697,11 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
       media.outline === 'solid' && media.outlineWidth === '3px',
       `Em forced-colors o golpe selecionado perdeu o contorno (${JSON.stringify(media)}).`,
     );
+    const maybe = await evaluate(
+      contents,
+      `(() => {const node = document.querySelector('[aria-label="Trainer Card"] [class*="maybe"]'); return node ? getComputedStyle(node).outlineStyle : null;})()`,
+    );
+    check(maybe === 'dashed', `Em forced-colors a faixa "pode tirar" não ficou visível (contorno ${maybe}).`);
     check(media.animation === 'none', 'Com movimento reduzido a animação de entrada do painel continua ativa.');
   } finally {
     await contents.debugger.sendCommand('Emulation.setEmulatedMedia', {features: []});

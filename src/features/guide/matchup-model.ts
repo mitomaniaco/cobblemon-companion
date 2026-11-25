@@ -23,7 +23,8 @@ export function efficacyView(effectiveness: GuideMoveDamage['effectiveness'] | u
 export type MoveRow =
   | {kind: 'damage'; moveId: string; minPercent: number; maxPercent: number; efficacy: EfficacyView; level: DamageLevel; best: boolean}
   | {kind: 'status'; moveId: string}
-  | {kind: 'blocked'; moveId: string};
+  /** `inCatalog`: golpe do catálogo sem confronto calculado contra este adversário; false = fora do catálogo do jogo. */
+  | {kind: 'blocked'; moveId: string; inCatalog: boolean};
 
 export function moveRow(
   move: GuideTeamMember['moves'][number],
@@ -42,7 +43,8 @@ export function moveRow(
       best: bestMoveId === move.id,
     };
   }
-  return category === 'Status' ? {kind: 'status', moveId: move.id} : {kind: 'blocked', moveId: move.id};
+  if (category === 'Status') return {kind: 'status', moveId: move.id};
+  return {kind: 'blocked', moveId: move.id, inCatalog: move.evaluated};
 }
 
 const trimmed = (value: number) => (Number.isInteger(value) ? String(value) : value.toFixed(1).replace('.', ','));
@@ -96,7 +98,7 @@ export function verdictFacts(matchup: GuideMatchup): VerdictFact[] {
     {label: 'Resultado', value: wins ? 'Vence' : 'Perde', tone: wins ? 'win' : 'loss'},
     {label: 'Turnos para derrubar', value: turns(matchup.ourTurns), tone: 'neutral'},
     {label: 'Turnos até cair', value: turns(matchup.theirTurns), tone: 'neutral'},
-    {label: 'Quem age primeiro', value: matchup.faster ? 'Você' : 'O adversário', tone: 'neutral'},
+    {label: 'Quem age primeiro', value: matchup.faster ? 'Você' : 'Ele', tone: 'neutral'},
     {label: 'Segura a troca', value: wins ? (matchup.holds ? 'Sim' : 'Não') : '—', tone: 'neutral'},
   ];
 }

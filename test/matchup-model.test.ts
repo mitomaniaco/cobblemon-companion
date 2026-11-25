@@ -75,7 +75,11 @@ describe('moveRow', () => {
   it('golpe fora do cálculo é de status quando o dex diz Status e bloqueado nos demais casos', () => {
     const skipped = {id: 'y', evaluated: false, source: 'equipado'} as const;
     expect(moveRow(skipped, undefined, 'Status', null).kind).toBe('status');
-    expect(moveRow(skipped, undefined, null, null).kind).toBe('blocked');
+    expect(moveRow(skipped, undefined, null, null)).toMatchObject({kind: 'blocked', inCatalog: false});
+  });
+
+  it('golpe do catálogo sem confronto calculado é bloqueado, mas não é tratado como fora do catálogo', () => {
+    expect(moveRow(equipped, undefined, null, null)).toMatchObject({kind: 'blocked', inCatalog: true});
   });
 });
 

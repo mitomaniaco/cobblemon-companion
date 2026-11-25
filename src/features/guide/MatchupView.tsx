@@ -359,7 +359,11 @@ function MoveButton({
           </span>
           <span className={styles.blockedText}>
             <b>{display.name}</b>
-            <span>Não conhecemos este golpe (não está no catálogo do jogo). Ele fica fora do cálculo.</span>
+            <span>
+              {row.inCatalog
+                ? 'Sem cálculo contra este adversário. Ele fica fora da faixa de dano.'
+                : 'Não conhecemos este golpe (não está no catálogo do jogo). Ele fica fora do cálculo.'}
+            </span>
           </span>
         </span>
       ) : (
@@ -386,7 +390,9 @@ function FocusPanel({row, stab}: {row: MoveRow; stab: boolean}) {
         </h3>
         <p>
           {row.kind === 'blocked'
-            ? 'Não conhecemos este golpe, então ele fica fora do cálculo.'
+            ? row.inCatalog
+              ? 'Sem cálculo contra este adversário, então ele fica fora da faixa de dano.'
+              : 'Não conhecemos este golpe, então ele fica fora do cálculo.'
             : (description ?? 'Sem descrição disponível.')}
         </p>
       </div>
