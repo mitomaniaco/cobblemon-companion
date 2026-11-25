@@ -2,7 +2,7 @@
   --hp-color: var(--hp-high);
 
   position: relative;
-  height: 10px;
+  height: var(--hp-bar-height, 10px);
   overflow: hidden;
   border-radius: var(--radius-pill);
   background: var(--color-sunken);
@@ -16,8 +16,27 @@
   --hp-color: var(--hp-low);
 }
 
+.track[data-level="great"] {
+  --hp-color: var(--hp-high);
+}
+
+.track[data-level="good"] {
+  --hp-color: var(--color-success);
+}
+
+.track[data-level="some"] {
+  --hp-color: var(--hp-mid);
+}
+
+.track[data-level="little"] {
+  --hp-color: var(--color-muted);
+}
+
 .solid,
-.range {
+.range,
+.keep,
+.maybe,
+.sure {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -40,9 +59,38 @@
   animation-delay: var(--duration-hp);
 }
 
+/* Modo "dano causado": cinza (sobra) | hachurado (pode causar) | sólido (causa sempre), da esquerda para a direita. */
+.keep {
+  left: 0;
+  width: calc(var(--hp-keep) * 100%);
+  background: var(--hp-remaining);
+}
+
+.maybe {
+  left: calc(var(--hp-keep) * 100%);
+  width: calc(var(--hp-maybe) * 100%);
+  background: repeating-linear-gradient(45deg, var(--hp-color) 0 3px, transparent 3px 6px);
+  animation: hp-range-in var(--duration-enter) var(--ease-out) both;
+  animation-delay: var(--duration-hp);
+}
+
+.sure {
+  left: calc((var(--hp-keep) + var(--hp-maybe)) * 100%);
+  width: calc(var(--hp-sure) * 100%);
+  background: var(--hp-color);
+  transform-origin: left;
+  animation: hp-fill var(--duration-hp) var(--ease-out);
+}
+
 @keyframes hp-drain {
   from {
     transform: scaleX(1);
+  }
+}
+
+@keyframes hp-fill {
+  from {
+    transform: scaleX(0);
   }
 }
 
@@ -52,16 +100,33 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .solid,
+  .range,
+  .maybe,
+  .sure {
+    animation: none;
+  }
+}
+
 @media (forced-colors: active) {
   .track {
     border: 1px solid CanvasText;
   }
 
-  .solid {
+  .solid,
+  .sure {
     background: Highlight;
   }
 
-  .range {
-    background: repeating-linear-gradient(45deg, GrayText 0 4px, transparent 4px 8px);
+  .range,
+  .maybe {
+    background: Canvas;
+    outline: 2px dashed CanvasText;
+    outline-offset: -2px;
+  }
+
+  .keep {
+    background: Canvas;
   }
 }

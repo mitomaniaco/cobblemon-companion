@@ -51,6 +51,10 @@ export function guideToolStatuses({result, evolutions, training, levelCap}: Tool
   const pve = result !== null && result.goal.kind !== 'trainer';
   return {
     team: {subtitle: 'Colunas do cartão'},
+    moves: {
+      subtitle: pve ? 'Só contra treinador' : 'Dano contra cada adversário',
+      disabledReason: blocked ?? (pve ? 'O dano por golpe é mostrado contra um líder ou treinador.' : undefined),
+    },
     battle: {
       subtitle: pve ? 'Só contra treinador' : 'Simulação',
       disabledReason: blocked ?? (pve ? 'O plano de batalha é calculado contra um líder ou treinador.' : undefined),

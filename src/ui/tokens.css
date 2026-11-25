@@ -37,6 +37,7 @@
   --hp-high: #3fd47a;
   --hp-mid: #f5c542;
   --hp-low: #f0544f;
+  --hp-remaining: color-mix(in oklab, var(--color-control-border) 55%, var(--color-sunken));
 
   --type-normal: #a8a77a;
   --type-normal-ink: #11141c;

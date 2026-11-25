@@ -17,6 +17,10 @@ const PLAYER_IMPORT_PATH = path.resolve(__dirname, 'player-import.cjs');
 const TRAINER_UI_SNAPSHOT_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-snapshot.json');
 const TRAINER_UI_GUIDE_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-guide.json');
 const TRAINER_UI_GUIDE = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_GUIDE_PATH, 'utf8')) : null;
+// Segundo treinador sintético (tela de golpes): estados de status, imunidade, golpe fora do catálogo e rota por ovo.
+const TRAINER_UI_MATCHUPS_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-matchups.json');
+const TRAINER_UI_MATCHUPS = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_MATCHUPS_PATH, 'utf8')) : null;
+if (TRAINER_UI_TEST_MODE) TRAINER_UI_GUIDE.trainers.push(TRAINER_UI_MATCHUPS.trainer);
 // Manifesto de artwork sintético: só o modo de teste da UI o lê; produção nunca carrega fixture.
 const TRAINER_UI_ARTWORK_PATH = path.resolve(__dirname, '../test/fixtures/electron-trainer-ui-artwork.json');
 const TRAINER_UI_ARTWORK = TRAINER_UI_TEST_MODE ? JSON.parse(fs.readFileSync(TRAINER_UI_ARTWORK_PATH, 'utf8')) : null;
@@ -401,6 +405,8 @@ function handleGuideBuild(event, request) {
   const snapshot = readSnapshotForRenderer();
   assertFreshSources(request.sources, snapshot.sources);
   if (TRAINER_UI_TEST_MODE) {
+    if (goal.kind === 'trainer' && goal.trainerId === TRAINER_UI_MATCHUPS?.trainer.id)
+      return structuredClone({...TRAINER_UI_MATCHUPS.result, goal});
     if (goal.kind === 'trainer' && goal.trainerId !== TRAINER_UI_GUIDE.result.goal.trainerId && !goal.trainerId.startsWith('rctmod:'))
       throw new Error('Treinador sintético não encontrado');
     return applyLevelCapToFixture(structuredClone({...TRAINER_UI_GUIDE.result, goal}), goal, levelCap, respectLevelCap);
@@ -596,6 +602,7 @@ function handleGuideTrainerDetail(event, ...args) {
     throw new TypeError('trainerId precisa ser texto');
   const trainerId = args[0];
   if (TRAINER_UI_TEST_MODE && trainerId === TRAINER_UI_GUIDE.trainers[0].id) return structuredClone(TRAINER_UI_GUIDE.trainerDetail);
+  if (TRAINER_UI_TEST_MODE && trainerId === TRAINER_UI_MATCHUPS.trainer.id) return structuredClone(TRAINER_UI_MATCHUPS.trainerDetail);
   return guideTrainerDetail(loadGuideData(), trainerId);
 }
 function handlePlayerAvatar(event, ...args) {

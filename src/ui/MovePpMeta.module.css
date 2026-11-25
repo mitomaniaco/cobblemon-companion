@@ -4,8 +4,8 @@
 }
 
 .ppDot {
-  width: 6px;
-  height: 6px;
+  width: var(--pp-dot-size, 6px);
+  height: var(--pp-dot-size, 6px);
   border-radius: var(--radius-pill);
   background: var(--color-border);
 }

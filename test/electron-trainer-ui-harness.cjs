@@ -1439,8 +1439,8 @@ async function exerciseGuideContract(contents) {
   })()`,
   );
   check(
-    result.trainers.length === 1 && result.trainers[0].format === 'singles',
-    'A lista de treinadores sintética não tem 1 treinador singles.',
+    result.trainers.length === 2 && result.trainers[0].format === 'singles',
+    'A lista de treinadores sintética não tem 2 treinadores singles.',
   );
   check(
     result.nextGoal.trainerId === result.trainers[0].id &&
@@ -1528,6 +1528,317 @@ async function setLevelCapField(contents, value) {
     input.dispatchEvent(new Event('input', {bubbles: true}));
   })()`,
   );
+}
+
+/** Veredito e rota por ovo sem texto cortado (B1 e B2): nenhum valor nem o "no lugar de" some por overflow. */
+async function assertMatchupOverflow(contents, label) {
+  const result = await evaluate(
+    contents,
+    `(() => {
+      const verdict = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]');
+      const acquire = document.querySelector('[aria-label="Trainer Card"] section[aria-label="A adquirir"]');
+      const facts = [...(verdict?.querySelectorAll('dd') ?? [])].map(dd => ({text: dd.textContent, cut: dd.scrollWidth > dd.clientWidth + 1}));
+      const replaces = [...(acquire?.querySelectorAll('span') ?? [])]
+        .filter(span => span.textContent.startsWith('no lugar de'))
+        .map(span => ({text: span.textContent, cut: span.scrollWidth > span.clientWidth + 1}));
+      return {facts, replaces};
+    })()`,
+  );
+  check(result.facts.length > 0, `O veredito não tem valores para medir (${label}).`);
+  check(result.replaces.length > 0, `A rota por ovo não mostrou "no lugar de" para medir (${label}).`);
+  for (const fact of result.facts) check(!fact.cut, `"${fact.text}" corta texto no veredito (${label}).`);
+  for (const replace of result.replaces) check(!replace.cut, `"${replace.text}" corta texto na rota por ovo (${label}).`);
+}
+
+/** Medidas da tela de golpes para o relatório de layout: coluna central, painéis da faixa inferior e textos cortados. */
+async function logMatchupLayout(contents, label) {
+  const layout = await evaluate(
+    contents,
+    `(() => {
+      const column = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]').parentElement;
+      const top = column.getBoundingClientRect().top;
+      const sections = ['Veredito', 'Lista de golpes', 'Golpe em foco', 'A adquirir'].map(name => {
+        const node = column.querySelector('section[aria-label="' + name + '"]');
+        if (!node) return {name, missing: true};
+        const box = node.getBoundingClientRect();
+        const inner = node.querySelector(':scope > .focus, :scope > ul');
+        const content = inner ? Math.round(inner.getBoundingClientRect().height) : null;
+        return {name, top: Math.round(box.top - top), left: Math.round(box.left), bottom: Math.round(box.bottom - top), height: Math.round(box.height), content, width: Math.round(box.width)};
+      });
+      const clipped = [...column.querySelectorAll('dd, .route, .replaces, .acquireText b, .who h2')]
+        .filter(node => node.scrollWidth > node.clientWidth + 1)
+        .map(node => node.textContent.trim().slice(0, 40));
+      const h = (node) => (node ? Math.round(node.getBoundingClientRect().height) : null);
+      const parts = {
+        unitPx: Math.round(parseFloat(getComputedStyle(column).getPropertyValue('--u')) || 0),
+        factDd: [...column.querySelectorAll('section[aria-label="Veredito"] dl dd')].map(h),
+        factDt: [...column.querySelectorAll('section[aria-label="Veredito"] dl dt')].map(h),
+        art: h(column.querySelector('[class*="memberArtLarge"]')),
+        who: h(column.querySelector('section[aria-label="Veredito"] h2')?.parentElement ?? null),
+        rows: [...column.querySelectorAll('section[aria-label="Lista de golpes"] button')].map(h),
+        acquireLi: [...column.querySelectorAll('section[aria-label="A adquirir"] li')].map(h),
+        focusPanel: h(column.querySelector('section[aria-label="Golpe em foco"] [class*="focus"]')),
+      };
+      return {
+        parts,
+        viewport: window.innerWidth + '×' + window.innerHeight,
+        clientHeight: column.clientHeight,
+        scrollHeight: column.scrollHeight,
+        scrollWidth: column.scrollWidth,
+        clientWidth: column.clientWidth,
+        sections,
+        clipped,
+      };
+    })()`,
+  );
+  console.log(`[layout ${label}] ${JSON.stringify(layout)}`);
+  return layout;
+}
+
+/** Coluna central da tela de golpes: sem rolagem e sem texto cortado no estado medido. */
+async function assertMatchupColumnFits(contents, label) {
+  const layout = await logMatchupLayout(contents, label);
+  check(layout.scrollHeight <= layout.clientHeight, `A coluna central rola (${layout.scrollHeight} > ${layout.clientHeight}) em ${label}.`);
+  check(layout.clipped.length === 0, `Texto cortado na tela de golpes em ${label}: ${layout.clipped.join(' | ')}.`);
+  return layout;
+}
+
+/** Tela "Golpes": cenário sintético com status, imunidade, golpe fora do catálogo, sem cálculo e rota por ovo. */
+async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
+  const contents = window.webContents;
+  const view = (selector) => `document.querySelector('[aria-label="Trainer Card"] ${selector}')`;
+  const clickByLabel = (selector, labelStart) =>
+    evaluate(
+      contents,
+      `(() => {
+        const node = [...document.querySelectorAll('[aria-label="Trainer Card"] ${selector}')].find(item => (item.getAttribute('aria-label') || item.textContent).trim().startsWith(${JSON.stringify(labelStart)}));
+        if (!node) throw new Error('Controle ${labelStart} não encontrado na tela de golpes.');
+        node.click();
+      })()`,
+    );
+  const text = (selector) => evaluate(contents, `${view(selector)}?.innerText || ''`);
+  // Coluna central sem rolagem no padrão ao abrir e depois de golpe de dano, de status e bloqueado.
+  let defaultFocus = null;
+  const checkStates = async (label) => {
+    const focusName = await evaluate(contents, `${view('section[aria-label="Golpe em foco"] h3')}?.textContent || ''`);
+    defaultFocus ??= focusName;
+    check(focusName === defaultFocus, `O foco abriu em "${focusName}" em ${label}, não no padrão "${defaultFocus}".`);
+    await assertMatchupColumnFits(contents, `${label} · padrão`);
+    for (const [move, state] of [
+      ['Shadow Ball', 'dano'],
+      ['Swords Dance', 'status'],
+      ['Synthetic', 'bloqueado'],
+    ]) {
+      await clickByLabel('section[aria-label="Lista de golpes"] button', move);
+      await waitFor(
+        contents,
+        `${view('section[aria-label="Golpe em foco"] h3')}?.textContent.includes(${JSON.stringify(move)})`,
+        `foco do golpe ${move} (${label})`,
+      );
+      await assertMatchupColumnFits(contents, `${label} · ${state}`);
+    }
+  };
+
+  await setSearch('Lider de Golpes');
+  await waitFor(
+    contents,
+    `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].some(b => b.textContent.includes('Líder de Golpes'))`,
+    'treinador do cenário de golpes na busca livre',
+  );
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].find(b => b.textContent.includes('Líder de Golpes')).click()`,
+  );
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Ferramentas do guia"] [role="tab"][aria-label="Golpes"]:not([aria-disabled="true"])'))`,
+    'aba Golpes habilitada com o resultado do treinador',
+  );
+  await selectGuideTab(contents, 'Golpes');
+  await waitFor(contents, `Boolean(${view('section[aria-label="Veredito"]')})`, 'tela de golpes carregada');
+  // Com o Guia a partir de 1100px de largura (janela ≥ ~1400px) o Trainer Card ocupa a altura sem rolar a página.
+  await setViewport(window, 1440, 800, 'viewport 1440×800 da tela de golpes');
+  await delay(400);
+  await assertGuideNoScroll(contents, 'na tela de golpes (1440×800)');
+  await assertMatchupOverflow(contents, '1440×800');
+  await checkStates('1440×800');
+
+  // Gardevoir contra Gengar: super eficaz, imunidade, status e golpe fora do catálogo.
+  const rows = await text('section[aria-label="Lista de golpes"]');
+  for (const expected of [
+    'Super eficaz',
+    'Sem efeito',
+    '0%',
+    'Golpe de status',
+    'não tira HP',
+    'Não conhecemos este golpe',
+    'Sem cálculo',
+    'sem faixa de dano',
+  ]) {
+    check(rows.includes(expected), `A lista de golpes não mostrou "${expected}".`);
+  }
+  const verdict = await text('section[aria-label="Veredito"]');
+  for (const expected of ['Resultado', 'Turnos para derrubar', 'Turnos até cair', 'Quem age primeiro', 'Segura a troca']) {
+    check(verdict.includes(expected), `O veredito não mostrou "${expected}".`);
+  }
+  const acquire = await evaluate(
+    contents,
+    `(() => {const node = [...document.querySelectorAll('[aria-label="Trainer Card"] section[aria-label="A adquirir"] [data-tooltip]')][0]; return node ? {text: node.textContent, tip: node.dataset.tooltip, tab: node.tabIndex} : null;})()`,
+  );
+  check(
+    acquire?.text.includes('Ovo · precisa de um Pokémon novo') && acquire.tip.length > 20 && acquire.tab === 0,
+    'A rota por ovo não mostrou "Ovo · precisa de um Pokémon novo" com explicação em tooltip.',
+  );
+  const opponentText = await text('section[aria-label="Adversário"]');
+  check(
+    opponentText.toLowerCase().includes('um destes 4') && opponentText.includes('Lum Berry'),
+    'O adversário não listou todos os itens possíveis.',
+  );
+  await capture(window, path.join(runDirectory, 'golpes-1440x800.png'), '[aria-label="Veredito"]');
+
+  // Pikachu: golpe sem cálculo (efetividade desconhecida) e resistência.
+  await clickByLabel('ul button', 'Pikachu');
+  await waitFor(contents, `${view('section[aria-label="Veredito"]')}.innerText.includes('Pikachu')`, 'troca de membro na tela de golpes');
+  check(
+    (await text('section[aria-label="Lista de golpes"]')).includes('Sem cálculo'),
+    'O golpe com efetividade desconhecida não mostrou "Sem cálculo".',
+  );
+  await clickByLabel('section[aria-label="Adversário"] button', 'Pikachu');
+  await waitFor(contents, `${view('section[aria-label="Veredito"]')}.innerText.includes('contra Pikachu')`, 'troca de adversário');
+  check((await text('section[aria-label="Lista de golpes"]')).includes('Pouco eficaz'), 'A resistência não mostrou "Pouco eficaz".');
+  await clickByLabel('section[aria-label="Lista de golpes"] button', 'Swords Dance');
+  check(
+    (await text('section[aria-label="Golpe em foco"]')).includes('Golpe de status'),
+    'O foco do golpe de status não explicou que ele não tira HP.',
+  );
+  await capture(window, path.join(runDirectory, 'golpes-status-focus.png'), '[aria-label="Veredito"]');
+  await clickByLabel('ul button', 'Gardevoir');
+  await clickByLabel('section[aria-label="Lista de golpes"] button', 'Synthetic');
+  await capture(window, path.join(runDirectory, 'golpes-blocked-focus.png'), '[aria-label="Veredito"]');
+
+  await setViewport(window, 1568, 880, 'viewport 1568×880 da tela de golpes');
+  await delay(400);
+  await assertGuideNoScroll(contents, 'na tela de golpes (1568×880)');
+  await assertMatchupOverflow(contents, '1568×880');
+  // Estado padrão de novo: trocar de aba remonta a tela de golpes.
+  await selectGuideTab(contents, 'Equipe');
+  await selectGuideTab(contents, 'Golpes');
+  await waitFor(contents, `Boolean(${view('section[aria-label="Veredito"]')})`, 'tela de golpes reaberta');
+  await checkStates('1568×880');
+  // Dialog "Como calculamos": abre pelo botão, Esc fecha e o foco volta ao botão.
+  await setViewport(window, 1568, 880, 'retorno ao viewport 1568×880 para o diálogo');
+  await clickByLabel('section[aria-label="Golpe em foco"] button', 'Como calculamos');
+  await waitFor(contents, `Boolean(document.querySelector('[role="dialog"]'))`, 'diálogo Como calculamos aberto');
+  await capture(window, path.join(runDirectory, 'golpes-dialog-como-calculamos.png'), '[role="dialog"]');
+  check(
+    await evaluate(contents, `document.querySelector('[role="dialog"]')?.innerText.includes('Como calculamos') ?? false`),
+    'O diálogo Como calculamos não mostra o título.',
+  );
+  await evaluate(contents, `document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))`);
+  await waitFor(contents, `!document.querySelector('[role="dialog"]')`, 'diálogo Como calculamos fechado com Esc');
+  check(
+    await evaluate(contents, `document.activeElement?.textContent.includes('Como calculamos') ?? false`),
+    'O foco não voltou ao botão Como calculamos ao fechar o diálogo.',
+  );
+  for (const [width, height] of [
+    [1920, 1080],
+    [1280, 680],
+  ]) {
+    await setViewport(window, width, height, `viewport ${width}×${height} da tela de golpes`);
+    await delay(400);
+    await assertMatchupOverflow(contents, `${width}×${height}`);
+  }
+  await setViewport(window, 1568, 880, 'retorno ao viewport 1568×880 para a captura');
+  await delay(400);
+  await capture(window, path.join(runDirectory, 'golpes-1568x880.png'), '[aria-label="Veredito"]');
+  await setViewport(window, 1280, 800, 'viewport 1280×800 da tela de golpes');
+  await delay(400);
+  const stacked = await evaluate(contents, `({scrollWidth: document.documentElement.scrollWidth, width: window.innerWidth})`);
+  check(
+    stacked.scrollWidth <= stacked.width,
+    `A tela de golpes tem rolagem horizontal em 1280px (${stacked.scrollWidth} > ${stacked.width}).`,
+  );
+  await assertMatchupOverflow(contents, '1280×800');
+  await capture(window, path.join(runDirectory, 'golpes-1280x800-empilhada.png'), '[aria-label="Veredito"]');
+
+  // Janela estreita: empilha, sem rolagem horizontal.
+  await setViewport(window, 800, 900, 'viewport 800×900 da tela de golpes');
+  await delay(400);
+  const narrow = await evaluate(contents, `({scrollWidth: document.documentElement.scrollWidth, width: window.innerWidth})`);
+  check(narrow.scrollWidth <= narrow.width, `A tela de golpes tem rolagem horizontal em 800px (${narrow.scrollWidth} > ${narrow.width}).`);
+  await assertMatchupOverflow(contents, '800×900');
+  await capture(window, path.join(runDirectory, 'golpes-800x900.png'), '[aria-label="Veredito"]');
+
+  for (const [width, height] of [
+    [1440, 800],
+    [1568, 880],
+    [1920, 1080],
+    [1568, 742],
+    [1280, 680],
+    [800, 900],
+  ]) {
+    await setViewport(window, width, height, `medida de layout ${width}×${height}`);
+    await delay(400);
+    const layout = await logMatchupLayout(contents, `${width}×${height}`);
+    check(layout.clipped.length === 0, `Texto cortado na tela de golpes em ${width}×${height}: ${layout.clipped.join(' | ')}.`);
+    if (width >= 1100) {
+      // Lado a lado: "A adquirir" começa na mesma linha de "Golpe em foco", à direita dele.
+      const [focus, acquire] = [
+        layout.sections.find((item) => item.name === 'Golpe em foco'),
+        layout.sections.find((item) => item.name === 'A adquirir'),
+      ];
+      check(
+        focus && acquire && acquire.top === focus.top && acquire.left > focus.left,
+        `"A adquirir" não está ao lado de "Golpe em foco" em ${width}×${height}.`,
+      );
+    }
+    if (width !== 1920) await capture(window, path.join(runDirectory, `golpes-${width}x${height}-lado.png`), '[aria-label="Veredito"]');
+    if (width === 1568 && height === 880)
+      await capture(window, path.join(runDirectory, 'golpes-a-adquirir-lado.png'), '[aria-label="A adquirir"]');
+  }
+  // Forced colors e movimento reduzido: o foco do golpe tem contorno do sistema e as animações param.
+  await setViewport(window, 1440, 1000, 'retorno ao viewport padrão após a tela de golpes');
+  contents.debugger.attach('1.3');
+  try {
+    await contents.debugger.sendCommand('Emulation.setEmulatedMedia', {
+      features: [
+        {name: 'forced-colors', value: 'active'},
+        {name: 'prefers-reduced-motion', value: 'reduce'},
+      ],
+    });
+    await delay(100);
+    const media = await evaluate(
+      contents,
+      `(() => {
+        const row = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Lista de golpes"] button[aria-pressed="true"]');
+        const panel = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]');
+        return {outline: getComputedStyle(row).outlineStyle, outlineWidth: getComputedStyle(row).outlineWidth, animation: getComputedStyle(panel).animationName};
+      })()`,
+    );
+    check(
+      media.outline === 'solid' && media.outlineWidth === '3px',
+      `Em forced-colors o golpe selecionado perdeu o contorno (${JSON.stringify(media)}).`,
+    );
+    const maybe = await evaluate(
+      contents,
+      `(() => {const node = document.querySelector('[aria-label="Trainer Card"] [class*="maybe"]'); return node ? getComputedStyle(node).outlineStyle : null;})()`,
+    );
+    check(maybe === 'dashed', `Em forced-colors a faixa "pode tirar" não ficou visível (contorno ${maybe}).`);
+    check(media.animation === 'none', 'Com movimento reduzido a animação de entrada do painel continua ativa.');
+  } finally {
+    await contents.debugger.sendCommand('Emulation.setEmulatedMedia', {features: []});
+    contents.debugger.detach();
+  }
+  console.log('PASS tela de golpes contra o adversário (estados, rolagem, forced-colors e movimento reduzido)');
+
+  await selectGuideTab(contents, 'Equipe');
+  await switchGuideView('Busca livre');
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Trainer Card"] input[type="search"]'))`,
+    'busca livre após a tela de golpes',
+  );
+  await setSearch('');
 }
 
 async function exerciseGuideWorkspace(window) {
@@ -1857,6 +2168,7 @@ async function exerciseGuideWorkspace(window) {
     })()`,
   );
   await waitFor(contents, `${optionCount} === ${allStages}`, 'restauração da lista completa após limpar busca');
+  await exerciseMatchupView(window, {setSearch, switchGuideView});
   await setSearch('Sintetico');
   await waitFor(
     contents,

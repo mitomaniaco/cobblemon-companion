@@ -1,6 +1,6 @@
 import {useEffect, useId, useMemo, useRef, useState} from 'react';
 import type {CSSProperties, ReactNode} from 'react';
-import {ArrowFatLinesUp, Barbell, CaretDown, Sword, Target, UsersThree, type Icon} from '@phosphor-icons/react';
+import {ArrowFatLinesUp, Barbell, CaretDown, Crosshair, Sword, Target, UsersThree, type Icon} from '@phosphor-icons/react';
 import {ListBox, ListBoxItem, type Key, type Selection} from 'react-aria-components';
 import {itemLabel} from '../../domain/catalog-labels';
 import {dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
@@ -612,6 +612,7 @@ function Trail({
 
 const DOCK_TABS: ReadonlyArray<{key: GuideTab; label: string; Icon: Icon}> = [
   {key: 'team', label: 'Equipe', Icon: UsersThree},
+  {key: 'moves', label: 'Golpes', Icon: Crosshair},
   {key: 'battle', label: 'Plano de batalha', Icon: Sword},
   {key: 'evolutions', label: 'Evoluções', Icon: ArrowFatLinesUp},
   {key: 'training', label: 'Treino até o cap', Icon: Barbell},
