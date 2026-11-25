@@ -1,6 +1,7 @@
 import {useCallback, useReducer, useRef} from 'react';
 import type {MoveSwapPlan} from '../domain/move-swap';
 import type {CompanionApi, PlayerSnapshot} from '../platform/api';
+import {describeError} from '../platform/diagnostics';
 import {
   createInitialTrainerSessionState,
   trainerSessionReducer,
@@ -25,12 +26,6 @@ export type TrainerSessionController = {
   updateMoveSwap(patch: Partial<Pick<MoveSwapPlan, 'slotIndex' | 'candidateMoveId'>>): void;
 };
 
-function describeImportError(error: unknown): string {
-  if (error instanceof Error && error.message.length > 0) return error.message;
-  if (typeof error === 'string' && error.length > 0) return error;
-  return 'Não foi possível ler a captura local.';
-}
-
 export function createTrainerSessionRefresh(
   readSnapshot: () => Promise<PlayerSnapshot>,
   dispatch: (action: TrainerSessionAction) => void,
@@ -49,7 +44,7 @@ export function createTrainerSessionRefresh(
         if (readId === latestRead) dispatch({type: 'refresh-succeeded', snapshot});
       })
       .catch((error) => {
-        if (readId === latestRead) dispatch({type: 'refresh-failed', error: describeImportError(error)});
+        if (readId === latestRead) dispatch({type: 'refresh-failed', error: describeError(error, 'Não foi possível ler a captura local.')});
       })
       .finally(() => {
         if (readId === latestRead && pendingRead === request) pendingRead = null;

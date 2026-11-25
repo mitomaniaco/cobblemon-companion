@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import type {CompanionApi, GuideProgress} from '../../platform/api';
+import {describeError} from '../../platform/diagnostics';
 
 export type GuideProgressState =
   | {status: 'loading'; value: null; error: null}
@@ -7,12 +8,6 @@ export type GuideProgressState =
   | {status: 'error'; value: null; error: string};
 
 const INITIAL_STATE: GuideProgressState = {status: 'loading', value: null, error: null};
-
-function errorMessage(error: unknown): string {
-  if (error instanceof Error && error.message) return error.message;
-  if (typeof error === 'string' && error) return error;
-  return 'O progresso do mundo não pôde ser lido.';
-}
 
 /**
  * Lê progresso de forma independente do snapshot e mantém a inscrição enquanto o shell está montado.
@@ -34,7 +29,7 @@ export function useGuideProgress(api: () => CompanionApi, sourceRevision: number
         if (active) setState({status: 'ready', value: progress, error: null});
       });
     } catch (error) {
-      if (active) setState({status: 'error', value: null, error: errorMessage(error)});
+      if (active) setState({status: 'error', value: null, error: describeError(error, 'O progresso do mundo não pôde ser lido.')});
     }
 
     void Promise.resolve()
@@ -43,7 +38,8 @@ export function useGuideProgress(api: () => CompanionApi, sourceRevision: number
         if (active && !changedSinceRead) setState({status: 'ready', value: progress, error: null});
       })
       .catch((error: unknown) => {
-        if (active && !changedSinceRead) setState({status: 'error', value: null, error: errorMessage(error)});
+        if (active && !changedSinceRead)
+          setState({status: 'error', value: null, error: describeError(error, 'O progresso do mundo não pôde ser lido.')});
       });
 
     return () => {

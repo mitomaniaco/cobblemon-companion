@@ -885,6 +885,7 @@ async function forceReadError(window) {
   );
   const errorText = await evaluate(contents, 'document.body.innerText');
   check(/Não encontramos o config\.json/.test(errorText), 'O erro de leitura injetado não chegou ao renderer.');
+  check(!/Error invoking remote method/.test(errorText), 'O prefixo técnico do Electron apareceu na tela de erro.');
   check(!(await evaluate(contents, demoSealVisible)), 'O selo da demonstração apareceu antes de abrir a demonstração.');
 }
 

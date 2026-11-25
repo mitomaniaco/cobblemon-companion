@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useReducer, useRef} from 'react';
 import type {CompanionApi, GuideGoal, PlayerSnapshot} from '../../platform/api';
+import {describeError} from '../../platform/diagnostics';
 import {
   createGuideState,
   currentGuideGoal,
@@ -23,12 +24,6 @@ export type GuideController = GuideState & {
   cancel(): void;
   dismissNotice(id: number): void;
 };
-
-function describeError(error: unknown, fallback: string): string {
-  if (error instanceof Error && error.message.length > 0) return error.message;
-  if (typeof error === 'string' && error.length > 0) return error;
-  return fallback;
-}
 
 /**
  * Estado da tela Guia, mantido fora do componente para sobreviver à ida ao Dano e à volta.

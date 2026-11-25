@@ -1,5 +1,6 @@
 import {useCallback, useLayoutEffect, useReducer, useRef} from 'react';
 import type {CompanionApi, GuideResult, PlayerSnapshot} from '../../platform/api';
+import {describeError} from '../../platform/diagnostics';
 import {createJobState, jobReducer, type JobState} from './job-model';
 
 export type GuideJobController<Result> = JobState<Result> & {
@@ -18,12 +19,6 @@ type GuideJobOptions<Result, Request> = {
   buildRequest(snapshot: PlayerSnapshot, guide: GuideResult, jobId: string): Request | null | Promise<Request | null>;
   run(api: CompanionApi, request: Request): Promise<Result>;
 };
-
-function describeError(error: unknown, fallback: string): string {
-  if (error instanceof Error && error.message.length > 0) return error.message;
-  if (typeof error === 'string' && error.length > 0) return error;
-  return fallback;
-}
 
 /**
  * Montagem cancelável derivada do resultado do guia. Vale só para o resultado que a originou: quando o time,

@@ -1,5 +1,6 @@
 import {useCallback, useLayoutEffect, useReducer, useRef} from 'react';
 import type {CompanionApi, PlayerIndividual, PlayerSnapshot, PlayerStat} from '../../platform/api';
+import {describeError} from '../../platform/diagnostics';
 import {
   buildRealDamageRequest,
   createDamagePlannerState,
@@ -85,7 +86,7 @@ export function useDamagePlanner(
         type: 'calculation-failed',
         identity: calculationIdentity,
         requestId,
-        error: cause instanceof Error ? cause.message : 'Não foi possível calcular. Atualize o save e revise os dados.',
+        error: describeError(cause, 'Não foi possível calcular. Atualize o save e revise os dados.'),
       });
     }
   }, [api, individual, snapshot, state]);
