@@ -20,15 +20,30 @@ const MAX_SOURCE_ID_LENGTH = 256;
 const SOURCE_ID_PATTERN = /^(?:[a-z0-9_.-]+:)?[a-z0-9/._-]+$/;
 
 class PlayerImportError extends Error {
-  constructor(code, message) {
+  constructor(code, message, source) {
     super(message);
     this.name = 'PlayerImportError';
     this.code = code;
+    this.source = source;
   }
 }
 
-function fail(code, message) {
-  throw new PlayerImportError(code, message);
+/** Mensagens das fontes ausentes. Nunca contêm caminho, nome de mundo ou UUID. */
+const SOURCE_MISSING_MESSAGES = Object.freeze({
+  config: 'Não encontramos o config.json. Confira se o arquivo existe e se o caminho do servidor está configurado.',
+  serverRoot: 'Não encontramos a pasta do servidor configurada. Confira o caminho do servidor no config.json.',
+  'server.properties': 'Não encontramos o server.properties na pasta do servidor. Confira se o servidor já foi iniciado nessa pasta.',
+  world: 'Não encontramos o mundo ativo do servidor. Confira se o mundo ainda existe e se o server.properties aponta para ele.',
+  party: 'Ainda não há dados da party deste jogador neste mundo. Entre no mundo e salve o jogo.',
+  pc: 'Ainda não há dados do PC deste jogador neste mundo. Entre no mundo e salve o jogo.',
+});
+
+/** Fallback para ENOENT sem fonte conhecida: não nomeia fonte alguma. */
+const GENERIC_SOURCE_MISSING =
+  'Não foi possível localizar um arquivo necessário do save. Confirme que o servidor já salvou o jogo e tente novamente.';
+
+function fail(code, message, source) {
+  throw new PlayerImportError(code, message, source);
 }
 
 function sourceLabel(kind) {
@@ -73,15 +88,9 @@ function readStableSource(filePath, kind, maxBytes) {
   } catch (error) {
     if (error instanceof PlayerImportError) throw error;
     if (error && error.code === 'ENOENT') {
-      if (kind === 'party' || kind === 'pc') {
-        fail(
-          'ERR_IMPORT_SOURCE_MISSING',
-          `Não foi possível encontrar os dados de ${sourceLabel(kind)} no mundo ativo. Confirme que o servidor salvou o mundo e tente novamente.`,
-        );
-      }
-      if (kind === 'server.properties')
-        fail('ERR_IMPORT_SERVER_CONFIG', 'Não foi possível ler server.properties no diretório configurado.');
-      fail('ERR_IMPORT_CONFIG', 'Não foi possível ler a configuração local do importador.');
+      if (kind === 'party' || kind === 'pc') fail('ERR_IMPORT_SOURCE_MISSING', SOURCE_MISSING_MESSAGES[kind], kind);
+      if (kind === 'server.properties') fail('ERR_IMPORT_SERVER_CONFIG', SOURCE_MISSING_MESSAGES['server.properties'], 'server.properties');
+      fail('ERR_IMPORT_CONFIG', SOURCE_MISSING_MESSAGES.config, 'config');
     }
     fail('ERR_IMPORT_READ', `Falha ao ler a fonte de ${sourceLabel(kind)}.`);
   } finally {
@@ -123,7 +132,8 @@ function realDirectory(parent, candidate, label) {
     return {parentReal, candidateReal};
   } catch (error) {
     if (error instanceof PlayerImportError) throw error;
-    fail('ERR_IMPORT_WORLD', `Não foi possível acessar ${label} dentro do diretório configurado.`);
+    if (error?.code === 'ENOENT') fail('ERR_IMPORT_WORLD', SOURCE_MISSING_MESSAGES.world, 'world');
+    fail('ERR_IMPORT_WORLD', `Não foi possível acessar ${label} dentro do diretório configurado.`, 'world');
   }
 }
 
@@ -458,7 +468,13 @@ function locateSources(options) {
   const initialConfigSource = readSource(configPath, 'config', MAX_CONFIG_BYTES);
   const config = assertConfig(parseJson(initialConfigSource.bytes, 'config.json'));
 
-  const serverRoot = fs.realpathSync(config.serverRoot);
+  let serverRoot;
+  try {
+    serverRoot = fs.realpathSync(config.serverRoot);
+  } catch (error) {
+    if (error?.code === 'ENOENT') fail('ERR_IMPORT_SOURCE_MISSING', SOURCE_MISSING_MESSAGES.serverRoot, 'serverRoot');
+    throw error;
+  }
   const propertiesPath = path.join(serverRoot, 'server.properties');
   const initialProperties = readSource(propertiesPath, 'server.properties', MAX_PROPERTIES_BYTES);
   const worldName = parseWorldName(initialProperties.bytes);
@@ -475,8 +491,7 @@ function locateSources(options) {
 
 function publicImportFailure(error) {
   if (error instanceof PlayerImportError) return error;
-  if (error?.code === 'ENOENT')
-    return new PlayerImportError('ERR_IMPORT_SOURCE_MISSING', 'Não foi possível encontrar uma fonte necessária do mundo ativo.');
+  if (error?.code === 'ENOENT') return new PlayerImportError('ERR_IMPORT_SOURCE_MISSING', GENERIC_SOURCE_MISSING);
   return new PlayerImportError(
     'ERR_IMPORT_FAILED',
     'A importação da party/PC falhou. Confirme que os dados foram salvos e tente novamente.',
