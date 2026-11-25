@@ -1,0 +1,535 @@
+{
+  "trainer": {
+    "id": "synthetic:golpes",
+    "name": "Líder de Golpes",
+    "format": "singles",
+    "teamSize": 3,
+    "maxLevel": 43,
+    "series": "radicalred"
+  },
+  "trainerDetail": {
+    "id": "synthetic:golpes",
+    "name": "Líder de Golpes",
+    "team": [
+      {
+        "speciesId": "cobblemon:gengar",
+        "level": 40,
+        "formId": "normal",
+        "ability": "cursedbody",
+        "heldItemAlternatives": [
+          "cobblemon:spell_tag",
+          "cobblemon:sitrus_berry",
+          "cobblemon:lum_berry",
+          "cobblemon:leftovers"
+        ]
+      },
+      {
+        "speciesId": "cobblemon:pikachu",
+        "level": 38,
+        "formId": "normal",
+        "ability": "static",
+        "heldItemAlternatives": [
+          "cobblemon:light_ball"
+        ]
+      },
+      {
+        "speciesId": "cobblemon:snorlax",
+        "level": 41,
+        "formId": "normal",
+        "ability": null,
+        "heldItemAlternatives": []
+      }
+    ],
+    "spawn": {
+      "signatureItem": null,
+      "biomes": [],
+      "excludedBiomes": []
+    }
+  },
+  "result": {
+    "goal": {
+      "kind": "trainer",
+      "trainerId": "synthetic:golpes"
+    },
+    "referenceLevel": 43,
+    "opponents": [
+      {
+        "id": "synthetic:golpes#0",
+        "speciesId": "cobblemon:gengar",
+        "level": 40,
+        "trainerId": "synthetic:golpes",
+        "dangerous": true
+      },
+      {
+        "id": "synthetic:golpes#1",
+        "speciesId": "cobblemon:pikachu",
+        "level": 38,
+        "trainerId": "synthetic:golpes",
+        "dangerous": false
+      },
+      {
+        "id": "synthetic:golpes#2",
+        "speciesId": "cobblemon:snorlax",
+        "level": 41,
+        "trainerId": "synthetic:golpes",
+        "dangerous": false
+      }
+    ],
+    "team": [
+      {
+        "uuid": "00000000-0000-4000-8000-000000000110",
+        "speciesId": "cobblemon:gardevoir",
+        "level": 42,
+        "reason": "gardevoir entra no time sintético.",
+        "moves": [
+          {
+            "id": "cobblemon:shadowball",
+            "evaluated": true,
+            "source": "equipado"
+          },
+          {
+            "id": "cobblemon:tackle",
+            "evaluated": true,
+            "source": "equipado"
+          },
+          {
+            "id": "cobblemon:swordsdance",
+            "evaluated": false,
+            "source": "aprendido"
+          },
+          {
+            "id": "cobblemon:synthetic_unknown_move",
+            "evaluated": false,
+            "source": "aprendido"
+          }
+        ],
+        "item": {
+          "id": "cobblemon:leftovers",
+          "status": "tem",
+          "reason": "Sintético."
+        },
+        "matchups": [
+          {
+            "opponentId": "synthetic:golpes#0",
+            "outcome": "vence",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": true,
+            "faster": true,
+            "moveId": "cobblemon:shadowball",
+            "damage": [
+              {
+                "moveId": "cobblemon:shadowball",
+                "minPercent": 62.1,
+                "maxPercent": 73.4,
+                "effectiveness": 2
+              },
+              {
+                "moveId": "cobblemon:tackle",
+                "minPercent": 0,
+                "maxPercent": 0,
+                "effectiveness": 0
+              }
+            ]
+          },
+          {
+            "opponentId": "synthetic:golpes#1",
+            "outcome": "vence",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": true,
+            "faster": true,
+            "moveId": "cobblemon:shadowball",
+            "damage": [
+              {
+                "moveId": "cobblemon:shadowball",
+                "minPercent": 48,
+                "maxPercent": 57.3,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:tackle",
+                "minPercent": 0,
+                "maxPercent": 0,
+                "effectiveness": 0
+              }
+            ]
+          },
+          {
+            "opponentId": "synthetic:golpes#2",
+            "outcome": "perde",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": false,
+            "faster": true,
+            "moveId": "cobblemon:shadowball",
+            "damage": [
+              {
+                "moveId": "cobblemon:shadowball",
+                "minPercent": 22.5,
+                "maxPercent": 26.8,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:tackle",
+                "minPercent": 12,
+                "maxPercent": 14.1,
+                "effectiveness": 1
+              }
+            ]
+          }
+        ],
+        "acquire": [
+          {
+            "moveId": "cobblemon:moonblast",
+            "route": {
+              "kind": "nível",
+              "level": 35
+            },
+            "replacesMoveId": "cobblemon:tackle",
+            "gainPercent": 12.5,
+            "reason": "x"
+          },
+          {
+            "moveId": "cobblemon:icebeam",
+            "route": {
+              "kind": "tm",
+              "level": null
+            },
+            "replacesMoveId": null,
+            "gainPercent": 8.1,
+            "reason": "x"
+          },
+          {
+            "moveId": "cobblemon:wish",
+            "route": {
+              "kind": "ovo",
+              "level": null
+            },
+            "replacesMoveId": "cobblemon:swordsdance",
+            "gainPercent": 6.3,
+            "reason": "x"
+          },
+          {
+            "moveId": "cobblemon:drainpunch",
+            "route": {
+              "kind": "tutor",
+              "level": null
+            },
+            "replacesMoveId": null,
+            "gainPercent": 4.2,
+            "reason": "x"
+          }
+        ],
+        "tips": []
+      },
+      {
+        "uuid": "00000000-0000-4000-8000-000000000120",
+        "speciesId": "cobblemon:pikachu",
+        "level": 39,
+        "reason": "pikachu entra no time sintético.",
+        "moves": [
+          {
+            "id": "cobblemon:thunderbolt",
+            "evaluated": true,
+            "source": "equipado"
+          },
+          {
+            "id": "cobblemon:surf",
+            "evaluated": true,
+            "source": "equipado"
+          },
+          {
+            "id": "cobblemon:seismictoss",
+            "evaluated": true,
+            "source": "aprendido"
+          },
+          {
+            "id": "cobblemon:swordsdance",
+            "evaluated": false,
+            "source": "aprendido"
+          }
+        ],
+        "item": {
+          "id": "cobblemon:leftovers",
+          "status": "tem",
+          "reason": "Sintético."
+        },
+        "matchups": [
+          {
+            "opponentId": "synthetic:golpes#0",
+            "outcome": "perde",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": false,
+            "faster": true,
+            "moveId": "cobblemon:seismictoss",
+            "damage": [
+              {
+                "moveId": "cobblemon:thunderbolt",
+                "minPercent": 18.2,
+                "maxPercent": 21.7,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:surf",
+                "minPercent": 15,
+                "maxPercent": 17.9,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:seismictoss",
+                "minPercent": 39.4,
+                "maxPercent": 39.4,
+                "effectiveness": null
+              }
+            ]
+          },
+          {
+            "opponentId": "synthetic:golpes#1",
+            "outcome": "vence",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": true,
+            "faster": true,
+            "moveId": "cobblemon:surf",
+            "damage": [
+              {
+                "moveId": "cobblemon:thunderbolt",
+                "minPercent": 7.1,
+                "maxPercent": 8.4,
+                "effectiveness": 0.5
+              },
+              {
+                "moveId": "cobblemon:surf",
+                "minPercent": 41.3,
+                "maxPercent": 49.2,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:seismictoss",
+                "minPercent": 40,
+                "maxPercent": 40,
+                "effectiveness": null
+              }
+            ]
+          },
+          {
+            "opponentId": "synthetic:golpes#2",
+            "outcome": "perde",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": false,
+            "faster": true,
+            "moveId": "cobblemon:thunderbolt",
+            "damage": [
+              {
+                "moveId": "cobblemon:thunderbolt",
+                "minPercent": 30.2,
+                "maxPercent": 36.4,
+                "effectiveness": 2
+              },
+              {
+                "moveId": "cobblemon:surf",
+                "minPercent": 11.1,
+                "maxPercent": 13.2,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:seismictoss",
+                "minPercent": 39,
+                "maxPercent": 39,
+                "effectiveness": null
+              }
+            ]
+          }
+        ],
+        "acquire": [
+          {
+            "moveId": "cobblemon:moonblast",
+            "route": {
+              "kind": "nível",
+              "level": 35
+            },
+            "replacesMoveId": "cobblemon:tackle",
+            "gainPercent": 12.5,
+            "reason": "x"
+          },
+          {
+            "moveId": "cobblemon:icebeam",
+            "route": {
+              "kind": "tm",
+              "level": null
+            },
+            "replacesMoveId": null,
+            "gainPercent": 8.1,
+            "reason": "x"
+          }
+        ],
+        "tips": []
+      },
+      {
+        "uuid": "00000000-0000-4000-8000-000000000130",
+        "speciesId": "cobblemon:charizard",
+        "level": 43,
+        "reason": "charizard entra no time sintético.",
+        "moves": [
+          {
+            "id": "cobblemon:flamethrower",
+            "evaluated": true,
+            "source": "equipado"
+          },
+          {
+            "id": "cobblemon:earthquake",
+            "evaluated": true,
+            "source": "equipado"
+          },
+          {
+            "id": "cobblemon:tackle",
+            "evaluated": true,
+            "source": "aprendido"
+          },
+          {
+            "id": "cobblemon:swordsdance",
+            "evaluated": false,
+            "source": "aprendido"
+          }
+        ],
+        "item": {
+          "id": "cobblemon:leftovers",
+          "status": "tem",
+          "reason": "Sintético."
+        },
+        "matchups": [
+          {
+            "opponentId": "synthetic:golpes#0",
+            "outcome": "vence",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": true,
+            "faster": true,
+            "moveId": "cobblemon:flamethrower",
+            "damage": [
+              {
+                "moveId": "cobblemon:flamethrower",
+                "minPercent": 44.4,
+                "maxPercent": 52.7,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:earthquake",
+                "minPercent": 0,
+                "maxPercent": 0,
+                "effectiveness": 0
+              },
+              {
+                "moveId": "cobblemon:tackle",
+                "minPercent": 0,
+                "maxPercent": 0,
+                "effectiveness": 0
+              }
+            ]
+          },
+          {
+            "opponentId": "synthetic:golpes#1",
+            "outcome": "perde",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": false,
+            "faster": true,
+            "moveId": "cobblemon:flamethrower",
+            "damage": [
+              {
+                "moveId": "cobblemon:flamethrower",
+                "minPercent": 35,
+                "maxPercent": 41.4,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:earthquake",
+                "minPercent": 0,
+                "maxPercent": 0,
+                "effectiveness": 0
+              },
+              {
+                "moveId": "cobblemon:tackle",
+                "minPercent": 10.2,
+                "maxPercent": 12,
+                "effectiveness": 1
+              }
+            ]
+          },
+          {
+            "opponentId": "synthetic:golpes#2",
+            "outcome": "perde",
+            "ourTurns": 3,
+            "theirTurns": 2,
+            "holds": false,
+            "faster": true,
+            "moveId": "cobblemon:earthquake",
+            "damage": [
+              {
+                "moveId": "cobblemon:flamethrower",
+                "minPercent": 14.7,
+                "maxPercent": 17.3,
+                "effectiveness": 0.5
+              },
+              {
+                "moveId": "cobblemon:earthquake",
+                "minPercent": 20.1,
+                "maxPercent": 23.9,
+                "effectiveness": 1
+              },
+              {
+                "moveId": "cobblemon:tackle",
+                "minPercent": 9.9,
+                "maxPercent": 11.7,
+                "effectiveness": 1
+              }
+            ]
+          }
+        ],
+        "acquire": [],
+        "tips": []
+      }
+    ],
+    "partyPlan": {
+      "basis": "simulação",
+      "basisReason": null,
+      "slots": [
+        {
+          "uuid": "00000000-0000-4000-8000-000000000110",
+          "speciesId": "cobblemon:gardevoir",
+          "fromSlot": 0,
+          "change": "mantém",
+          "replaces": null,
+          "role": "Sintético"
+        },
+        {
+          "uuid": "00000000-0000-4000-8000-000000000120",
+          "speciesId": "cobblemon:pikachu",
+          "fromSlot": 1,
+          "change": "mantém",
+          "replaces": null,
+          "role": "Sintético"
+        },
+        {
+          "uuid": "00000000-0000-4000-8000-000000000130",
+          "speciesId": "cobblemon:charizard",
+          "fromSlot": 2,
+          "change": "mantém",
+          "replaces": null,
+          "role": "Sintético"
+        }
+      ],
+      "toPc": []
+    },
+    "excluded": [],
+    "assumptions": [
+      "Resultado sintético determinístico do modo de teste da UI."
+    ],
+    "limits": [
+      "Singles."
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+.skeleton {
+  display: grid;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: calc(17 * var(--u)) minmax(0, 1fr) calc(21 * var(--u));
+  gap: calc(0.7 * var(--u));
+  padding: calc(0.7 * var(--u));
+}
+
+.column {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: calc(0.5 * var(--u));
+}
+
+.block {
+  min-height: calc(3.6 * var(--u));
+  flex: 1 1 0;
+  border-radius: calc(0.9 * var(--u));
+  background: var(--color-sunken);
+  animation: skeleton-pulse var(--duration-hp) ease-in-out infinite alternate;
+}
+
+.block[data-size="verdict"] {
+  flex: 0 0 calc(6.2 * var(--u));
+}
+
+.block[data-size="art"] {
+  flex: 2 1 0;
+}
+
+@keyframes skeleton-pulse {
+  from {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block {
+    animation: none;
+  }
+}
+
+@container guia-workspace (max-width: 1099.98px) {
+  .skeleton {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .block {
+    flex: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .block {
+    border: 1px solid CanvasText;
+  }
+}

@@ -1439,8 +1439,8 @@ async function exerciseGuideContract(contents) {
   })()`,
   );
   check(
-    result.trainers.length === 1 && result.trainers[0].format === 'singles',
-    'A lista de treinadores sintética não tem 1 treinador singles.',
+    result.trainers.length === 2 && result.trainers[0].format === 'singles',
+    'A lista de treinadores sintética não tem 2 treinadores singles.',
   );
   check(
     result.nextGoal.trainerId === result.trainers[0].id &&
@@ -1528,6 +1528,156 @@ async function setLevelCapField(contents, value) {
     input.dispatchEvent(new Event('input', {bubbles: true}));
   })()`,
   );
+}
+
+/** Tela "Golpes": cenário sintético com status, imunidade, golpe fora do catálogo, sem cálculo e rota por ovo. */
+async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
+  const contents = window.webContents;
+  const view = (selector) => `document.querySelector('[aria-label="Trainer Card"] ${selector}')`;
+  const clickByLabel = (selector, labelStart) =>
+    evaluate(
+      contents,
+      `(() => {
+        const node = [...document.querySelectorAll('[aria-label="Trainer Card"] ${selector}')].find(item => (item.getAttribute('aria-label') || item.textContent).trim().startsWith(${JSON.stringify(labelStart)}));
+        if (!node) throw new Error('Controle ${labelStart} não encontrado na tela de golpes.');
+        node.click();
+      })()`,
+    );
+  const text = (selector) => evaluate(contents, `${view(selector)}?.innerText || ''`);
+
+  await setSearch('Lider de Golpes');
+  await waitFor(
+    contents,
+    `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].some(b => b.textContent.includes('Líder de Golpes'))`,
+    'treinador do cenário de golpes na busca livre',
+  );
+  await evaluate(
+    contents,
+    `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].find(b => b.textContent.includes('Líder de Golpes')).click()`,
+  );
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Ferramentas do guia"] [role="tab"][aria-label="Golpes"]:not([aria-disabled="true"])'))`,
+    'aba Golpes habilitada com o resultado do treinador',
+  );
+  await selectGuideTab(contents, 'Golpes');
+  await waitFor(contents, `Boolean(${view('section[aria-label="Veredito"]')})`, 'tela de golpes carregada');
+  // Com o Guia a partir de 1100px de largura (janela ≥ ~1400px) o Trainer Card ocupa a altura sem rolar a página.
+  await setViewport(window, 1440, 800, 'viewport 1440×800 da tela de golpes');
+  await delay(400);
+  await assertGuideNoScroll(contents, 'na tela de golpes (1440×800)');
+
+  // Gardevoir contra Gengar: super eficaz, imunidade, status e golpe fora do catálogo.
+  const rows = await text('section[aria-label="Lista de golpes"]');
+  for (const expected of [
+    'Super eficaz',
+    'Sem efeito',
+    '0%',
+    'Golpe de status',
+    'não tira HP',
+    'Não conhecemos este golpe',
+    'Sem cálculo',
+    'sem faixa de dano',
+  ]) {
+    check(rows.includes(expected), `A lista de golpes não mostrou "${expected}".`);
+  }
+  const verdict = await text('section[aria-label="Veredito"]');
+  for (const expected of ['Resultado', 'Turnos para derrubar', 'Turnos até cair', 'Quem age primeiro', 'Segura a troca']) {
+    check(verdict.includes(expected), `O veredito não mostrou "${expected}".`);
+  }
+  const acquire = await evaluate(
+    contents,
+    `(() => {const node = [...document.querySelectorAll('[aria-label="Trainer Card"] section[aria-label="A adquirir"] [data-tooltip]')][0]; return node ? {text: node.textContent, tip: node.dataset.tooltip, tab: node.tabIndex} : null;})()`,
+  );
+  check(
+    acquire?.text.includes('Ovo · precisa de um Pokémon novo') && acquire.tip.length > 20 && acquire.tab === 0,
+    'A rota por ovo não mostrou "Ovo · precisa de um Pokémon novo" com explicação em tooltip.',
+  );
+  const opponentText = await text('section[aria-label="Adversário"]');
+  check(
+    opponentText.toLowerCase().includes('um destes 4') && opponentText.includes('Lum Berry'),
+    'O adversário não listou todos os itens possíveis.',
+  );
+  await capture(window, path.join(runDirectory, 'golpes-1440x800.png'), '[aria-label="Veredito"]');
+
+  // Pikachu: golpe sem cálculo (efetividade desconhecida) e resistência.
+  await clickByLabel('ul button', 'Pikachu');
+  await waitFor(contents, `${view('section[aria-label="Veredito"]')}.innerText.includes('Pikachu')`, 'troca de membro na tela de golpes');
+  check(
+    (await text('section[aria-label="Lista de golpes"]')).includes('Sem cálculo'),
+    'O golpe com efetividade desconhecida não mostrou "Sem cálculo".',
+  );
+  await clickByLabel('section[aria-label="Adversário"] button', 'Pikachu');
+  await waitFor(contents, `${view('section[aria-label="Veredito"]')}.innerText.includes('contra Pikachu')`, 'troca de adversário');
+  check((await text('section[aria-label="Lista de golpes"]')).includes('Pouco eficaz'), 'A resistência não mostrou "Pouco eficaz".');
+  await clickByLabel('section[aria-label="Lista de golpes"] button', 'Swords Dance');
+  check(
+    (await text('section[aria-label="Golpe em foco"]')).includes('Golpe de status'),
+    'O foco do golpe de status não explicou que ele não tira HP.',
+  );
+  await capture(window, path.join(runDirectory, 'golpes-status-focus.png'), '[aria-label="Veredito"]');
+  await clickByLabel('ul button', 'Gardevoir');
+  await clickByLabel('section[aria-label="Lista de golpes"] button', 'Synthetic');
+  await capture(window, path.join(runDirectory, 'golpes-blocked-focus.png'), '[aria-label="Veredito"]');
+
+  await setViewport(window, 1568, 880, 'viewport 1568×880 da tela de golpes');
+  await delay(400);
+  await assertGuideNoScroll(contents, 'na tela de golpes (1568×880)');
+  await capture(window, path.join(runDirectory, 'golpes-1568x880.png'), '[aria-label="Veredito"]');
+  await setViewport(window, 1280, 800, 'viewport 1280×800 da tela de golpes');
+  await delay(400);
+  const stacked = await evaluate(contents, `({scrollWidth: document.documentElement.scrollWidth, width: window.innerWidth})`);
+  check(
+    stacked.scrollWidth <= stacked.width,
+    `A tela de golpes tem rolagem horizontal em 1280px (${stacked.scrollWidth} > ${stacked.width}).`,
+  );
+  await capture(window, path.join(runDirectory, 'golpes-1280x800-empilhada.png'), '[aria-label="Veredito"]');
+
+  // Janela estreita: empilha, sem rolagem horizontal.
+  await setViewport(window, 800, 900, 'viewport 800×900 da tela de golpes');
+  await delay(400);
+  const narrow = await evaluate(contents, `({scrollWidth: document.documentElement.scrollWidth, width: window.innerWidth})`);
+  check(narrow.scrollWidth <= narrow.width, `A tela de golpes tem rolagem horizontal em 800px (${narrow.scrollWidth} > ${narrow.width}).`);
+  await capture(window, path.join(runDirectory, 'golpes-800x900.png'), '[aria-label="Veredito"]');
+
+  // Forced colors e movimento reduzido: o foco do golpe tem contorno do sistema e as animações param.
+  await setViewport(window, 1440, 1000, 'retorno ao viewport padrão após a tela de golpes');
+  contents.debugger.attach('1.3');
+  try {
+    await contents.debugger.sendCommand('Emulation.setEmulatedMedia', {
+      features: [
+        {name: 'forced-colors', value: 'active'},
+        {name: 'prefers-reduced-motion', value: 'reduce'},
+      ],
+    });
+    await delay(100);
+    const media = await evaluate(
+      contents,
+      `(() => {
+        const row = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Lista de golpes"] button[aria-pressed="true"]');
+        const panel = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]');
+        return {outline: getComputedStyle(row).outlineStyle, outlineWidth: getComputedStyle(row).outlineWidth, animation: getComputedStyle(panel).animationName};
+      })()`,
+    );
+    check(
+      media.outline === 'solid' && media.outlineWidth === '3px',
+      `Em forced-colors o golpe selecionado perdeu o contorno (${JSON.stringify(media)}).`,
+    );
+    check(media.animation === 'none', 'Com movimento reduzido a animação de entrada do painel continua ativa.');
+  } finally {
+    await contents.debugger.sendCommand('Emulation.setEmulatedMedia', {features: []});
+    contents.debugger.detach();
+  }
+  console.log('PASS tela de golpes contra o adversário (estados, rolagem, forced-colors e movimento reduzido)');
+
+  await selectGuideTab(contents, 'Equipe');
+  await switchGuideView('Busca livre');
+  await waitFor(
+    contents,
+    `Boolean(document.querySelector('[aria-label="Trainer Card"] input[type="search"]'))`,
+    'busca livre após a tela de golpes',
+  );
+  await setSearch('');
 }
 
 async function exerciseGuideWorkspace(window) {
@@ -1857,6 +2007,7 @@ async function exerciseGuideWorkspace(window) {
     })()`,
   );
   await waitFor(contents, `${optionCount} === ${allStages}`, 'restauração da lista completa após limpar busca');
+  await exerciseMatchupView(window, {setSearch, switchGuideView});
   await setSearch('Sintetico');
   await waitFor(
     contents,

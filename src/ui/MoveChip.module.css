@@ -46,22 +46,22 @@
 .tile {
   display: grid;
   min-width: 0;
-  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-columns: var(--move-tile-icon, 36px) minmax(0, 1fr);
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
+  padding: var(--move-tile-padding, var(--space-2) var(--space-3) var(--space-2) var(--space-2));
   border-radius: var(--radius-card);
-  background: var(--color-sunken);
+  background: var(--move-tile-background, var(--color-sunken));
 }
 
 .tileIcon {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: var(--move-tile-icon, 36px);
+  height: var(--move-tile-icon, 36px);
   place-items: center;
   border-radius: var(--radius-control);
   background: color-mix(in oklab, var(--move-type) 30%, var(--color-sunken));
-  font-size: 20px;
+  font-size: calc(var(--move-tile-icon, 36px) * 0.55);
 }
 
 .tileIcon[data-mode="type"] {
@@ -70,7 +70,7 @@
 }
 
 .tileTypeIcon {
-  font-size: 20px;
+  font-size: calc(var(--move-tile-icon, 36px) * 0.55);
 }
 
 .power {

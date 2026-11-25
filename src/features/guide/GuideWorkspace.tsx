@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {lazy, Suspense, useEffect, useMemo, useState} from 'react';
 import type {ReactNode} from 'react';
 import {speciesDisplay} from '../../domain/dex';
 import type {CompanionApi, GuideResult, GuideTeamMember, PlayerIndividual, PlayerSnapshot} from '../../platform/api';
@@ -25,10 +25,13 @@ import {TrainingSection} from './TrainingSection';
 import type {TrainingPlanController} from './useTrainingPlan';
 import rawCampaign from '../../../data/guide/campaign.json';
 import {guideToolStatuses} from './tool-status';
+import {MatchupSkeleton} from './MatchupSkeleton';
 import {ToolFrame} from './ToolFrame';
 import {TrainerCard, type CardNotices} from './TrainerCard';
 import type {Campaign} from './campaign-model';
 import styles from './GuideWorkspace.module.css';
+
+const MatchupView = lazy(() => import('./MatchupView').then((module) => ({default: module.MatchupView})));
 
 const CAMPAIGN = rawCampaign as unknown as Campaign;
 
@@ -227,6 +230,9 @@ function buildToolBody({
   evolutions,
   training,
   captures,
+  api,
+  result,
+  individuals,
 }: {
   tool: GuideTab;
   status: GuideToolStatus;
@@ -237,6 +243,9 @@ function buildToolBody({
   evolutions: EvolutionPlanController;
   training: TrainingPlanController;
   captures: CapturePlanController;
+  api: () => CompanionApi;
+  result: GuideResult;
+  individuals: ReadonlyMap<string, PlayerIndividual>;
 }): ReactNode {
   const chips = status.badge ? [{tone: status.badge.tone, text: status.subtitle}] : [];
   const frame = (
@@ -255,6 +264,12 @@ function buildToolBody({
     </ToolFrame>
   );
   switch (tool) {
+    case 'moves':
+      return (
+        <Suspense fallback={<MatchupSkeleton />}>
+          <MatchupView api={api} result={result} individuals={individuals} />
+        </Suspense>
+      );
     case 'battle':
       return frame(
         'Plano de batalha',
@@ -328,6 +343,9 @@ export function GuideWorkspace({
         evolutions,
         training,
         captures,
+        api,
+        result,
+        individuals: lookup.individuals,
       })
     : null;
 
