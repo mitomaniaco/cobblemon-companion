@@ -1,10 +1,22 @@
 import {useMemo, useState} from 'react';
 import type {CSSProperties} from 'react';
-import {Check, Egg, Question, X} from '@phosphor-icons/react';
+import {Check, Egg, Info, Question, X} from '@phosphor-icons/react';
 import {itemLabel} from '../../domain/catalog-labels';
 import {abilityName, dexId, moveDisplay, speciesDisplay} from '../../domain/dex';
 import type {CompanionApi, GuideAcquireEntry, GuideResult, GuideTeamMember, GuideTrainerDetail, PlayerIndividual} from '../../platform/api';
-import {Disclosure, HpBar, ItemIcon, MoveChip, MovePpMeta, PokemonArtwork, TypeBadge, TypeIcon, typeColorVar, typeInkVar} from '../../ui';
+import {
+  Button,
+  Dialog,
+  HpBar,
+  ItemIcon,
+  MoveChip,
+  MovePpMeta,
+  PokemonArtwork,
+  TypeBadge,
+  TypeIcon,
+  typeColorVar,
+  typeInkVar,
+} from '../../ui';
 import {
   EGG_ROUTE_TOOLTIP,
   accuracyLabel,
@@ -269,10 +281,14 @@ export function MatchupView({api, result, individuals}: MatchupViewProps) {
               <FocusPanel
                 row={focusRow}
                 stab={focusRow.kind === 'damage' && memberSpecies.types.some((type) => type === moveDisplay(focusRow.moveId).type)}
+                onOpenCalculation={() => setCalcOpen(true)}
               />
-              <Disclosure title="Como calculamos" headingLevel={3} isExpanded={calcOpen} onExpandedChange={setCalcOpen}>
+              <Dialog isOpen={calcOpen} onOpenChange={setCalcOpen} title="Como calculamos">
+                {focusRow.kind !== 'blocked' && (
+                  <p className={styles.calcAccuracy}>Precisão {accuracyLabel(moveText(focusRow.moveId).accuracy)}</p>
+                )}
                 <p className={styles.note}>{COMO_CALCULAMOS}</p>
-              </Disclosure>
+              </Dialog>
             </section>
           )}
           <Acquire entries={member.acquire} />
@@ -378,17 +394,20 @@ function MoveButton({
   );
 }
 
-function FocusPanel({row, stab}: {row: MoveRow; stab: boolean}) {
+function FocusPanel({row, stab, onOpenCalculation}: {row: MoveRow; stab: boolean; onOpenCalculation(): void}) {
   const display = moveDisplay(row.moveId);
   const description = moveText(row.moveId).description;
   const reasons = row.kind === 'damage' ? focusReasons(row, stab) : null;
   return (
     <div className={styles.focus}>
       <div>
-        <h3>
-          {display.name}
-          {row.kind !== 'blocked' && ` · Precisão ${accuracyLabel(moveText(row.moveId).accuracy)}`}
-        </h3>
+        <div className={styles.focusHead}>
+          <h3>{display.name}</h3>
+          <Button variant="quiet" className={styles.calcButton} onPress={onOpenCalculation}>
+            <Info weight="bold" aria-hidden="true" />
+            Como calculamos
+          </Button>
+        </div>
         <p>
           {row.kind === 'blocked'
             ? row.inCatalog

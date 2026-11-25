@@ -1595,6 +1595,14 @@ async function logMatchupLayout(contents, label) {
   return layout;
 }
 
+/** Coluna central da tela de golpes: sem rolagem e sem texto cortado no estado medido. */
+async function assertMatchupColumnFits(contents, label) {
+  const layout = await logMatchupLayout(contents, label);
+  check(layout.scrollHeight <= layout.clientHeight, `A coluna central rola (${layout.scrollHeight} > ${layout.clientHeight}) em ${label}.`);
+  check(layout.clipped.length === 0, `Texto cortado na tela de golpes em ${label}: ${layout.clipped.join(' | ')}.`);
+  return layout;
+}
+
 /** Tela "Golpes": cenário sintético com status, imunidade, golpe fora do catálogo, sem cálculo e rota por ovo. */
 async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   const contents = window.webContents;
@@ -1609,6 +1617,27 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
       })()`,
     );
   const text = (selector) => evaluate(contents, `${view(selector)}?.innerText || ''`);
+  // Coluna central sem rolagem no padrão ao abrir e depois de golpe de dano, de status e bloqueado.
+  let defaultFocus = null;
+  const checkStates = async (label) => {
+    const focusName = await evaluate(contents, `${view('section[aria-label="Golpe em foco"] h3')}?.textContent || ''`);
+    defaultFocus ??= focusName;
+    check(focusName === defaultFocus, `O foco abriu em "${focusName}" em ${label}, não no padrão "${defaultFocus}".`);
+    await assertMatchupColumnFits(contents, `${label} · padrão`);
+    for (const [move, state] of [
+      ['Shadow Ball', 'dano'],
+      ['Swords Dance', 'status'],
+      ['Synthetic', 'bloqueado'],
+    ]) {
+      await clickByLabel('section[aria-label="Lista de golpes"] button', move);
+      await waitFor(
+        contents,
+        `${view('section[aria-label="Golpe em foco"] h3')}?.textContent.includes(${JSON.stringify(move)})`,
+        `foco do golpe ${move} (${label})`,
+      );
+      await assertMatchupColumnFits(contents, `${label} · ${state}`);
+    }
+  };
 
   await setSearch('Lider de Golpes');
   await waitFor(
@@ -1632,6 +1661,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   await delay(400);
   await assertGuideNoScroll(contents, 'na tela de golpes (1440×800)');
   await assertMatchupOverflow(contents, '1440×800');
+  await checkStates('1440×800');
 
   // Gardevoir contra Gengar: super eficaz, imunidade, status e golpe fora do catálogo.
   const rows = await text('section[aria-label="Lista de golpes"]');
@@ -1690,6 +1720,26 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   await delay(400);
   await assertGuideNoScroll(contents, 'na tela de golpes (1568×880)');
   await assertMatchupOverflow(contents, '1568×880');
+  // Estado padrão de novo: trocar de aba remonta a tela de golpes.
+  await selectGuideTab(contents, 'Equipe');
+  await selectGuideTab(contents, 'Golpes');
+  await waitFor(contents, `Boolean(${view('section[aria-label="Veredito"]')})`, 'tela de golpes reaberta');
+  await checkStates('1568×880');
+  // Dialog "Como calculamos": abre pelo botão, Esc fecha e o foco volta ao botão.
+  await setViewport(window, 1568, 880, 'retorno ao viewport 1568×880 para o diálogo');
+  await clickByLabel('section[aria-label="Golpe em foco"] button', 'Como calculamos');
+  await waitFor(contents, `Boolean(document.querySelector('[role="dialog"]'))`, 'diálogo Como calculamos aberto');
+  await capture(window, path.join(runDirectory, 'golpes-dialog-como-calculamos.png'), '[role="dialog"]');
+  check(
+    await evaluate(contents, `document.querySelector('[role="dialog"]')?.innerText.includes('Como calculamos') ?? false`),
+    'O diálogo Como calculamos não mostra o título.',
+  );
+  await evaluate(contents, `document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))`);
+  await waitFor(contents, `!document.querySelector('[role="dialog"]')`, 'diálogo Como calculamos fechado com Esc');
+  check(
+    await evaluate(contents, `document.activeElement?.textContent.includes('Como calculamos') ?? false`),
+    'O foco não voltou ao botão Como calculamos ao fechar o diálogo.',
+  );
   for (const [width, height] of [
     [1920, 1080],
     [1280, 680],
