@@ -141,6 +141,8 @@ export interface TrainerCardProps {
   toolStatus: Record<GuideTab, GuideToolStatus>;
   /** Tudo que antes ficava abaixo do card, num diálogo aberto pelo botão "Avisos" da barra. */
   notices: CardNotices;
+  /** Nome do mundo de demonstração para o subtítulo; `null` fora da demonstração. */
+  demoWorldName: string | null;
 }
 
 export interface CardNotices {
@@ -684,6 +686,7 @@ export function TrainerCard({
   toolBody,
   toolStatus,
   notices,
+  demoWorldName,
 }: TrainerCardProps) {
   const [noticesOpen, setNoticesOpen] = useState(false);
   const [view, setView] = useState<CardView>('campaign');
@@ -1137,7 +1140,7 @@ export function TrainerCard({
         <PokeBallMark className={styles.barMark} variant="filled" />
         <div className={styles.barTitle}>
           <h3>Trainer Card</h3>
-          <span>{seriesLabel(seriesId)}</span>
+          <span>{demoWorldName ? `${seriesLabel(seriesId)} · ${demoWorldName}` : seriesLabel(seriesId)}</span>
         </div>
         {seriesIds.length > 1 && (
           <Select

@@ -1,11 +1,23 @@
 import {lazy, Suspense, useCallback, useEffect, useRef, useState} from 'react';
-import {Archive, ArrowClockwise, Compass, Flask, Info, Lifebuoy, LockSimple, Sword, UsersThree} from '@phosphor-icons/react';
+import {
+  Archive,
+  ArrowClockwise,
+  ArrowsLeftRight,
+  Compass,
+  Flask,
+  Info,
+  Lifebuoy,
+  LockSimple,
+  SignOut,
+  Sword,
+  UsersThree,
+} from '@phosphor-icons/react';
 import {DemoWorkspace} from '../features/demo/DemoWorkspace';
 import {useDamagePlanner} from '../features/damage/controller';
 import {CollectionWorkspace} from '../features/collection/CollectionWorkspace';
 import {IndividualWorkspace} from '../features/individual/IndividualWorkspace';
 import type {IndividualWorkspaceTab} from '../features/individual/IndividualWorkspace';
-import {getCompanionApi, type GuideTeamMember, type PlayerSnapshot} from '../platform/api';
+import {getCompanionApi, type DataSource, type GuideTeamMember, type PlayerSnapshot} from '../platform/api';
 import {guideCalculationTarget, type GuideTab} from '../features/guide/guide-model';
 import {useGuide} from '../features/guide/useGuide';
 import {useBattlePlan} from '../features/guide/useBattlePlan';
@@ -57,7 +69,7 @@ const PRIMARY_NAVIGATION: NavigationItem[] = [
 ];
 
 const SECONDARY_NAVIGATION: NavigationItem[] = [
-  {id: 'demo', label: 'Demonstração', Icon: Flask},
+  {id: 'demo', label: 'Comparação fixa', Icon: ArrowsLeftRight},
   {id: 'help', label: 'Ajuda e diagnóstico', Icon: Lifebuoy},
 ];
 
@@ -87,7 +99,7 @@ function workspaceTitle(workspace: Workspace) {
   if (workspace === 'team') return 'Equipe';
   if (workspace === 'pc') return 'PC';
   if (workspace === 'damage') return 'Planejador de dano';
-  if (workspace === 'demo') return 'Demonstração offline';
+  if (workspace === 'demo') return 'Comparação fixa';
   return 'Ajuda e diagnóstico';
 }
 
@@ -301,30 +313,38 @@ function CaptureDetails({
   );
 }
 
+function LoadingSkeleton({title}: {title: string}) {
+  return (
+    <section className={styles.loadingState} aria-busy="true" aria-live="polite">
+      <h2>{title}</h2>
+      <div className={styles.loadingSlots} aria-hidden="true">
+        {Array.from({length: 6}, (_, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: static loading skeleton with fixed count of 6, never reorders
+          <div className={styles.loadingSlot} key={index} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SourceSwitchState({target}: {target: DataSource}) {
+  return <LoadingSkeleton title={target === 'demo' ? 'Preparando a demonstração…' : 'Voltando ao save…'} />;
+}
+
 function NoSnapshotState({
   phase,
   error,
   onRefresh,
   onOpenHelp,
+  onOpenDemo,
 }: {
   phase: 'idle' | 'loading' | 'loaded' | 'error';
   error: string | null;
   onRefresh(): void;
   onOpenHelp(): void;
+  onOpenDemo(): void;
 }) {
-  if (phase === 'loading') {
-    return (
-      <section className={styles.loadingState} aria-busy="true" aria-live="polite">
-        <h2>Lendo o save…</h2>
-        <div className={styles.loadingSlots} aria-hidden="true">
-          {Array.from({length: 6}, (_, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: static loading skeleton with fixed count of 6, never reorders
-            <div className={styles.loadingSlot} key={index} />
-          ))}
-        </div>
-      </section>
-    );
-  }
+  if (phase === 'loading') return <LoadingSkeleton title="Lendo o save…" />;
 
   if (phase === 'error') {
     return (
@@ -332,9 +352,16 @@ function NoSnapshotState({
         <StatusMessage tone="error" title="A leitura não foi concluída">
           {error || 'A ponte local não conseguiu ler a captura.'}
         </StatusMessage>
-        <Button variant="primary" onPress={onRefresh}>
-          Tentar novamente
-        </Button>
+        <div className={styles.emptyActions}>
+          <Button variant="primary" onPress={onRefresh}>
+            Tentar novamente
+          </Button>
+          <Button variant="secondary" onPress={onOpenDemo}>
+            <Flask aria-hidden="true" weight="bold" />
+            Abrir demonstração
+          </Button>
+        </div>
+        <p>Veja o app com dados de exemplo enquanto o save não está disponível.</p>
       </section>
     );
   }
@@ -350,6 +377,10 @@ function NoSnapshotState({
         </Button>
         <Button variant="quiet" onPress={onOpenHelp}>
           Primeira vez? Abrir ajuda
+        </Button>
+        <Button variant="quiet" data-tooltip="Veja o app com dados de exemplo enquanto o save não está disponível." onPress={onOpenDemo}>
+          <Flask aria-hidden="true" weight="bold" />
+          Abrir demonstração
         </Button>
       </div>
     </section>
@@ -398,6 +429,8 @@ export function TrainerApp() {
   const [isCaptureDialogOpen, setIsCaptureDialogOpen] = useState(false);
   const accountSelectionPendingRef = useRef(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [switchingSource, setSwitchingSource] = useState<DataSource | null>(null);
+  const [sourceError, setSourceError] = useState<string | null>(null);
   const [pendingCalculation, setPendingCalculation] = useState<{uuid: string; candidateMoveId?: string; slotIndex?: number} | null>(null);
   const pushedSnapshotRef = useRef<(snapshot: PlayerSnapshot) => void>(() => undefined);
   const previousSelectionRef = useRef<string | null>(session.selectedUuid);
@@ -453,7 +486,8 @@ export function TrainerApp() {
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
   const {input: levelCapInput, setInput: setLevelCapInput, debouncedLevelCap, respectLevelCap, setRespectLevelCap} = useLevelCapState();
-  const progress = useGuideProgress(api);
+  const [sourceRevision, setSourceRevision] = useState(0);
+  const progress = useGuideProgress(api, sourceRevision);
   const progressKey = progress.status === 'ready' ? JSON.stringify(progress.value) : progress.status;
   const effectiveLevelCap = resolveEffectiveLevelCap(
     levelCapInput,
@@ -523,6 +557,8 @@ export function TrainerApp() {
   }
 
   pushedSnapshotRef.current = (snapshot: PlayerSnapshot) => {
+    // Em demonstração o save não é a fonte: um push tardio do save não pode sobrescrever os dados de exemplo.
+    if (switchingSource === 'demo' || session.snapshot?.demo === true) return;
     damageController.invalidateCalculation();
     setSnapshotRevision((revision) => revision + 1);
     session.applySnapshot(snapshot);
@@ -534,6 +570,27 @@ export function TrainerApp() {
       .then(() => api().setAutoRefresh(enabled))
       .then((response) => setAutoRefresh(response.enabled))
       .catch(() => setAutoRefresh(!enabled));
+  }
+
+  async function switchDataSource(source: DataSource) {
+    setSourceError(null);
+    setSwitchingSource(source);
+    try {
+      // Antes da troca, descarta a montagem do guia em voo: o main a rejeita com "fonte trocada", e essa falha não pode aparecer.
+      guide.cancel();
+      await api().setDataSource(source);
+      setSourceRevision((revision) => revision + 1);
+      await refreshSnapshot({supersedePending: true});
+    } catch {
+      setSourceError('A tela atual foi mantida. Tente de novo em instantes.');
+    } finally {
+      setSwitchingSource(null);
+    }
+  }
+
+  function enterDemo() {
+    setWorkspace('guide');
+    return switchDataSource('demo');
   }
 
   function openGuideCalculation(uuid: string, move: GuideTeamMember['moves'][number]) {
@@ -610,7 +667,27 @@ export function TrainerApp() {
       <div className={styles.mainColumn}>
         <header className={styles.header}>
           <h1 className={styles.visuallyHidden}>{title}</h1>
-          {workspace !== 'demo' && (
+          {session.snapshot?.demo === true && (
+            <>
+              <div className={styles.captureStatus}>
+                <span
+                  className={styles.demoSeal}
+                  data-tooltip-heading="Demonstração"
+                  data-tooltip="Você está vendo dados de exemplo. Nada é lido do seu save e nada é gravado."
+                >
+                  <Flask aria-hidden="true" weight="bold" />
+                  <span>Demonstração · dados de exemplo</span>
+                </span>
+              </div>
+              <div className={styles.headerActions}>
+                <Button variant="secondary" isDisabled={switchingSource !== null} onPress={() => void switchDataSource('save')}>
+                  <SignOut aria-hidden="true" weight="bold" />
+                  <span>Sair da demonstração</span>
+                </Button>
+              </div>
+            </>
+          )}
+          {workspace !== 'demo' && session.snapshot?.demo !== true && (
             <>
               <CaptureStatus snapshot={session.snapshot} accountState={saveAccounts.state} />
               <div className={styles.headerActions}>
@@ -637,7 +714,7 @@ export function TrainerApp() {
                   data-testid="refresh-snapshot"
                   className={styles.refreshButton}
                   variant="primary"
-                  isDisabled={session.phase === 'loading'}
+                  isDisabled={session.phase === 'loading' || switchingSource !== null}
                   onPress={() => void refreshSnapshot()}
                 >
                   <ArrowClockwise aria-hidden="true" weight="bold" />
@@ -649,14 +726,31 @@ export function TrainerApp() {
         </header>
 
         <main className={styles.content}>
-          {session.phase === 'loading' && !isCollectionWorkspace && workspace !== 'damage' && workspace !== 'demo' && (
-            <StatusMessage tone="info" title="Leitura local em andamento">
-              A captura anterior foi removida enquanto o Companion atualiza os dados.
-            </StatusMessage>
-          )}
+          {session.phase === 'loading' &&
+            switchingSource === null &&
+            !isCollectionWorkspace &&
+            workspace !== 'damage' &&
+            workspace !== 'demo' && (
+              <StatusMessage tone="info" title="Leitura local em andamento">
+                A captura anterior foi removida enquanto o Companion atualiza os dados.
+              </StatusMessage>
+            )}
           {session.phase === 'error' && !isCollectionWorkspace && workspace !== 'damage' && workspace !== 'demo' && (
-            <StatusMessage className={styles.routeStatus} tone="error" title="A leitura não foi concluída">
-              {safeSessionError || 'A ponte local não conseguiu ler a captura.'}
+            <>
+              <StatusMessage className={styles.routeStatus} tone="error" title="A leitura não foi concluída">
+                {safeSessionError || 'A ponte local não conseguiu ler a captura.'}
+              </StatusMessage>
+              <div className={styles.emptyActions}>
+                <Button variant="secondary" isDisabled={switchingSource !== null} onPress={() => void enterDemo()}>
+                  <Flask aria-hidden="true" weight="bold" />
+                  Abrir demonstração
+                </Button>
+              </div>
+            </>
+          )}
+          {sourceError && (
+            <StatusMessage className={styles.routeStatus} tone="error" title="Não foi possível trocar a fonte de dados">
+              {sourceError}
             </StatusMessage>
           )}
 
@@ -665,16 +759,19 @@ export function TrainerApp() {
           </div>
 
           {workspace !== 'demo' &&
-            (isCollectionWorkspace && noSnapshot ? (
+            (switchingSource !== null ? (
+              <SourceSwitchState target={switchingSource} />
+            ) : isCollectionWorkspace && noSnapshot ? (
               <NoSnapshotState
                 phase={session.phase}
                 error={safeSessionError}
                 onRefresh={() => void refreshSnapshot()}
                 onOpenHelp={() => setWorkspace('help')}
+                onOpenDemo={() => void enterDemo()}
               />
             ) : workspace === 'help' ? (
               <Suspense fallback={<RouteFallback blocks={3} />}>
-                <HelpWorkspace onOpenDemo={() => setWorkspace('demo')} />
+                <HelpWorkspace onOpenDemo={() => void enterDemo()} onOpenFixed={() => setWorkspace('demo')} />
               </Suspense>
             ) : workspace === 'damage' ? (
               <Suspense fallback={<RouteFallback blocks={2} />}>

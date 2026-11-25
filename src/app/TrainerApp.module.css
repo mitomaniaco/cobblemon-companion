@@ -687,7 +687,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .accountSkeleton span {
+  .accountSkeleton span,
+  .demoSeal {
     animation: none;
   }
 }
@@ -703,5 +704,43 @@
 
   .navButtonActive {
     border-color: Highlight;
+  }
+
+  .demoSeal {
+    border: 1px solid CanvasText;
+    color: CanvasText;
+    background: Canvas;
+  }
+}
+
+.demoSeal {
+  display: inline-flex;
+  justify-self: start;
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-warning) 55%, transparent);
+  border-radius: var(--radius-pill);
+  color: var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 16%, var(--color-surface));
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
+  font-weight: 600;
+  animation: seal-in var(--duration-enter) var(--ease-out) both;
+}
+
+@keyframes seal-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

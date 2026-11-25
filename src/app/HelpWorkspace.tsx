@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import {ArrowsLeftRight, Flask} from '@phosphor-icons/react';
 import {Button} from '../ui';
 import styles from './HelpWorkspace.module.css';
 
@@ -23,9 +24,10 @@ const STEPS: Array<{title: string; body: ReactNode}> = [
   },
   {title: 'Escolha um Pokémon', body: 'Cada indivíduo é identificado pelo UUID, mesmo com espécies repetidas.'},
   {title: 'Planeje e calcule', body: 'Simule uma troca de golpe e veja o dano contra um alvo que você define.'},
+  {title: 'Sem save por perto?', body: 'Abra a demonstração para conhecer cada tela com dados de exemplo.'},
 ];
 
-export default function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
+export default function HelpWorkspace({onOpenDemo, onOpenFixed}: {onOpenDemo(): void; onOpenFixed(): void}) {
   return (
     <section className={styles.help} aria-labelledby="help-title">
       <h2 id="help-title" tabIndex={-1}>
@@ -44,31 +46,50 @@ export default function HelpWorkspace({onOpenDemo}: {onOpenDemo(): void}) {
         ))}
       </ol>
 
-      <section className={styles.demo} aria-labelledby="demo-help-title">
-        <div>
-          <h3 id="demo-help-title">Demonstração offline</h3>
-          <p>Pikachu → Floatzel com dados fixos, sem save.</p>
+      <div className={styles.side}>
+        <div className={styles.demoCards}>
+          <section className={`${styles.demo} ${styles.demoMain}`} aria-labelledby="demo-help-title">
+            <div>
+              <h3 id="demo-help-title">
+                <Flask aria-hidden="true" weight="bold" />
+                Demonstração
+              </h3>
+              <p>O app inteiro com dados de exemplo: guia, equipe, PC e dano. Sem save e sem gravar nada.</p>
+            </div>
+            <Button variant="secondary" onPress={onOpenDemo}>
+              Abrir demonstração
+            </Button>
+          </section>
+          <section className={styles.demo} aria-labelledby="fixed-help-title">
+            <div>
+              <h3 id="fixed-help-title">
+                <ArrowsLeftRight aria-hidden="true" weight="bold" />
+                Comparação fixa
+              </h3>
+              <p>Pikachu → Floatzel com dados fixos, para ver ganhos e perdas.</p>
+            </div>
+            <Button variant="secondary" onPress={onOpenFixed}>
+              Abrir comparação
+            </Button>
+          </section>
         </div>
-        <Button variant="primary" onPress={onOpenDemo}>
-          Abrir demonstração
-        </Button>
-      </section>
 
-      <section className={styles.block} aria-labelledby="limits-title">
-        <h3 id="limits-title">Limites</h3>
-        <ul>
-          <li>Não edita o save, não move Pokémon e não equipa golpes.</li>
-          <li>Aparência, apelido, HP atual e stats totais não são capturados nem inventados.</li>
-          <li>O cálculo usa o slot escolhido, um golpe aprendido e condições confirmadas por você.</li>
-          <li>A ilustração representa a espécie na forma normal.</li>
-          <li>
-            Tipos, nomes e poder dos golpes vêm dos dados da espécie e do golpe (Showdown), não do indivíduo; formas alternativas aparecem
-            sem tipo.
-          </li>
-        </ul>
-      </section>
+        <section className={styles.block} aria-labelledby="limits-title">
+          <h3 id="limits-title">Limites</h3>
+          <ul>
+            <li>Não edita o save, não move Pokémon e não equipa golpes.</li>
+            <li>Aparência, apelido, HP atual e stats totais não são capturados nem inventados.</li>
+            <li>O cálculo usa o slot escolhido, um golpe aprendido e condições confirmadas por você.</li>
+            <li>A ilustração representa a espécie na forma normal.</li>
+            <li>
+              Tipos, nomes e poder dos golpes vêm dos dados da espécie e do golpe (Showdown), não do indivíduo; formas alternativas aparecem
+              sem tipo.
+            </li>
+          </ul>
+        </section>
+      </div>
 
-      <section className={styles.block} aria-labelledby="artwork-credit-title">
+      <section className={`${styles.block} ${styles.wide}`} aria-labelledby="artwork-credit-title">
         <h3 id="artwork-credit-title">Ilustrações</h3>
         <p>
           Renders do Pokémon HOME e sprites de itens: PokéAPI/sprites, revisão <code>1aa1b0ca273d0e096469a9846155484920b11b45</code>. Ícones
