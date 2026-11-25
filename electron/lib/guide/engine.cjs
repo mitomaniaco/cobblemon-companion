@@ -1,7 +1,7 @@
 'use strict';
 
 const calc = require('@smogon/calc');
-const {damageRange, pokemonFromSpec} = require('../calc-profile.cjs');
+const {damageDetail, damageRange, pokemonFromSpec} = require('../calc-profile.cjs');
 const {COMPATIBILITY} = require('../real-damage.cjs');
 const {assessEligibility} = require('./eligibility.cjs');
 const {lookup, pveOpponents, trainerOpponents} = require('./opponents.cjs');
@@ -123,11 +123,51 @@ function averagePercent(attacker, defender, moveName, field) {
   return percentRange(attacker, defender, moveName, field).avg;
 }
 
-/** Faixa de dano (% do HP do alvo, HP cheio, sem crítico) de cada golpe contra um adversário. */
+// Golpes cujo dano ignora a tabela de tipos (dano fixo) ou que a alteram por conta própria: sem 0 de dano, o rótulo
+// de eficácia seria uma afirmação que o cálculo não sustenta, então fica desconhecido (null).
+const TYPE_CHART_OVERRIDE_MOVES = new Set([
+  'seismictoss',
+  'nightshade',
+  'dragonrage',
+  'sonicboom',
+  'finalgambit',
+  'freezedry',
+  'flyingpress',
+  'steelroller',
+  'thousandarrows',
+]);
+const ZERO_DAMAGE_NOT_IMMUNITY = new Set(['steelroller']);
+const EFFECTIVENESS_STEPS = new Set([0, 0.25, 0.5, 1, 2, 4]);
+
+/**
+ * Eficácia do golpe contra o adversário (0, ¼, ½, 1, 2 ou 4), no mesmo passo e do mesmo cálculo do dano, para o rótulo
+ * nunca contradizer o número. Dano máximo 0 num golpe de dano é ×0, seja por tipo ou por habilidade (Levitate, Wonder Guard…),
+ * salvo Steel Roller, que falha sem terreno e não tem imunidade. Com dano, vale a tabela de tipos do calc sobre o tipo final
+ * do golpe; null quando a tabela não explica o resultado (golpe de dano fixo ou de tabela própria, ou tabela dizendo ×0
+ * com dano — Scrappy contra Ghost).
+ */
+function effectivenessOf(detail, moveId, defender) {
+  if (detail.moveCategory === 'Status') return null;
+  const name = toId(COMPATIBILITY.moves[moveId].name);
+  if (detail.max === 0 && !ZERO_DAMAGE_NOT_IMMUNITY.has(name)) return 0;
+  if (TYPE_CHART_OVERRIDE_MOVES.has(name)) return null;
+  const chart = generation.types.get(toId(detail.moveType));
+  if (!chart) return null;
+  let multiplier = 1;
+  for (const type of defender.types) multiplier *= chart.effectiveness[type] ?? 1;
+  return multiplier > 0 && EFFECTIVENESS_STEPS.has(multiplier) ? multiplier : null;
+}
+
+/** Faixa de dano (% do HP do alvo, HP cheio, sem crítico) e eficácia de cada golpe contra um adversário. */
 function damagePercents(pokemon, opponentPokemon, moveIds) {
   return moveIds.map((moveId) => {
-    const {min, max, targetHP} = damageRange(pokemon, opponentPokemon, COMPATIBILITY.moves[moveId].name);
-    return {moveId, minPercent: roundOne((min / targetHP) * 100), maxPercent: roundOne((max / targetHP) * 100)};
+    const detail = damageDetail(pokemon, opponentPokemon, COMPATIBILITY.moves[moveId].name);
+    return {
+      moveId,
+      minPercent: roundOne((detail.min / detail.targetHP) * 100),
+      maxPercent: roundOne((detail.max / detail.targetHP) * 100),
+      effectiveness: effectivenessOf(detail, moveId, opponentPokemon),
+    };
   });
 }
 
@@ -264,13 +304,19 @@ function optimizeMember(entry, opponents) {
 
 function learnsetRoutes(learnset, level) {
   const routes = new Map();
-  const add = (moveId, requirement) => {
-    if (!routes.has(moveId)) routes.set(moveId, requirement);
+  const add = (moveId, route) => {
+    if (!routes.has(moveId)) routes.set(moveId, route);
   };
-  for (const move of learnset?.levelUp ?? []) if (move.level > level) add(move.moveId, `nível ${move.level}`);
-  for (const moveId of learnset?.tm ?? []) add(moveId, 'TM');
-  for (const moveId of learnset?.tutor ?? []) add(moveId, 'tutor');
+  for (const move of learnset?.levelUp ?? []) if (move.level > level) add(move.moveId, {kind: 'nível', level: move.level});
+  for (const moveId of learnset?.tm ?? []) add(moveId, {kind: 'tm', level: null});
+  for (const moveId of learnset?.tutor ?? []) add(moveId, {kind: 'tutor', level: null});
   return routes;
+}
+
+/** Texto curto da rota para a frase `reason` ("nível 45", "TM"). */
+function routeLabel(route) {
+  if (route.kind === 'nível') return `nível ${route.level}`;
+  return route.kind === 'tm' ? 'TM' : route.kind;
 }
 
 function roundOne(value) {
@@ -306,13 +352,14 @@ function acquireSuggestions(result, opponents, data) {
   for (const moveId of candidates) {
     const {score} = evaluateSet(all, [...keep, moveId], theirs, opponents, pokemon);
     const gain = ((score - baseScore) / Math.max(baseScore, 1)) * 100;
-    if (gain >= MIN_ACQUIRE_GAIN) suggestions.push({moveId, requirement: routes.get(moveId), replacesMoveId, gainPercent: roundOne(gain)});
+    if (gain >= MIN_ACQUIRE_GAIN) suggestions.push({moveId, route: routes.get(moveId), replacesMoveId, gainPercent: roundOne(gain)});
   }
   suggestions.sort((left, right) => right.gainPercent - left.gainPercent || (left.moveId < right.moveId ? -1 : 1));
   return suggestions.slice(0, MAX_ACQUIRE).map((suggestion) => {
     const name = COMPATIBILITY.moves[suggestion.moveId].name;
     const replaced = suggestion.replacesMoveId ? COMPATIBILITY.moves[suggestion.replacesMoveId]?.name : null;
-    const where = replaced ? `${name} (${suggestion.requirement}) no lugar de ${replaced}` : `${name} (${suggestion.requirement})`;
+    const label = routeLabel(suggestion.route);
+    const where = replaced ? `${name} (${label}) no lugar de ${replaced}` : `${name} (${label})`;
     return {...suggestion, reason: `${where} melhora o time em ${suggestion.gainPercent}%.`};
   });
 }

@@ -81,6 +81,91 @@ describe('motor do guia', () => {
     expect(result.team[0].reason).toContain('vence 0 de 1 adversários.');
   });
 
+  it('eficácia sai do mesmo cálculo do dano: habilidade que anula o golpe dá 0 dano e ×0, nunca o ×1 da tabela de tipos', async () => {
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:absorber',
+      team: [{...data.trainers[0].team[0], speciesId: 'cobblemon:vaporeon', ability: 'waterabsorb', moves: ['cobblemon:surf']}],
+    };
+    const absorbed = await run([individual({species: 'blastoise', level: 40, moves: ['surf']})], trainerGoal('synthetic:absorber'), {
+      data: {...data, trainers: [...data.trainers, trainer]},
+    });
+    const [surf] = absorbed.team[0].matchups[0].damage;
+    expect(surf).toEqual({moveId: 'cobblemon:surf', minPercent: 0, maxPercent: 0, effectiveness: 0});
+
+    // Sem habilidade que anule: Water contra Fire é ×2 e o dano é positivo.
+    const open = await run([individual({species: 'blastoise', level: 40, moves: ['surf']})], trainerGoal('synthetic:fire'));
+    const [open0] = open.team[0].matchups[0].damage;
+    expect(open0.effectiveness).toBe(2);
+    expect(open0.maxPercent).toBeGreaterThan(0);
+  });
+
+  it('imunidade de tipo é ×0 e golpe de dano fixo fica sem eficácia (null), nunca um número presumido', async () => {
+    const golem = individual({species: 'golem', moves: ['earthquake']});
+    const flyer = await run([golem], trainerGoal('synthetic:flyer'));
+    expect(flyer.team[0].matchups[0].damage).toEqual([
+      expect.objectContaining({moveId: 'cobblemon:earthquake', maxPercent: 0, effectiveness: 0}),
+    ]);
+
+    const fixed = individual({species: 'blastoise', level: 40, moves: ['seismictoss']});
+    const result = await run([fixed], trainerGoal('synthetic:fire'));
+    const [toss] = result.team[0].matchups[0].damage;
+    expect(toss.maxPercent).toBeGreaterThan(0);
+    expect(toss.effectiveness).toBeNull();
+  });
+
+  it('Final Gambit: dano é o HP de quem usa, igual contra qualquer tipo, então a eficácia é null e nunca ×0,5 ou ×2', async () => {
+    const pokemon = (speciesId, ability) => ({...data.trainers[0].team[0], speciesId, ability, moves: ['cobblemon:tackle']});
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:gambit',
+      team: [pokemon('cobblemon:venusaur', 'overgrow'), pokemon('cobblemon:chansey', 'naturalcure')],
+    };
+    const blastoise = individual({species: 'blastoise', level: 40, moves: ['finalgambit']});
+    const result = await run([blastoise], trainerGoal('synthetic:gambit'), {data: {...data, trainers: [...data.trainers, trainer]}});
+    const damageVs = (opponentId) => result.team[0].matchups.find((matchup) => matchup.opponentId === opponentId).damage[0];
+    // Grass/Poison (×0,5 pela tabela) e Normal (×1): o dano fixo não muda, então nenhum dos dois pode virar número.
+    expect(damageVs('synthetic:gambit#0')).toEqual(expect.objectContaining({moveId: 'cobblemon:finalgambit', effectiveness: null}));
+    expect(damageVs('synthetic:gambit#1')).toEqual(expect.objectContaining({moveId: 'cobblemon:finalgambit', effectiveness: null}));
+    expect(damageVs('synthetic:gambit#0').maxPercent).toBeGreaterThan(0);
+  });
+
+  it('Steel Roller sem Terreno Elétrico dá 0 de dano, mas não é imunidade: eficácia null contra Normal puro', async () => {
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:normal',
+      team: [{...data.trainers[0].team[0], speciesId: 'cobblemon:chansey', ability: 'naturalcure', moves: ['cobblemon:tackle']}],
+    };
+    const metagross = individual({species: 'metagross', level: 40, moves: ['steelroller']});
+    const result = await run([metagross], trainerGoal('synthetic:normal'), {data: {...data, trainers: [...data.trainers, trainer]}});
+    const [roller] = result.team[0].matchups[0].damage;
+    expect(roller).toEqual({moveId: 'cobblemon:steelroller', minPercent: 0, maxPercent: 0, effectiveness: null});
+  });
+
+  it('Scrappy: Lutador acerta Fantasma com dano > 0, então a eficácia é null (a tabela diz ×0 e o cálculo não)', async () => {
+    const trainer = {
+      ...data.trainers[0],
+      id: 'synthetic:ghost',
+      team: [{...data.trainers[0].team[0], speciesId: 'cobblemon:gengar', ability: 'cursedbody', moves: ['cobblemon:shadowball']}],
+    };
+    const pancham = individual({species: 'pancham', level: 40, moves: ['closecombat']});
+    pancham.observed.ability = 'scrappy';
+    const result = await run([pancham], trainerGoal('synthetic:ghost'), {data: {...data, trainers: [...data.trainers, trainer]}});
+    const [close] = result.team[0].matchups[0].damage;
+    expect(close.maxPercent).toBeGreaterThan(0);
+    expect(close.effectiveness).toBeNull();
+  });
+
+  it('golpe fora do catálogo não ganha número nem eficácia: fica em moves com evaluated false e fora de damage', async () => {
+    const odd = individual({species: 'blastoise', level: 40, moves: ['surf', 'syntheticnotamove']});
+    const result = await run([odd], trainerGoal('synthetic:fire'));
+    const member = result.team[0];
+    expect(member.moves).toContainEqual({id: 'cobblemon:syntheticnotamove', evaluated: false, source: 'equipado'});
+    for (const matchup of member.matchups) {
+      expect(matchup.damage.map((entry) => entry.moveId)).not.toContain('cobblemon:syntheticnotamove');
+    }
+  });
+
   it('heldItem null conta como sem item: sugere um item e marca como "obter"', async () => {
     // Procura um nível em que o item vira o confronto, para que a sugestão seja exercitada de verdade.
     let suggestion = null;
@@ -110,9 +195,9 @@ describe('motor do guia', () => {
     const result = await run([blastoise], trainerGoal('synthetic:fire'));
     const acquire = result.team[0].acquire;
     const byMove = Object.fromEntries(acquire.map((entry) => [entry.moveId, entry]));
-    expect(byMove['cobblemon:surf']).toMatchObject({requirement: 'nível 45'});
-    expect(byMove['cobblemon:hydropump']).toMatchObject({requirement: 'TM'});
-    expect(byMove['cobblemon:scald']).toMatchObject({requirement: 'tutor'});
+    expect(byMove['cobblemon:surf']).toMatchObject({route: {kind: 'nível', level: 45}});
+    expect(byMove['cobblemon:hydropump']).toMatchObject({route: {kind: 'tm', level: null}});
+    expect(byMove['cobblemon:scald']).toMatchObject({route: {kind: 'tutor', level: null}});
     expect(byMove['cobblemon:surf'].gainPercent).toBeGreaterThanOrEqual(5);
     expect(byMove['cobblemon:surf'].reason).toBe(`Surf (nível 45) melhora o time em ${byMove['cobblemon:surf'].gainPercent}%.`);
     expect(byMove['cobblemon:surf'].replacesMoveId).toBeNull();

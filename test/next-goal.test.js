@@ -195,4 +195,30 @@ describe('detalhe do treinador', () => {
     expect(detail.team.length).toBeGreaterThan(0);
     expect(() => guideTrainerDetail(loadGuideData(), 'rctmod:nao_existe')).toThrow('não encontrado');
   });
+
+  it('habilidade ausente é null e todas as alternativas de item ficam listadas, nunca uma só escolhida', () => {
+    const member = {speciesId: 'cobblemon:starmie', level: 30, aspects: []};
+    const detail = guideTrainerDetail(
+      {
+        trainers: [
+          {
+            id: 'synthetic:t',
+            name: 'T',
+            mob: null,
+            team: [
+              {...member, ability: 'naturalcure', heldItem: ['cobblemon:mystic_water', 'cobblemon:sitrus_berry']},
+              {...member, heldItem: null},
+              {...member, ability: 'illuminate', heldItem: 'cobblemon:lum_berry'},
+            ],
+          },
+        ],
+      },
+      'synthetic:t',
+    );
+    expect(detail.team.map(({ability, heldItemAlternatives}) => ({ability, heldItemAlternatives}))).toEqual([
+      {ability: 'naturalcure', heldItemAlternatives: ['cobblemon:mystic_water', 'cobblemon:sitrus_berry']},
+      {ability: null, heldItemAlternatives: []},
+      {ability: 'illuminate', heldItemAlternatives: ['cobblemon:lum_berry']},
+    ]);
+  });
 });

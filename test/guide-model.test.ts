@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {
+  acquireRouteLabel,
   createGuideState,
   currentGuideGoal,
   GUIDE_SNAPSHOT_NOTICE,
@@ -395,7 +396,7 @@ describe('respostas do time aos adversários', () => {
   });
 
   it('guideMoveDamage põe o melhor golpe do confronto primeiro, descarta dano zero e ordena o resto pelo máximo', () => {
-    const hit = (moveId: string, maxPercent: number) => ({moveId, minPercent: maxPercent / 2, maxPercent});
+    const hit = (moveId: string, maxPercent: number) => ({moveId, minPercent: maxPercent / 2, maxPercent, effectiveness: null});
     const member = teamMember('a', [
       {...m('o#0', 'vence', 1, 2), moveId: 'cobblemon:surf', damage: [hit('cobblemon:surf', 40), hit('cobblemon:tackle', 10)]},
       {...m('o#1', 'vence', 1, 2), moveId: 'cobblemon:tackle', damage: [hit('cobblemon:surf', 90), hit('cobblemon:tackle', 20)]},
@@ -481,5 +482,13 @@ describe('estabilidade e mudança do time', () => {
     const state = built(built(createGuideState(), 1, first), 2, second);
     expect(state.result).toBe(second);
     expect(state.previousResult).toBe(first);
+  });
+});
+
+describe('rótulo da rota de aquisição', () => {
+  it('acquireRouteLabel: nível mostra o nível, e TM e tutor mantêm o texto de antes', () => {
+    expect(acquireRouteLabel({kind: 'nível', level: 48})).toBe('nível 48');
+    expect(acquireRouteLabel({kind: 'tm', level: null})).toBe('TM');
+    expect(acquireRouteLabel({kind: 'tutor', level: null})).toBe('tutor');
   });
 });

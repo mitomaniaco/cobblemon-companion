@@ -145,15 +145,39 @@ export type GuideMatchup = {
   theirTurns: number;
   /** Melhor golpe do membro contra o adversário; null quando nenhum causa dano. */
   moveId: string | null;
-  /** Faixa de dano de cada golpe avaliado do membro contra este adversário, em % do HP (HP cheio, sem crítico). */
-  damage: Array<{moveId: string; minPercent: number; maxPercent: number}>;
+  /**
+   * Faixa de dano de cada golpe avaliado do membro contra este adversário, em % do HP (HP cheio, sem crítico).
+   * Golpe fora do catálogo não entra aqui (`GuideTeamMember.moves[].evaluated: false`): sem número e sem eficácia.
+   */
+  damage: GuideMoveDamage[];
+};
+
+/** Eficácia de um golpe contra o adversário: multiplicador de tipo, com 0 para qualquer imunidade (tipo ou habilidade). */
+type GuideEffectiveness = 0 | 0.25 | 0.5 | 1 | 2 | 4;
+
+type GuideMoveDamage = {
+  moveId: string;
+  minPercent: number;
+  maxPercent: number;
+  /**
+   * Calculada no mesmo passo do dano, então nunca contradiz o número: `maxPercent === 0` é sempre `0`.
+   * `null` (nunca `1` nem `0`) quando o cálculo não a sustenta: golpe de dano fixo (Seismic Toss), de tabela própria
+   * (Freeze-Dry, Flying Press) ou resultado que a tabela de tipos não explica; a tela mostra "Sem cálculo".
+   */
+  effectiveness: GuideEffectiveness | null;
 };
 
 type GuideTip = {opponentId: string; moveId: string; text: string};
 
+/**
+ * Como o golpe é adquirido. `level` só existe em `nível` (nível em que o membro aprende o golpe) e é `null` nas demais;
+ * `outro` é a rota que o guia não classifica. O guia só emite `nível`, `tm` e `tutor` por ora.
+ */
+type GuideAcquireRoute = {kind: 'nível'; level: number} | {kind: 'tm' | 'tutor' | 'ovo' | 'outro'; level: null};
+
 export type GuideAcquireEntry = {
   moveId: string;
-  requirement: string;
+  route: GuideAcquireRoute;
   /** Golpe que sai do conjunto; null quando havia espaço livre. */
   replacesMoveId: string | null;
   gainPercent: number;
@@ -195,7 +219,15 @@ export type GuidePartyPlan = {
 export type GuideTrainerDetail = {
   id: string;
   name: string;
-  team: Array<{speciesId: string; level: number; formId: string}>;
+  team: Array<{
+    speciesId: string;
+    level: number;
+    formId: string;
+    /** Habilidade do adversário (id do jogo, como `BattlePlanEntry.ability`); `null` quando a definição do treinador não declara. */
+    ability: string | null;
+    /** Itens possíveis (`heldItem` do RCT). Várias alternativas ficam todas listadas, nunca se escolhe uma; vazio = sem item declarado. */
+    heldItemAlternatives: string[];
+  }>;
   spawn: {signatureItem: string | null; biomes: string[]; excludedBiomes: string[]} | null;
 };
 

@@ -1,4 +1,5 @@
 import type {
+  GuideAcquireEntry,
   GuideGoal,
   GuideMatchup,
   GuideNextGoal,
@@ -368,4 +369,16 @@ export function guideTeamChanges(previous: GuideResult | null, next: GuideResult
       .map((member) => ({uuid: member.uuid, reason: excludedReason.get(member.uuid) ?? REPLACED_REASON})),
     entered: next.team.filter((member) => !previousUuids.has(member.uuid)).map((member) => member.uuid),
   };
+}
+
+/** Texto curto da rota de aquisição de um golpe ("nível 48", "TM", "tutor", "ovo"). */
+export function acquireRouteLabel(route: GuideAcquireEntry['route']): string {
+  switch (route.kind) {
+    case 'nível':
+      return `nível ${route.level}`;
+    case 'tm':
+      return 'TM';
+    default:
+      return route.kind;
+  }
 }
