@@ -14,10 +14,14 @@ function errorMessage(error: unknown): string {
   return 'O progresso do mundo não pôde ser lido.';
 }
 
-/** Lê progresso de forma independente do snapshot e mantém a inscrição enquanto o shell está montado. */
-export function useGuideProgress(api: () => CompanionApi): GuideProgressState {
+/**
+ * Lê progresso de forma independente do snapshot e mantém a inscrição enquanto o shell está montado.
+ * `sourceRevision` muda a cada troca de fonte: a demonstração não tem watcher, então a leitura precisa ser refeita.
+ */
+export function useGuideProgress(api: () => CompanionApi, sourceRevision: number): GuideProgressState {
   const [state, setState] = useState<GuideProgressState>(INITIAL_STATE);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sourceRevision é o gatilho de releitura; a demonstração não tem watcher e o efeito não lê o valor
   useEffect(() => {
     let active = true;
     let changedSinceRead = false;
@@ -46,7 +50,7 @@ export function useGuideProgress(api: () => CompanionApi): GuideProgressState {
       active = false;
       unsubscribe();
     };
-  }, [api]);
+  }, [api, sourceRevision]);
 
   return state;
 }

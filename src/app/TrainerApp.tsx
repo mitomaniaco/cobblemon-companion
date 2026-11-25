@@ -486,7 +486,8 @@ export function TrainerApp() {
   const selectedIndividual = session.snapshot?.individuals.find((individual) => individual.uuid === session.selectedUuid) ?? null;
   const damageController = useDamagePlanner(api, selectedIndividual, session.snapshot, snapshotRevision);
   const {input: levelCapInput, setInput: setLevelCapInput, debouncedLevelCap, respectLevelCap, setRespectLevelCap} = useLevelCapState();
-  const progress = useGuideProgress(api);
+  const [sourceRevision, setSourceRevision] = useState(0);
+  const progress = useGuideProgress(api, sourceRevision);
   const progressKey = progress.status === 'ready' ? JSON.stringify(progress.value) : progress.status;
   const effectiveLevelCap = resolveEffectiveLevelCap(
     levelCapInput,
@@ -578,6 +579,7 @@ export function TrainerApp() {
       // Antes da troca, descarta a montagem do guia em voo: o main a rejeita com "fonte trocada", e essa falha não pode aparecer.
       guide.cancel();
       await api().setDataSource(source);
+      setSourceRevision((revision) => revision + 1);
       await refreshSnapshot({supersedePending: true});
     } catch {
       setSourceError('A tela atual foi mantida. Tente de novo em instantes.');

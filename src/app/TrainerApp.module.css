@@ -715,6 +715,10 @@
 
 .demoSeal {
   display: inline-flex;
+  justify-self: start;
+  flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
   gap: var(--space-1);
   min-width: 0;
