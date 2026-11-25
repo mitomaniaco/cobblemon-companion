@@ -8,8 +8,12 @@ describe('deriveTexts', () => {
       'cobblemon.ability.blaze.desc': 'Chamas.',
       'cobblemon.move.tackle': 'Investida',
     };
-    expect(deriveTexts({lang, movePp: {tackle: 35, growl: 40}})).toEqual({
-      moves: {growl: {pp: 40, description: null}, tackle: {pp: 35, description: 'Investida.'}},
+    expect(deriveTexts({lang, movePp: {tackle: 35, growl: 40, swift: 20}, moveAccuracy: {tackle: 100, growl: 100}})).toEqual({
+      moves: {
+        growl: {pp: 40, accuracy: 100, description: null},
+        swift: {pp: 20, accuracy: null, description: null},
+        tackle: {pp: 35, accuracy: 100, description: 'Investida.'},
+      },
       abilities: {blaze: 'Chamas.'},
     });
   });

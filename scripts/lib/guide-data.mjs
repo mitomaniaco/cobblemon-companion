@@ -473,13 +473,14 @@ export function deriveAdvancements(files) {
 const ABILITY_DESCRIPTION_KEY = /^cobblemon\.ability\.([a-z0-9]+)\.desc$/;
 
 /**
- * PP base e descrição em português dos golpes, e descrição em português das habilidades.
+ * PP base, precisão e descrição em português dos golpes, e descrição em português das habilidades.
  * `lang`: pt_br.json do Cobblemon; `movePp`: PP base por id de golpe (null quando o Showdown não traz).
+ * `moveAccuracy`: precisão por id; null quando o Showdown não traz número (`accuracy: true`, golpe que nunca erra, ou dado ausente).
  */
-export function deriveTexts({lang, movePp}) {
+export function deriveTexts({lang, movePp, moveAccuracy}) {
   const moves = {};
   for (const id of Object.keys(movePp).sort()) {
-    moves[id] = {pp: movePp[id] ?? null, description: lang[`cobblemon.move.${id}.desc`] ?? null};
+    moves[id] = {pp: movePp[id] ?? null, accuracy: moveAccuracy[id] ?? null, description: lang[`cobblemon.move.${id}.desc`] ?? null};
   }
   const abilities = {};
   for (const key of Object.keys(lang).sort()) {
