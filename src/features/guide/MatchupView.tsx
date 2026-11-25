@@ -422,7 +422,10 @@ function Acquire({entries}: {entries: GuideAcquireEntry[]}) {
             <li key={entry.moveId}>
               <TypeTile type={display.type} />
               <span className={styles.acquireText}>
-                <b>{display.name}</b>
+                <span className={styles.acquireHead}>
+                  <b>{display.name}</b>
+                  <span className={styles.gain}>+{entry.gainPercent.toFixed(1).replace('.', ',')}%</span>
+                </span>
                 <span className={styles.routeLine}>
                   <span
                     className={styles.route}
@@ -436,7 +439,6 @@ function Acquire({entries}: {entries: GuideAcquireEntry[]}) {
                   {entry.replacesMoveId && <span className={styles.replaces}>no lugar de {moveDisplay(entry.replacesMoveId).name}</span>}
                 </span>
               </span>
-              <span className={styles.gain}>+{entry.gainPercent.toFixed(1).replace('.', ',')}%</span>
             </li>
           );
         })}

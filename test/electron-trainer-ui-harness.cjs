@@ -1568,7 +1568,19 @@ async function logMatchupLayout(contents, label) {
       const clipped = [...column.querySelectorAll('dd, .route, .replaces, .acquireText b, .who h2')]
         .filter(node => node.scrollWidth > node.clientWidth + 1)
         .map(node => node.textContent.trim().slice(0, 40));
+      const h = (node) => (node ? Math.round(node.getBoundingClientRect().height) : null);
+      const parts = {
+        unitPx: Math.round(parseFloat(getComputedStyle(column).getPropertyValue('--u')) || 0),
+        factDd: [...column.querySelectorAll('section[aria-label="Veredito"] dl dd')].map(h),
+        factDt: [...column.querySelectorAll('section[aria-label="Veredito"] dl dt')].map(h),
+        art: h(column.querySelector('[class*="memberArtLarge"]')),
+        who: h(column.querySelector('section[aria-label="Veredito"] h2')?.parentElement ?? null),
+        rows: [...column.querySelectorAll('section[aria-label="Lista de golpes"] button')].map(h),
+        acquireLi: [...column.querySelectorAll('section[aria-label="A adquirir"] li')].map(h),
+        focusPanel: h(column.querySelector('section[aria-label="Golpe em foco"] [class*="focus"]')),
+      };
       return {
+        parts,
         viewport: window.innerWidth + '×' + window.innerHeight,
         clientHeight: column.clientHeight,
         scrollHeight: column.scrollHeight,
