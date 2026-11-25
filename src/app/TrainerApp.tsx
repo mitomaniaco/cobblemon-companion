@@ -556,6 +556,8 @@ export function TrainerApp() {
   }
 
   pushedSnapshotRef.current = (snapshot: PlayerSnapshot) => {
+    // Em demonstração o save não é a fonte: um push tardio do save não pode sobrescrever os dados de exemplo.
+    if (switchingSource === 'demo' || session.snapshot?.demo === true) return;
     damageController.invalidateCalculation();
     setSnapshotRevision((revision) => revision + 1);
     session.applySnapshot(snapshot);
@@ -573,6 +575,8 @@ export function TrainerApp() {
     setSourceError(null);
     setSwitchingSource(source);
     try {
+      // Antes da troca, descarta a montagem do guia em voo: o main a rejeita com "fonte trocada", e essa falha não pode aparecer.
+      guide.cancel();
       await api().setDataSource(source);
       await refreshSnapshot({supersedePending: true});
     } catch {
