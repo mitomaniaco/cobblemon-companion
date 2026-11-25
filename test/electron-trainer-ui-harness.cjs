@@ -1561,7 +1561,7 @@ async function assertAccuracyLines(contents, label, expected) {
         const name = row.innerText.split('\\n')[0].trim();
         const lines = [...row.querySelectorAll('span')]
           .filter(span => span.dataset.tooltip === 'Precisão')
-          .map(span => ({text: span.textContent.trim(), cut: span.getBoundingClientRect().right > box.right - 1}));
+          .map(span => ({text: span.textContent.trim(), role: span.getAttribute('role'), label: span.getAttribute('aria-label'), cut: span.getBoundingClientRect().right > box.right - 1}));
         return {name, lines};
       });
     })()`,
@@ -1577,6 +1577,11 @@ async function assertAccuracyLines(contents, label, expected) {
   }
   for (const row of rows) {
     for (const line of row.lines) {
+      const spoken = line.text === '—' ? 'Precisão sem dado' : `Precisão ${line.text}`;
+      check(
+        line.role === 'img' && line.label === spoken,
+        `"${line.text}" tem nome acessível ${JSON.stringify(line.label)} em vez de "${spoken}" (${label}).`,
+      );
       check(line.text !== '0%', `"${line.text}" mostrou 0% sem dado (${label}).`);
       check(!line.cut, `"${line.text}" sai da linha do golpe (${label}).`);
     }
@@ -1636,6 +1641,26 @@ async function assertMatchupColumnFits(contents, label) {
   return layout;
 }
 
+/** Botão "Como calculamos" da tela de golpes: alvo de toque de pelo menos 24×24 CSS px (WCAG 2.5.8). */
+async function assertCalcButtonTarget(contents, label) {
+  const button = await evaluate(
+    contents,
+    `(() => {
+      const node = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Golpe em foco"] button');
+      if (!node) return null;
+      const box = node.getBoundingClientRect();
+      return {text: node.textContent.trim(), width: box.width, height: box.height};
+    })()`,
+  );
+  check(button?.text.includes('Como calculamos'), `O botão "Como calculamos" não está na tela de golpes (${label}).`);
+  check(
+    button.width >= 24 && button.height >= 24,
+    `O botão "Como calculamos" mede ${button.width.toFixed(1)}×${button.height.toFixed(1)} CSS px, abaixo de 24×24 (${label}).`,
+  );
+  console.log(`PASS botão Como calculamos ${label}: ${button.width.toFixed(1)}×${button.height.toFixed(1)} CSS px`);
+  return button;
+}
+
 /** Tela "Golpes": cenário sintético com status, imunidade, golpe fora do catálogo, sem cálculo e rota por ovo. */
 async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   const contents = window.webContents;
@@ -1657,6 +1682,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
     defaultFocus ??= focusName;
     check(focusName === defaultFocus, `O foco abriu em "${focusName}" em ${label}, não no padrão "${defaultFocus}".`);
     await assertMatchupColumnFits(contents, `${label} · padrão`);
+    await assertCalcButtonTarget(contents, `${label} · padrão`);
     await assertAccuracyLines(contents, `${label} · padrão`, {'Shadow Ball': '100%', 'Swords Dance': '—', Synthetic: null});
     for (const [move, state] of [
       ['Shadow Ball', 'dano'],
@@ -1803,6 +1829,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   const narrow = await evaluate(contents, `({scrollWidth: document.documentElement.scrollWidth, width: window.innerWidth})`);
   check(narrow.scrollWidth <= narrow.width, `A tela de golpes tem rolagem horizontal em 800px (${narrow.scrollWidth} > ${narrow.width}).`);
   await assertMatchupOverflow(contents, '800×900');
+  await assertCalcButtonTarget(contents, '800×900');
   await capture(window, path.join(runDirectory, 'golpes-800x900.png'), '[aria-label="Veredito"]');
 
   for (const [width, height] of [
