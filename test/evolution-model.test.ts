@@ -33,8 +33,8 @@ const team: GuideResult['team'] = [
     item: {id: null, status: 'nenhum', reason: 'y'},
     matchups: [],
     acquire: [
-      {moveId: 'cobblemon:bulldoze', requirement: 'nível 24', gainPercent: 5, replacesMoveId: null, reason: 'z'},
-      {moveId: 'cobblemon:earthquake', requirement: 'TM', gainPercent: 9, replacesMoveId: null, reason: 'w'},
+      {moveId: 'cobblemon:bulldoze', route: {kind: 'nível', level: 24}, gainPercent: 5, replacesMoveId: null, reason: 'z'},
+      {moveId: 'cobblemon:earthquake', route: {kind: 'tm', level: null}, gainPercent: 9, replacesMoveId: null, reason: 'w'},
     ],
     tips: [],
   },

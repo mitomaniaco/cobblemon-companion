@@ -33,7 +33,10 @@ const validRollList = (list) => Array.isArray(list) && list.length === ROLLS && 
  * (dano fixo em vários acertos: soma replicada). Qualquer outra forma lança erro com `code: 'ERR_CALC_ROLLS'`.
  */
 function damageRolls(attacker, defender, moveName, field = new calc.Field()) {
-  const raw = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), field).damage;
+  return rollsOf(calc.calculate(9, attacker, defender, new calc.Move(9, moveName), field).damage);
+}
+
+function rollsOf(raw) {
   if (validValue(raw)) return new Array(ROLLS).fill(raw);
   if (!Array.isArray(raw) || raw.length === 0) throw invalidRolls();
   if (validRollList(raw)) return [...raw];
@@ -50,4 +53,20 @@ function damageRange(attacker, defender, moveName, field = new calc.Field()) {
   return {min: Math.min(...rolls), max: Math.max(...rolls), targetHP: defender.stats.hp};
 }
 
-module.exports = {pokemonFromSpec, damageRange, damageRolls};
+/**
+ * Como `damageRange`, e também o tipo e a categoria do golpe depois das habilidades que os mudam (Normalize, Pixilate…),
+ * para quem precisa rotular o dano sem recalcular.
+ */
+function damageDetail(attacker, defender, moveName, field = new calc.Field()) {
+  const result = calc.calculate(9, attacker, defender, new calc.Move(9, moveName), field);
+  const rolls = rollsOf(result.damage);
+  return {
+    min: Math.min(...rolls),
+    max: Math.max(...rolls),
+    targetHP: defender.stats.hp,
+    moveType: result.move.type,
+    moveCategory: result.move.category,
+  };
+}
+
+module.exports = {pokemonFromSpec, damageRange, damageRolls, damageDetail};

@@ -4,7 +4,7 @@ import {itemLabel} from '../../domain/catalog-labels';
 import {abilityName, dexId, moveDisplay, speciesBaseStats, speciesDisplay} from '../../domain/dex';
 import type {GuidePartySlot, GuideResult, GuideTeamMember, PlayerIndividual, PlayerStat} from '../../platform/api';
 import {Button, Dialog, ItemIcon, MoveChip, MovePpMeta, PokeBallMark, PokemonArtwork, TypeBadge, typeColorVar} from '../../ui';
-import {guideMoveDamage, guideOpponentTurnsLabel} from './guide-model';
+import {acquireRouteLabel, guideMoveDamage, guideOpponentTurnsLabel} from './guide-model';
 import styles from './TeamDetail.module.css';
 import {abilityDescription, moveText} from './texts';
 
@@ -246,7 +246,7 @@ export function TeamDetail({member, slot, individual, result, onOpenCalculation}
             <ul>
               {member.acquire.map((entry) => (
                 <li key={entry.moveId}>
-                  <strong>{moveDisplay(entry.moveId).name}</strong> ({entry.requirement}){' '}
+                  <strong>{moveDisplay(entry.moveId).name}</strong> ({acquireRouteLabel(entry.route)}){' '}
                   {entry.replacesMoveId === null ? 'ocupa um golpe livre' : `no lugar de ${moveDisplay(entry.replacesMoveId).name}`} ·{' '}
                   <span className={styles.gain}>+{entry.gainPercent}%</span>
                 </li>

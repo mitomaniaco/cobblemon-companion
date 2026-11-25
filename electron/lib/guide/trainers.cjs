@@ -160,6 +160,8 @@ function guideTrainerDetail({trainers}, trainerId) {
       speciesId: member.speciesId,
       level: member.level,
       formId: member.aspects?.length ? [...member.aspects].sort().join('+') : 'normal',
+      ability: typeof member.ability === 'string' && member.ability !== '' ? member.ability : null,
+      heldItemAlternatives: Array.isArray(member.heldItem) ? [...member.heldItem] : member.heldItem ? [member.heldItem] : [],
     })),
     spawn: trainer.mob
       ? {

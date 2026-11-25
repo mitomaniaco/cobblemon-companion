@@ -395,7 +395,7 @@ describe('respostas do time aos adversários', () => {
   });
 
   it('guideMoveDamage põe o melhor golpe do confronto primeiro, descarta dano zero e ordena o resto pelo máximo', () => {
-    const hit = (moveId: string, maxPercent: number) => ({moveId, minPercent: maxPercent / 2, maxPercent});
+    const hit = (moveId: string, maxPercent: number) => ({moveId, minPercent: maxPercent / 2, maxPercent, effectiveness: null});
     const member = teamMember('a', [
       {...m('o#0', 'vence', 1, 2), moveId: 'cobblemon:surf', damage: [hit('cobblemon:surf', 40), hit('cobblemon:tackle', 10)]},
       {...m('o#1', 'vence', 1, 2), moveId: 'cobblemon:tackle', damage: [hit('cobblemon:surf', 90), hit('cobblemon:tackle', 20)]},
