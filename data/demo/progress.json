@@ -1,0 +1,27 @@
+{
+  "defeated": ["rctmod:leader_brock_019e", "rctmod:rocket_admin_archer_002e", "rctmod:rival_terry_014c"],
+  "victoryCounts": {
+    "rctmod:leader_brock_019e": 1,
+    "rctmod:rocket_admin_archer_002e": 1,
+    "rctmod:rival_terry_014c": 1
+  },
+  "currentSeries": "radicalred",
+  "currentSeriesCompleted": false,
+  "completedSeries": [],
+  "pikaStar": {
+    "kanto": false,
+    "johto": false,
+    "hoenn": false,
+    "sinnoh": false,
+    "unova": false,
+    "kalos": false,
+    "alola": false,
+    "galar": false,
+    "hisui": false,
+    "paldea": false
+  },
+  "sources": [
+    {"kind": "rct-stats", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"},
+    {"kind": "pika-advancements", "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}
+  ]
+}
