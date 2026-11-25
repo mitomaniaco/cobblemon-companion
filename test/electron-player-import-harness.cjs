@@ -398,7 +398,7 @@ async function readDemoState(contents) {
         && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
     };
     const heading = [...document.querySelectorAll('h2')]
-      .find(node => node.textContent.trim() === 'Demonstração offline');
+      .find(node => node.textContent.trim() === 'Comparação fixa');
     const fixedFacts = document.querySelector('[aria-label="Dados fixos da demonstração"]');
     const section = heading?.closest('section');
     if (!section || !isVisible(heading) || !isVisible(fixedFacts)) return null;
@@ -489,7 +489,7 @@ async function run() {
       `(() => {
     const accessibleName = ${accessibleNameExpression};
     const labels = [...document.querySelectorAll('nav button')].map(accessibleName);
-    return ['Equipe', 'PC', 'Dano', 'Demonstração', 'Ajuda e diagnóstico']
+    return ['Equipe', 'PC', 'Dano', 'Comparação fixa', 'Ajuda e diagnóstico']
       .every(label => labels.includes(label));
   })()`,
     ),
@@ -523,7 +523,7 @@ async function run() {
         && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
     };
     const heading = [...document.querySelectorAll('h2')]
-      .find(node => node.textContent.trim() === 'Demonstração offline');
+      .find(node => node.textContent.trim() === 'Comparação fixa');
     return isVisible(heading)
       && isVisible(document.querySelector('[aria-label="Dados fixos da demonstração"]'));
   })()`,
@@ -748,7 +748,7 @@ async function run() {
       'O estado do planejador do segundo UUID divergiu de seus dados.',
     );
   }
-  await navigateToRoute(contents, 'Demonstração');
+  await navigateToRoute(contents, 'Comparação fixa');
   const demoAfterSelection = await readDemoState(contents);
   check(JSON.stringify(demoAfterSelection) === JSON.stringify(demoBefore), 'A seleção de outro UUID alterou a demonstração offline.');
   console.log('PASS troca de UUID limpa a prévia e mantém a demonstração independente');
@@ -885,7 +885,7 @@ async function run() {
     check(cleanError, 'O erro do refresh deixou snapshot ou prévia antigos visíveis.');
     console.log('PASS erro de refresh remove snapshot e plano antigo');
   }
-  await navigateToRoute(contents, 'Demonstração');
+  await navigateToRoute(contents, 'Comparação fixa');
   check(JSON.stringify(await readDemoState(contents)) === JSON.stringify(demoBefore), 'O refresh alterou a demonstração offline.');
   if (!positiveSwapProven) process.exitCode = 2;
 }

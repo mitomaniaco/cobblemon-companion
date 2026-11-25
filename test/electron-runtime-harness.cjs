@@ -144,11 +144,11 @@ async function run() {
     false,
     'A demonstração offline carregou dados do save antes da atualização explícita.',
   );
-  await evaluate(webContents, clickButtonExpression('Demonstração'));
+  await evaluate(webContents, clickButtonExpression('Comparação fixa'));
   await waitFor(
     webContents,
-    "Boolean(document.querySelector('form') && !document.querySelector('form').closest('[hidden]') && [...document.querySelectorAll('button')].some(button => button.innerText.trim() === 'Demonstração' && button.getAttribute('aria-current') === 'page'))",
-    'rota Demonstração acessível',
+    "Boolean(document.querySelector('form') && !document.querySelector('form').closest('[hidden]') && [...document.querySelectorAll('button')].some(button => button.innerText.trim() === 'Comparação fixa' && button.getAttribute('aria-current') === 'page'))",
+    'rota Comparação fixa acessível',
   );
   const initial = await evaluate(webContents, 'document.body.innerText');
   assert.match(initial, /Pikachu → Floatzel/);
@@ -157,7 +157,7 @@ async function run() {
   assert.match(fixedFacts, /Pikachu/);
   assert.match(fixedFacts, /Floatzel/);
   assert.match(fixedFacts, /Spark/);
-  console.log('PASS rota Demonstração acessível e fixture independente dos dados do save');
+  console.log('PASS rota Comparação fixa acessível e fixture independente dos dados do save');
 
   await evaluate(webContents, "document.querySelector('form button[type=submit]').click()");
   await waitFor(webContents, "Boolean(document.querySelector('#demo-result-title'))", 'resultado da comparação inicial');

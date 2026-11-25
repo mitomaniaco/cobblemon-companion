@@ -13,7 +13,7 @@ Aplicação desktop local para apoiar exploração PvE e ginásios/encontros da 
 - **Shell e dados:** entrada Electron/React/TypeScript/Vite com `TrainerApp`; workspaces de Equipe, PC, Dano, Demonstração e Ajuda/diagnóstico. Party/PC são lidos localmente, somente sob ação explícita, e indivíduos são identificados por UUID.
 - **Ficha individual:** resumo, golpes e atributos capturados em abas separadas. `PlayerSnapshot` IPC v2 preserva IVs base, overrides de Hyper Training, EVs, desconhecidos e procedência; valores ausentes não são derivados. A prévia estrutural troca um único slot usando golpes observados em `BenchedMoves` do mesmo UUID.
 - **Cálculo real:** o workspace usa o indivíduo capturado, perfil manual completo do alvo e confirmações explícitas; campos desconhecidos e condições fora do recorte bloqueiam o resultado.
-- **Demonstração:** comparação offline fixa de Pikachu/Floatzel, Spark/Thunderbolt, um alvo e uma ação. Fixture e worker são independentes da captura e da equipe.
+- **Demonstração:** dados de exemplo do próprio app (`data/demo/`), sem ler o save nem gravar nada. A **Comparação fixa** de Pikachu/Floatzel, Spark/Thunderbolt, um alvo e uma ação, é o workspace separado; fixture e worker são independentes da captura e da equipe.
 - **Ilustrações:** preparador explícito opcional com fontes/revisões fixadas e manifestos locais ignorados pelo Git. O app não busca imagens durante o uso; a tela Ajuda informa atribuição e limites de direitos.
 - **Gates restantes:** o `battle-planner/` não está no pacote. Não há recomendação universal, simulação completa, leitura automática de cenário, persistência/backup nem prova de integridade Medium ou equivalência com batalha viva.
 
@@ -21,7 +21,7 @@ Aplicação desktop local para apoiar exploração PvE e ginásios/encontros da 
 
 ## Arquitetura
 
-A raiz do app é a pasta acima de `docs/`. `src/main.tsx` e `src/App.tsx` carregam `src/app/TrainerApp.tsx`; `src/app/trainer-session-model.ts` e `useTrainerSession.ts` mantêm identidade e invalidação do estado. `electron/main.cjs` controla IPC e leitura dos arquivos; o preload expõe uma API limitada; `electron/player-import.cjs` lê o save sob demanda; `src/domain/move-swap.ts` monta a prévia estrutural; `src/features/damage/` contém o workspace e o controlador reais. A demonstração usa `electron/worker.cjs`, `electron/lib/offline-adapter.cjs` e fixture local. `scripts/prepare-ui-assets.mjs` prepara artwork apenas quando chamado explicitamente. O CLI `battle-planner/` citado em relatórios históricos é separado e não está incluído aqui.
+A raiz do app é a pasta acima de `docs/`. `src/main.tsx` e `src/App.tsx` carregam `src/app/TrainerApp.tsx`; `src/app/trainer-session-model.ts` e `useTrainerSession.ts` mantêm identidade e invalidação do estado. `electron/main.cjs` controla IPC e leitura dos arquivos; o preload expõe uma API limitada; `electron/player-import.cjs` lê o save sob demanda; `src/domain/move-swap.ts` monta a prévia estrutural; `src/features/damage/` contém o workspace e o controlador reais. A Demonstração usa `electron/lib/demo-source.cjs` e `data/demo/`, pelo `dataSource` do processo principal. A Comparação fixa usa `electron/worker.cjs`, `electron/lib/offline-adapter.cjs` e fixture local. `scripts/prepare-ui-assets.mjs` prepara artwork apenas quando chamado explicitamente. O CLI `battle-planner/` citado em relatórios históricos é separado e não está incluído aqui.
 
 ## Mapa de leitura
 - [Guia técnico consolidado para agentes](GUIA-TECNICO.md)

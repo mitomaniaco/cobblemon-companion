@@ -6,7 +6,7 @@ Este documento consolida o contexto necessário para manter o pacote portátil d
 
 O projeto original visa apoiar a progressão PvE e ginásios/encontros da campanha Radical Red no modpack All the Mons, comparando mudanças de moveset com evidências e condições declaradas. O aplicativo que existe nesta pasta é uma fatia local e deliberadamente menor; não confundir a visão de longo prazo com funcionalidades entregues.
 
-O pacote atual é um app desktop Electron + React. Ele importa party/PC sob demanda, mostra dados observados por indivíduo, permite rascunhar uma troca de golpe sem gravá-la no jogo, oferece uma rota restrita de dano real e mantém uma demonstração offline separada. Não há, neste pacote, uma simulação completa de batalha, recomendação geral de build/time, IA adversária, persistência de snapshots em banco, backup automático, monitoramento/polling do save ou CLI `battle-planner`.
+O pacote atual é um app desktop Electron + React. Ele importa party/PC sob demanda, mostra dados observados por indivíduo, permite rascunhar uma troca de golpe sem gravá-la no jogo, oferece uma rota restrita de dano real, tem a fonte **Demonstração** (dados de exemplo que substituem o save enquanto ativa) e mantém a **Comparação fixa** Pikachu/Floatzel, separada do save. Não há, neste pacote, uma simulação completa de batalha, recomendação geral de build/time, IA adversária, persistência de snapshots em banco, backup automático, monitoramento/polling do save ou CLI `battle-planner`.
 
 ## 2. Stack e comandos
 
@@ -51,12 +51,13 @@ A navegação é estado React em `TrainerApp`, não um roteador de URLs. O rende
 | Plano de treino | `electron/lib/guide/training-plan.cjs` | Por membro do time (IPC `companion:training-plan-build`): nível-alvo (nunca acima do level cap informado; sem cap, "cap não determinado" e nenhum alvo), golpes por nível no caminho e EVs por papel (252 por atributo, 510 no total; EV desconhecido deixa o plano "não determinado"). Espécies que rendem EV ficam vazias até `evYield` entrar nos dados. |
 | Level cap no guia | `electron/lib/guide/engine.cjs`, `battle-plan.cjs` | `levelCap` em `GuideRequest` e `BattlePlanRequest`. Fato (rctmod 0.18.1, `TrainerMob#canBattleAgainst`): o treinador só luta se o maior nível da **party** for <= cap; acima disso ele manda guardar no PC. Objetivo de treinador com cap conhecido tira do time quem passa do cap (`excluded`: "acima do level cap (N)") e avisa dos demais na party; cap ausente avisa que não foi considerado; PvE geral não aplica o cap. |
 | Shiny e aspectos | `electron/player-import.cjs` | `PlayerIndividual.shiny` vem do byte `Shiny` do NBT (1 = shiny, 0 = normal; outro valor ou ausência = `null`). `aspects` vem de `Features`: só features de bandeira (`galarian`, `alolan`, `hisuian`, `paldean`, `punk_form`...) com valor 1 viram aspectos; contadores (`blocks_traveled`, `dynamax_level`) e texto (`spawn_bucket`) ficam de fora; `Features` ausente = `null`. Features de escolha com valor de texto que formem aspecto (por exemplo `flower=red`) ainda não são lidas. |
-| Demonstração | `src/features/demo/`, `src/domain/compare-flow.ts`, `electron/worker.cjs`, `electron/lib/offline-adapter.cjs`, `test/fixtures/offline-companion-snapshot.json` | Comparação fixa independente do save, em worker e com fixture offline. |
+| Demonstração | `electron/lib/demo-source.cjs`, `data/demo/`, `electron/main.cjs` (`dataSource`), `src/app/TrainerApp.tsx` (selo e saída) | Fonte de dados de exemplo no processo principal, pelo mesmo caminho de snapshot e progresso do save. Enquanto ativa, nada é lido do save. |
+| Comparação fixa | `src/features/demo/`, `src/domain/compare-flow.ts`, `electron/worker.cjs`, `electron/lib/offline-adapter.cjs`, `test/fixtures/offline-companion-snapshot.json` | Comparação Pikachu/Floatzel independente do save, em worker e com fixture offline. |
 | Primitivos e estilo | `src/ui/`, `src/ui/global.css`, `src/ui/tokens.css` | Componentes acessíveis compartilhados e estilos/tokens. |
 | Processo principal Electron | `electron/main.cjs`, `electron/preload.cjs`, `electron/player-import.cjs`, `electron/lib/nbt.cjs` | Janela, protocolo local, IPC, leitura NBT e validações do lado confiável. |
 | Build/recursos | `vite.config.ts`, `index.html`, `scripts/prepare-ui-assets.mjs`, `src/data/species-artwork.json` | Build da UI e preparação local opcional de ilustrações. |
 
-`electron/lib/preflight-contracts.cjs` e `compare-evidence.cjs` fazem parte do adaptador de comparação offline. Isso não transforma a rota da demonstração em análise da party real nem em simulador de batalha.
+`electron/lib/preflight-contracts.cjs` e `compare-evidence.cjs` fazem parte do adaptador da Comparação fixa. Isso não transforma essa rota em análise da party real nem em simulador de batalha. A fonte Demonstração não usa esses arquivos.
 
 ## 4. Processo Electron e fronteiras de confiança
 
@@ -66,8 +67,14 @@ A navegação é estado React em `TrainerApp`, não um roteador de URLs. O rende
 
 Há dois caminhos de cálculo distintos:
 
-1. A demonstração offline usa `utilityProcess` (`electron/worker.cjs`) e a fixture fixa; o main aplica timeout, cancelamento e descarte de respostas `stale`.
+1. A Comparação fixa usa `utilityProcess` (`electron/worker.cjs`) e a fixture fixa; o main aplica timeout, cancelamento e descarte de respostas `stale`. A fonte Demonstração não passa pelo worker: o main devolve os dados de `data/demo/`.
 2. O cálculo real passa pelo handler de dano do main, que lê novamente o snapshot atual antes de chamar `calculateRealDamage`. A resposta depende de seleção/UUID e hashes ainda válidos.
+
+**Fonte de dados.** O processo principal guarda `dataSource` (`'save'` ou `'demo'`) só em memória; começa em `save` e não é persistido, então fechar o app volta ao save. O renderer troca a fonte por `companion:set-data-source` (`setDataSource` no preload), que aceita apenas `save` ou `demo`. Enquanto `demo` está ativa:
+- snapshot e progresso vêm de `loadDemoSnapshot()` e `loadDemoProgress()` (`electron/lib/demo-source.cjs`, arquivos em `data/demo/`), e a skin do jogador não é buscada;
+- listar e escolher conta do save recusam com "Indisponível na demonstração";
+- o monitor do save é parado e a preferência de auto-refresh é guardada para voltar com o save;
+- montagens do guia em andamento terminam com erro, e um push tardio de snapshot do save é ignorado no renderer.
 
 ## 5. Captura local party/PC
 
@@ -133,9 +140,13 @@ O indivíduo selecionado é o atacante; o cálculo compara o golpe do slot escol
 
 O adaptador valida novamente, em processo confiável, fontes, UUID, IDs, nível, natureza, habilidade, IV/EV, EV total e premissas. O resultado mostra dois ranges mínimo–máximo dos **16 rolls** por golpe se acertar. Ele não estima precisão, crítico, efeitos secundários, nocaute, adversário, turnos futuros, ranking ou recomendação.
 
-### Demonstração offline
+### Demonstração
 
-A demonstração é uma fixture fixa Pikachu/Floatzel, Spark/Thunderbolt, um alvo e uma ação. Ela não recebe UUID nem build selecionada e permanece independente da captura. O resultado/scope da demo não deve ser usado como prova do estado atual do save ou de uma batalha real.
+Abre-se por Ajuda ou pelo atalho "Abrir demonstração" do estado sem save e do alerta de leitura. Enquanto está ativa, o cabeçalho mostra o selo "Demonstração · dados de exemplo" e o botão "Sair da demonstração". O app inteiro (Guia, Equipe, PC, Dano e Ajuda) usa `data/demo/snapshot.json` (mundo "Mundo de demonstração") e `data/demo/progress.json`, com as vitórias de Brock, Archer e Terry no RCT; o level cap 27 é derivado pela regra do RCT. Nada é lido do save ou do `config.json`, e nada é gravado nem enviado. Recarregar a janela mantém a demonstração; fechar o app não.
+
+### Comparação fixa
+
+A antiga demonstração Pikachu/Floatzel fica no workspace "Comparação fixa" do menu secundário. É uma fixture fixa: Spark contra Thunderbolt, um alvo e uma ação. Ela não recebe UUID nem build selecionada e permanece independente da captura. O resultado não deve ser usado como prova do estado atual do save ou de uma batalha real.
 
 ## 7. Catálogo e limites de compatibilidade
 
@@ -161,8 +172,8 @@ Também são excluídos golpes/habilidades que dependem de histórico, estado, f
 | Comando/arquivo | Fonte exercitada | Regra para agentes |
 |---|---|---|
 | `npm.cmd run check` | Typecheck, testes Vitest com fixtures e build. | Smoke padrão após mudança relevante; não importa o save real. |
-| `node_modules/electron/dist/electron.exe test/electron-trainer-ui-harness.cjs` | Fixture `electron-trainer-ui-snapshot.json`; modo UI/runtime de teste e perfil isolado. | Smoke Electron sintético recomendado para a interface/fluxos. Grava somente artefatos de diagnóstico local em `.runtime/`. |
-| `node_modules/electron/dist/electron.exe test/electron-runtime-harness.cjs` | Demonstração offline e estados current/cancelled/stale/failed. | Não aciona o refresh do save no fluxo atual; confirme o código se o cenário mudar. |
+| `node_modules/electron/dist/electron.exe test/electron-trainer-ui-harness.cjs` | Fixture `electron-trainer-ui-snapshot.json`; modo UI/runtime de teste e perfil isolado. Também exercita a Demonstração (`exerciseDemoSource`) com espião de `fs`: leitura fora das raízes permitidas ou de config, save, `usercache`, `playerdata` ou `.dat` é registrada como violação. | Smoke Electron sintético recomendado para a interface/fluxos. Grava somente artefatos de diagnóstico local em `.runtime/`. |
+| `node_modules/electron/dist/electron.exe test/electron-runtime-harness.cjs` | Comparação fixa (fixture offline) e estados current/cancelled/stale/failed. | Não aciona o refresh do save no fluxo atual; confirme o código se o cenário mudar. |
 | `test/electron-player-import-harness.cjs` | Chama `readPlayerSnapshotFromConfig()` e aciona refresh da instalação real. | **Lê `config.json` e party/PC atuais. Não executar sem autorização explícita.** |
 | `test/electron-real-damage-harness.cjs` | Abre a UI normal, aciona refresh e calcula com um indivíduo compatível do snapshot local. | **Também lê o save/configuração atuais. Não executar sem autorização explícita.** Prefira o harness UI sintético. |
 | `run-medium-check.cmd` / `test/electron-medium-launcher.cjs` | Verifica token de integridade e dispara o harness de importação acima. | **Medium não foi aprovado. Não executar sem autorização explícita; pode ler save real e criar logs/screenshots.** |

@@ -2,6 +2,8 @@
 
 ## Não lançado
 
+- Demonstração com dados de exemplo (Issues #261 e #262): a fonte "Demonstração" mostra o app inteiro (Guia, Equipe, PC, Dano e Ajuda) com dados de `data/demo/`, sem ler o save nem gravar nada; o cabeçalho tem o selo "Demonstração · dados de exemplo" e o botão "Sair da demonstração", e o atalho "Abrir demonstração" aparece também no estado sem save e no alerta de leitura. A antiga demonstração Pikachu/Floatzel virou "Comparação fixa". O erro de leitura do save agora diz qual fonte falta (config, servidor, `server.properties`, mundo, party ou PC), sem caminhos, nome do mundo ou UUID.
+
 - Barra de rolagem e tooltip próprios do app (Issue #246): `TooltipLayer` substitui o balão nativo do Windows (`title`) por um cartão com seta, título opcional, abertura por hover e foco, `prefers-reduced-motion` e `forced-colors`; a barra de rolagem global passa a ter trilho escuro e polegar vermelho em todo o app (as regras `scrollbar-width`/`scrollbar-color` foram removidas porque desligavam esse estilo).
 
 - Formas regionais e time por ameaças no Guia (Issues #238, #240, #242 e #244): Evoluções e golpes de formas alternativas (por exemplo Goodra de Hisui, "Forma final") usam os dados da própria forma (`forms.json`, `toFormId` em cada evolução); o motor marca cada confronto como "segura" (entra na troca e ainda vence no pior caso) e se o membro age primeiro, marca adversários "ameaça", escolhe o time por valor (peso das ameaças, segunda resposta, pivô e Speed) e dá "Táticas" (Will-O-Wisp, Thunder Wave, Protect/Detect); o Trainer Card mostra o veredito "segura", o chip "ameaça" e o cartão "Táticas" no detalhe do membro.
