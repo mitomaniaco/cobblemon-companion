@@ -6,7 +6,8 @@ process.env.COMPANION_TRAINER_UI_TEST_MODE = '1';
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {app, BrowserWindow} = require('electron');
+const os = require('node:os');
+const {app, BrowserWindow, ipcMain} = require('electron');
 
 const diagnosticsRoot = path.resolve(__dirname, '../.runtime/diagnostics');
 fs.mkdirSync(diagnosticsRoot, {recursive: true});
@@ -17,6 +18,84 @@ app.setPath('userData', profileDirectory);
 app.setPath('sessionData', profileDirectory);
 app.commandLine.appendSwitch('enable-logging', 'file');
 app.commandLine.appendSwitch('log-file', path.join(runDirectory, 'electron.log'));
+
+// Handlers IPC reais do main, capturados antes de ele registrá-los: o harness precisa trocar um deles por uma falha única.
+const ipcHandlers = new Map();
+const realIpcHandle = ipcMain.handle.bind(ipcMain);
+ipcMain.handle = (channel, handler) => {
+  ipcHandlers.set(channel, handler);
+  return realIpcHandle(channel, handler);
+};
+
+// Espião de fs no processo principal (o harness e o main compartilham o processo). Só registra enquanto `active`.
+// Limite: módulos que desestruturaram `fs` antes da instalação ou código nativo do Electron não passam por aqui.
+const repoRoot = path.resolve(__dirname, '..');
+const fsSpy = {active: false, touched: [], violations: []};
+const normalizeSpyPath = (value) => path.resolve(String(value)).replaceAll('\\', '/').toLowerCase();
+const spyAllowedRoots = [
+  path.join(repoRoot, 'data'),
+  path.join(repoRoot, 'dist', 'renderer'),
+  path.join(repoRoot, 'node_modules'),
+  path.join(repoRoot, 'electron'),
+  path.join(repoRoot, 'package.json'),
+  profileDirectory,
+  runDirectory,
+  path.dirname(process.execPath),
+  process.resourcesPath,
+  os.tmpdir(),
+  process.env.SystemRoot,
+]
+  .filter(Boolean)
+  .map(normalizeSpyPath);
+const spyForbidden = /(^|\/)(config\.json|server\.properties|usercache(\.json)?|playerdata|pokemon)(\/|$)|\.dat(_old)?$/;
+function recordFsAccess(operation, target) {
+  if (!fsSpy.active) return;
+  let value = target;
+  if (value instanceof URL) value = require('node:url').fileURLToPath(value);
+  if (Buffer.isBuffer(value)) value = value.toString();
+  if (typeof value !== 'string') return;
+  const normalized = normalizeSpyPath(value);
+  fsSpy.touched.push(`${operation} ${normalized}`);
+  const inside = spyAllowedRoots.some((root) => normalized === root || normalized.startsWith(`${root}/`));
+  if (spyForbidden.test(normalized) || !inside) fsSpy.violations.push(`${operation} ${value}`);
+}
+for (const name of [
+  'readFileSync',
+  'openSync',
+  'statSync',
+  'lstatSync',
+  'readdirSync',
+  'realpathSync',
+  'existsSync',
+  'accessSync',
+  'opendirSync',
+  'readFile',
+  'open',
+  'stat',
+  'lstat',
+  'readdir',
+  'realpath',
+  'access',
+  'opendir',
+  'watch',
+  'watchFile',
+  'createReadStream',
+]) {
+  const original = fs[name];
+  const wrapped = (target, ...rest) => {
+    recordFsAccess(name, target);
+    return original(target, ...rest);
+  };
+  if (name === 'realpathSync') wrapped.native = original.native;
+  fs[name] = wrapped;
+}
+for (const name of ['readFile', 'open', 'stat', 'lstat', 'readdir', 'realpath', 'access', 'opendir']) {
+  const original = fs.promises[name];
+  fs.promises[name] = (target, ...rest) => {
+    recordFsAccess(`promises.${name}`, target);
+    return original(target, ...rest);
+  };
+}
 
 const screenshotPaths = Object.freeze({
   preview: path.join(runDirectory, 'move-preview.png'),
@@ -59,6 +138,11 @@ const screenshotPaths = Object.freeze({
   collection800: path.join(runDirectory, 'collection-800.png'),
   collection200Percent: path.join(runDirectory, 'collection-200-percent.png'),
   errorScreen: path.join(runDirectory, 'error-screen.png'),
+  demoGuide: path.join(runDirectory, 'demo-guide.png'),
+  demoTeam: path.join(runDirectory, 'demo-team.png'),
+  demoPc: path.join(runDirectory, 'demo-pc.png'),
+  demoDamage: path.join(runDirectory, 'demo-damage.png'),
+  demoError: path.join(runDirectory, 'demo-error-shortcut.png'),
 });
 require('../electron/main.cjs');
 
@@ -771,6 +855,277 @@ async function exerciseDemo(contents) {
   console.log('PASS falha do worker apresentada sem resultado anterior');
 }
 
+const DEMO_SEAL_TEXT = 'Demonstração · dados de exemplo';
+const IPC_READ_PLAYER_SNAPSHOT = 'companion:read-player-snapshot';
+const demoSealVisible = `[...document.querySelectorAll('header span')].some(node => node.textContent.trim() === ${JSON.stringify(DEMO_SEAL_TEXT)} && node.getClientRects().length > 0)`;
+
+async function assertDemoSeal(contents, where) {
+  await waitFor(contents, demoSealVisible, `selo da demonstração em ${where}`);
+}
+
+/**
+ * Limite do harness: em modo de teste o main devolve a fixture, então a falha de leitura é injetada trocando, UMA vez, o handler
+ * IPC real de readPlayerSnapshot por um que rejeita (o renderer recebe o erro pela ponte verdadeira), e recarregando a janela.
+ */
+async function forceReadError(window) {
+  const contents = window.webContents;
+  const original = ipcHandlers.get(IPC_READ_PLAYER_SNAPSHOT);
+  check(typeof original === 'function', 'O handler IPC de leitura do snapshot não foi capturado.');
+  ipcMain.removeHandler(IPC_READ_PLAYER_SNAPSHOT);
+  realIpcHandle(IPC_READ_PLAYER_SNAPSHOT, () => {
+    ipcMain.removeHandler(IPC_READ_PLAYER_SNAPSHOT);
+    realIpcHandle(IPC_READ_PLAYER_SNAPSHOT, original);
+    throw new Error('Não encontramos o config.json. Copie o config.example.json e informe a pasta do servidor.');
+  });
+  contents.reload();
+  await waitFor(
+    contents,
+    `[...document.querySelectorAll('button')].some(button => button.textContent.trim() === 'Abrir demonstração') && /A leitura não foi concluída/.test(document.body.innerText)`,
+    'estado de erro de leitura com o atalho para a demonstração',
+  );
+  const errorText = await evaluate(contents, 'document.body.innerText');
+  check(/Não encontramos o config\.json/.test(errorText), 'O erro de leitura injetado não chegou ao renderer.');
+  check(!(await evaluate(contents, demoSealVisible)), 'O selo da demonstração apareceu antes de abrir a demonstração.');
+}
+
+async function exerciseDemoSource(window) {
+  const contents = window.webContents;
+  contents.setZoomFactor(1);
+  window.setContentSize(1440, 900);
+  await waitFor(contents, 'window.innerWidth === 1440', 'viewport 1440 da demonstração');
+
+  await forceReadError(window);
+  await capture(window, screenshotPaths.demoError, '[role="alert"]');
+  console.log('PASS erro de leitura injetado chega ao renderer com o atalho "Abrir demonstração"');
+
+  // Espião ligado só daqui até depois de sair da demonstração; o canário prova que ele enxerga config.json.
+  fsSpy.active = true;
+  fsSpy.touched.length = 0;
+  fsSpy.violations.length = 0;
+  fs.existsSync(path.join(repoRoot, 'config.json'));
+  check(
+    fsSpy.violations.some((entry) => /config\.json/.test(entry)),
+    'O espião de fs não registrou o acesso canário a config.json.',
+  );
+  fsSpy.violations.length = 0;
+
+  await clickButton(contents, 'Abrir demonstração');
+  await assertDemoSeal(contents, 'Guia');
+  const header = await evaluate(
+    contents,
+    `(() => {
+    const header = document.querySelector('header');
+    const text = header?.innerText || '';
+    return {
+      text,
+      switches: header?.querySelectorAll('[role="switch"], input[type="checkbox"]').length ?? -1,
+      exit: [...(header?.querySelectorAll('button') || [])].some(button => button.textContent.trim() === 'Sair da demonstração'),
+    };
+  })()`,
+  );
+  check(header.exit, 'O cabeçalho da demonstração não tem "Sair da demonstração".');
+  check(
+    header.switches === 0 && !/Atualizar|Captura/.test(header.text.replace(DEMO_SEAL_TEXT, '')),
+    `O cabeçalho da demonstração manteve Switch, Captura ou Atualizar: ${header.text}`,
+  );
+  check(
+    !/A fonte de dados foi trocada/.test(await evaluate(contents, 'document.body.innerText')),
+    'A entrada na demonstração exibiu "A fonte de dados foi trocada".',
+  );
+  console.log('PASS demonstração aberta pelo main real: selo, cabeçalho sem Switch/Captura/Atualizar e com "Sair da demonstração"');
+
+  // Guia: Trainer Card e Golpes. Limite: o guia do modo de teste é a fixture, sem Brock; usa os treinadores sintéticos.
+  await navigate(contents, 'Guia');
+  await waitFor(contents, 'Boolean(document.querySelector(\'[aria-label="Trainer Card"]\'))', 'Trainer Card na demonstração');
+  await assertDemoSeal(contents, 'Trainer Card');
+  await capture(window, screenshotPaths.demoGuide, '[aria-label="Trainer Card"]');
+  for (const trainerName of ['Treinador Sintético', 'Líder de Golpes']) {
+    // Selecionar um resultado volta o painel para a campanha: reabre a busca livre a cada treinador.
+    await evaluate(
+      contents,
+      `[...document.querySelectorAll('[aria-label="Objetivo do guia"] label')].find(node => node.textContent.trim() === 'Busca livre')?.click()`,
+    );
+    await evaluate(
+      contents,
+      `(() => {
+      const search = document.querySelector('[aria-label="Trainer Card"] input[type="search"]');
+      if (!search) throw new Error('Campo de busca do Trainer Card não encontrado.');
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setter.call(search, ${JSON.stringify(trainerName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))});
+      search.dispatchEvent(new Event('input', {bubbles: true}));
+    })()`,
+    );
+    await waitFor(
+      contents,
+      `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].some(b => b.textContent.includes(${JSON.stringify(trainerName)}))`,
+      `treinador ${trainerName} na demonstração`,
+    );
+    await evaluate(
+      contents,
+      `[...document.querySelectorAll('[aria-label="Trainer Card"] button')].find(b => b.textContent.includes(${JSON.stringify(trainerName)})).click()`,
+    );
+    await waitFor(
+      contents,
+      `Boolean(document.querySelector('[aria-label="Ferramentas do guia"] [role="tab"][aria-label="Golpes"]:not([aria-disabled="true"])'))`,
+      `aba Golpes habilitada para ${trainerName}`,
+    );
+    await selectGuideTab(contents, 'Golpes');
+    await waitFor(
+      contents,
+      `Boolean(document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]'))`,
+      `Golpes de ${trainerName} carregados`,
+    );
+    await assertDemoSeal(contents, `Golpes de ${trainerName}`);
+    if (trainerName === 'Treinador Sintético') {
+      for (const tabLabel of ['Plano de batalha', 'Evoluções', 'Capturas', 'Treino até o cap']) {
+        await selectGuideTab(contents, tabLabel);
+        await delay(150);
+        check(
+          !(await evaluate(contents, 'Boolean(document.querySelector(\'[data-testid="app-error"]\'))')),
+          `A aba ${tabLabel} derrubou o app na demonstração.`,
+        );
+        await assertDemoSeal(contents, `aba ${tabLabel}`);
+      }
+    }
+  }
+  console.log('PASS Guia em demonstração: Trainer Card, Golpes e plano/evolução/captura/treino abrem sem erro, com selo');
+
+  await navigate(contents, 'Equipe');
+  await waitFor(
+    contents,
+    "document.querySelectorAll('[data-testid=collection] [data-individual-id]').length > 0",
+    'equipe da demonstração',
+  );
+  await assertDemoSeal(contents, 'Equipe');
+  await capture(window, screenshotPaths.demoTeam, '[data-testid="collection"]');
+
+  await navigate(contents, 'PC');
+  await waitFor(contents, "document.querySelectorAll('[data-testid=collection] [data-individual-id]').length > 0", 'PC da demonstração');
+  await assertDemoSeal(contents, 'PC');
+  const boxCount = await evaluate(
+    contents,
+    `document.querySelectorAll('[data-testid=collection] section[aria-labelledby] h3, [data-testid=collection] section[aria-labelledby] h4, [data-testid=collection] section[aria-labelledby] h2').length`,
+  );
+  const boxTitles = await evaluate(
+    contents,
+    `[...document.querySelectorAll('[data-testid=collection]')].map(n => n.innerText).join('\\n')`,
+  );
+  check(
+    boxCount >= 3 || ['Caixa 1', 'Caixa 2', 'Caixa 3'].every((name) => boxTitles.includes(name)),
+    `O PC da demonstração não mostrou as 3 caixas (títulos: ${boxCount}).`,
+  );
+  await capture(window, screenshotPaths.demoPc, '[data-testid="collection"]');
+
+  const firstUuid = await evaluate(
+    contents,
+    "document.querySelector('[data-testid=collection] [data-individual-id]').dataset.individualId",
+  );
+  await selectIndividual(contents, firstUuid);
+  await assertDemoSeal(contents, 'Ficha');
+  console.log('PASS Equipe, PC (3 caixas) e Ficha em demonstração com selo');
+
+  await navigate(contents, 'Dano');
+  await waitFor(contents, "Boolean(document.querySelector('.real-damage-form'))", 'formulário de dano na demonstração');
+  await assertDemoSeal(contents, 'Dano');
+  const gate = await evaluate(
+    contents,
+    `(() => ({
+    checks: document.querySelectorAll('.real-confirmations input[type="checkbox"]').length,
+  }))()`,
+  );
+  check(gate.checks === 5, 'O Dano da demonstração não apresentou as cinco confirmações.');
+  await chooseComboBox(contents, 'Espécie', 'Abra');
+  await setLabeledInput(contents, 'Nível', '50');
+  await chooseSelect(contents, 'Natureza', 'Modest');
+  await chooseSelect(contents, 'Habilidade', 'Synchronize');
+  for (const label of ['HP', 'Ataque', 'Defesa', 'Ataque especial', 'Defesa especial', 'Velocidade']) {
+    await setLabeledInput(contents, label, '31', 'IVs · 0–31');
+    await setLabeledInput(contents, label, '0', 'EVs · 0–252, soma até 510');
+  }
+  for (let index = 0; index < 5; index += 1) {
+    await evaluate(contents, `document.querySelectorAll('.real-confirmations input[type="checkbox"]')[${index}].click()`);
+  }
+  await waitFor(
+    contents,
+    `([...document.querySelectorAll('.real-damage-planner button')].find(button => button.textContent.trim() === 'Calcular rolls de dano'))?.disabled === false`,
+    'cinco confirmações da demonstração',
+  );
+  await clickButton(contents, 'Calcular rolls de dano');
+  await waitFor(
+    contents,
+    "Boolean(document.querySelector('.real-damage-result') || document.querySelector('.real-damage-error'))",
+    'cálculo de dano na demonstração',
+  );
+  check(
+    await evaluate(contents, "Boolean(document.querySelector('.real-damage-result')) && !document.querySelector('.real-damage-error')"),
+    'O cálculo de dano na demonstração falhou.',
+  );
+  await assertDemoSeal(contents, 'resultado do Dano');
+  await capture(window, screenshotPaths.demoDamage, '.real-damage-result');
+  console.log('PASS Dano em demonstração: cinco confirmações e cálculo concluído, com selo');
+
+  await navigate(contents, 'Comparação fixa');
+  await waitFor(contents, "Boolean(document.querySelector('#demo-form-title'))", 'Comparação fixa na demonstração');
+  await assertDemoSeal(contents, 'Comparação fixa');
+
+  // setAutoRefresh em demonstração só guarda a vontade do usuário: o estado do monitor do save fica intocado (no modo de teste não
+  // há watcher; o sinal observável é `autoRefresh.enabled`, que o gancho de simulação consulta) e nenhum fs.watch é aberto.
+  // O push simulado do save, que chega ao renderer com enabled ainda ligado, não pode sobrescrever os dados de exemplo.
+  await evaluate(contents, 'window.cobblemonCompanion.setAutoRefresh(false)');
+  const simulated = await evaluate(contents, 'window.cobblemonCompanion.test.simulateSnapshotChange()');
+  check(simulated?.sent === true, 'setAutoRefresh(false) em demonstração mexeu no monitor do save.');
+  await delay(150);
+  await assertDemoSeal(contents, 'depois de um push tardio do save');
+  check(!fsSpy.touched.some((entry) => /^(watch|watchFile) /.test(entry)), 'A demonstração abriu um watcher de arquivos.');
+
+  // Ajuda: os dois cartões.
+  await navigate(contents, 'Ajuda e diagnóstico');
+  await waitFor(
+    contents,
+    "Boolean(document.querySelector('#demo-help-title') && document.querySelector('#fixed-help-title'))",
+    'cartões da Ajuda',
+  );
+  await assertDemoSeal(contents, 'Ajuda');
+
+  // Ctrl+R / reload do renderer mantém a demonstração e o selo.
+  contents.reload();
+  await waitFor(contents, SHELL_READY, 'TrainerApp após recarregar em demonstração');
+  await assertDemoSeal(contents, 'depois do reload');
+  check(
+    !/A fonte de dados foi trocada/.test(await evaluate(contents, 'document.body.innerText')),
+    'O reload na demonstração exibiu "A fonte de dados foi trocada".',
+  );
+  console.log('PASS Comparação fixa, auto-refresh sem watcher, Ajuda com dois cartões e reload mantendo a demonstração');
+
+  await clickButton(contents, 'Sair da demonstração');
+  await waitFor(contents, `!(${demoSealVisible})`, 'selo removido ao sair da demonstração');
+  const afterExit = await evaluate(contents, 'document.body.innerText');
+  check(!/Sair da demonstração/.test(afterExit), 'O botão "Sair da demonstração" continuou depois de sair.');
+  check(
+    await evaluate(contents, `[...document.querySelectorAll('header button')].some(b => /Atualizar do save/.test(b.textContent))`),
+    'Ao sair, o cabeçalho não voltou ao estado de leitura do save.',
+  );
+  // Limite: no modo de teste a leitura de volta ao save é a fixture (o cap "—" de um save ausente não é reproduzível aqui) e o level cap
+  // digitado em exercícios anteriores persiste; o que se prova é que a demonstração não deixou estado seu no cabeçalho nem na leitura.
+  await navigate(contents, 'Guia');
+  await waitFor(contents, `!(${demoSealVisible})`, 'Guia sem selo depois de sair da demonstração');
+  const afterExitSnapshot = await evaluate(contents, 'window.cobblemonCompanion.readPlayerSnapshot()');
+  check(
+    afterExitSnapshot.demo !== true && afterExitSnapshot.worldName === 'synthetic-trainer-ui',
+    'Depois de sair, a leitura continuou na demonstração.',
+  );
+  console.log('PASS "Sair da demonstração" remove o selo e devolve a leitura ao save');
+
+  fsSpy.active = false;
+  check(
+    fsSpy.violations.length === 0,
+    `A demonstração tocou o sistema de arquivos fora do permitido: ${fsSpy.violations.slice(0, 5).join(' | ')}`,
+  );
+  console.log(
+    `PASS demonstração sem tocar config/save: ${fsSpy.touched.length} acessos de fs, todos em data/, dist/renderer/, node_modules/ ou perfil de teste`,
+  );
+}
+
 async function exerciseRealDamage(contents) {
   await navigate(contents, 'Equipe');
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="collection"]\'))', 'retorno à equipe após demonstração');
@@ -1060,7 +1415,7 @@ async function exerciseResponsiveLayout(window, snapshot) {
         formWidth: form?.getBoundingClientRect().width ?? 0,
         resultWidth: result?.getBoundingClientRect().width ?? 0,
         activeDemo: [...document.querySelectorAll('nav[aria-label="Vistas"] button')]
-          .some(button => button.textContent.trim() === 'Demonstração'
+          .some(button => button.textContent.trim() === 'Comparação fixa'
             && button.getAttribute('aria-current') === 'page'),
       };
     })()`,
@@ -2879,6 +3234,7 @@ async function run() {
   await exerciseRealDamage(contents);
   await exerciseRefreshInvalidation(window, snapshot);
   await exerciseResponsiveLayout(window, snapshot);
+  await exerciseDemoSource(window);
   await exerciseErrorScreen(window);
   await exerciseUnhandledRejection(window);
   await exerciseRendererCrash(window);
@@ -2901,7 +3257,7 @@ async function finish(error) {
 
 const watchdog = setTimeout(() => {
   void finish(new Error('Watchdog do harness determinístico excedido.'));
-}, 60_000);
+}, 120_000);
 app
   .whenReady()
   .then(run)
