@@ -383,7 +383,9 @@ function MoveButton({
       ) : (
         <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
           <MovePpMeta pp={equipped ? equipped.pp : text.pp} ppUps={equipped ? equipped.ppUps : (learned?.ppUps ?? null)} />
-          <span data-tooltip="Precisão">{accuracyLabel(text.accuracy)}</span>
+          <span role="img" aria-label={text.accuracy === null ? 'Precisão sem dado' : `Precisão ${text.accuracy}%`} data-tooltip="Precisão">
+            {accuracyLabel(text.accuracy)}
+          </span>
         </MoveChip>
       )}
       <Efficacy {...(row.kind === 'blocked' ? efficacyView(null) : efficacy)} />

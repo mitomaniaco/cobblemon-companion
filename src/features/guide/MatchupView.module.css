@@ -502,7 +502,7 @@
 
 .calcButton {
   flex: none;
-  min-height: 0;
+  min-height: 24px;
   padding: calc(0.1 * var(--u)) calc(0.5 * var(--u));
   font-size: calc(0.8 * var(--u));
   line-height: 1.3;
