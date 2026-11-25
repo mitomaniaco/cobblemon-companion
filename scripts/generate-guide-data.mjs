@@ -152,11 +152,10 @@ function main() {
   if (!langBytes || !showdownZip) fail('pt_br.json ou showdown.zip ausente no JAR do Cobblemon');
   const movesJs = unzipSync(showdownZip, {filter: (entry) => entry.name === 'data/moves.js'})['data/moves.js'];
   if (!movesJs) fail('data/moves.js ausente no showdown.zip do Cobblemon');
-  const movePp = Object.fromEntries(
-    Object.entries(showdownMoveFacts(strFromU8(movesJs), {extraKeys: ['pp']})).map(([id, facts]) => [
-      id,
-      typeof facts.pp === 'number' ? facts.pp : null,
-    ]),
+  const moveFacts = showdownMoveFacts(strFromU8(movesJs), {extraKeys: ['pp', 'accuracy']});
+  const movePp = Object.fromEntries(Object.entries(moveFacts).map(([id, facts]) => [id, typeof facts.pp === 'number' ? facts.pp : null]));
+  const moveAccuracy = Object.fromEntries(
+    Object.entries(moveFacts).map(([id, facts]) => [id, typeof facts.accuracy === 'number' ? facts.accuracy : null]),
   );
 
   const outputs = [
@@ -168,7 +167,7 @@ function main() {
     ['campaign.json', jsonText(deriveCampaign({series, trainers, levelCapConfig: readLevelCapConfig(instance)}))],
     ['advancements.json', jsonText(deriveAdvancements(advancementFiles))],
     ['artwork-sources.json', jsonText(deriveArtworkSources(species, slugs, trainers))],
-    ['texts.json', jsonText(deriveTexts({lang: parseJsonBytes(langBytes, 'pt_br.json'), movePp}))],
+    ['texts.json', jsonText(deriveTexts({lang: parseJsonBytes(langBytes, 'pt_br.json'), movePp, moveAccuracy}))],
   ].map(([name, text]) => [path.join(OUTPUT_DIRECTORY, name), text]);
 
   if (options.write) {

@@ -302,6 +302,7 @@ function optimizeMember(entry, opponents) {
 
 // --- Golpes a adquirir -----------------------------------------------------------------------------------------
 
+/** Rotas por golpe; a primeira que existe vence, na ordem nível, TM, tutor, ovo (a mais prática primeiro). */
 function learnsetRoutes(learnset, level) {
   const routes = new Map();
   const add = (moveId, route) => {
@@ -310,10 +311,11 @@ function learnsetRoutes(learnset, level) {
   for (const move of learnset?.levelUp ?? []) if (move.level > level) add(move.moveId, {kind: 'nível', level: move.level});
   for (const moveId of learnset?.tm ?? []) add(moveId, {kind: 'tm', level: null});
   for (const moveId of learnset?.tutor ?? []) add(moveId, {kind: 'tutor', level: null});
+  for (const moveId of learnset?.egg ?? []) add(moveId, {kind: 'ovo', level: null});
   return routes;
 }
 
-/** Texto curto da rota para a frase `reason` ("nível 45", "TM"). */
+/** Texto curto da rota para a frase `reason` ("nível 45", "TM", "tutor", "ovo"). */
 function routeLabel(route) {
   if (route.kind === 'nível') return `nível ${route.level}`;
   return route.kind === 'tm' ? 'TM' : route.kind;

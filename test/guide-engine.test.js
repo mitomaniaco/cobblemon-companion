@@ -218,6 +218,40 @@ describe('motor do guia', () => {
     for (const matchup of result.team[0].matchups) expect(matchup.moveId).toMatch(/^cobblemon:/);
   });
 
+  describe('rota por ovo', () => {
+    const withEgg = (egg, base = data.learnsets.blastoise) => ({...data, learnsets: {...data.learnsets, blastoise: {...base, egg}}});
+    const acquireOf = async (extraData) => {
+      const blastoise = individual({species: 'blastoise', level: 40, moves: ['tackle']});
+      return (await run([blastoise], trainerGoal('synthetic:fire'), {data: extraData})).team[0].acquire;
+    };
+
+    it('golpe do catálogo só aprendido por ovo vira sugestão com rota ovo; sem a lista egg ele não existe', async () => {
+      expect((await acquireOf(data)).some((entry) => entry.moveId === 'cobblemon:hydrocannon')).toBe(false);
+      const acquire = await acquireOf(withEgg(['cobblemon:hydrocannon']));
+      const hydrocannon = acquire.find((entry) => entry.moveId === 'cobblemon:hydrocannon');
+      expect(hydrocannon).toMatchObject({route: {kind: 'ovo', level: null}});
+      expect(hydrocannon.reason).toBe(`Hydro Cannon (ovo) melhora o time em ${hydrocannon.gainPercent}%.`);
+    });
+
+    it('fail-closed: golpe de ovo fora do catálogo nunca é sugerido', async () => {
+      const acquire = await acquireOf(withEgg(['cobblemon:syntheticnotamove', 'cobblemon:hydrocannon']));
+      expect(acquire.map((entry) => entry.moveId)).not.toContain('cobblemon:syntheticnotamove');
+      expect(acquire.map((entry) => entry.moveId)).toContain('cobblemon:hydrocannon');
+    });
+
+    it('o mesmo golpe em outra rota mantém a rota mais prática: nível, TM e tutor vencem o ovo', async () => {
+      const acquire = await acquireOf(withEgg(['cobblemon:surf', 'cobblemon:hydropump', 'cobblemon:scald']));
+      const byMove = Object.fromEntries(acquire.map((entry) => [entry.moveId, entry.route.kind]));
+      expect(byMove).toMatchObject({'cobblemon:surf': 'nível', 'cobblemon:hydropump': 'tm', 'cobblemon:scald': 'tutor'});
+    });
+
+    it('golpe de ovo que o membro já conhece não é sugerido', async () => {
+      const knows = individual({species: 'blastoise', level: 40, moves: ['tackle'], benched: ['hydrocannon']});
+      const result = await run([knows], trainerGoal('synthetic:fire'), {data: withEgg(['cobblemon:hydrocannon'])});
+      expect(result.team[0].acquire.map((entry) => entry.moveId)).not.toContain('cobblemon:hydrocannon');
+    });
+  });
+
   it('cláusula de espécie: múltiplos indivíduos da mesma espécie nunca entram juntos no time', async () => {
     const blastoise1 = individual({species: 'blastoise', level: 50, moves: ['surf']});
     const blastoise2 = individual({species: 'blastoise', level: 45, moves: ['surf'], container: 'pc'});

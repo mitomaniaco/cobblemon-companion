@@ -486,9 +486,10 @@ describe('estabilidade e mudança do time', () => {
 });
 
 describe('rótulo da rota de aquisição', () => {
-  it('acquireRouteLabel: nível mostra o nível, e TM e tutor mantêm o texto de antes', () => {
+  it('acquireRouteLabel: nível mostra o nível; TM, tutor e ovo têm texto próprio', () => {
     expect(acquireRouteLabel({kind: 'nível', level: 48})).toBe('nível 48');
     expect(acquireRouteLabel({kind: 'tm', level: null})).toBe('TM');
     expect(acquireRouteLabel({kind: 'tutor', level: null})).toBe('tutor');
+    expect(acquireRouteLabel({kind: 'ovo', level: null})).toBe('ovo');
   });
 });
