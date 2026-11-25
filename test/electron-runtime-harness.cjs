@@ -286,15 +286,17 @@ async function run() {
 }
 
 async function finish(error) {
-  if (finished) return;
-  finished = true;
   if (error) {
     console.error(error.stack || error);
-    process.exitCode = 1;
+    app.exit(1);
+    return;
   }
+  if (finished) return;
+  finished = true;
   const window = BrowserWindow.getAllWindows()[0];
   if (window && !window.isDestroyed()) window.close();
-  app.quit();
+  if (process.exitCode) app.exit(process.exitCode);
+  else app.quit();
 }
 
 const safetyTimer = setTimeout(() => {
