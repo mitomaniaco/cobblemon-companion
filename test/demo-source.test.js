@@ -71,16 +71,67 @@ describe('demo source (dados sintéticos da demonstração)', () => {
     expect(problems).toEqual([]);
   });
 
+  it('keeps the demo team shape: 6 in the party, 18 in three boxes, a repeated species', () => {
+    const snapshot = loadDemoSnapshot();
+    const party = snapshot.individuals.filter((i) => i.location.container === 'party');
+    const pc = snapshot.individuals.filter((i) => i.location.container === 'pc');
+    expect(party).toHaveLength(6);
+    expect(pc).toHaveLength(18);
+    expect([...new Set(pc.map((i) => i.location.boxName))].sort()).toEqual(['Caixa 1', 'Caixa 2', 'Caixa 3']);
+
+    const bySpecies = new Map();
+    for (const i of snapshot.individuals) bySpecies.set(i.speciesId, [...(bySpecies.get(i.speciesId) ?? []), i.uuid]);
+    const repeated = [...bySpecies.values()].filter((uuids) => uuids.length > 1);
+    expect(repeated.length).toBeGreaterThanOrEqual(1);
+    for (const uuids of repeated) expect(new Set(uuids).size).toBe(uuids.length);
+
+    expect(snapshot.individuals.filter((i) => i.observed.heldItem !== null).length).toBeGreaterThanOrEqual(2);
+
+    const partyLevels = party.map((i) => i.level);
+    const pcLevels = pc.map((i) => i.level);
+    expect(Math.min(...partyLevels)).toBeGreaterThanOrEqual(18);
+    expect(Math.max(...partyLevels)).toBeLessThanOrEqual(24);
+    expect(Math.min(...pcLevels)).toBeGreaterThanOrEqual(5);
+    expect(Math.max(...pcLevels)).toBeLessThanOrEqual(30);
+
+    const uuids = snapshot.individuals.map((i) => i.uuid);
+    for (const uuid of uuids) expect(uuid).toMatch(/^00000000-0000-4000-8000-0000000d00[0-9a-f]{2}$/);
+    expect(new Set(uuids).size).toBe(uuids.length);
+
+    const slots = snapshot.individuals.map((i) =>
+      i.location.container === 'pc' ? `pc:${i.location.box}:${i.location.slot}` : `party:${i.location.slot}`,
+    );
+    expect(new Set(slots).size).toBe(slots.length);
+
+    expect(snapshot.sources.find((s) => s.kind === 'party').sha256).toBe('d'.repeat(64));
+    expect(snapshot.sources.find((s) => s.kind === 'pc').sha256).toBe('e'.repeat(64));
+    expect(snapshot.worldName).toBe('Mundo de demonstração');
+    expect(snapshot.demo).toBe(true);
+  });
+
   it('reads only files under data/demo, never save, config or network', () => {
     const readPaths = [];
-    const names = ['readFileSync', 'openSync', 'statSync', 'readdirSync', 'realpathSync'];
-    const real = Object.fromEntries(names.map((name) => [name, fs[name].bind(fs)]));
-    const spies = names.map((name) =>
-      vi.spyOn(fs, name).mockImplementation((...args) => {
+    const targets = [
+      ...[
+        'readFileSync',
+        'openSync',
+        'statSync',
+        'readdirSync',
+        'realpathSync',
+        'accessSync',
+        'lstatSync',
+        'createReadStream',
+        'existsSync',
+      ].map((name) => [fs, name]),
+      ...['readFile', 'readdir', 'stat', 'access'].map((name) => [fs.promises, name]),
+    ];
+    const spies = targets.map(([owner, name]) => {
+      const real = owner[name].bind(owner);
+      return vi.spyOn(owner, name).mockImplementation((...args) => {
         if (typeof args[0] === 'string') readPaths.push(args[0]);
-        return real[name](...args);
-      }),
-    );
+        return real(...args);
+      });
+    });
     try {
       loadDemoSnapshot();
       loadDemoProgress();
