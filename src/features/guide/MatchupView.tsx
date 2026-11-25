@@ -263,19 +263,20 @@ export function MatchupView({api, result, individuals}: MatchupViewProps) {
           </ul>
         </section>
 
-        {focusRow && (
-          <section className={styles.panel} aria-label="Golpe em foco">
-            <FocusPanel
-              row={focusRow}
-              stab={focusRow.kind === 'damage' && memberSpecies.types.some((type) => type === moveDisplay(focusRow.moveId).type)}
-            />
-            <Disclosure title="Como calculamos" headingLevel={3} isExpanded={calcOpen} onExpandedChange={setCalcOpen}>
-              <p className={styles.note}>{COMO_CALCULAMOS}</p>
-            </Disclosure>
-          </section>
-        )}
-
-        <Acquire entries={member.acquire} />
+        <div className={styles.pair}>
+          {focusRow && (
+            <section className={styles.panel} aria-label="Golpe em foco">
+              <FocusPanel
+                row={focusRow}
+                stab={focusRow.kind === 'damage' && memberSpecies.types.some((type) => type === moveDisplay(focusRow.moveId).type)}
+              />
+              <Disclosure title="Como calculamos" headingLevel={3} isExpanded={calcOpen} onExpandedChange={setCalcOpen}>
+                <p className={styles.note}>{COMO_CALCULAMOS}</p>
+              </Disclosure>
+            </section>
+          )}
+          <Acquire entries={member.acquire} />
+        </div>
       </div>
 
       <section className={styles.panel} aria-label="Adversário">

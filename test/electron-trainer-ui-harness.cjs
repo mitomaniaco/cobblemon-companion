@@ -1550,6 +1550,39 @@ async function assertMatchupOverflow(contents, label) {
   for (const replace of result.replaces) check(!replace.cut, `"${replace.text}" corta texto na rota por ovo (${label}).`);
 }
 
+/** Medidas da tela de golpes para o relatório de layout: coluna central, painéis da faixa inferior e textos cortados. */
+async function logMatchupLayout(contents, label) {
+  const layout = await evaluate(
+    contents,
+    `(() => {
+      const column = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Veredito"]').parentElement;
+      const top = column.getBoundingClientRect().top;
+      const sections = ['Veredito', 'Lista de golpes', 'Golpe em foco', 'A adquirir'].map(name => {
+        const node = column.querySelector('section[aria-label="' + name + '"]');
+        if (!node) return {name, missing: true};
+        const box = node.getBoundingClientRect();
+        const inner = node.querySelector(':scope > .focus, :scope > ul');
+        const content = inner ? Math.round(inner.getBoundingClientRect().height) : null;
+        return {name, top: Math.round(box.top - top), left: Math.round(box.left), bottom: Math.round(box.bottom - top), height: Math.round(box.height), content, width: Math.round(box.width)};
+      });
+      const clipped = [...column.querySelectorAll('dd, .route, .replaces, .acquireText b, .who h2')]
+        .filter(node => node.scrollWidth > node.clientWidth + 1)
+        .map(node => node.textContent.trim().slice(0, 40));
+      return {
+        viewport: window.innerWidth + '×' + window.innerHeight,
+        clientHeight: column.clientHeight,
+        scrollHeight: column.scrollHeight,
+        scrollWidth: column.scrollWidth,
+        clientWidth: column.clientWidth,
+        sections,
+        clipped,
+      };
+    })()`,
+  );
+  console.log(`[layout ${label}] ${JSON.stringify(layout)}`);
+  return layout;
+}
+
 /** Tela "Golpes": cenário sintético com status, imunidade, golpe fora do catálogo, sem cálculo e rota por ovo. */
 async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   const contents = window.webContents;
@@ -1674,6 +1707,33 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
   await assertMatchupOverflow(contents, '800×900');
   await capture(window, path.join(runDirectory, 'golpes-800x900.png'), '[aria-label="Veredito"]');
 
+  for (const [width, height] of [
+    [1440, 800],
+    [1568, 880],
+    [1920, 1080],
+    [1568, 742],
+    [1280, 680],
+    [800, 900],
+  ]) {
+    await setViewport(window, width, height, `medida de layout ${width}×${height}`);
+    await delay(400);
+    const layout = await logMatchupLayout(contents, `${width}×${height}`);
+    check(layout.clipped.length === 0, `Texto cortado na tela de golpes em ${width}×${height}: ${layout.clipped.join(' | ')}.`);
+    if (width >= 1100) {
+      // Lado a lado: "A adquirir" começa na mesma linha de "Golpe em foco", à direita dele.
+      const [focus, acquire] = [
+        layout.sections.find((item) => item.name === 'Golpe em foco'),
+        layout.sections.find((item) => item.name === 'A adquirir'),
+      ];
+      check(
+        focus && acquire && acquire.top === focus.top && acquire.left > focus.left,
+        `"A adquirir" não está ao lado de "Golpe em foco" em ${width}×${height}.`,
+      );
+    }
+    if (width !== 1920) await capture(window, path.join(runDirectory, `golpes-${width}x${height}-lado.png`), '[aria-label="Veredito"]');
+    if (width === 1568 && height === 880)
+      await capture(window, path.join(runDirectory, 'golpes-a-adquirir-lado.png'), '[aria-label="A adquirir"]');
+  }
   // Forced colors e movimento reduzido: o foco do golpe tem contorno do sistema e as animações param.
   await setViewport(window, 1440, 1000, 'retorno ao viewport padrão após a tela de golpes');
   contents.debugger.attach('1.3');
