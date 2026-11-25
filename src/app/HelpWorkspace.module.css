@@ -1,14 +1,14 @@
 .help {
   container: help / inline-size;
   display: grid;
-  width: min(100%, 920px);
+  width: min(100%, 1040px);
   height: 100%;
   align-content: start;
-  gap: var(--space-5);
+  gap: var(--space-4);
   margin-inline: auto;
   overflow-y: auto;
   overflow-x: clip;
-  padding: var(--space-2) var(--space-2) var(--space-8);
+  padding: var(--space-2) var(--space-2) var(--space-6);
 }
 
 .help h2 {
@@ -95,6 +95,12 @@
   gap: var(--space-3);
 }
 
+.side {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+}
+
 .demoCards h3 {
   display: flex;
   align-items: center;
@@ -130,19 +136,16 @@
   overflow-wrap: anywhere;
 }
 
-@container help (min-width: 720px) {
-  .steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (min-width: 1100px) {
+  .help {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--space-5);
   }
 
-  .steps li {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@container help (min-width: 1000px) {
-  .steps {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .help > h2,
+  .help > .lead,
+  .wide {
+    grid-column: 1 / -1;
   }
 }
 

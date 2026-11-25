@@ -667,7 +667,7 @@ export function TrainerApp() {
       <div className={styles.mainColumn}>
         <header className={styles.header}>
           <h1 className={styles.visuallyHidden}>{title}</h1>
-          {workspace !== 'demo' && session.snapshot?.demo === true && (
+          {session.snapshot?.demo === true && (
             <>
               <div className={styles.captureStatus}>
                 <span

@@ -442,6 +442,7 @@ export function GuideWorkspace({
           playerAvatar={playerAvatar}
           individuals={lookup.individuals}
           onOpenCalculation={onOpenCalculation}
+          demoWorldName={snapshot?.demo === true ? snapshot.worldName : null}
           levelCapInput={levelCapInput}
           onLevelCapInputChange={onLevelCapInputChange}
           respectLevelCap={respectLevelCap}
