@@ -1550,6 +1550,39 @@ async function assertMatchupOverflow(contents, label) {
   for (const replace of result.replaces) check(!replace.cut, `"${replace.text}" corta texto na rota por ovo (${label}).`);
 }
 
+/** Precisão de cada golpe na lista (span com data-tooltip="Precisão"): "—" sem dado, nunca "0%", sem texto saindo da linha. */
+async function assertAccuracyLines(contents, label, expected) {
+  const rows = await evaluate(
+    contents,
+    `(() => {
+      const list = document.querySelector('[aria-label="Trainer Card"] section[aria-label="Lista de golpes"]');
+      return [...(list?.querySelectorAll('button') ?? [])].map(row => {
+        const box = row.getBoundingClientRect();
+        const name = row.innerText.split('\\n')[0].trim();
+        const lines = [...row.querySelectorAll('span')]
+          .filter(span => span.dataset.tooltip === 'Precisão')
+          .map(span => ({text: span.textContent.trim(), cut: span.getBoundingClientRect().right > box.right - 1}));
+        return {name, lines};
+      });
+    })()`,
+  );
+  for (const [name, prec] of Object.entries(expected)) {
+    const row = rows.find((item) => item.name.startsWith(name));
+    check(row, `A lista de golpes não mostrou ${name} (${label}).`);
+    const shown = row.lines.map((line) => line.text);
+    check(
+      prec === null ? shown.length === 0 : shown.length === 1 && shown[0] === prec,
+      `${name} mostrou ${JSON.stringify(shown)} em vez de ${JSON.stringify(prec)} (${label}).`,
+    );
+  }
+  for (const row of rows) {
+    for (const line of row.lines) {
+      check(line.text !== '0%', `"${line.text}" mostrou 0% sem dado (${label}).`);
+      check(!line.cut, `"${line.text}" sai da linha do golpe (${label}).`);
+    }
+  }
+}
+
 /** Medidas da tela de golpes para o relatório de layout: coluna central, painéis da faixa inferior e textos cortados. */
 async function logMatchupLayout(contents, label) {
   const layout = await evaluate(
@@ -1624,6 +1657,7 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
     defaultFocus ??= focusName;
     check(focusName === defaultFocus, `O foco abriu em "${focusName}" em ${label}, não no padrão "${defaultFocus}".`);
     await assertMatchupColumnFits(contents, `${label} · padrão`);
+    await assertAccuracyLines(contents, `${label} · padrão`, {'Shadow Ball': '100%', 'Swords Dance': '—', Synthetic: null});
     for (const [move, state] of [
       ['Shadow Ball', 'dano'],
       ['Swords Dance', 'status'],
@@ -1703,6 +1737,8 @@ async function exerciseMatchupView(window, {setSearch, switchGuideView}) {
     (await text('section[aria-label="Lista de golpes"]')).includes('Sem cálculo'),
     'O golpe com efetividade desconhecida não mostrou "Sem cálculo".',
   );
+  await assertAccuracyLines(contents, 'membro Pikachu · 1440×800', {Thunderbolt: '100%', 'Swords Dance': '—'});
+  await logMatchupLayout(contents, 'membro Pikachu · 1440×800');
   await clickByLabel('section[aria-label="Adversário"] button', 'Pikachu');
   await waitFor(contents, `${view('section[aria-label="Veredito"]')}.innerText.includes('contra Pikachu')`, 'troca de adversário');
   check((await text('section[aria-label="Lista de golpes"]')).includes('Pouco eficaz'), 'A resistência não mostrou "Pouco eficaz".');

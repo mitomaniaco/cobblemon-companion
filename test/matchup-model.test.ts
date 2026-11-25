@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {
+  accuracyLabel,
   acquireRouteText,
   efficacyView,
   focusReasons,
@@ -80,6 +81,14 @@ describe('moveRow', () => {
 
   it('golpe do catálogo sem confronto calculado é bloqueado, mas não é tratado como fora do catálogo', () => {
     expect(moveRow(equipped, undefined, null, null)).toMatchObject({kind: 'blocked', inCatalog: true});
+  });
+});
+
+describe('accuracyLabel', () => {
+  it('mostra o número da precisão e "—" sem dado, nunca 0', () => {
+    expect(accuracyLabel(100)).toBe('100%');
+    expect(accuracyLabel(70)).toBe('70%');
+    expect(accuracyLabel(null)).toBe('—');
   });
 });
 

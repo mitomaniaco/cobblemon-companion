@@ -284,9 +284,6 @@ export function MatchupView({api, result, individuals}: MatchupViewProps) {
                 onOpenCalculation={() => setCalcOpen(true)}
               />
               <Dialog isOpen={calcOpen} onOpenChange={setCalcOpen} title="Como calculamos">
-                {focusRow.kind !== 'blocked' && (
-                  <p className={styles.calcAccuracy}>Precisão {accuracyLabel(moveText(focusRow.moveId).accuracy)}</p>
-                )}
                 <p className={styles.note}>{COMO_CALCULAMOS}</p>
               </Dialog>
             </section>
@@ -386,6 +383,7 @@ function MoveButton({
       ) : (
         <MoveChip name={display.name} type={display.type} category={display.category} power={display.power} variant="tile">
           <MovePpMeta pp={equipped ? equipped.pp : text.pp} ppUps={equipped ? equipped.ppUps : (learned?.ppUps ?? null)} />
+          <span data-tooltip="Precisão">{accuracyLabel(text.accuracy)}</span>
         </MoveChip>
       )}
       <Efficacy {...(row.kind === 'blocked' ? efficacyView(null) : efficacy)} />
