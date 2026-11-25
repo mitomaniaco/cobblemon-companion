@@ -35,6 +35,7 @@ export type PlayerIndividual = {
   };
 };
 
+export type DataSource = 'save' | 'demo';
 export type PlayerSnapshot = {
   schemaVersion: 2;
   capturedAt: string;
@@ -43,6 +44,7 @@ export type PlayerSnapshot = {
   sources: Array<{kind: 'party' | 'pc'; sha256: string; modifiedAt: string}>;
   individuals: PlayerIndividual[];
   warnings?: string[];
+  demo?: true;
 };
 export type RealDamageRequest = {
   sources: Array<{kind: 'party' | 'pc'; sha256: string}>;
@@ -634,6 +636,8 @@ export type CompanionApi = {
   /** Recebe o snapshot novo quando os arquivos do save mudam; devolve a função que cancela a inscrição. */
   onSnapshotChanged(callback: (snapshot: PlayerSnapshot) => void): () => void;
   setAutoRefresh(enabled: boolean): Promise<{enabled: boolean}>;
+  /** Troca a fonte da UI (save ou demonstração). Em memória; reiniciar o app volta ao save. */
+  setDataSource(source: DataSource): Promise<{source: DataSource}>;
   /** Monta o time de 6 para o objetivo. Cancelável por `cancel(request.jobId)`. */
   buildGuide(request: GuideRequest): Promise<GuideResult>;
   /** Treinadores disponíveis como objetivo (radicalred primeiro, na ordem da campanha). */
