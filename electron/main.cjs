@@ -86,6 +86,7 @@ const {readGuideProgressFromConfig, resolveProgressSourcePaths, publicProgressEr
 const {deriveProgressLevelCap} = require('./lib/guide/trainers.cjs');
 const {guideNextGoal, guideTrainerDetail, listGuideTrainers} = require('./lib/guide/trainers.cjs');
 const {readPlayerAvatar} = require('./lib/player-avatar.cjs');
+const {loadDemoSnapshot, loadDemoProgress} = require('./lib/demo-source.cjs');
 const PROTOCOL = 'cobblemon';
 const ORIGIN = `${PROTOCOL}://app`;
 const IPC_CALCULATE = 'companion:calculate';
@@ -106,6 +107,7 @@ const IPC_GUIDE_NEXT_GOAL = 'companion:guide-next-goal';
 const IPC_READ_PROGRESS = 'companion:read-progress';
 const IPC_PROGRESS_CHANGED = 'companion:progress-changed';
 const IPC_AUTO_REFRESH = 'companion:auto-refresh';
+const IPC_SET_DATA_SOURCE = 'companion:set-data-source';
 const IPC_SNAPSHOT_CHANGED = 'companion:snapshot-changed';
 const IPC_TEST_SIMULATE_PROGRESS_CHANGE = 'companion:test:simulate-progress-change';
 const IPC_TEST_SIMULATE_CHANGE = 'companion:test:simulate-snapshot-change';
@@ -122,6 +124,9 @@ let windowRef;
 let worker;
 let latestJobId;
 let nextTestBehavior = 'normal';
+// Fonte ativa só em memória: 'save' (padrão, leitura real) ou 'demo' (dados de data/demo, sem tocar save/config/rede).
+let dataSource = 'save';
+let autoRefreshWanted = true;
 const testResponses = [];
 const jobs = new Map();
 const guideJobs = new Map();
@@ -312,7 +317,9 @@ function handleTestArtworkManifest(event) {
   requireSender(event);
   return structuredClone(TRAINER_UI_ARTWORK);
 }
+// Os leitores reais do save só são alcançados com dataSource === 'save'; na demonstração nada toca o save.
 function readSnapshotForRenderer() {
+  if (dataSource === 'demo') return loadDemoSnapshot();
   try {
     return TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_SNAPSHOT) : readPlayerSnapshotFromConfig();
   } catch (error) {
@@ -608,7 +615,7 @@ function handleGuideTrainerDetail(event, ...args) {
 function handlePlayerAvatar(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('A skin do jogador não aceita argumentos');
-  if (TRAINER_UI_TEST_MODE) return null;
+  if (dataSource === 'demo' || TRAINER_UI_TEST_MODE) return null;
   return readPlayerAvatar({
     configPath: path.join(__dirname, '..', 'config.json'),
     cachePath: path.join(app.getPath('userData'), 'player-skin.json'),
@@ -618,17 +625,24 @@ function guideDataForRenderer() {
   return TRAINER_UI_TEST_MODE ? {trainers: TRAINER_UI_GUIDE.trainers, series: {}, campaign: TRAINER_UI_CAMPAIGN} : loadGuideData();
 }
 function readProgressForRenderer() {
-  const progress = TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_PROGRESS) : readGuideProgressFromConfig();
+  let progress;
+  if (dataSource === 'demo') progress = loadDemoProgress();
+  else progress = TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_PROGRESS) : readGuideProgressFromConfig();
   progress.levelCap = deriveProgressLevelCap(guideDataForRenderer().campaign, progress);
   return progress;
+}
+// Só a fonte real reatribui e reativa o monitor de progresso; na demonstração o watcher fica intocado.
+function acknowledgeProgress(progress) {
+  if (dataSource !== 'save') return;
+  progressWatcher?.acknowledge(progress);
+  if (autoRefresh.enabled) progressWatcher?.start();
 }
 function handleReadGuideProgress(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('A leitura do progresso não aceita argumentos');
   try {
     const progress = readProgressForRenderer();
-    progressWatcher?.acknowledge(progress);
-    if (autoRefresh.enabled) progressWatcher?.start();
+    acknowledgeProgress(progress);
     return progress;
   } catch (error) {
     const safeError = publicProgressError(error);
@@ -646,8 +660,7 @@ function handleGuideNextGoal(event, ...args) {
   let progress;
   try {
     progress = readProgressForRenderer();
-    progressWatcher?.acknowledge(progress);
-    if (autoRefresh.enabled) progressWatcher?.start();
+    acknowledgeProgress(progress);
   } catch (error) {
     if (error?.code !== 'ERR_IMPORT_CHANGED') throw error;
     progress = {currentSeries: null, victoryCounts: null};
@@ -656,20 +669,15 @@ function handleGuideNextGoal(event, ...args) {
 }
 function handleRealDamageCalculation(event, request) {
   requireSender(event);
-  let snapshot;
-  try {
-    snapshot = TRAINER_UI_TEST_MODE ? structuredClone(TRAINER_UI_SNAPSHOT) : readPlayerSnapshotFromConfig();
-  } catch (error) {
-    throw new Error(publicPlayerImportError(error));
-  }
+  const snapshot = readSnapshotForRenderer();
   return {status: 'calculated', result: calculateRealDamage(snapshot, request)};
 }
 
 function notifySnapshotChanged(snapshot) {
-  if (windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_SNAPSHOT_CHANGED, snapshot);
+  if (dataSource === 'save' && windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_SNAPSHOT_CHANGED, snapshot);
 }
 function notifyProgressChanged(progress) {
-  if (windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_PROGRESS_CHANGED, progress);
+  if (dataSource === 'save' && windowRef && !windowRef.isDestroyed()) windowRef.webContents.send(IPC_PROGRESS_CHANGED, progress);
 }
 // Progresso RCT/advancements têm fontes e notificações próprias; alterações não provocam releitura da party/PC.
 const progressWatcher = TRAINER_UI_TEST_MODE
@@ -716,8 +724,24 @@ const autoRefresh = createAutoRefresh(saveWatcher, [progressWatcher]);
 function handleSetAutoRefresh(event, enabled) {
   requireSender(event);
   if (typeof enabled !== 'boolean') throw new TypeError('O auto-refresh precisa ser verdadeiro ou falso');
-  autoRefresh.setEnabled(enabled);
+  if (dataSource === 'demo') autoRefreshWanted = enabled;
+  else autoRefresh.setEnabled(enabled);
   return {enabled};
+}
+function handleSetDataSource(event, source) {
+  requireSender(event);
+  if (!['save', 'demo'].includes(source)) throw new TypeError('Fonte de dados inválida');
+  if (source === dataSource) return {source};
+  if (source === 'demo') {
+    autoRefreshWanted = autoRefresh.enabled;
+    dataSource = 'demo';
+    autoRefresh.stop();
+    for (const job of [...guideJobs.values()]) settleGuide(job, new Error('A fonte de dados foi trocada durante a montagem do guia'));
+  } else {
+    dataSource = 'save';
+    autoRefresh.setEnabled(autoRefreshWanted);
+  }
+  return {source};
 }
 function handleSimulateSnapshotChange(event) {
   requireSender(event);
@@ -792,10 +816,12 @@ function syntheticSaveAccounts() {
 function handleListSaveAccounts(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('A lista de contas não aceita argumentos');
+  if (dataSource === 'demo') throw new Error('Indisponível na demonstração');
   return TRAINER_UI_TEST_MODE ? syntheticSaveAccounts() : saveAccountRegistry.list();
 }
 function handleSelectSaveAccount(event, id) {
   requireSender(event);
+  if (dataSource === 'demo') throw new Error('Indisponível na demonstração');
   if (TRAINER_UI_TEST_MODE) {
     const account = typeof id === 'string' ? testAccountTokens.get(id) : undefined;
     if (!account?.selectable || account.expiresAt < Date.now())
@@ -814,6 +840,7 @@ function handleReadPlayerSnapshot(event, ...args) {
   requireSender(event);
   if (args.length !== 0) throw new TypeError('A leitura do snapshot não aceita argumentos');
   try {
+    if (dataSource === 'demo') return readSnapshotForRenderer();
     if (TRAINER_UI_TEST_MODE) return structuredClone(TRAINER_UI_SNAPSHOT);
     const snapshot = readPlayerSnapshotFromConfig();
     autoRefresh.afterRead(snapshot);
@@ -914,6 +941,7 @@ function installIpc() {
   ipcMain.handle(IPC_CANCEL, handleCancel);
   ipcMain.handle(IPC_READ_PLAYER_SNAPSHOT, handleReadPlayerSnapshot);
   ipcMain.handle(IPC_AUTO_REFRESH, handleSetAutoRefresh);
+  ipcMain.handle(IPC_SET_DATA_SOURCE, handleSetDataSource);
   ipcMain.handle(IPC_GUIDE_BUILD, handleGuideBuild);
   ipcMain.handle(IPC_BATTLE_PLAN_BUILD, handleBattlePlanBuild);
   ipcMain.handle(IPC_EVOLUTION_PLAN_BUILD, handleEvolutionPlanBuild);
