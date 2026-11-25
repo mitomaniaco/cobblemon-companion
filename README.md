@@ -8,7 +8,7 @@ escolha. Roda offline em Electron, só lê o save, e nunca age por você.
 - **Equipe** — time de 6 para o objetivo escolhido, com o motivo de cada escolha.
 - **PC** — party e PC lidos do save por UUID, golpes equipados e aprendidos lado a lado.
 - **Dano** — dano mínimo–máximo de golpes compatíveis contra um perfil manual do alvo.
-- **Demonstração** — Pikachu/Floatzel fixos, sem save, para ver a interface funcionando.
+- **Demonstração** — dados de exemplo do próprio app (Guia, Equipe, PC, Dano e Ajuda), sem ler o save nem gravar nada. A **Comparação fixa** Pikachu/Floatzel continua num workspace separado.
 
 Este diretório é a raiz do app: a pasta que contém `package.json` é onde os comandos abaixo devem
 ser executados.
@@ -43,8 +43,8 @@ Essa configuração não escolhe treinador, cap ou tipos. O save continua sendo 
 - Lê party e PC localmente e sob demanda; identifica cada indivíduo por UUID e exibe separadamente os golpes equipados (`MoveSet`) e aprendidos (`BenchedMoves`). O snapshot IPC v2 também captura IVs base, overrides de Hyper Training e EVs com valores desconhecidos preservados; a aba **Atributos** apresenta esses fatos sem derivar valores ausentes.
 - Permite montar em memória uma prévia estrutural de troca de um slot por um golpe observado como aprendido naquele indivíduo. O botão “Abrir cálculo de dano” leva direto ao workspace real de dano com o mesmo UUID e o slot escolhido, sem caixa de confirmação; não equipa nem ensina golpes.
 - “Calcular dano com este indivíduo” usa o perfil capturado do atacante e um perfil manual completo do alvo para comparar dano mínimo–máximo de golpes compatíveis. É uma rota separada e bloqueia dados desconhecidos ou condições não confirmadas.
-- A demonstração offline continua fixa em Pikachu/Floatzel: Spark contra Thunderbolt, um alvo e uma ação. O formulário e a fixture são independentes da seleção do save e do rascunho de troca.
-- `src/main.tsx` monta `TrainerApp`, com workspaces próprios de Equipe, PC, Dano, Demonstração e Ajuda/diagnóstico. As ilustrações locais são opcionais e usam fontes/revisões fixadas; os avisos de direitos estão na interface.
+- A Comparação fixa continua fixa em Pikachu/Floatzel: Spark contra Thunderbolt, um alvo e uma ação. O formulário e a fixture são independentes da seleção do save e do rascunho de troca.
+- `src/main.tsx` monta `TrainerApp`, com workspaces próprios de Equipe, PC, Dano, Comparação fixa e Ajuda/diagnóstico, além da fonte Demonstração. As ilustrações locais são opcionais e usam fontes/revisões fixadas; os avisos de direitos estão na interface.
 
 O Guia monta o time de 6 por objetivo com cálculo de dano e confrontos (singles, HP cheio, campo neutro), mas não promete uma build ou equipe universal, não simula a luta inteira nem prevê a IA adversária. A rota real de Dano apresenta apenas rolls se o golpe acertar, dentro do subconjunto e das condições declaradas; não estima precisão, críticos, nocaute ou ranking. O app só lê o save (importação manual e monitoramento de party/PC com `fs.watch`): não grava no save, não envia comandos ao servidor, não executa scripts de mods e não persiste snapshots em banco.
 
