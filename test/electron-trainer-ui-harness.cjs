@@ -671,14 +671,14 @@ async function exerciseCollectionAndDamage(window, snapshot) {
 }
 
 async function exerciseDemo(contents) {
-  await navigate(contents, 'Demonstração');
+  await navigate(contents, 'Comparação fixa');
   await waitFor(
     contents,
     `(() => {
     const route = [...document.querySelectorAll('nav[aria-label="Vistas"] button')]
-      .find(button => button.textContent.trim() === 'Demonstração');
+      .find(button => button.textContent.trim() === 'Comparação fixa');
     const heading = [...document.querySelectorAll('h2')]
-      .find(node => node.textContent.trim() === 'Demonstração offline');
+      .find(node => node.textContent.trim() === 'Comparação fixa');
     return route?.getAttribute('aria-current') === 'page'
       && Boolean(heading?.getClientRects().length && document.querySelector('#demo-form-title') && window.cobblemonCompanion.test);
   })()`,
@@ -711,7 +711,7 @@ async function exerciseDemo(contents) {
   );
   check(trace, 'A rastreabilidade acessível da demo não foi encontrada.');
   await capture(BrowserWindow.getAllWindows()[0], screenshotPaths.demo, '#demo-result-title');
-  console.log('PASS rota Demonstração independente, resultado 36/50 e screenshot em diagnostics');
+  console.log('PASS rota Comparação fixa independente, resultado 36/50 e screenshot em diagnostics');
 
   await evaluate(contents, "window.cobblemonCompanion.test.setBehavior('delay')");
   await clickButton(contents, 'Executar comparação');
@@ -779,7 +779,7 @@ async function exerciseRealDamage(contents) {
     "document.querySelector('[data-testid=collection] [data-individual-id][aria-selected=true]')?.dataset.individualId || null",
   );
   check(collectionSelectedUuid, 'A navegação da demo removeu a seleção da equipe.');
-  await navigate(contents, 'Demonstração');
+  await navigate(contents, 'Comparação fixa');
   await waitFor(contents, "Boolean(document.querySelector('#demo-form-title'))", 'demonstração independente da seleção');
   await navigate(contents, 'Equipe');
   const selectedAfterDemo = await evaluate(
@@ -951,7 +951,7 @@ async function exerciseRefreshInvalidation(window, snapshot) {
     await evaluate(contents, 'Boolean(document.querySelector(\'[aria-label="Prévia da troca planejada"]\'))'),
     'O cenário de refresh não começou com uma prévia de troca ativa.',
   );
-  await navigate(contents, 'Demonstração');
+  await navigate(contents, 'Comparação fixa');
   await waitFor(contents, "Boolean(document.querySelector('#demo-form-title'))", 'navegação sem afetar a captura');
   await navigate(contents, 'Equipe');
   await waitFor(contents, 'Boolean(document.querySelector(\'[data-testid="refresh-snapshot"]\'))', 'ação de refresh');
@@ -978,20 +978,20 @@ async function exerciseRefreshInvalidation(window, snapshot) {
 
 async function exerciseResponsiveLayout(window, snapshot) {
   const contents = window.webContents;
-  await navigate(contents, 'Demonstração');
+  await navigate(contents, 'Comparação fixa');
   await waitFor(
     contents,
     `(() => {
     const route = [...document.querySelectorAll('nav[aria-label="Vistas"] button')]
-      .find(button => button.textContent.trim() === 'Demonstração');
+      .find(button => button.textContent.trim() === 'Comparação fixa');
     const heading = [...document.querySelectorAll('h2')]
-      .find(node => node.textContent.trim() === 'Demonstração offline');
+      .find(node => node.textContent.trim() === 'Comparação fixa');
     const form = document.querySelector('#demo-form-title');
     return route?.getAttribute('aria-current') === 'page'
       && Boolean(heading?.getClientRects().length && form?.getClientRects().length
         && window.cobblemonCompanion.test);
   })()`,
-    'rota Demonstração na revisão responsiva',
+    'rota Comparação fixa na revisão responsiva',
   );
   await evaluate(contents, "window.cobblemonCompanion.test.setBehavior('normal')");
   await clickButton(contents, 'Executar comparação');
